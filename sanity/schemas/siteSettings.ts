@@ -2,25 +2,25 @@ import { defineType, defineField, defineArrayMember } from "sanity";
 import { CogIcon } from "@sanity/icons";
 
 export const siteSettings = defineType({
-  name: "siteSettings",
-  title: "Site Settings",
+  name: "configuracion",
+  title: "Configuración",
   type: "document",
   icon: CogIcon,
   fields: [
     defineField({
-      name: "siteTitle",
-      title: "Site Title",
+      name: "titulo",
+      title: "Título del sitio",
       type: "string",
     }),
     defineField({
-      name: "siteDescription",
-      title: "Site Description",
+      name: "descripcion",
+      title: "Descripción del sitio",
       type: "string",
     }),
     defineField({
       type: "array",
-      name: "socialLinks",
-      title: "Social Links",
+      name: "linksSociales",
+      title: "Links Sociales",
       of: [
         defineArrayMember({
           name: "link",
@@ -28,8 +28,8 @@ export const siteSettings = defineType({
           type: "object",
           fields: [
             defineField({
-              name: "title",
-              title: "Title",
+              name: "titulo",
+              title: "Título",
               type: "string",
             }),
             defineField({
