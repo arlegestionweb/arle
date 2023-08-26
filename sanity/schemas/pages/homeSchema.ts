@@ -1,5 +1,7 @@
+import { imageArrayMemberSchema, imageObjectSchema } from './../objects/image';
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { HomeIcon } from "@sanity/icons";
+import bannersSchema from '../objects/bannersSchema';
 
 export const homeSchema = defineType({
   name: "homepage",
@@ -7,30 +9,7 @@ export const homeSchema = defineType({
   type: "document",
   icon: HomeIcon,
   fields: [
-    defineField({
-      name: "banners",
-      title: "Banners",
-      type: "array",
-      of: [
-        defineArrayMember({
-          name: "banner",
-          title: "Banner",
-          type: "object",
-          fields: [
-            defineField({
-              name: "titulo",
-              title: "Titulo",
-              type: "string",
-            }),
-            defineField({
-              name: "imagen",
-              title: "Imagen",
-              type: "image",
-            }),
-          ],
-        }),
-      ],
-    }),
+    bannersSchema,
     defineField({
       name: "perfumes",
       title: "Perfumes",
@@ -46,19 +25,7 @@ export const homeSchema = defineType({
           title: "Descripción",
           type: "string",
         }),
-        defineField({
-          name: "imagen",
-          title: "Imagen",
-          type: "image",
-          fields: [
-            defineField({
-              name: "alt",
-              title: "Texto Alternativo",
-              description: "Para buscadores de internet (SEO)",
-              type: "string",
-            }),
-          ],
-        }),
+        imageObjectSchema
       ],
     }),
     defineField({
@@ -76,19 +43,7 @@ export const homeSchema = defineType({
           title: "Descripción",
           type: "string",
         }),
-        defineField({
-          name: "imagen",
-          title: "Imagen",
-          type: "image",
-          fields: [
-            defineField({
-              name: "alt",
-              title: "Texto Alternativo",
-              description: "Para buscadores de internet (SEO)",
-              type: "string",
-            }),
-          ],
-        }),
+        imageObjectSchema
       ],
     }),
     defineField({
@@ -106,19 +61,7 @@ export const homeSchema = defineType({
           title: "Descripción",
           type: "string",
         }),
-        defineField({
-          name: "imagen",
-          title: "Imagen",
-          type: "image",
-          fields: [
-            defineField({
-              name: "alt",
-              title: "Texto Alternativo",
-              description: "Para buscadores de internet (SEO)",
-              type: "string",
-            }),
-          ],
-        }),
+        imageObjectSchema,
       ],
     }),
     defineField({
@@ -141,19 +84,7 @@ export const homeSchema = defineType({
           title: "Imágenes",
           type: "array",
           of: [
-            defineArrayMember({
-              name: "imagen",
-              title: "Imagen",
-              type: "image",
-              fields: [
-                defineField({
-                  name: "alt",
-                  title: "Texto Alternativo",
-                  description: "Para buscadores de internet (SEO)",
-                  type: "string",
-                }),
-              ],
-            }),
+            imageArrayMemberSchema
 
           ]
         }),
@@ -204,19 +135,7 @@ export const homeSchema = defineType({
                   title: "Descripción",
                   type: "string",
                 }),
-                defineField({
-                  name: "imagen",
-                  title: "Imagen",
-                  type: "image",
-                  fields: [
-                    defineField({
-                      name: "alt",
-                      title: "Texto Alternativo",
-                      description: "Para buscadores de internet (SEO)",
-                      type: "string",
-                    }),
-                  ],
-                }),
+                imageObjectSchema,
               ]
             })
           ]

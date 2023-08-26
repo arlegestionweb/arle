@@ -2,7 +2,7 @@ import { defineConfig } from "sanity";
 // import {visionTool} from "@sanity/vision"
 import {deskTool} from "sanity/desk"
 import structure from "./structure"
-import { schemaTypes } from "./schemaTypes";
+import { schemaTypes } from "./schemas/schemaTypes";
 
 
 export const sanityAdminConfig = {
