@@ -15,89 +15,95 @@ import { descuentosSchema } from "../schemas/documents/descuentos";
 import { coleccionesSchema } from "../schemas/documents/colecciones";
 import { BsCollection } from "react-icons/bs";
 
-export default (S: StructureBuilder) => {
-  const premiumListItem = S.listItem()
+export default ({listItem, divider, list, editor}: StructureBuilder) => {
+  const premiumListItem = listItem()
     .title(premiumSchema.title || "")
     .icon(TbPerfume)
     .child(
-      S.editor()
+      editor()
         .id(premiumSchema.name)
         .schemaType(premiumSchema.name)
         .documentId(premiumSchema.name)
     );
-  const lujoListItem = S.listItem()
+  const lujoListItem = listItem()
     .title(lujoSchema.title || "")
     .icon(GiDelicatePerfume)
     .child(
-      S.editor()
+      editor()
         .id(lujoSchema.name)
         .schemaType(lujoSchema.name)
         .documentId(lujoSchema.name)
     );
-  const perfumes = S.listItem()
+  const perfumes = listItem()
     .title("Perfumes")
     .icon(TbPerfume)
-    .child(S.list().title("Perfumes").items([premiumListItem, lujoListItem]));
+    .child(list().title("Perfumes").items([premiumListItem, lujoListItem]));
 
-  const relojesListItem = S.listItem()
+  const relojesListItem = listItem()
     .title(relojesSchema.title || "")
     .icon(GiPocketWatch)
     .child(
-      S.editor()
+      editor()
         .id(relojesSchema.name)
         .schemaType(relojesSchema.name)
         .documentId(relojesSchema.name)
     );
-  const gafasListItem = S.listItem()
+  const gafasListItem = listItem()
     .title(gafasSchema.title || "")
     .icon(PiSunglassesFill)
     .child(
-      S.editor()
+      editor()
         .id(gafasSchema.name)
         .schemaType(gafasSchema.name)
         .documentId(gafasSchema.name)
     );
-  const marcasListItem = S.listItem()
+  const marcasListItem = listItem()
     .title(marcasSchema.title || "")
     .icon(MdOutlineBrandingWatermark)
     .child(
-      S.editor()
+      editor()
         .id(marcasSchema.name)
         .schemaType(marcasSchema.name)
         .documentId(marcasSchema.name)
     );
-  const descuentosListItem = S.listItem()
+  const descuentosListItem = listItem()
     .title(descuentosSchema.title || "")
     .icon(MdOutlineLocalOffer)
     .child(
-      S.editor()
+      editor()
         .id(descuentosSchema.name)
         .schemaType(descuentosSchema.name)
         .documentId(descuentosSchema.name)
     );
-  const coleccionesListItem = S.listItem()
+  const coleccionesListItem = listItem()
     .title(coleccionesSchema.title || "")
     .icon(BsCollection)
     .child(
-      S.editor()
+      editor()
         .id(coleccionesSchema.name)
         .schemaType(coleccionesSchema.name)
         .documentId(coleccionesSchema.name)
     );
 
-  return S.listItem()
+  return listItem()
     .title("Productos")
     .icon(TbPerfume)
     .child(
-      S.list()
+      list()
         .title("Productos")
         .items([
           perfumes,
+          divider(),
           relojesListItem,
+          divider(),
           gafasListItem,
+          divider(),
           marcasListItem,
+          divider(),
           descuentosListItem,
+          divider(),
           coleccionesListItem,
+          divider(),
         ])
     );
 };

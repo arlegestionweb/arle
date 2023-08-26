@@ -17,6 +17,11 @@ export default defineField({
           title: "Titulo",
           type: "string",
         }),
+        defineField({
+          name: "descripcion",
+          title: "Descripción",
+          type: "string",
+        }),
         imageObjectSchema
       ],
     }),

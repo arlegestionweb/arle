@@ -1,6 +1,5 @@
 import { siteSettings } from "../schemas/siteSettings";
 import { type StructureBuilder } from "sanity/desk";
-import { BookIcon } from "@sanity/icons";
 import { homeSchema } from "../schemas/pages/homeSchema";
 import { MdPointOfSale } from "react-icons/md";
 import productos from "./productos";
@@ -11,6 +10,10 @@ import { gafasSchema } from "../schemas/products/gafas";
 import { marcasSchema } from "../schemas/documents/marcas";
 import { coleccionesSchema } from "../schemas/documents/colecciones";
 import { descuentosSchema } from "../schemas/documents/descuentos";
+import pages from "./pages";
+import { listingSchema } from "../schemas/pages/listingSchema";
+import { sobreNosotrosSchema } from "../schemas/pages/sobreNosotros";
+import { preguntasFrecuentesSchema } from "../schemas/pages/preguntasFrecuentesSchema";
 
 export default (S: StructureBuilder) => {
   const siteSettingsListItem = S.listItem()
@@ -23,25 +26,10 @@ export default (S: StructureBuilder) => {
         .documentId(siteSettings.name)
     );
 
-  const homePageListItem = S.listItem()
-    .title(homeSchema.title || "")
-    .icon(homeSchema.icon)
-    .child(
-      S.editor()
-        .id(homeSchema.name)
-        .schemaType(homeSchema.name)
-        .documentId(homeSchema.name)
-    );
-
-  const pages = S.listItem()
-    .title("Pages")
-    .icon(BookIcon)
-    .child(S.list().title("Pages").items([homePageListItem]));
-
   const adminVentas = S.listItem()
     .title("Admin Ventas")
     .icon(MdPointOfSale)
-    .child(S.list().title("Admin Ventas").items([homePageListItem]));
+    .child(S.list().title("Admin Ventas").items([]));
 
   const hiddenDocTypes = (listItem: any) => {
     return ![
@@ -54,13 +42,16 @@ export default (S: StructureBuilder) => {
       marcasSchema.name,
       coleccionesSchema.name,
       descuentosSchema.name,
+      listingSchema.name,
+      sobreNosotrosSchema.name,
+      preguntasFrecuentesSchema.name,
     ].includes(listItem.getId());
   };
 
   return S.list()
     .title("Content")
     .items([
-      pages,
+      pages(S),
       S.divider(),
       productos(S),
       S.divider(),
