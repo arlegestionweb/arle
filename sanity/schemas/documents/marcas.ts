@@ -3,8 +3,8 @@ import bannersSchema from "../objects/bannersSchema";
 import { imageObjectSchema } from "../objects/image";
 
 export const marcasSchema = defineType({
-  name: "marcas",
-  title: "Marcas",
+  name: "marca",
+  title: "Marca",
   type: "document",
   fields: [
     defineField({

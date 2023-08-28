@@ -5,9 +5,10 @@ import { homeSchema } from "./pages/homeSchema";
 import { listingSchema } from "./pages/listingSchema";
 import { preguntasFrecuentesSchema } from "./pages/preguntasFrecuentesSchema";
 import { sobreNosotrosSchema } from "./pages/sobreNosotros";
-import { gafasSchema } from "./products/gafas";
-import { lujoSchema } from "./products/perfumes/lujo";
-import { premiumSchema } from "./products/perfumes/premium";
+import { gafasLujoSchema } from "./products/gafas/lujo";
+import { gafasPremiumSchema } from "./products/gafas/premium";
+import { perfumeLujoSchema } from "./products/perfumes/lujo";
+import { perfumePremiumSchema } from "./products/perfumes/premium";
 import { relojesSchema } from "./products/relojes";
 import { siteSettings } from "./siteSettings";
 
@@ -22,10 +23,11 @@ export const schemaTypes = [
 
 
   // products
-  premiumSchema,
-  lujoSchema,
+  perfumePremiumSchema,
+  perfumeLujoSchema,
+  gafasPremiumSchema,
+  gafasLujoSchema,
   relojesSchema,
-  gafasSchema,
 
 
   // documents

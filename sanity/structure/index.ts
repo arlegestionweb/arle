@@ -3,10 +3,9 @@ import { type StructureBuilder } from "sanity/desk";
 import { homeSchema } from "../schemas/pages/homeSchema";
 import { MdPointOfSale } from "react-icons/md";
 import productos from "./productos";
-import { premiumSchema } from "../schemas/products/perfumes/premium";
-import { lujoSchema } from "../schemas/products/perfumes/lujo";
+import { perfumePremiumSchema } from "../schemas/products/perfumes/premium";
+import { perfumeLujoSchema } from "../schemas/products/perfumes/lujo";
 import { relojesSchema } from "../schemas/products/relojes";
-import { gafasSchema } from "../schemas/products/gafas";
 import { marcasSchema } from "../schemas/documents/marcas";
 import { coleccionesSchema } from "../schemas/documents/colecciones";
 import { descuentosSchema } from "../schemas/documents/descuentos";
@@ -14,6 +13,8 @@ import pages from "./pages";
 import { listingSchema } from "../schemas/pages/listingSchema";
 import { sobreNosotrosSchema } from "../schemas/pages/sobreNosotros";
 import { preguntasFrecuentesSchema } from "../schemas/pages/preguntasFrecuentesSchema";
+import { gafasLujoSchema } from "../schemas/products/gafas/lujo";
+import { gafasPremiumSchema } from "../schemas/products/gafas/premium";
 
 export default (S: StructureBuilder) => {
   const siteSettingsListItem = S.listItem()
@@ -35,11 +36,12 @@ export default (S: StructureBuilder) => {
     return ![
       siteSettings.name,
       homeSchema.name,
-      premiumSchema.name,
-      lujoSchema.name,
+      perfumePremiumSchema.name,
+      perfumeLujoSchema.name,
       relojesSchema.name,
-      gafasSchema.name,
       marcasSchema.name,
+      gafasLujoSchema.name,
+      gafasPremiumSchema.name,
       coleccionesSchema.name,
       descuentosSchema.name,
       listingSchema.name,

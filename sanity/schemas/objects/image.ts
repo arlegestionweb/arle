@@ -27,3 +27,13 @@ export const imageArrayMemberSchema = defineArrayMember({
     }),
   ],
 })
+
+export const imageArray = defineField({
+  name: "imagenes",
+  title: "Imágenes",
+  type: "array",
+  of: [imageArrayMemberSchema],
+  options: {
+    layout: "grid",
+  },
+})
