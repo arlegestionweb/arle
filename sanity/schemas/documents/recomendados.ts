@@ -1,5 +1,4 @@
 import { defineType, defineField } from "sanity";
-import { imageObjectSchema } from "../objects/image";
 
 export const recomendadosSchema = defineType({
   name: "recomendados",

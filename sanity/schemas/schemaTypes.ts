@@ -2,6 +2,7 @@ import { coleccionesSchema } from "./documents/colecciones";
 import { descuentosSchema } from "./documents/descuentos";
 import { marcasSchema } from "./documents/marcas";
 import { recomendadosSchema } from "./documents/recomendados";
+import { ventaSchema } from "./documents/venta";
 import { homeSchema } from "./pages/homeSchema";
 import { listingSchema } from "./pages/listingSchema";
 import { preguntasFrecuentesSchema } from "./pages/preguntasFrecuentesSchema";
@@ -37,5 +38,6 @@ export const schemaTypes = [
   marcasSchema,
   descuentosSchema,
   coleccionesSchema,
-  recomendadosSchema
+  recomendadosSchema,
+  ventaSchema,
 ]

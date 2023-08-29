@@ -1,5 +1,6 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
 import { CogIcon } from "@sanity/icons";
+import { imageObjectSchema } from "./objects/image";
 
 export const siteSettings = defineType({
   name: "configuracion",
@@ -16,6 +17,20 @@ export const siteSettings = defineType({
       name: "descripcion",
       title: "Descripción del sitio",
       type: "string",
+    }),
+    defineField({
+      name: "marcaPromocionada",
+      title: "Marca Promocionada",
+      type: "reference",
+      to: [{ type: "marca" }],
+    }),
+    defineField({
+      name: "navbarBanner",
+      title: "Banner Navbar",
+      type: "object",
+      fields: [
+        imageObjectSchema,
+      ]
     }),
     defineField({
       type: "array",
