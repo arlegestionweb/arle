@@ -8,6 +8,7 @@ import { marcasSchema } from "../schemas/documents/marcas";
 import {
   MdOutlineBrandingWatermark,
   MdOutlineLocalOffer,
+  MdOutlineRecommend
 } from "react-icons/md";
 import { descuentosSchema } from "../schemas/documents/descuentos";
 import { coleccionesSchema } from "../schemas/documents/colecciones";
@@ -17,6 +18,7 @@ import { gafasLujoSchema } from "../schemas/products/gafas/lujo";
 import { relojesPremiumSchema } from "../schemas/products/relojes/premium";
 import { relojesLujoSchema } from "../schemas/products/relojes/lujo";
 import {PiWatchBold} from 'react-icons/pi';
+import { recomendadosSchema } from "../schemas/documents/recomendados";
 
 
 export default ({ listItem, divider, list, editor }: StructureBuilder) => {
@@ -119,6 +121,15 @@ export default ({ listItem, divider, list, editor }: StructureBuilder) => {
         .schemaType(coleccionesSchema.name)
         .documentId(coleccionesSchema.name)
     );
+  const recomendadosListItem = listItem()
+    .title(recomendadosSchema.title || "")
+    .icon(MdOutlineRecommend)
+    .child(
+      editor()
+        .id(recomendadosSchema.name)
+        .schemaType(recomendadosSchema.name)
+        .documentId(recomendadosSchema.name)
+    );
 
   return listItem()
     .title("Productos")
@@ -138,6 +149,8 @@ export default ({ listItem, divider, list, editor }: StructureBuilder) => {
           descuentosListItem,
           divider(),
           coleccionesListItem,
+          divider(),
+          recomendadosListItem,
           divider(),
         ])
     );

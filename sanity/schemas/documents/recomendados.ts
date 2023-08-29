@@ -1,22 +1,11 @@
 import { defineType, defineField } from "sanity";
 import { imageObjectSchema } from "../objects/image";
 
-export const coleccionesSchema = defineType({
-  name: "colecciones",
-  title: "Colecciones",
+export const recomendadosSchema = defineType({
+  name: "recomendados",
+  title: "Recomendados",
   type: "document",
   fields: [
-    defineField({
-      name: "titulo",
-      title: "Título",
-      type: "string",
-    }),
-    defineField({
-      name: "descripcion",
-      title: "Descripción",
-      type: "string",
-    }),
-    imageObjectSchema,
     defineField({
       name: "productos",
       title: "Productos",
