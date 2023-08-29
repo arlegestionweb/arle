@@ -1,16 +1,18 @@
-import { defineType, defineField } from "sanity";
+import { defineType, defineField, defineArrayMember } from "sanity";
 import {
+  detallesRelojSchema,
+  funcionesSchema,
   garantiaSchema,
-  generoSchema,
-  lenteSchema,
-  monturaSchema,
   precioSchema,
+  resenaSchema,
+  resistenciaAlAguaSchema,
 } from "../../objects/productObjects";
 import { imageArray } from "../../objects/image";
+import { videoSchema } from "../../objects/video";
 
-export const gafasPremiumSchema = defineType({
-  name: "gafasPremium",
-  title: "Gafas Premium",
+export const relojesLujoSchema = defineType({
+  name: "relojesLujo",
+  title: "Relojes de Lujo",
   type: "document",
   fields: [
     defineField({
@@ -19,6 +21,7 @@ export const gafasPremiumSchema = defineType({
       type: "reference",
       to: [{ type: "marca" }],
     }),
+    videoSchema,
     defineField({
       name: "modelo",
       title: "Modelo o Referencia",
@@ -26,19 +29,10 @@ export const gafasPremiumSchema = defineType({
     }),
     imageArray,
     precioSchema,
-    defineField({
-      name: "tipo",
-      title: "Tipo",
-      type: "string",
-    }),
-    defineField({
-      name: "descripcion",
-      title: "Descripción",
-      type: "string",
-    }),
-    generoSchema,
+    funcionesSchema,
+    resistenciaAlAguaSchema,
     garantiaSchema,
-    monturaSchema,
-    lenteSchema,
+    resenaSchema,
+    detallesRelojSchema,
   ],
 });

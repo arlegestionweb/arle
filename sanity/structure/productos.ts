@@ -3,7 +3,6 @@ import { TbPerfume } from "react-icons/tb";
 import { type StructureBuilder } from "sanity/desk";
 import { perfumePremiumSchema } from "../schemas/products/perfumes/premium";
 import { GiDelicatePerfume, GiPocketWatch } from "react-icons/gi";
-import { relojesSchema } from "../schemas/products/relojes";
 import { PiSunglassesFill, PiSunglassesBold } from "react-icons/pi";
 import { marcasSchema } from "../schemas/documents/marcas";
 import {
@@ -15,6 +14,10 @@ import { coleccionesSchema } from "../schemas/documents/colecciones";
 import { BsCollection, BsSunglasses } from "react-icons/bs";
 import { gafasPremiumSchema } from "../schemas/products/gafas/premium";
 import { gafasLujoSchema } from "../schemas/products/gafas/lujo";
+import { relojesPremiumSchema } from "../schemas/products/relojes/premium";
+import { relojesLujoSchema } from "../schemas/products/relojes/lujo";
+import {PiWatchBold} from 'react-icons/pi';
+
 
 export default ({ listItem, divider, list, editor }: StructureBuilder) => {
   const premiumListItem = listItem()
@@ -40,15 +43,29 @@ export default ({ listItem, divider, list, editor }: StructureBuilder) => {
     .icon(TbPerfume)
     .child(list().title("Perfumes").items([premiumListItem, lujoListItem]));
 
-  const relojesListItem = listItem()
-    .title(relojesSchema.title || "")
+  const relojesPremiumListItem = listItem()
+    .title(relojesPremiumSchema.title || "")
+    .icon(PiWatchBold)
+    .child(
+      editor()
+        .id(relojesPremiumSchema.name)
+        .schemaType(relojesPremiumSchema.name)
+        .documentId(relojesPremiumSchema.name)
+    );
+  const relojesLujoListItem = listItem()
+    .title(relojesLujoSchema.title || "")
     .icon(GiPocketWatch)
     .child(
       editor()
-        .id(relojesSchema.name)
-        .schemaType(relojesSchema.name)
-        .documentId(relojesSchema.name)
-    );
+        .id(relojesLujoSchema.name)
+        .schemaType(relojesLujoSchema.name)
+        .documentId(relojesLujoSchema.name)
+    ); 
+
+  const relojesListItem = listItem()
+    .title("Relojes")
+    .icon(GiPocketWatch)
+    .child(list().title("Relojes").items([relojesPremiumListItem, relojesLujoListItem]));
 
   const gafaPremiumListItem = listItem()
     .title(gafasPremiumSchema.title || "")

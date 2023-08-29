@@ -1,5 +1,12 @@
 import { defineType, defineField } from "sanity";
-import { generoSchema, lenteSchema, monturaSchema, precioSchema, resenaSchema } from "../../objects/productObjects";
+import {
+  garantiaSchema,
+  generoSchema,
+  lenteSchema,
+  monturaSchema,
+  precioSchema,
+  resenaSchema,
+} from "../../objects/productObjects";
 import { imageArray } from "../../objects/image";
 
 export const gafasLujoSchema = defineType({
@@ -43,11 +50,7 @@ export const gafasLujoSchema = defineType({
     }),
 
     generoSchema,
-    defineField({
-      name: "garantia",
-      title: "Garantía",
-      type: "string",
-    }),
+    garantiaSchema,
     monturaSchema,
     lenteSchema,
   ],

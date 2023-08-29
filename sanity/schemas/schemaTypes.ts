@@ -9,7 +9,8 @@ import { gafasLujoSchema } from "./products/gafas/lujo";
 import { gafasPremiumSchema } from "./products/gafas/premium";
 import { perfumeLujoSchema } from "./products/perfumes/lujo";
 import { perfumePremiumSchema } from "./products/perfumes/premium";
-import { relojesSchema } from "./products/relojes";
+import { relojesLujoSchema } from "./products/relojes/lujo";
+import { relojesPremiumSchema } from "./products/relojes/premium";
 import { siteSettings } from "./siteSettings";
 
 export const schemaTypes = [
@@ -27,7 +28,8 @@ export const schemaTypes = [
   perfumeLujoSchema,
   gafasPremiumSchema,
   gafasLujoSchema,
-  relojesSchema,
+  relojesLujoSchema,
+  relojesPremiumSchema,
 
 
   // documents

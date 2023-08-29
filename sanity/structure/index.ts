@@ -5,7 +5,6 @@ import { MdPointOfSale } from "react-icons/md";
 import productos from "./productos";
 import { perfumePremiumSchema } from "../schemas/products/perfumes/premium";
 import { perfumeLujoSchema } from "../schemas/products/perfumes/lujo";
-import { relojesSchema } from "../schemas/products/relojes";
 import { marcasSchema } from "../schemas/documents/marcas";
 import { coleccionesSchema } from "../schemas/documents/colecciones";
 import { descuentosSchema } from "../schemas/documents/descuentos";
@@ -15,6 +14,8 @@ import { sobreNosotrosSchema } from "../schemas/pages/sobreNosotros";
 import { preguntasFrecuentesSchema } from "../schemas/pages/preguntasFrecuentesSchema";
 import { gafasLujoSchema } from "../schemas/products/gafas/lujo";
 import { gafasPremiumSchema } from "../schemas/products/gafas/premium";
+import { relojesLujoSchema } from "../schemas/products/relojes/lujo";
+import { relojesPremiumSchema } from "../schemas/products/relojes/premium";
 
 export default (S: StructureBuilder) => {
   const siteSettingsListItem = S.listItem()
@@ -38,7 +39,6 @@ export default (S: StructureBuilder) => {
       homeSchema.name,
       perfumePremiumSchema.name,
       perfumeLujoSchema.name,
-      relojesSchema.name,
       marcasSchema.name,
       gafasLujoSchema.name,
       gafasPremiumSchema.name,
@@ -47,6 +47,8 @@ export default (S: StructureBuilder) => {
       listingSchema.name,
       sobreNosotrosSchema.name,
       preguntasFrecuentesSchema.name,
+      relojesLujoSchema.name,
+      relojesPremiumSchema.name,
     ].includes(listItem.getId());
   };
 
