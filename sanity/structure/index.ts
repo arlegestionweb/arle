@@ -28,7 +28,8 @@ export default (S: StructureBuilder) => {
         .schemaType(siteSettings.name)
         .documentId(siteSettings.name)
     );
-
+  
+    
   const adminVentas = S.listItem()
     .title("Admin Ventas")
     .icon(MdPointOfSale)
