@@ -104,58 +104,58 @@ export const homeSchema = defineType({
         }),
       ]
     }),
-    defineField({
-      name: "testimonios",
-      title: "Testimonios",
-      type: "object",
-      fields: [
-        defineField({
-          name: "titulo",
-          title: "Título",
-          type: "string",
-        }),
-        defineField({
-          name: "descripcion",
-          title: "Descripción",
-          type: "string",
-        }),
-        defineField({
-          name: "lista",
-          title: "Lista de Testimonios",
-          type: "array",
-          of: [
-            defineArrayMember({
-              name: "testimonio",
-              title: "Testimonio",
-              type: "object",
-              fields: [
-                defineField({
-                  name: "titulo",
-                  title: "Título",
-                  type: "string",
-                }),
-                defineField({
-                  name: "nombre",
-                  title: "Nombre",
-                  type: "string",
-                }),
-                defineField({
-                  name: "cargo",
-                  title: "Cargo",
-                  type: "string",
-                }),
-                defineField({
-                  name: "descripcion",
-                  title: "Descripción",
-                  type: "string",
-                }),
-                imageObjectSchema,
-              ]
-            })
-          ]
-        })
-      ],
-    }),
+    // defineField({
+    //   name: "testimonios",
+    //   title: "Testimonios",
+    //   type: "object",
+    //   fields: [
+    //     defineField({
+    //       name: "titulo",
+    //       title: "Título",
+    //       type: "string",
+    //     }),
+    //     defineField({
+    //       name: "descripcion",
+    //       title: "Descripción",
+    //       type: "string",
+    //     }),
+    //     defineField({
+    //       name: "lista",
+    //       title: "Lista de Testimonios",
+    //       type: "array",
+    //       of: [
+    //         defineArrayMember({
+    //           name: "testimonio",
+    //           title: "Testimonio",
+    //           type: "object",
+    //           fields: [
+    //             defineField({
+    //               name: "titulo",
+    //               title: "Título",
+    //               type: "string",
+    //             }),
+    //             defineField({
+    //               name: "nombre",
+    //               title: "Nombre",
+    //               type: "string",
+    //             }),
+    //             defineField({
+    //               name: "cargo",
+    //               title: "Cargo",
+    //               type: "string",
+    //             }),
+    //             defineField({
+    //               name: "descripcion",
+    //               title: "Descripción",
+    //               type: "string",
+    //             }),
+    //             imageObjectSchema,
+    //           ]
+    //         })
+    //       ]
+    //     })
+    //   ],
+    // }),
 
   ],
 });

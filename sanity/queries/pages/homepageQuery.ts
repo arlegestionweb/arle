@@ -18,7 +18,7 @@ const homepageQueryString = `*[_type == "homepage"]{
     descripcion,
     ${imageQuery},
   },
-  "colecciones": colecciones[] -> {
+  "colecciones": coleccionesDestacadas[] -> {
     titulo,
     descripcion,
     ${imageQuery},

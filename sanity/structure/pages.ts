@@ -17,6 +17,7 @@ export default (S: StructureBuilder) => {
         .id(homeSchema.name)
         .schemaType(homeSchema.name)
         .documentId(homeSchema.name)
+        .title(homeSchema.title || "")
     );
   const listingListItem = S.listItem()
     .title(listingSchema.title || "")
