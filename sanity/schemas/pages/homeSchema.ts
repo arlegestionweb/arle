@@ -65,6 +65,20 @@ export const homeSchema = defineType({
       ],
     }),
     defineField({
+      name: "coleccionesDestacadas",
+      title: "Colecciones Destacadas",
+      type: "array",
+      of: [
+        defineArrayMember({
+          name: "coleccion",
+          title: "Colección",
+          type: "reference",
+          to: [{ type: "colecciones" }],
+        }),
+      ],
+
+    }),
+    defineField({
       name: "sobre",
       title: "Sobre Arlé",
       type: "object",

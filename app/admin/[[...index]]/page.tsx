@@ -1,4 +1,3 @@
-// app/admin/[[…index]]/page.tsx
 'use client'
 
 import { studioConfig } from '@/sanity/sanityAdmin.config'
