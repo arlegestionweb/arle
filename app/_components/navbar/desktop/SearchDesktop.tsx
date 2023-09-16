@@ -12,10 +12,10 @@ const SearchDesktop = () => {
 
   return (
     <form
-      className="w-[300px] lg:w-[400px]"
+      className="w-2/5"
       onSubmit={onSubmit}>
       <input
-        className="flex h-9 w-full rounded-lg border bg-background px-3 pl-9 py-[6px] placeholder:text-[#79767A] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-300 focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex h-9 w-full rounded-lg border bg-background px-3 pl-9 py-[6px] placeholder:text-[#79767A] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-300 focus-visible:ring-offset-0  disabled:opacity-50"
         placeholder="Search"
         type="text"
         value={value}
