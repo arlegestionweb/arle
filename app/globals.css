@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --background: #fff;
-    --radius: 0.5rem;
+    --radius: 4px;
   }
 }
 

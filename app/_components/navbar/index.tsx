@@ -4,8 +4,8 @@ import MobileNavBar from "./NavMobile";
 const Navbar = () => {
   return (
     <>
-      <MobileNavBar className="md:hidden"/>
-      <DesktopNavBar className="hidden md:block"/>
+      <MobileNavBar className="fixed w-screen md:hidden"/>
+      <DesktopNavBar className="hidden fixed w-screen md:flex"/>
     </>
   );
 };
