@@ -41,8 +41,12 @@ const Filters = ({ areFiltersActive }: { areFiltersActive: boolean }) => {
             className="cursor-pointer text-3xl absolute top-10 right-10"
           />
           {areFiltersActive && (
-            <Link href="/listing" onClick={toggleFilter}>
-              remove filters
+            <Link
+              href="/listing"
+              onClick={toggleFilter}
+              className="text-3xl font-bold"
+            >
+              <Button>Quitar Filtros</Button>
             </Link>
           )}
         </div>

@@ -48,7 +48,7 @@ const Listing = async ({
     
     const areFiltersActive = !!coleccionSeleccionada || !!tipoDeProductoSeleccionado;
     
-    console.log({ areFiltersActive, productos });
+    // console.log({ areFiltersActive, productos });
 
     const filteredProducts = productos?.filter(producto => {
       if (tipoDeProductoSeleccionado) {
@@ -61,7 +61,6 @@ const Listing = async ({
     <main className="md:px-10 px-5 pt-[70px] md:pt-0">
       <Filters areFiltersActive={areFiltersActive} />
       <Colecciones colecciones={colecciones} />
-      {/* <div>{coleccionSeleccionada && <h3>{coleccionSeleccionada}</h3>}</div> */}
       {productos && <Productos productos={filteredProducts} />}
     </main>
   );
