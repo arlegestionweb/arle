@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "./_components/navbar";
+import MobileNavBar from "./_components/navbar/NavMobile";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,8 +21,8 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar/>
+      <body className={inter.className+' overflow-x-hidden'}>
+        <MobileNavBar />
         {children}
       </body>
     </html>
