@@ -7,7 +7,7 @@ import {
   resenaSchema,
   resistenciaAlAguaSchema,
 } from "../../objects/productObjects";
-import { imageArray, slugSchema } from "../../objects/image";
+import { imageArrayForProducts, slugSchema } from "../../objects/image";
 import { videoSchema } from "../../objects/video";
 
 export const relojesLujoSchema = defineType({
@@ -27,7 +27,7 @@ export const relojesLujoSchema = defineType({
       to: [{ type: "marca" }],
     }),
     videoSchema,
-    imageArray,
+    imageArrayForProducts,
     precioSchema,
     funcionesSchema,
     resistenciaAlAguaSchema,

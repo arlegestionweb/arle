@@ -6,7 +6,7 @@ import {
   precioSchema,
   resistenciaAlAguaSchema,
 } from "../../objects/productObjects";
-import { imageArray, slugSchema } from "../../objects/image";
+import { imageArrayForProducts, slugSchema } from "../../objects/image";
 
 export const relojesPremiumSchema = defineType({
   name: "relojesPremium",
@@ -24,7 +24,7 @@ export const relojesPremiumSchema = defineType({
       title: "Modelo o Referencia",
       type: "string",
     }),
-    imageArray,
+    imageArrayForProducts,
     precioSchema,
     funcionesSchema,
     resistenciaAlAguaSchema,

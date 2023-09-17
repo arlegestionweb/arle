@@ -6,19 +6,6 @@ import {
   marcaTipoModeloQuery,
 } from "../objects";
 
-// perfumes: titulo,
-//     "type": _type,
-//     genero,
-//     calificacion,
-//     resenaCorta,
-//     descripcion,
-//     ${imageArrayQuery},
-//     tamano,
-//     codigoDeReferencia,
-//     precio,
-//     registroInvima,
-//     notasOlfativas
-
 const listingMainString = ` 
 {
   "listingContent": *[_type == "listing"]{

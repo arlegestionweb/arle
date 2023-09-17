@@ -11,6 +11,9 @@ const ProductoCard = ({
 }: {
   producto: PerfumeLujoType | PerfumePremiumType | RelojType | GafaType;
 }) => {
+
+  if (!producto.imagenes) return null;
+
   return (
     <div className="w-[136px] h-[279px] flex-col justify-start items-start gap-2 inline-flex">
       <Image

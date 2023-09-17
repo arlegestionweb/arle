@@ -7,7 +7,7 @@ import {
   precioSchema,
   resenaSchema,
 } from "../../objects/productObjects";
-import { imageArray, slugSchema } from "../../objects/image";
+import { imageArrayForProducts, slugSchema } from "../../objects/image";
 
 export const gafasLujoSchema = defineType({
   name: "gafasLujo",
@@ -25,7 +25,7 @@ export const gafasLujoSchema = defineType({
       title: "Modelo o Referencia",
       type: "string",
     }),
-    imageArray,
+    imageArrayForProducts,
     precioSchema,
     defineField({
       name: "tipo",

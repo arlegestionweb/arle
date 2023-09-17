@@ -45,10 +45,11 @@ export const slugSchema = defineField({
   }
 })
 
-export const imageArray = defineField({
+export const imageArrayForProducts = defineField({
   name: "imagenes",
   title: "Imágenes",
   type: "array",
+  validation: (Rule) => Rule.required(),
   of: [imageArrayMemberSchema],
   options: {
     layout: "grid",
