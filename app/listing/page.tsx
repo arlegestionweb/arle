@@ -30,26 +30,39 @@ const Listing = async ({
 }) => {
   const pageContent = (await getListingInitialLoadContent()) as PageContentType;
   const coleccionSeleccionada = searchParams.coleccion;
-
+  const tipoDeProductoSeleccionado = searchParams.producto;
   const colecciones = pageContent.colecciones.filter(coleccion => !!coleccion.productos)
+
 
   // const { colecciones } = pageContent;
   const coleccionContent = colecciones.find(
     (coleccion) => coleccion.titulo === coleccionSeleccionada
   );
+
+
   const productos = coleccionSeleccionada
     ? coleccionContent?.productos
     : [...pageContent.relojes, ...pageContent.perfumes, ...pageContent.gafas];
 
-  console.log({ productos });
+    
+    
+    const areFiltersActive = !!coleccionSeleccionada || !!tipoDeProductoSeleccionado;
+    
+    console.log({ areFiltersActive, productos });
 
-  const areFiltersActive = !!coleccionSeleccionada;
+    const filteredProducts = productos?.filter(producto => {
+      if (tipoDeProductoSeleccionado) {
+        return producto.type.includes(tipoDeProductoSeleccionado)
+      }
+      return true
+    })
+
   return (
     <main className="md:px-10 px-5 pt-[70px] md:pt-0">
       <Filters areFiltersActive={areFiltersActive} />
       <Colecciones colecciones={colecciones} />
       {/* <div>{coleccionSeleccionada && <h3>{coleccionSeleccionada}</h3>}</div> */}
-      {productos && <Productos productos={productos} />}
+      {productos && <Productos productos={filteredProducts} />}
     </main>
   );
 };

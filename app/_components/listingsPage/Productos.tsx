@@ -2,13 +2,13 @@ import { GafaType, PerfumeLujoType, PerfumePremiumType, RelojType } from "../typ
 import ProductCard from "./ProductCard";
 
 const Productos = ({productos}: {
-  productos:  (PerfumeLujoType | PerfumePremiumType | RelojType | GafaType)[];
+  productos:  (PerfumeLujoType | PerfumePremiumType | RelojType | GafaType)[] | undefined;
 }) => {
 
   console.log({productos})
   return (
     <div>
-      {productos.map(producto => (
+      {productos?.map(producto => (
         <ProductCard producto={producto} key={producto.modelo} />
       ))}
     </div>
