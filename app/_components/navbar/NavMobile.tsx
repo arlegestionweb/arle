@@ -4,7 +4,11 @@ import Burger from "./Burger";
 import { useRef, useState } from "react";
 import { usePathname } from 'next/navigation'
 
-const MobileNavBar = () => {
+type MobileNavBarProps = {
+  className?: string;
+};
+
+const MobileNavBar = ({className}:MobileNavBarProps) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const pathname = usePathname()
 
@@ -12,7 +16,7 @@ const MobileNavBar = () => {
 
 
   return (
-    <nav className="h-[70px] w-full px-[24px] bg-white text-black flex justify-between items-center">
+    <nav className={`${className} h-[70px] w-full px-[24px] bg-white text-black flex justify-between items-center`}>
       <Image src={"/arlé-logo.png"} width={76} height={22} alt="logo" />
       <div className="flex relative items-center gap-5 w-fit">
         <MobileSearch />
