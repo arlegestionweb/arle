@@ -20,7 +20,7 @@ type PageContentType = {
   gafas: any;
 };
 
-export const revalidate = 10 // revalidate at most every hour
+export const revalidate = 10; // revalidate at most every hour
 const Listing = async ({
   searchParams,
 }: {
@@ -31,36 +31,38 @@ const Listing = async ({
   const pageContent = (await getListingInitialLoadContent()) as PageContentType;
   const coleccionSeleccionada = searchParams.coleccion;
   const tipoDeProductoSeleccionado = searchParams.producto;
-  const colecciones = pageContent.colecciones.filter(coleccion => !!coleccion.productos)
-
+  const colecciones = pageContent.colecciones.filter(
+    (coleccion) => !!coleccion.productos
+  );
 
   // const { colecciones } = pageContent;
   const coleccionContent = colecciones.find(
     (coleccion) => coleccion.titulo === coleccionSeleccionada
   );
 
-
   const productos = coleccionSeleccionada
     ? coleccionContent?.productos
     : [...pageContent.relojes, ...pageContent.perfumes, ...pageContent.gafas];
 
-    
-    
-    const areFiltersActive = !!coleccionSeleccionada || !!tipoDeProductoSeleccionado;
-    
-    // console.log({ areFiltersActive, productos });
+  const areFiltersActive =
+    !!coleccionSeleccionada || !!tipoDeProductoSeleccionado;
 
-    const filteredProducts = productos?.filter(producto => {
-      if (tipoDeProductoSeleccionado) {
-        return producto.type.includes(tipoDeProductoSeleccionado)
-      }
-      return true
-    })
+  // console.log({ areFiltersActive, productos });
+
+  const filteredProducts = productos?.filter((producto) => {
+    if (tipoDeProductoSeleccionado) {
+      return producto.type.includes(tipoDeProductoSeleccionado);
+    }
+    return true;
+  });
 
   return (
     <main className="md:px-10 px-5 pt-[70px] md:pt-0">
       <Filters areFiltersActive={areFiltersActive} />
-      <Colecciones colecciones={colecciones} />
+      {!coleccionSeleccionada ? <Colecciones colecciones={colecciones} /> : (
+        <h2 className="text-3xl font-bold capitalize">Coleccion {coleccionSeleccionada}</h2>
+      )}
+      
       {productos && <Productos productos={filteredProducts} />}
     </main>
   );
