@@ -1,11 +1,15 @@
 import { getHomepageContent } from "@/sanity/queries/pages/homepageQuery";
+import Banner from "./_components/Banner";
 
 const Home = async function () {
   const pageContent = await getHomepageContent();
-  // console.log(pageContent);
+  console.log(pageContent);
+  
+  const exploreSections = [pageContent.perfumes, pageContent.relojes, pageContent.gafas]
+
   return (
-    <main className="min-h-screen grid place-content-center">
-      <h1 className="font-bold text-4xl">Hello Arlé world!!</h1>
+    <main>
+      <Banner banners={pageContent.banners}></Banner>
     </main>
   );
 };
