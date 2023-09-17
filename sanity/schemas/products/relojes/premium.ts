@@ -1,4 +1,4 @@
-import { defineType, defineField, defineArrayMember } from "sanity";
+import { defineType, defineField } from "sanity";
 import {
   detallesRelojSchema,
   funcionesSchema,
@@ -6,7 +6,7 @@ import {
   precioSchema,
   resistenciaAlAguaSchema,
 } from "../../objects/productObjects";
-import { imageArray } from "../../objects/image";
+import { imageArray, slugSchema } from "../../objects/image";
 
 export const relojesPremiumSchema = defineType({
   name: "relojesPremium",
@@ -30,5 +30,21 @@ export const relojesPremiumSchema = defineType({
     resistenciaAlAguaSchema,
     garantiaSchema,
     detallesRelojSchema,
+    slugSchema,
   ],
+  preview: {
+    select: {
+      title: "modelo",
+      subtitle: "marca.titulo",
+      media: "imagenes",
+    },
+    prepare(selection) {
+      const { title, subtitle, media } = selection;
+      return {
+        title,
+        subtitle,
+        media: media[0],
+      };
+    },
+  },
 });

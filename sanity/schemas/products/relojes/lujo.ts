@@ -7,7 +7,7 @@ import {
   resenaSchema,
   resistenciaAlAguaSchema,
 } from "../../objects/productObjects";
-import { imageArray } from "../../objects/image";
+import { imageArray, slugSchema } from "../../objects/image";
 import { videoSchema } from "../../objects/video";
 
 export const relojesLujoSchema = defineType({
@@ -16,23 +16,38 @@ export const relojesLujoSchema = defineType({
   type: "document",
   fields: [
     defineField({
+      name: "modelo",
+      title: "Modelo o Referencia",
+      type: "string",
+    }),
+    defineField({
       name: "marca",
       title: "Marca",
       type: "reference",
       to: [{ type: "marca" }],
     }),
     videoSchema,
-    defineField({
-      name: "modelo",
-      title: "Modelo o Referencia",
-      type: "string",
-    }),
     imageArray,
     precioSchema,
     funcionesSchema,
     resistenciaAlAguaSchema,
     garantiaSchema,
-    resenaSchema,
     detallesRelojSchema,
+    slugSchema,
   ],
+  preview: {
+    select: {
+      title: "modelo",
+      subtitle: "marca.titulo",
+      media: "imagenes",
+    },
+    prepare(selection) {
+      const { title, subtitle, media } = selection;
+      return {
+        title,
+        subtitle,
+        media: media[0],
+      };
+    },
+  },
 });
