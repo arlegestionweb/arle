@@ -7,7 +7,7 @@ import {
   precioSchema,
   resenaSchema,
 } from "../../objects/productObjects";
-import { imageArray } from "../../objects/image";
+import { imageArrayForProducts, slugSchema } from "../../objects/image";
 
 export const gafasLujoSchema = defineType({
   name: "gafasLujo",
@@ -25,7 +25,7 @@ export const gafasLujoSchema = defineType({
       title: "Modelo o Referencia",
       type: "string",
     }),
-    imageArray,
+    imageArrayForProducts,
     precioSchema,
     defineField({
       name: "tipo",
@@ -53,5 +53,21 @@ export const gafasLujoSchema = defineType({
     garantiaSchema,
     monturaSchema,
     lenteSchema,
+    slugSchema,
   ],
+  preview: {
+    select: {
+      title: "modelo",
+      subtitle: "marca.titulo",
+      media: "imagenes",
+    },
+    prepare(selection) {
+      const { title, subtitle, media } = selection;
+      return {
+        title,
+        subtitle,
+        media: media[0],
+      };
+    },
+  },
 });

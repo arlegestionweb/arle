@@ -5,19 +5,19 @@ import { usePathname } from "next/navigation";
 const subMenu = [
   {
     title: "Perfumes",
-    link: "/perfumes",
+    link: "/listing?producto=perfume",
   },
   {
     title: "Relojes",
-    link: "/relojes",
+    link: "/listing?producto=relojes",
   },
   {
     title: "Gafas",
-    link: "/gafas",
+    link: "/listing?producto=gafas",
   },
   {
     title: "Destacados",
-    link: "/",
+    link: "/listing",
   },
 ];
 

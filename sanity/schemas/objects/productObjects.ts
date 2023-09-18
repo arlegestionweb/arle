@@ -219,7 +219,7 @@ export const cajaSchema = defineField({
     }),
     defineField({
       name: "color",
-      title: "Tamaño",
+      title: "Color",
       type: "string",
     }),
   ],

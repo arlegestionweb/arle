@@ -17,6 +17,7 @@ export const marcasSchema = defineType({
       name: "logotipo",
       title: "Logotipo",
       type: "object",
+      validation: (Rule) => Rule.required(),
       fields: [
         imageObjectSchema
       ]
@@ -33,4 +34,17 @@ export const marcasSchema = defineType({
     }),
     bannersSchema,
   ],
+  preview: {
+    select: {
+      title: "titulo",
+      media: "logotipo.imagen",
+    },
+    prepare(selection) {
+      const { title, media } = selection;
+      return {
+        title,
+        media,
+      };
+    },
+  },
 });

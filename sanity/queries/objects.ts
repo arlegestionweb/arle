@@ -11,4 +11,20 @@ export const bannersQuery = `
     descripcion,
     ${imageQuery}
   }
+  `;
+
+export const imageArrayQuery = `
+"imagenes": imagenes[] {
+  "url": asset->url,
+  alt
+}
+`;
+
+export const marcaTipoModeloQuery = `
+  "marca": marca->{
+    titulo,
+  },
+  "type": _type,
+  modelo,
+  precio
 `;

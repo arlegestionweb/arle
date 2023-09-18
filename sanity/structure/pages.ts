@@ -24,6 +24,7 @@ export default (S: StructureBuilder) => {
     .icon(BsCollection)
     .child(
       S.editor()
+        .title("Listings")
         .id(listingSchema.name)
         .schemaType(listingSchema.name)
         .documentId(listingSchema.name)
