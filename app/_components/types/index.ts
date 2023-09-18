@@ -31,6 +31,7 @@ type PerfumeType = {
   registroInvima: string;
   calificacion: string;
   slug: string;
+  type: string;
 };
 
 type PerfumeLujoExtraType = {
@@ -61,8 +62,10 @@ type MarcaType = {
   };
   slogan: string;
   banners?: BannerType[];
+  type: string;
 };
 export type RelojType = {
+  type: string;
   marca: MarcaType;
   modelo: string;
   imagenes: imageType[];
@@ -97,6 +100,7 @@ export type GafaType = {
   modelo: string;
   imagenes: imageType[];
   precio: string;
+  type: string;
 };
 
 export type ColeccionType = {

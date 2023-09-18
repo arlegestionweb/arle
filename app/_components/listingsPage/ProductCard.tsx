@@ -11,8 +11,12 @@ const ProductoCard = ({
 }: {
   producto: PerfumeLujoType | PerfumePremiumType | RelojType | GafaType;
 }) => {
-
   if (!producto.imagenes) return null;
+  function hasMarca(obj: any): obj is { marca: { titulo: string } } {
+    return !!obj.marca && typeof obj.marca.titulo === 'string';
+  }
+
+
 
   return (
     <div className="w-[136px] h-[279px] flex-col justify-start items-start gap-2 inline-flex">
@@ -24,8 +28,13 @@ const ProductoCard = ({
         className="object-cover min-w-[136px]"
       />
       {producto.modelo}
-      <br/>
-      ${producto.precio}
+      {hasMarca(producto) && producto.type.includes("reloj") && (
+        <>
+          <br />
+          {producto.marca.titulo}
+        </>
+      )}
+      <br />${producto.precio}
     </div>
   );
 };
