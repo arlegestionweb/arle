@@ -1,6 +1,8 @@
 import { defineArrayMember } from "sanity";
 import { defineField } from "sanity";
 import { videoSchema } from "./video";
+import { GiNoseSide } from "react-icons/gi";
+import { TbDeviceWatchCog } from "react-icons/tb";
 
 export const notasOlfativasSchema = defineField({
   name: "notasOlfativas",
@@ -9,6 +11,7 @@ export const notasOlfativasSchema = defineField({
   of: [
     defineArrayMember({
       name: "nota",
+      icon: GiNoseSide,
       title: "Nota",
       type: "object",
       fields: [
@@ -124,6 +127,7 @@ export const funcionesSchema = defineField({
       name: "funcion",
       title: "Función",
       type: "object",
+      icon: TbDeviceWatchCog,
       fields: [
         defineField({
           name: "nombre",
