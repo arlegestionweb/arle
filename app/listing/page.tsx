@@ -75,10 +75,18 @@ const Listing = async ({
     // }
 
     if (campoDeBusquedaSeleccionado) {
-      matchesCampoDeBusqueda = Object.entries(producto).some(([key, value]) => {
-        const valueStr = String(value).toLowerCase();
-        return valueStr.includes(campoDeBusquedaSeleccionado.toLowerCase());
-      });
+      matchesCampoDeBusqueda = Object.entries(producto).some(
+        ([key, value]) => {
+          // If the value is an object and has a 'titulo' property, use that for comparison
+          if (typeof value === 'object' && value !== null && 'titulo' in value) {
+            const tituloValue = (value as { titulo: string }).titulo;
+            return tituloValue.toLowerCase().includes(campoDeBusquedaSeleccionado.toLowerCase());
+          }
+          // Otherwise, convert non-string values to string for comparison
+          const valueStr = String(value).toLowerCase();
+          return valueStr.includes(campoDeBusquedaSeleccionado.toLowerCase());
+        }
+      );
     }
 
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
