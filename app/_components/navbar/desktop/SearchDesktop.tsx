@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { AiOutlineEnter } from "react-icons/ai";
@@ -12,7 +12,6 @@ const SearchDesktop = () => {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      console.log("Enter key pressed!", value);
       // Add your logic here'
       redirect(`/listing?search=${value}`, { scroll: false });
     }

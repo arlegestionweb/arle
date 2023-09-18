@@ -5,6 +5,9 @@ import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import RedDot from "../RedDot";
 import { FiShoppingCart, FiSearch } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { AiOutlineEnter } from "react-icons/ai";
 
 type MobileNavBarProps = {
   className?: string;
@@ -54,6 +57,8 @@ const Kart = () => {
 const MobileSearch = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const { push: redirect } = useRouter();
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onClickHandler = () => {
@@ -61,6 +66,12 @@ const MobileSearch = () => {
     inputRef.current?.focus();
     // }
     setIsSearchOpen(!isSearchOpen);
+  };
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      // Add your logic here'
+      redirect(`/listing?search=${searchText}`, { scroll: false });
+    }
   };
 
   return (
@@ -76,15 +87,19 @@ const MobileSearch = () => {
             : "w-10 border-gray-300"
         } h-10 left-0 top-0  bg-white rounded-full border  flex items-center `}
       >
-        {/* {isSearchOpen && ( */}
         <input
           className={`${isSearchOpen ? "w-full" : "w-0"} focus:outline-none`}
+          onKeyDown={handleKeyDown}
           value={searchText}
           ref={inputRef}
           onChange={(e) => setSearchText(e.target.value)}
           type="text"
         />
-        {/* )} */}
+        {isSearchOpen && (
+          <Link href={`/listing?search=${searchText}`}>
+            <AiOutlineEnter />
+          </Link>
+        )}
       </div>
       <div className="w-[19.20px] h-[19.20px] px-[1.60px] pt-[1.31px] pb-[1.89px] left-[10.40px] top-[10.40px] absolute justify-center items-center inline-flex">
         <div className="w-4 h-4 relative">
