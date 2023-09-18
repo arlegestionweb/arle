@@ -4,15 +4,11 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import { AiOutlineEnter } from "react-icons/ai";
 
 const SearchDesktop = () => {
   const [value, setValue] = useState("");
   const { push: redirect } = useRouter();
-
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(value);
-  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -23,20 +19,22 @@ const SearchDesktop = () => {
   };
 
   return (
-    <Link
-      href={`/listing?search=${value}`}
-      className="flex h-9 w-2/5 rounded-lg border bg-background px-3 pl-9 py-[6px] placeholder:text-[#79767A] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-300 focus-visible:ring-offset-0  disabled:opacity-50"
-    >
-      <FiSearch />
-      <input
-        onKeyDown={handleKeyDown}
-        className=""
-        placeholder="Search"
-        type="text"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-    </Link>
+    <div className="flex items-center justify-between h-9 w-2/5 rounded-lg border bg-background px-3 pl-3 gap-2 py-[6px]">
+      <div className="flex items-center gap-2">
+        <FiSearch />
+        <input
+          onKeyDown={handleKeyDown}
+          className="w-full focus-visible:outline-none placeholder:text-[#79767A] "
+          placeholder="Search"
+          type="text"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+      </div>
+      <Link href={`/listing?search=${value}`}>
+        <AiOutlineEnter />
+      </Link>
+    </div>
   );
 };
 
