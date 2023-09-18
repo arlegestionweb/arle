@@ -31,6 +31,8 @@ const Listing = async ({
   const pageContent = (await getListingInitialLoadContent()) as PageContentType;
   const coleccionSeleccionada = searchParams.coleccion;
   const tipoDeProductoSeleccionado = searchParams.producto;
+  const campoDeBusquedaSeleccionado = searchParams.search as string;
+
   const colecciones = pageContent.colecciones.filter(
     (coleccion) => !!coleccion.productos
   );
@@ -45,25 +47,65 @@ const Listing = async ({
     : [...pageContent.relojes, ...pageContent.perfumes, ...pageContent.gafas];
 
   const areFiltersActive =
-    !!coleccionSeleccionada || !!tipoDeProductoSeleccionado;
+    !!coleccionSeleccionada || !!tipoDeProductoSeleccionado || !!campoDeBusquedaSeleccionado;
 
   // console.log({ areFiltersActive, productos });
 
+  // const filteredProducts = productos?.filter((producto) => {
+
+  //   if (tipoDeProductoSeleccionado) {
+  //     return producto.type.includes(tipoDeProductoSeleccionado);
+  //   }
+  //   return true;
+  // });
+
   const filteredProducts = productos?.filter((producto) => {
+    let matchesTipoDeProducto = true;
+    let matchesCampoDeBusqueda = true;
+
     if (tipoDeProductoSeleccionado) {
-      return producto.type.includes(tipoDeProductoSeleccionado);
+      matchesTipoDeProducto = producto.type.includes(
+        tipoDeProductoSeleccionado
+      );
     }
-    return true;
+
+    // if (campoDeBusquedaSeleccionado) {
+    //   // Assuming the product has a 'name' or 'titulo' field to match against. Adjust as needed.
+    //   matchesCampoDeBusqueda = producto.type.toLowerCase().includes(campoDeBusquedaSeleccionado.toLowerCase());
+    // }
+
+    if (campoDeBusquedaSeleccionado) {
+      matchesCampoDeBusqueda = Object.entries(producto).some(([key, value]) => {
+        const valueStr = String(value).toLowerCase();
+        return valueStr.includes(campoDeBusquedaSeleccionado.toLowerCase());
+      });
+    }
+
+    return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
+
+  // console.log({searchParams});
 
   return (
     <main className="md:px-10 px-5 pt-[70px] md:pt-0">
-      <Filters areFiltersActive={areFiltersActive} />
-      {!coleccionSeleccionada ? <Colecciones colecciones={colecciones} /> : (
-        <h2 className="text-3xl font-bold capitalize">Coleccion {coleccionSeleccionada}</h2>
+      <Filters
+        areFiltersActive={areFiltersActive}
+        searchParams={searchParams}
+      />
+      {!coleccionSeleccionada ? (
+        <Colecciones colecciones={colecciones} />
+      ) : (
+        <h2 className="text-3xl font-bold capitalize">
+          Coleccion {coleccionSeleccionada}
+        </h2>
       )}
-      
-      {productos && <Productos productos={filteredProducts} />}
+
+      {filteredProducts && filteredProducts.length > 0 ? <Productos productos={filteredProducts} /> : (
+
+        <h2 className="text-3xl font-bold capitalize">
+          No Hay Productos
+        </h2>
+      )}
     </main>
   );
 };

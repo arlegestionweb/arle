@@ -7,24 +7,44 @@ import { useState } from "react";
 import Link from "next/link";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-const Filters = ({ areFiltersActive }: { areFiltersActive: boolean }) => {
+const Filters = ({
+  areFiltersActive,
+  searchParams = {},
+}: {
+  areFiltersActive: boolean;
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
+}) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
   };
+
+  const filters = Object.keys(searchParams).map((key) => {
+    return key;
+  });
+
+
   return (
     <>
-      <section className="flex gap-3 mb-5">
-        <div onClick={toggleFilter}>
-          <Button className="flex items-center gap-2" active={areFiltersActive}>
-            <FiFilter />
-            Filtros
+      <section className="flex flex-col mb-5">
+        <div className="flex gap-3">
+          <div onClick={toggleFilter}>
+            <Button
+              className="flex items-center gap-2"
+              active={areFiltersActive}
+            >
+              <FiFilter />
+              Filtros
+            </Button>
+          </div>
+          <Button className="flex items-center gap-2">
+            <LuSettings2 /> Sort by: {"Recents"}
           </Button>
         </div>
-        <Button className="flex items-center gap-2">
-          <LuSettings2 /> Sort by: {"Recents"}
-        </Button>
+        <BreadCrumbs filters={filters} searchParams={searchParams} />
       </section>
       <div
         className={`${
@@ -57,3 +77,26 @@ const Filters = ({ areFiltersActive }: { areFiltersActive: boolean }) => {
 };
 
 export default Filters;
+
+
+const BreadCrumbs = ({filters, searchParams}: {
+  filters: string[];
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  }
+}) => {
+
+   
+  return (
+    <ul className="flex mt-2">
+    {filters?.map((filter, index) => (
+      <li key={filter} className={`${index >= 1 ? "ml-2" : ""} flex items-center gap-2 text-sm`}>
+        {!searchParams[filter] ? <></> : `${filter}:`}
+        <Link href={`?${filter}=${searchParams[filter]}`}>
+         {searchParams[filter]} 
+        </Link>
+      </li>
+    ))}
+  </ul>
+  )
+};
