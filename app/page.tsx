@@ -10,10 +10,11 @@ const Home = async function () {
 
   return (
     <main>
-      <Banner banners={pageContent.banners}></Banner>
+      <Banner banners={pageContent.banners}/>
       {exploreSections.map((section, index) => (
         <ExploreSection key={index} section={section} />
       ))}
+      
     </main>
   );
 };
