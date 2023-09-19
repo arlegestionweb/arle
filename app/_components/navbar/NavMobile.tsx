@@ -21,7 +21,7 @@ const MobileNavBar = ({ className }: MobileNavBarProps) => {
 
   return (
     <nav
-      className={`${className} h-[70px] w-full px-[24px] bg-white text-black flex justify-between items-center`}
+      className={`${className} fixed z-30 h-[70px] w-full px-[24px] bg-white text-black flex justify-between items-center`}
     >
       <Image src={"/arlé-logo.png"} width={76} height={22} alt="logo" />
       <div className="flex relative items-center gap-5 w-fit">
