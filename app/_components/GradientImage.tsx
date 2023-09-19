@@ -21,7 +21,7 @@ function GradientImage({src, alt, layout, imageClassName, containerclassName, ch
         className={imageClassName}
       />
       {/* Gradient */}
-      <div className="w-full h-full left-0 bottom-0 absolute bg-gradient-to-t from-black to-transparent opacity-70" />
+      <div className="w-full h-full left-0 bottom-0 absolute bg-gradient-to-t from-black to-transparent opacity-90" />
 
       {/* content */}
       {children}
