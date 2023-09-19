@@ -1,6 +1,6 @@
 import { type } from "os";
 import React from "react";
-import GradientImage from "./GradientImage";
+import GradientImage from "../GradientImage";
 import Link from "next/link";
 
 type ExploreSectionProps = {

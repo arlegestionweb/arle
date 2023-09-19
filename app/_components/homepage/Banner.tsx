@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import GradientImage from "./GradientImage";
+import GradientImage from "../GradientImage";
 
 type BannerProps = {
   banners: [
@@ -33,7 +33,7 @@ const Banner = ({ banners }: BannerProps) => {
   }, [currentIndex]);
 
   return (
-    <section className="w-screen h-[377px] relative group">
+    <section className="w-screen h-[377px] pt-[70px] md:pt-0 relative group">
       {/* //* image */}
 
       <GradientImage
