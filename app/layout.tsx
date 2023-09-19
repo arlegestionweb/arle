@@ -1,11 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import Navbar from "./_components/navbar";
-import MobileNavBar from "./_components/navbar/NavMobile";
 
+const inter = Inter({ subsets: ["latin"], variable: '--font-inter'  });
 
-const inter = Inter({ subsets: ["latin"] });
+const lora = Lora({ subsets: ["latin"], variable: '--font-lora' });
+
 
 export const metadata: Metadata = {
   title: "Arlé",
@@ -21,7 +22,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className+' overflow-x-hidden'}>
+      <body className={`${inter.variable} ${lora.variable} overflow-x-hidden`}>
         <Navbar/>
         {children}
       </body>
