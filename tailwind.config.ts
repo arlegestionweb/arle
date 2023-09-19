@@ -19,6 +19,7 @@ const config: Config = {
       fontFamily: {
         "inter": 'var(--font-inter)',
         "lora": 'var(--font-lora)',
+        "raleway": 'var(--font-raleway)',
       },
       borderRadius: {
         lg: `var(--radius)`,
