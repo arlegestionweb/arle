@@ -6,13 +6,13 @@ import Link from "next/link";
 const Colecciones = ({ colecciones }: { colecciones: ColeccionType[] }) => {
 
   return (
-    <section className="grid bg-neutral-100 px-5">
-      <h2 className="self-stretch text-zinc-800 text-[28px] font-semibold font-['Lora'] leading-loose">
+    <section className=" bg-neutral-100 px-5">
+      <h2 className="self-stretch text-zinc-800 text-[28px] font-semibold font-lora leading-loose">
         Colecciones
       </h2>
-      <ul className="flex gap-4 max-w-screen overflow-x-scroll overflow-y-hidden">
+      <ul className="flex gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
         {colecciones.map((coleccion) => (
-          <li key={coleccion.titulo} className="grid w-[159px] h-[197px]">
+          <li key={coleccion.titulo} className="min-w-[159px] h-[197px] md:w-72 md:h-[326px] snap-always snap-center">
             <Link href={`?coleccion=${coleccion.titulo}`}>
               <Image
                 src={coleccion.imagen.url}
@@ -22,7 +22,9 @@ const Colecciones = ({ colecciones }: { colecciones: ColeccionType[] }) => {
                 className="object-cover min-w-[159px]"
               />
             </Link>
-            {coleccion.titulo}
+            <p className="pt-4 text-neutral-600 text-lg font-semibold font-raleway leading-snug">
+              {coleccion.titulo}
+            </p>
           </li>
         ))}
       </ul>

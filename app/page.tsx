@@ -1,20 +1,30 @@
 import { getHomepageContent } from "@/sanity/queries/pages/homepageQuery";
-import Banner from "./_components/Banner";
-import ExploreSection from "./_components/ExploreSection";
+import Banner from "./_components/homepage/Banner";
+import ExploreSection from "./_components/homepage/ExploreSection";
+import Colecciones from "./_components/Colecciones";
 
 const Home = async function () {
   const pageContent = await getHomepageContent();
   console.log(pageContent);
-  
-  const exploreSections = [pageContent.perfumes, pageContent.relojes, pageContent.gafas]
+
+  const exploreSections = [
+    pageContent.perfumes,
+    pageContent.relojes,
+    pageContent.gafas,
+  ];
 
   return (
     <main>
-      <Banner banners={pageContent.banners}/>
+      <Banner banners={pageContent.banners} />
       {exploreSections.map((section, index) => (
-        <ExploreSection key={index} section={section} />
+        <ExploreSection
+          key={index}
+          section={section}
+        />
       ))}
-      
+      <section className="py-6 md:py-12 bg-neutral-100">
+        <Colecciones colecciones={pageContent.colecciones} />
+      </section>
     </main>
   );
 };
