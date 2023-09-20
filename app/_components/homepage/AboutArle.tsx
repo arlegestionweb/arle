@@ -1,34 +1,57 @@
-import React from "react";
+// {
+//   titulo: 'Sobre Arle',
+//   descripcion: 'descripcion de sobre arle',
+//   imagenes: [ [Object], [Object], [Object] ]
+// },
 
-const AboutArle = () => {
+import Image from "next/image";
+import Button from "../Button";
+import GradientImage from "../GradientImage";
+
+type AboutArleProps = {
+  sobre: {
+    titulo: string;
+    descripcion: string;
+    imagenes: {
+      url: string;
+      alt: string;
+    }[];
+  };
+};
+
+const AboutArle = ({ sobre }: AboutArleProps) => {
   return (
-    <div className="w-screen h-[599px] pt-6 px-4 bg-slate-950 border-b border-slate-500 flex-col justify-start items-center gap-[25px] inline-flex">
-      <div className="self-stretch justify-center items-start gap-2.5 inline-flex">
-        <div className="grow shrink basis-0 px-4 flex-col justify-start items-start gap-2 inline-flex">
-          <div className="self-stretch text-center text-zinc-100 text-[28px] font-semibold font-['Lora'] leading-loose">
-            About Arlé
-          </div>
-          <div className="self-stretch text-zinc-100 text-base font-normal font-raleway leading-tight">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar
-            elementum tempus hac tellus libero accumsan. Lorem ipsum dolor sit
-            amet consectetur adipiscing elit semper dalar elementum tempus hac
-            tellus libero accumsan.{" "}
-          </div>
+
+    <section className="relative w-screen min-h-[500px] bg-[#00002E] flex flex-col justify-center items-center md:px-10 md:flex-row md:py-12">
+      <div className="px-4 py-6">
+        <h3 className="text-white text-center text-2xl font-lora font-semibold leading-loose">
+          About Arlé
+        </h3>
+        <div className=" text-zinc-100 text-base font-normal font-raleway leading-tight md:max-w-3xl">
+          Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar
+          elementum tempus hac tellus libero accumsan. Lorem ipsum dolor sit
+          amet consectetur adipiscing elit semper dalar elementum tempus hac
+          tellus libero accumsan.{" "}
         </div>
       </div>
-      <div className="self-stretch relative h-[377px] flex-col justify-end items-center gap-2.5 flex">
-        {/* <div className="w-80 h-[281px] left-0 top-[96px] absolute bg-gradient-to-b from-black to-black"></div> */}
-        <div className="self-stretch h-[92px] px-4 py-6 flex-col justify-end items-center gap-2.5 flex">
-          <div className="self-stretch px-4 py-[8.50px] bg-white justify-center items-center gap-1 inline-flex">
-            <div className="justify-center items-center gap-2.5 flex">
-              <div className="text-zinc-800 text-lg font-medium font-['Inter'] leading-[27px]">
-                Listen our poadcast
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      
+      {/* //*TODO: Refactorizr componente Gradienimg */}
+
+      <GradientImage
+        alt={sobre.imagenes[0].alt}
+        src={sobre.imagenes[0].url}
+        layout="fill"
+        containerclassName="h-96 md:w-[400px] md:h-[300px] max-w-3xl"  
+      >
+        <div className="sticky px-4 py-6 w-full h-full flex items-end md:hidden">
+          <Button className="px-4 py-2 w-full bg-white justify-center items-center inline-flex">
+            <span className="text-zinc-800 text-lg font-medium font-inter leading-[27px]">
+              Listen our poadcast
+            </span>
+          </Button>
+        </div>        
+      </GradientImage>
+    </section>
   );
 };
 
