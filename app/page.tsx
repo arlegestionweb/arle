@@ -28,10 +28,10 @@ const Home = async function () {
         <Colecciones colecciones={pageContent.colecciones} />
       </section>
       <AboutArle sobre={pageContent.sobre}/>
-      <section className="bg-[#EDE7DE] px-4 py-6 flex flex-col gap-5">
+      <section className="bg-[#EDE7DE] px-4 py-6 md:py-12 flex flex-col justify-center items-center gap-5 md:gap-6">
 
-        <h3 className="text-zinc-800  text-center font-lora text-2xl font-semibold leading-[115%]">Eleva tu experiencia con nuestra asesoría</h3>
-        <ul className="pl-8 list-disc flex flex-col gap-4 text-zinc-800 text-base font-normal font-raleway leading-tight">
+        <h3 className="text-zinc-800  text-center font-lora text-2xl md:text-[28px] font-semibold leading-[115%]">Eleva tu experiencia con nuestra asesoría</h3>
+        <ul className="pl-8 list-disc flex flex-col justify-center md:items-center gap-4 text-zinc-800 text-base font-normal font-raleway leading-tight">
           <li>Asesoramiento personalizado para encontrar el producto perfecto.</li>
           
           <li>Acceso a recomendaciones exclusivas y consejos de expertos.</li>
@@ -41,7 +41,7 @@ const Home = async function () {
           <li>Experimenta el lujo y la excelencia en cada interacción.</li>
 
         </ul>
-      <Button className="bg-black px-4 py-2"><span className="text-stone-300">Quiero una asesoría</span></Button>
+      <Button className="bg-black px-4 py-2 md:w-56"><span className="text-stone-300">Quiero una asesoría</span></Button>
       </section>
     </main>
   );
