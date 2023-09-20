@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import { ColeccionType } from "./types";
 import Link from "next/link";
@@ -11,16 +10,21 @@ const Colecciones = ({ colecciones }: { colecciones: ColeccionType[] }) => {
         Colecciones
       </h2>
       <ul className="flex gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
-        {colecciones.map((coleccion) => (
-          <li key={coleccion.titulo} className="min-w-[159px] h-[197px] md:w-72 md:h-[326px] snap-always snap-center">
+        {colecciones.map(coleccion => (
+          <li
+            key={coleccion.titulo}
+            className="min-w-[159px] h-[197px] md:w-72 md:h-[326px] snap-always snap-center">
             <Link href={`?coleccion=${coleccion.titulo}`}>
-              <Image
-                src={coleccion.imagen.url}
-                alt={coleccion.imagen.alt}
-                width={159}
-                height={177}
-                className="object-cover min-w-[159px]"
-              />
+              <div className="relative w-[159px] h-[159px] md:w-72 md:h-72">
+                <Image
+                  src={coleccion.imagen.url}
+                  alt={coleccion.imagen.alt}
+                  // width={159}
+                  // height={177}
+                  fill
+                  objectFit="cover"
+                />
+              </div>
             </Link>
             <p className="pt-4 text-neutral-600 text-lg font-semibold font-raleway leading-snug">
               {coleccion.titulo}
