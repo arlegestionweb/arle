@@ -18,6 +18,7 @@ function GradientImage({src, alt, layout, imageClassName, containerclassName, ch
         src={src}
         alt={alt}
         fill
+        objectFit="cover"
         className={imageClassName}
       />
       {/* Gradient */}

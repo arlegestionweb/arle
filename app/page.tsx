@@ -26,7 +26,7 @@ const Home = async function () {
       <section className="py-6 md:py-12 bg-neutral-100">
         <Colecciones colecciones={pageContent.colecciones} />
       </section>
-      <AboutArle/>
+      <AboutArle sobre={pageContent.sobre}/>
       
     </main>
   );
