@@ -5,22 +5,20 @@ import Link from "next/link";
 const Colecciones = ({ colecciones }: { colecciones: ColeccionType[] }) => {
 
   return (
-    <section className=" bg-neutral-100 px-5">
+    <section className=" bg-neutral-100 px-8">
       <h2 className="self-stretch text-zinc-800 text-[28px] font-semibold font-lora leading-loose">
         Colecciones
       </h2>
-      <ul className="flex gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
+      <ul className=" flex justify-between gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
         {colecciones.map(coleccion => (
           <li
             key={coleccion.titulo}
-            className="min-w-[159px] h-[197px] md:w-72 md:h-[326px] snap-always snap-center">
+            className="w-[159px] h-[197px] md:w-72 md:h-[326px] snap-always snap-center">
             <Link href={`?coleccion=${coleccion.titulo}`}>
               <div className="relative w-[159px] h-[159px] md:w-72 md:h-72">
                 <Image
                   src={coleccion.imagen.url}
                   alt={coleccion.imagen.alt}
-                  // width={159}
-                  // height={177}
                   fill
                   objectFit="cover"
                 />
