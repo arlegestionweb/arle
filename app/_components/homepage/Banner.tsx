@@ -33,7 +33,7 @@ const Banner = ({ banners }: BannerProps) => {
   }, [currentIndex]);
 
   return (
-    <section className="w-screen h-[70vh] pt-[70px] md:pt-0 relative group">
+    <section className="max-w-screen h-[70vh] pt-[70px] md:pt-0 relative group">
       {/* //* image */}
 
       <GradientImage
