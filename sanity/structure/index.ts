@@ -17,6 +17,7 @@ import { gafasPremiumSchema } from "../schemas/products/gafas/premium";
 import { relojesLujoSchema } from "../schemas/products/relojes/lujo";
 import { relojesPremiumSchema } from "../schemas/products/relojes/premium";
 import { recomendadosSchema } from "../schemas/documents/recomendados";
+import { colorSchema, cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, tipoDeRelojSchema } from "../schemas/documents/documentosVarios";
 
 export default (S: StructureBuilder) => {
   const siteSettingsListItem = S.listItem()
@@ -52,6 +53,11 @@ export default (S: StructureBuilder) => {
       relojesLujoSchema.name,
       relojesPremiumSchema.name,
       recomendadosSchema.name,
+      funcionDelRelojSchema.name,
+      tipoDeRelojSchema.name,
+      estiloDeRelojSchema.name,
+      cristalSchema.name,
+      colorSchema.name,
     ].includes(listItem.getId());
   };
 

@@ -1,16 +1,17 @@
-import { defineType, defineField, defineArrayMember } from "sanity";
-import { imageArrayForProducts, slugSchema } from "../../objects/image";
-import {
-  generoSchema,
-  notasOlfativasSchema,
-  precioSchema,
-  resenaSchema,
-} from "../../objects/productObjects";
+import { defineType, defineField } from "sanity";
+import { imageArrayForProducts } from "../../objects/image";
+import { notasOlfativasSchema, resenaPerfumesSchema } from "../../objects/products/perfumes";
+import { generoSchema, precioSchema, slugSchema } from "../../objects/products/generales";
+
 
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
   title: "Perfume de Lujo",
   type: "document",
+  groups: [
+    {name: "general", title: "General", default: true},
+    {name: "detalles", title: "Detalles"},
+  ],
   fields: [
     defineField({
       name: "modelo",
@@ -42,7 +43,7 @@ export const perfumeLujoSchema = defineType({
       type: "string",
     }),
 
-    resenaSchema,
+    resenaPerfumesSchema,
 
     defineField({
       name: "calificacion",

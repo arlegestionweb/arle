@@ -79,9 +79,8 @@ export type RelojType = {
   detallesReloj: {
     genero: string;
     tipoDeMovimiento: string;
-    brazalete: {
+    pulso: {
       material: string;
-      color: string;
     };
     cristal: string;
     diametro: string;
