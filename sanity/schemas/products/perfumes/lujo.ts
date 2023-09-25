@@ -1,54 +1,58 @@
 import { defineType, defineField } from "sanity";
 import { imageArrayForProducts } from "../../objects/image";
-import { notasOlfativasSchema, resenaPerfumesSchema } from "../../objects/products/perfumes";
-import { generoSchema, precioSchema, slugSchema } from "../../objects/products/generales";
-
+import {
+  detallesPerfumeSchema,
+  resenaPerfumesSchema,
+  variantesDePerfumesSchema,
+} from "../../objects/products/perfumes";
+import {
+  generoSchema,
+  precioSchema,
+  slugSchema,
+} from "../../objects/products/generales";
 
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
   title: "Perfume de Lujo",
   type: "document",
   groups: [
-    {name: "general", title: "General", default: true},
-    {name: "detalles", title: "Detalles"},
+    { name: "general", title: "General" },
+    { name: "detalles", title: "Detalles" },
   ],
   fields: [
     defineField({
+      name: "marca",
+      title: "Marca",
+      type: "reference",
+      to: [{ type: "marca" }],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "modelo",
+      title: "Modelo",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "titulo",
       title: "Título",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
+    imageArrayForProducts,
     defineField({
       name: "descripcion",
       title: "Descripción",
       type: "string",
     }),
-    imageArrayForProducts,
-    notasOlfativasSchema,
-    defineField({
-      name: "tamano",
-      title: "Tamaño",
-      type: "string",
-    }),
-    precioSchema,
-    defineField({
-      name: "codigoDeReferencia",
-      title: "Código de referencia",
-      type: "string",
-    }),
-    generoSchema,
-    defineField({
-      name: "registroInvima",
-      title: "Registro Invima",
-      type: "string",
-    }),
+    variantesDePerfumesSchema,
+    detallesPerfumeSchema,
 
     resenaPerfumesSchema,
-
     defineField({
-      name: "calificacion",
-      title: "Calificación del producto",
-      type: "string",
+      name: "parteDeUnSet",
+      title: "Es parte de un set?",
+      type: "boolean",
     }),
     slugSchema,
   ],

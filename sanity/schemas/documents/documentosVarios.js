@@ -118,3 +118,42 @@ export const colorSchema = defineType({
     },
   },
 });
+
+
+export const familiasOlfativasSchema = defineType({
+  name: "familiasOlfativas",
+  title: "Familias Olfativas",
+  type: "document",
+  fields: [
+    defineField({
+      name: "nombre",
+      title: "Nombre",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "descripcion",
+      title: "Descripción",
+      type: "string",
+    }),
+  ],
+});
+
+export const notasOlfativasSchema = defineType({
+  name: "notasOlfativas",
+  title: "Notas Olfativas",
+  type: "document",
+  fields: [
+    defineField({
+      name: "nombre",
+      title: "Nombre",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "descripcion",
+      title: "Descripción",
+      type: "string",
+    }),
+  ],
+}); 
