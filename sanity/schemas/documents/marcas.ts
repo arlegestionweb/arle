@@ -4,7 +4,7 @@ import { imageObjectSchema } from "../objects/image";
 
 export const marcasSchema = defineType({
   name: "marca",
-  title: "Marca",
+  title: "Marcas",
   type: "document",
   fields: [
     defineField({

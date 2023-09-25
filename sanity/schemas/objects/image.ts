@@ -28,26 +28,12 @@ export const imageArrayMemberSchema = defineArrayMember({
   ],
 })
 
-export const slugSchema = defineField({
-  name: "slug",
-  title: "Slug",
-  type: "slug",
-  validation: (Rule) => Rule.required(),
-  options: {
-    source: 'modelo',
-    maxLength: 200,
-    slugify: (input) => {
-      return input
-                         .toLowerCase()
-                         .replace(/\s+/g, '-')
-                         .slice(0, 200)
-                        }
-  }
-})
+
 
 export const imageArrayForProducts = defineField({
   name: "imagenes",
   title: "Imágenes",
+  // group: "general",
   type: "array",
   validation: (Rule) => Rule.required(),
   of: [imageArrayMemberSchema],

@@ -1,17 +1,17 @@
 import { defineType, defineField } from "sanity";
-import {
-  garantiaSchema,
-  generoSchema,
-  lenteSchema,
-  monturaSchema,
-  precioSchema,
-} from "../../objects/productObjects";
-import { imageArrayForProducts, slugSchema } from "../../objects/image";
+
+import { imageArrayForProducts } from "../../objects/image";
+import { garantiaSchema, generoSchema, precioSchema, slugSchema } from "../../objects/products/generales";
+import { lenteSchema, monturaSchema } from "../../objects/products/gafas";
 
 export const gafasPremiumSchema = defineType({
   name: "gafasPremium",
   title: "Gafas Premium",
   type: "document",
+  groups: [
+    {name: "general", title: "General", default: true},
+    {name: "detalles", title: "Detalles"},
+  ],
   fields: [
     defineField({
       name: "marca",
