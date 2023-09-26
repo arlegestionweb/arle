@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import GradientImage from "../GradientImage";
 
 type BannerProps = {
@@ -16,26 +16,35 @@ type BannerProps = {
 };
 
 const Banner = ({ banners }: BannerProps) => {
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const bannerRef = useRef<HTMLElement>(null);
 
-  const nextSlide = () => {
-    const isLastSlide = currentIndex === banners.length - 1;
-    const index = isLastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(index);
+  const handleScroll = (event: any) => {
+    const element = event.target as HTMLElement;
+    const scrollValue = element.scrollLeft;
+    const imageWidth = element.offsetWidth;
+    const newIndex = Math.round(scrollValue / imageWidth);
+    setScrollPosition(newIndex);
   };
 
-  useEffect(() => {
-    const intervalId = setInterval(nextSlide, 5000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [currentIndex]);
+  const changeScrollPosition = (index: number) => {
+    if (bannerRef.current) {
+      const imageWidth = bannerRef.current.offsetWidth;
+      bannerRef.current.scrollTo({
+        left: imageWidth * index,
+        behavior: "smooth",
+      });
+      setScrollPosition(index);
+    }
+  };
 
   return (
     <section className="max-w-screen h-[70vh] pt-[70px] md:pt-0 overflow-hidden relative group">
-  
-      <section className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory">
+      <section
+        className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
+        onScroll={handleScroll}
+        ref={bannerRef}
+        >
         {banners.map((banner, index) => (
           <>
             <GradientImage
@@ -44,9 +53,11 @@ const Banner = ({ banners }: BannerProps) => {
               alt={banner.imagen.alt}
               layout="fill"
               imageClassName="fit object-cover object-top"
-              containerclassName={`snap-center snap-always ${index === 1 && 'snap-mandatory'} min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`}>
+              containerclassName={`snap-center snap-always ${
+                index === 1 && "snap-mandatory"
+              } min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`}>
               <div className="sticky z-10 self-stretch h-[114px] flex-col justify-center items-center gap-2.5 flex">
-                <div className="self-stretch text-center text-white text-[32px] font-semibold font-['Lora'] uppercase leading-[38.40px]">
+                <div className="self-stretch text-center text-white text-[32px] font-semibold font-lora uppercase leading-[38.40px]">
                   {banner.titulo}
                 </div>
               </div>
@@ -60,9 +71,9 @@ const Banner = ({ banners }: BannerProps) => {
           <div
             key={index}
             className={`w-2.5 h-2.5 rounded-full mx-1.5 cursor-pointer ${
-              index === currentIndex ? "bg-white" : "bg-[#8f8e94]"
+              index === scrollPosition ? "bg-white" : "bg-[#8f8e94]"
             }`}
-            onClick={() => setCurrentIndex(index)}
+            onClick={() => changeScrollPosition(index)}
           />
         ))}
       </div>
