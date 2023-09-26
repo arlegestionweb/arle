@@ -10,7 +10,7 @@ const Colecciones = ({ colecciones }: { colecciones: ColeccionType[] }) => {
         Colecciones
       </h2>
       <ul className=" flex justify-between gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
-        {[...colecciones,...colecciones, ...colecciones].map(coleccion => (
+        {colecciones.map(coleccion => (
           <li
             key={coleccion.titulo}
             className="w-[159px] h-[197px] md:w-72 md:h-[326px] snap-always snap-center">
