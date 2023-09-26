@@ -1,10 +1,3 @@
-// {
-//   titulo: 'Sobre Arle',
-//   descripcion: 'descripcion de sobre arle',
-//   imagenes: [ [Object], [Object], [Object] ]
-// },
-
-import Image from "next/image";
 import Button from "../Button";
 import GradientImage from "../GradientImage";
 
