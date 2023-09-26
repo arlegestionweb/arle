@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* width */
+.banner-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+
 @layer base {
   :root {
     --background: #fff;

@@ -16,6 +16,11 @@ const config: Config = {
       colors: {
         background: 'var(--background)',
       },
+      fontFamily: {
+        "inter": 'var(--font-inter)',
+        "lora": 'var(--font-lora)',
+        "raleway": 'var(--font-raleway)',
+      },
       borderRadius: {
         lg: `var(--radius)`,
         md: `calc(var(--radius) - 2px)`,

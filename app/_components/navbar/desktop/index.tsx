@@ -12,7 +12,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
   return (
     <nav className={className}>
       <section
-        className={`w-full flex fixed top-0 h-[60px] px-8 py-3 justify-between bg-background border-b border-zinc-200`}>
+        className={`w-full flex fixed z-30 top-0 h-[60px] px-8 py-3 justify-between bg-background border-b border-zinc-200`}>
         <Link href={'/'} className="h-fit self-center">
           <Image src={"/arlé-logo.png"} width={76} height={22} alt="logo" />
         </Link>

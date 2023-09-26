@@ -1,10 +1,14 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Lora, Raleway } from "next/font/google";
 import Navbar from "./_components/navbar";
 
+const inter = Inter({ subsets: ["latin"], variable: '--font-inter'  });
 
-const inter = Inter({ subsets: ["latin"] });
+const lora = Lora({ subsets: ["latin"], variable: '--font-lora' });
+
+const raleway = Raleway({ subsets: ["latin"], variable: '--font-raleway' });
+
 
 export const metadata: Metadata = {
   title: "Arlé",
@@ -20,7 +24,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${lora.variable} ${raleway.variable} overflow-x-hidden`}>
         <Navbar/>
         {children}
       </body>
