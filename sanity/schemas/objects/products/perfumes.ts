@@ -2,7 +2,7 @@ import { GiNoseSide } from "react-icons/gi";
 import { defineArrayMember, defineField } from "sanity";
 import { videoSchema } from "../video";
 import ColombianPrice from "@/sanity/components/ColombianPrice";
-import { etiquetaSchema, generoSchema } from "./generales";
+import { etiquetaSchema, generoSchema, precioConDescuentoSchema, precioSchema } from "./generales";
 import { TbPerfume } from "react-icons/tb";
 import StarRating from "../../../components/StarRating";
 
@@ -11,7 +11,7 @@ export const resenaPerfumesSchema = defineField({
   title: "Reseña",
   type: "object",
   fields: [
-    videoSchema,
+    // videoSchema,
     defineField({
       name: "inspiracion",
       title: "Inspiraicón, historia u otros",
@@ -51,15 +51,8 @@ const variantePerfumeSchema = defineField({
       type: "number",
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: "precio",
-      title: "Precio",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-      components: {
-        input: ColombianPrice,
-      },
-    }),
+    precioSchema,
+    precioConDescuentoSchema, 
     defineField({
       name: "codigoDeReferencia",
       title: "Código de referencia",
@@ -138,6 +131,7 @@ export const detallesPerfumeSchema = defineField({
       name: "resenaCorta",
       title: "Reseña corta",
       type: "text",
+      hidden: ({ document }) => document?._type !== "perfumePremium",
     }),
     defineField({
       name: "familiaOlfativa",

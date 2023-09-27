@@ -50,6 +50,8 @@ export const gafasPremiumSchema = defineType({
     },
     prepare(selection) {
       const { title, subtitle, media } = selection;
+      if (!title || !media) return { title: "Sin título" };
+
       return {
         title,
         subtitle,

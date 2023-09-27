@@ -41,6 +41,8 @@ export const marcasSchema = defineType({
     },
     prepare(selection) {
       const { title, media } = selection;
+      if (!title || !media) return { title: "Sin título" };
+
       return {
         title,
         media,

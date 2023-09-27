@@ -28,12 +28,6 @@ export const perfumeLujoSchema = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "modelo",
-      title: "Modelo",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: "titulo",
       title: "Título",
       type: "string",
@@ -46,23 +40,25 @@ export const perfumeLujoSchema = defineType({
       type: "text",
     }),
     variantesDePerfumesSchema,
-    detallesPerfumeSchema,
-
-    resenaPerfumesSchema,
     defineField({
       name: "parteDeUnSet",
       title: "Es parte de un set?",
       type: "boolean",
+      initialValue: false,
     }),
+    detallesPerfumeSchema,
+
+    resenaPerfumesSchema,
     slugSchema,
   ],
   preview: {
     select: {
-      title: "modelo",
+      title: "titulo",
       media: "imagenes",
     },
     prepare(selection) {
       const { title, media } = selection;
+      if (!title || !media) return { title: "Sin título" };
       return {
         title,
         media: media[0],

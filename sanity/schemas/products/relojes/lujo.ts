@@ -9,7 +9,7 @@ export const relojesLujoSchema = defineType({
   title: "Relojes de Lujo",
   type: "document",
   groups: [
-    {name: "general", title: "General", default: true},
+    {name: "general", title: "General"},
     {name: "detalles", title: "Detalles"},
   ],
   fields: [
@@ -49,6 +49,8 @@ export const relojesLujoSchema = defineType({
     },
     prepare(selection) {
       const { title, subtitle, media } = selection;
+      if (!title || !media) return { title: "Sin título" };
+
       return {
         title,
         subtitle,

@@ -1,10 +1,5 @@
+import ColombianPrice from "@/sanity/components/ColombianPrice";
 import { defineField } from "sanity";
-
-export const precioSchema = defineField({
-  name: "precio",
-  title: "Precio",
-  type: "string",
-});
 
 export const generoSchema = defineField({
   name: "genero",
@@ -24,6 +19,21 @@ export const etiquetaSchema = defineField({
   },
 });
 
+export const precioSchema =  defineField({
+  name: "precio",
+  title: "Precio",
+  type: "string",
+  validation: (Rule) => Rule.required(),
+  components: { input: ColombianPrice },
+})
+
+export const precioConDescuentoSchema = defineField({
+  name: "precioConDescuento",
+  title: "Precio con descuento",
+  type: "string",
+  components: { input: ColombianPrice },
+})
+
 export const garantiaSchema = defineField({
   name: "garantia",
   title: "Garantía",
@@ -38,7 +48,7 @@ export const garantiaSchema = defineField({
     }),
     defineField({
       name: "descripcion",
-      title: "Descripción",
+      title: "Descripción de la garantía",
       type: "text",
     }),
   ],
@@ -46,7 +56,7 @@ export const garantiaSchema = defineField({
 
 export const slugSchema = defineField({
   name: "slug",
-  title: "Slug",
+  title: "Link del producto",
   type: "slug",
   group: "general",
   validation: (Rule) => Rule.required(),

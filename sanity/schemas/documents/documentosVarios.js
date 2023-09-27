@@ -111,6 +111,8 @@ export const colorSchema = defineType({
     
     prepare(selection) {
       const { title, color } = selection;
+      if (!title || !color) return { title: "Sin título" };
+
       return {
         title,
         media: <ColorPreview title={title} color={color.hex} />,
@@ -161,6 +163,24 @@ export const notasOlfativasSchema = defineType({
 export const ingredientesSchema = defineType({
   name: "ingrediente",
   title: "Ingrediente",
+  type: "document",
+  fields: [
+    defineField({
+      name: "nombre",
+      title: "Nombre",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "descripcion",
+      title: "Descripción",
+      type: "text",
+    }),
+  ],
+}); 
+export const materialesDeCajaSchema = defineType({
+  name: "materialDeCaja",
+  title: "Material de Caja",
   type: "document",
   fields: [
     defineField({

@@ -42,12 +42,13 @@ export const perfumePremiumSchema = defineType({
       type: "text",
     }),
     variantesDePerfumesSchema,
-    detallesPerfumeSchema,
     defineField({
       name: "parteDeUnSet",
       title: "Es parte de un set?",
       type: "boolean",
+      initialValue: false,
     }),
+    detallesPerfumeSchema,
     slugSchema,
   ],
   preview: {
@@ -57,6 +58,8 @@ export const perfumePremiumSchema = defineType({
     },
     prepare(selection) {
       const { title, media } = selection;
+      if (!title || !media) return { title: "Sin título" };
+
       return {
         title,
         media: media[0],

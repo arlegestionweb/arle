@@ -1,6 +1,6 @@
 import ColombianPrice from "@/sanity/components/ColombianPrice";
 import { defineArrayMember, defineField } from "sanity";
-import { etiquetaSchema, generoSchema } from "./generales";
+import { etiquetaSchema, generoSchema, precioConDescuentoSchema, precioSchema } from "./generales";
 import { imageArrayForProducts } from "../image";
 import { videoSchema } from "../video";
 
@@ -8,6 +8,7 @@ import { videoSchema } from "../video";
 export const resistenciaAlAguaSchema = defineField({
   name: "resistenciaAlAgua",
   title: "Resistencia al agua",
+  description: "Incluir valor y unidades (bar o m)",
   type: "string",
 });
 
@@ -44,19 +45,8 @@ export const varianteDeRelojes = defineField({
       to: [{ type: "colores" }],
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: "precio",
-      title: "Precio",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-      components: { input: ColombianPrice },
-    }),
-    defineField({
-      name: "precioConDescuento",
-      title: "Precio con descuento",
-      type: "string",
-      components: { input: ColombianPrice },
-    }),
+    precioSchema,
+    precioConDescuentoSchema,
     etiquetaSchema,
     defineField({
       name: "codigo",
@@ -80,6 +70,12 @@ export const varianteDeRelojes = defineField({
     },
     prepare(selection) {
       const { title, subtitle, media } = selection;
+      if (!title || !subtitle || !media) {
+        return {
+          title: "Sin título",
+          subtitle: "Sin precio",
+        };
+      }
       return {
         title,
         subtitle: `$ ${subtitle}`,
@@ -150,16 +146,16 @@ export const resenaRelojesSchema = defineField({
 });
 
 export const pulsoSchema = defineField({
-  name: "pulso",
-  title: "Pulso",
-  type: "object",
-  fields: [
-    defineField({
+  // name: "pulso",
+  // title: "Pulso",
+  // type: "object",
+  // fields: [
+  //   defineField({
       name: "material",
-      title: "Material",
+      title: "Material del Pulso",
       type: "string",
-    }),
-  ],
+    // }),
+  // ],
 });
 
 export const cajaSchema = defineField({
@@ -175,19 +171,15 @@ export const cajaSchema = defineField({
     }),
     defineField({
       name: "diametro",
-      title: "Diámetro",
+      title: "Diámetro (mm)",
       description: "Campo numérico en milímetros",
       type: "number",
     }),
     defineField({
       name: "material",
       title: "Material",
-      type: "string",
-    }),
-    defineField({
-      name: "tamano",
-      title: "Tamaño",
-      type: "string",
+      type: "reference",
+      to: [{ type: "materialDeCaja" }],
     }),
   ],
 });

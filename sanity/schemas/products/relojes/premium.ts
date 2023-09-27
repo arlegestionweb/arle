@@ -8,7 +8,7 @@ export const relojesPremiumSchema = defineType({
   title: "Relojes Premium",
   type: "document",
   groups: [
-    { name: "general", title: "General", default: true },
+    { name: "general", title: "General" },
     { name: "detalles", title: "Detalles" },
   ],
   fields: [
@@ -46,6 +46,8 @@ export const relojesPremiumSchema = defineType({
     },
     prepare(selection) {
       const { title, subtitle, media } = selection;
+      if (!title || !media) return { title: "Sin título" };
+
       return {
         title,
         subtitle,
