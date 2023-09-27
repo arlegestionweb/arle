@@ -12,9 +12,9 @@ export const bannersQuery = `
     "imagen": imagen.imagen{
       alt,
       "url": asset->url
-    }
+    },
   }
-  `;
+`;
 
 export const imageArrayQuery = `
 "imagenes": imagenes[] {
