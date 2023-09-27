@@ -7,9 +7,12 @@ import {
 } from "../../objects/products/perfumes";
 import {
   generoSchema,
+  mostrarCreditoSchema,
   precioSchema,
   slugSchema,
 } from "../../objects/products/generales";
+import sanityClient from "@/sanity/sanityClient";
+import bannersSchema from "../../objects/bannersSchema";
 
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
@@ -47,8 +50,17 @@ export const perfumeLujoSchema = defineType({
       initialValue: false,
     }),
     detallesPerfumeSchema,
-
+    defineField({
+      name: "coleccionDeMarca",
+      title: "Colección De Marca",
+      type: "reference",
+      to: [{ type: "coleccionesDeMarca" }],
+      hidden: ({ document }) => !document?.marca,
+      // validation: (Rule) => Rule.custom((coleccionDeMarca) => {}),
+    }),
     resenaPerfumesSchema,
+    mostrarCreditoSchema,
+    bannersSchema,
     slugSchema,
   ],
   preview: {

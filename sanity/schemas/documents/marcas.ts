@@ -17,15 +17,8 @@ export const marcasSchema = defineType({
       name: "logotipo",
       title: "Logotipo",
       type: "object",
-      validation: (Rule) => Rule.required(),
-      fields: [
-        imageObjectSchema
-      ]
-    }),
-    defineField({
-      name: "slogan",
-      title: "Slogan",
-      type: "string",
+      // validation: (Rule) => Rule.required(),
+      fields: [imageObjectSchema],
     }),
     defineField({
       name: "descripcion",

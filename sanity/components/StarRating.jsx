@@ -12,7 +12,6 @@ const Star = ({ selected = false, onSelect = (f) => f }) => (
 const StarRating = (props) => {
   const [selectedStars, setSelectedStars] = useState(0);
   const totalStars = props.totalStars || 5;
-  console.log({ props });
 
   useEffect(() => {
     setSelectedStars(props.value || 0);

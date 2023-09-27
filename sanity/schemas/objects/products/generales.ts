@@ -27,6 +27,13 @@ export const precioSchema =  defineField({
   components: { input: ColombianPrice },
 })
 
+export const mostrarCreditoSchema = defineField({
+  name: "mostrarCredito",
+  title: "Mostrar crédito",
+  type: "boolean",
+  initialValue: false,
+})
+
 export const precioConDescuentoSchema = defineField({
   name: "precioConDescuento",
   title: "Precio con descuento",

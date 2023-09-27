@@ -5,6 +5,7 @@ import {
 } from "react-icons/tb";
 import ColorPreview from "../../components/ColorPreview"
 import { defineField, defineType } from "sanity";
+import { BsBookmarkStar } from "react-icons/bs";
 
 export const funcionDelRelojSchema = defineType({
   name: "funcionDeReloj",
@@ -178,6 +179,28 @@ export const ingredientesSchema = defineType({
     }),
   ],
 }); 
+
+export const coleccionesDeMarcaSchema = defineType({
+  name: "coleccionesDeMarca",
+  title: "Colecciones de Marca",
+  type: "document",
+  icon: BsBookmarkStar,
+  fields: [
+    defineField({
+      name: "nombre",
+      title: "Nombre",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "marca",
+      title: "Marca",
+      type: "reference",
+      to: [{ type: "marca" }],
+    })
+  ],
+}); 
+
 export const materialesDeCajaSchema = defineType({
   name: "materialDeCaja",
   title: "Material de Caja",
