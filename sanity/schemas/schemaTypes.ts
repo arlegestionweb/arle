@@ -1,6 +1,6 @@
 import { coleccionesSchema } from "./documents/colecciones";
 import { descuentosSchema } from "./documents/descuentos";
-import { colorSchema, cristalSchema, estiloDeRelojSchema, familiasOlfativasSchema, funcionDelRelojSchema, notasOlfativasSchema, tipoDeRelojSchema } from "./documents/documentosVarios";
+import { colorSchema, cristalSchema, estiloDeRelojSchema, familiasOlfativasSchema, funcionDelRelojSchema, ingredientesSchema, notasOlfativasSchema, tipoDeRelojSchema } from "./documents/documentosVarios";
 import { marcasSchema } from "./documents/marcas";
 import { recomendadosSchema } from "./documents/recomendados";
 import { ventaSchema } from "./documents/venta";
@@ -48,4 +48,5 @@ export const schemaTypes = [
   colorSchema,
   familiasOlfativasSchema,
   notasOlfativasSchema,
+  ingredientesSchema,
 ]

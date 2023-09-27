@@ -157,3 +157,22 @@ export const notasOlfativasSchema = defineType({
     }),
   ],
 }); 
+
+export const ingredientesSchema = defineType({
+  name: "ingrediente",
+  title: "Ingrediente",
+  type: "document",
+  fields: [
+    defineField({
+      name: "nombre",
+      title: "Nombre",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "descripcion",
+      title: "Descripción",
+      type: "text",
+    }),
+  ],
+}); 

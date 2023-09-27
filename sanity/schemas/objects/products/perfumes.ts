@@ -30,14 +30,8 @@ export const resenaPerfumesSchema = defineField({
         defineArrayMember({
           name: "ingrediente",
           title: "Ingrediente",
-          type: "object",
-          fields: [
-            defineField({
-              name: "titulo",
-              title: "Título",
-              type: "string",
-            }),
-          ],
+          type: "reference",
+          to: [{ type: "ingrediente" }],
         }),
       ],
     }),
