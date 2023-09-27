@@ -34,7 +34,7 @@ export const gafasLujoSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
     defineField({
       name: "paisDeOrigen",

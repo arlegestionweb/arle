@@ -3,7 +3,7 @@ import { set } from "sanity";
 const Star = ({ selected = false, onSelect = (f) => f }) => (
   <span
     onClick={onSelect}
-    style={{ cursor: "pointer", color: selected ? "gold" : "gray" }}
+    style={{ cursor: "pointer", color: selected ? "gold" : "gray", fontSize: 32 }}
   >
     ★
   </span>
@@ -31,7 +31,7 @@ const StarRating = (props) => {
         />
       ))}
       <p>
-        {selectedStars} of {totalStars} stars
+        {selectedStars} de {totalStars} estrellas
       </p>
     </>
   );

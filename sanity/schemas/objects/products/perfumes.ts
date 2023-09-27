@@ -52,8 +52,8 @@ const variantePerfumeSchema = defineField({
   fields: [
     defineField({
       name: "tamano",
-      title: "Tamaño",
-      description: "Campo numérico en milímetros",
+      title: "Tamaño (ml)",
+      description: "Campo numérico en milílitros (ml)",
       type: "number",
       validation: (Rule) => Rule.required(),
     }),
@@ -91,8 +91,14 @@ const variantePerfumeSchema = defineField({
     },
     prepare(selection) {
       const { title, subtitle } = selection;
+      if (!title || !subtitle) {
+        return {
+          title: "Sin título",
+          subtitle: "Sin precio",
+        };
+      }
       return {
-        title,
+        title: `${title} ml`,
         subtitle: `$ ${subtitle}`,
       };
     },

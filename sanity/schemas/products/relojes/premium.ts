@@ -31,7 +31,7 @@ export const relojesPremiumSchema = defineType({
       name: "descripcion",
       group: "general",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
     variantesDeRelojesSchema,
     garantiaSchema,

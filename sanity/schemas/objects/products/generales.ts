@@ -39,7 +39,7 @@ export const garantiaSchema = defineField({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
   ],
 });

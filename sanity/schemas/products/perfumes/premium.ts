@@ -39,7 +39,7 @@ export const perfumePremiumSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
     variantesDePerfumesSchema,
     detallesPerfumeSchema,

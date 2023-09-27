@@ -21,7 +21,7 @@ export const funcionDelRelojSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
   ],
 });
@@ -41,7 +41,7 @@ export const tipoDeRelojSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
   ],
 });
@@ -60,7 +60,7 @@ export const estiloDeRelojSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
   ],
 });
@@ -79,7 +79,7 @@ export const cristalSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
   ],
 });
@@ -134,7 +134,7 @@ export const familiasOlfativasSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
   ],
 });
@@ -153,7 +153,7 @@ export const notasOlfativasSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
   ],
 }); 

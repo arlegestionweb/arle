@@ -13,7 +13,7 @@ export const preguntasFrecuentesSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
     defineField({
       name: "preguntas",

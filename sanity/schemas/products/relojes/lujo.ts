@@ -32,7 +32,7 @@ export const relojesLujoSchema = defineType({
       name: "descripcion",
       title: "Descripción",
       group: "general",
-      type: "string",
+      type: "text",
     }),
     variantesDeRelojesSchema,
     videoSchema,
