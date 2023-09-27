@@ -57,6 +57,7 @@ const variantePerfumeSchema = defineField({
       name: "codigoDeReferencia",
       title: "Código de referencia",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "registroInvima",
@@ -67,7 +68,7 @@ const variantePerfumeSchema = defineField({
       name: "unidadesDisponibles",
       title: "Unidades disponibles",
       type: "number",
-      initialValue: 0,
+      validation: (Rule) => Rule.required(),
     }),
     etiquetaSchema,
   ],
@@ -117,6 +118,7 @@ export const detallesPerfumeSchema = defineField({
       name: "concentracion",
       title: "Concentración",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "calificacion",

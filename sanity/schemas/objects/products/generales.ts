@@ -5,6 +5,7 @@ export const generoSchema = defineField({
   name: "genero",
   title: "Género",
   type: "string",
+  validation: (Rule) => Rule.required(),
   options: {
     list: ["mujer", "hombre", "unisex"],
   },
@@ -46,6 +47,7 @@ export const garantiaSchema = defineField({
   title: "Garantía",
   type: "object",
   group: "detalles",
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "meses",

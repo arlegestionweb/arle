@@ -1,21 +1,27 @@
 import ColombianPrice from "@/sanity/components/ColombianPrice";
 import { defineArrayMember, defineField } from "sanity";
-import { etiquetaSchema, generoSchema, precioConDescuentoSchema, precioSchema } from "./generales";
+import {
+  etiquetaSchema,
+  generoSchema,
+  precioConDescuentoSchema,
+  precioSchema,
+} from "./generales";
 import { imageArrayForProducts } from "../image";
 import { videoSchema } from "../video";
-
 
 export const resistenciaAlAguaSchema = defineField({
   name: "resistenciaAlAgua",
   title: "Resistencia al agua",
   description: "Incluir valor y unidades (bar o m)",
   type: "string",
+  validation: (Rule) => Rule.required(),
 });
 
 export const tipoDeMovimientoSchema = defineField({
   name: "tipoDeMovimiento",
   title: "Tipo de movimiento",
   type: "string",
+  validation: (Rule) => Rule.required(),
 });
 
 export const varianteDeRelojes = defineField({
@@ -58,7 +64,7 @@ export const varianteDeRelojes = defineField({
       name: "unidadesDisponibles",
       title: "Unidades disponibles",
       type: "number",
-      initialValue: 0,
+      validation: (Rule) => Rule.required(),
     }),
     imageArrayForProducts,
   ],
@@ -131,7 +137,7 @@ export const resenaRelojesSchema = defineField({
   type: "object",
   group: "detalles",
   fields: [
-    videoSchema,
+    // videoSchema,
     defineField({
       name: "inspiracion",
       title: "Inspiraicón, historia u otros",
@@ -146,16 +152,10 @@ export const resenaRelojesSchema = defineField({
 });
 
 export const pulsoSchema = defineField({
-  // name: "pulso",
-  // title: "Pulso",
-  // type: "object",
-  // fields: [
-  //   defineField({
-      name: "material",
-      title: "Material del Pulso",
-      type: "string",
-    // }),
-  // ],
+  name: "material",
+  title: "Material del Pulso",
+  type: "string",
+  validation: (Rule) => Rule.required(),
 });
 
 export const cajaSchema = defineField({
@@ -168,18 +168,21 @@ export const cajaSchema = defineField({
       title: "Cristal",
       type: "reference",
       to: [{ type: "cristal" }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "diametro",
       title: "Diámetro (mm)",
       description: "Campo numérico en milímetros",
       type: "number",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "material",
-      title: "Material",
+      title: "Material de la Caja",
       type: "reference",
       to: [{ type: "materialDeCaja" }],
+      validation: (Rule) => Rule.required(),
     }),
   ],
 });
@@ -197,12 +200,14 @@ export const detallesRelojSchema = defineField({
       title: "Tipo de Reloj",
       type: "reference",
       to: [{ type: "tipoDeReloj" }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "estiloDeReloj",
       title: "Estilo de Reloj",
       type: "reference",
       to: [{ type: "estiloDeReloj" }],
+      validation: (Rule) => Rule.required(),
     }),
     tipoDeMovimientoSchema,
     pulsoSchema,
@@ -210,5 +215,3 @@ export const detallesRelojSchema = defineField({
     funcionesSchema,
   ],
 });
-
-
