@@ -52,7 +52,7 @@ export default (S: StructureBuilder) => {
     .icon(BookIcon)
     .child(
       S.list()
-        .title("Pages")
+        .title("Páginas")
         .items([
           homePageListItem,
           S.divider(),

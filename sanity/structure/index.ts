@@ -64,7 +64,7 @@ export default (S: StructureBuilder) => {
   };
 
   return S.list()
-    .title("Content")
+    .title("Contenido")
     .items([
       pages(S),
       S.divider(),
