@@ -85,6 +85,35 @@ export const cristalSchema = defineType({
   ],
 });
 
+
+export const tipoDeGafaSchema = defineType({
+  name: "tipoDeGafa",
+  title: "Tipo de Gafa",
+  type: "document",
+  fields: [
+    defineField({
+      name: "titulo",
+      title: "Título",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+});
+
+export const estiloDeGafaSchema = defineType({
+  name: "estiloDeGafa",
+  title: "Estilo de Gafa",
+  type: "document",
+  fields: [
+    defineField({
+      name: "titulo",
+      title: "Título",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+});
+
 export const colorSchema = defineType({
   name: "colores",
   title: "Colores",

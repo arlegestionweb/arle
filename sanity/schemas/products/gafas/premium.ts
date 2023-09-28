@@ -1,46 +1,42 @@
 import { defineType, defineField } from "sanity";
 
-import { imageArrayForProducts } from "../../objects/image";
-import { garantiaSchema, generoSchema, mostrarCreditoSchema, precioSchema, slugSchema } from "../../objects/products/generales";
-import { lenteSchema, monturaSchema } from "../../objects/products/gafas";
+import { garantiaSchema, slugSchema } from "../../objects/products/generales";
+import { detallesDeGafaSchema, variantesDeGafaSchema } from "../../objects/products/gafas";
 
 export const gafasPremiumSchema = defineType({
   name: "gafasPremium",
   title: "Gafas Premium",
   type: "document",
   groups: [
-    {name: "general", title: "General", default: true},
+    {name: "general", title: "General"},
     {name: "detalles", title: "Detalles"},
+    {name: "variantes", title: "Variantes"},
   ],
   fields: [
     defineField({
       name: "marca",
       title: "Marca",
       type: "reference",
+      group: "general",
       to: [{ type: "marca" }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "modelo",
       title: "Modelo o Referencia",
+      group: "general",
       type: "string",
-    }),
-    imageArrayForProducts,
-    precioSchema,
-    defineField({
-      name: "tipo",
-      title: "Tipo",
-      type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "descripcion",
       title: "Descripción",
+      group: "general",
       type: "text",
     }),
-    generoSchema,
+    detallesDeGafaSchema,
+    variantesDeGafaSchema,
     garantiaSchema,
-    monturaSchema,
-    lenteSchema,
-    mostrarCreditoSchema,
     slugSchema,
   ],
   preview: {
@@ -61,3 +57,6 @@ export const gafasPremiumSchema = defineType({
     },
   },
 });
+
+
+

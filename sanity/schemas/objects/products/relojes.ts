@@ -95,8 +95,15 @@ export const variantesDeRelojesSchema = defineField({
   name: "variantes",
   title: "Variantes",
   type: "array",
-  group: "general",
-  // validation
+  group: "variantes",
+  validation: (Rule) =>
+    Rule.custom((variantes) => {
+      if (!variantes) return "Debe haber al menos una variante";
+      if (variantes.length === 0) {
+        return "Debe haber al menos una variante";
+      }
+      return true;
+    }),
   of: [varianteDeRelojes],
 });
 

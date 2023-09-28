@@ -35,7 +35,13 @@ export const imageArrayForProducts = defineField({
   title: "Imágenes",
   // group: "general",
   type: "array",
-  validation: (Rule) => Rule.required(),
+  validation: (Rule) => Rule.custom(imagenes => {
+    if (!imagenes) return "Debe haber al menos una imagen";
+    if (imagenes.length === 0) {
+      return "Debe haber al menos una imagen";
+    }
+    return true;
+  }),
   of: [imageArrayMemberSchema],
   options: {
     layout: "grid",

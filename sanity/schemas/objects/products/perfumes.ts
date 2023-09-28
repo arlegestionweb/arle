@@ -97,7 +97,7 @@ export const variantesDePerfumesSchema = defineField({
   name: "variantes",
   title: "Variantes",
   type: "array",
-  group: "general",
+  group: "variantes",
   validation: (Rule) => Rule.custom(variantes => {
     if (!variantes) return "Debe haber al menos una variante";
     if (variantes.length === 0) {

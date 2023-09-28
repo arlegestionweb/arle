@@ -21,12 +21,14 @@ import {
   coleccionesDeMarcaSchema,
   colorSchema,
   cristalSchema,
+  estiloDeGafaSchema,
   estiloDeRelojSchema,
   familiasOlfativasSchema,
   funcionDelRelojSchema,
   ingredientesSchema,
   materialesDeCajaSchema,
   notasOlfativasSchema,
+  tipoDeGafaSchema,
   tipoDeRelojSchema,
 } from "../schemas/documents/documentosVarios";
 
@@ -73,6 +75,8 @@ export default (S: StructureBuilder) => {
       ingredientesSchema.name,
       materialesDeCajaSchema.name,
       coleccionesDeMarcaSchema.name,
+      tipoDeGafaSchema.name,
+      estiloDeGafaSchema.name,
     ].includes(listItem.getId());
   };
 

@@ -4,12 +4,14 @@ import {
   coleccionesDeMarcaSchema,
   colorSchema,
   cristalSchema,
+  estiloDeGafaSchema,
   estiloDeRelojSchema,
   familiasOlfativasSchema,
   funcionDelRelojSchema,
   ingredientesSchema,
   materialesDeCajaSchema,
   notasOlfativasSchema,
+  tipoDeGafaSchema,
   tipoDeRelojSchema,
 } from "./documents/documentosVarios";
 import { marcasSchema } from "./documents/marcas";
@@ -60,4 +62,6 @@ export const schemaTypes = [
   ingredientesSchema,
   materialesDeCajaSchema,
   coleccionesDeMarcaSchema,
+  tipoDeGafaSchema,
+  estiloDeGafaSchema,
 ];

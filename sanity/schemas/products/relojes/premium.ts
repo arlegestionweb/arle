@@ -10,6 +10,7 @@ export const relojesPremiumSchema = defineType({
   groups: [
     { name: "general", title: "General" },
     { name: "detalles", title: "Detalles" },
+    { name: "variantes", title: "Variantes" },
   ],
   fields: [
     defineField({

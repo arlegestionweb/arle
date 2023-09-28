@@ -6,12 +6,9 @@ import {
   variantesDePerfumesSchema,
 } from "../../objects/products/perfumes";
 import {
-  generoSchema,
   mostrarCreditoSchema,
-  precioSchema,
   slugSchema,
 } from "../../objects/products/generales";
-import sanityClient from "@/sanity/sanityClient";
 import bannersSchema from "../../objects/bannersSchema";
 
 export const perfumeLujoSchema = defineType({
@@ -21,6 +18,7 @@ export const perfumeLujoSchema = defineType({
   groups: [
     { name: "general", title: "General" },
     { name: "detalles", title: "Detalles" },
+    {name: "variantes", title: "Variantes"},
   ],
   fields: [
     defineField({

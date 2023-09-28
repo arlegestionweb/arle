@@ -16,7 +16,7 @@ export const etiquetaSchema = defineField({
   title: "Etiqueta",
   type: "string",
   options: {
-    list: ["nuevo", "agotado", "mas vendido", "ultimas unidades"],
+    list: ["nuevo", "mas vendido", "ultimas unidades"],
   },
 });
 
@@ -34,6 +34,14 @@ export const mostrarCreditoSchema = defineField({
   type: "boolean",
   initialValue: false,
 })
+export const coleccionesDeMarcaRefSchema = defineField({
+  name: "coleccionDeMarca",
+  title: "Colección De Marca",
+  type: "reference",
+  to: [{ type: "coleccionesDeMarca" }],
+  hidden: ({ document }) => !document?.marca,
+});
+
 
 export const precioConDescuentoSchema = defineField({
   name: "precioConDescuento",

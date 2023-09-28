@@ -1,8 +1,17 @@
 import { defineType, defineField } from "sanity";
 
 import { videoSchema } from "../../objects/video";
-import { detallesRelojSchema, resenaRelojesSchema, variantesDeRelojesSchema } from "../../objects/products/relojes";
-import { garantiaSchema, mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
+import {
+  detallesRelojSchema,
+  resenaRelojesSchema,
+  variantesDeRelojesSchema,
+} from "../../objects/products/relojes";
+import {
+  coleccionesDeMarcaRefSchema,
+  garantiaSchema,
+  mostrarCreditoSchema,
+  slugSchema,
+} from "../../objects/products/generales";
 import bannersSchema from "../../objects/bannersSchema";
 
 export const relojesLujoSchema = defineType({
@@ -10,8 +19,9 @@ export const relojesLujoSchema = defineType({
   title: "Relojes de Lujo",
   type: "document",
   groups: [
-    {name: "general", title: "General"},
-    {name: "detalles", title: "Detalles"},
+    { name: "general", title: "General" },
+    { name: "detalles", title: "Detalles" },
+    { name: "variantes", title: "Variantes" },
   ],
   fields: [
     defineField({
@@ -41,13 +51,7 @@ export const relojesLujoSchema = defineType({
     resenaRelojesSchema,
     garantiaSchema,
     bannersSchema,
-    defineField({
-      name: "coleccionDeMarca",
-      title: "Colección De Marca",
-      type: "reference",
-      to: [{ type: "coleccionesDeMarca" }],
-      hidden: ({ document }) => !document?.marca,
-    }),
+    coleccionesDeMarcaRefSchema,
     mostrarCreditoSchema,
     slugSchema,
   ],
