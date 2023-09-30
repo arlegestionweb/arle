@@ -1,4 +1,3 @@
-import ColombianPrice from "@/sanity/components/ColombianPrice";
 import { defineArrayMember, defineField } from "sanity";
 import {
   etiquetaSchema,
@@ -7,7 +6,6 @@ import {
   precioSchema,
 } from "./generales";
 import { imageArrayForProducts } from "../image";
-import { videoSchema } from "../video";
 
 export const resistenciaAlAguaSchema = defineField({
   name: "resistenciaAlAgua",
@@ -17,10 +15,11 @@ export const resistenciaAlAguaSchema = defineField({
   validation: (Rule) => Rule.required(),
 });
 
-export const tipoDeMovimientoSchema = defineField({
+export const tipoDeMovimientoRefSchema = defineField({
   name: "tipoDeMovimiento",
   title: "Tipo de movimiento",
-  type: "string",
+  type: "reference",
+  to: [{ type: "tipoDeMovimiento" }],
   validation: (Rule) => Rule.required(),
 });
 
@@ -138,30 +137,13 @@ export const funcionesSchema = defineField({
     }),
 });
 
-export const resenaRelojesSchema = defineField({
-  name: "resena",
-  title: "Reseña",
-  type: "object",
-  group: "detalles",
-  fields: [
-    // videoSchema,
-    defineField({
-      name: "inspiracion",
-      title: "Inspiraicón, historia u otros",
-      type: "array",
-      of: [
-        defineArrayMember({
-          type: "block",
-        }),
-      ],
-    }),
-  ],
-});
 
-export const pulsoSchema = defineField({
+
+export const pulsoSchemaRef = defineField({
   name: "material",
   title: "Material del Pulso",
-  type: "string",
+  type: "reference",
+  to: [{ type: "materialDelPulso" }],
   validation: (Rule) => Rule.required(),
 });
 
@@ -179,7 +161,7 @@ export const cajaSchema = defineField({
     }),
     defineField({
       name: "diametro",
-      title: "Diámetro (mm)",
+      title: "Diámetro de la Caja (mm)",
       description: "Campo numérico en milímetros",
       type: "number",
       validation: (Rule) => Rule.required(),
@@ -216,8 +198,8 @@ export const detallesRelojSchema = defineField({
       to: [{ type: "estiloDeReloj" }],
       validation: (Rule) => Rule.required(),
     }),
-    tipoDeMovimientoSchema,
-    pulsoSchema,
+    tipoDeMovimientoRefSchema,
+    pulsoSchemaRef,
     cajaSchema,
     funcionesSchema,
   ],

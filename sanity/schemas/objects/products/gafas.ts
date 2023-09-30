@@ -6,16 +6,21 @@ export const monturaSchema = defineField({
   name: "montura",
   title: "Montura",
   type: "object",
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
-      name: "forma",
+      name: "formaDeLaMontura",
       title: "Forma de la Montura",
-      type: "string",
+      type: "reference",
+      validation: (Rule) => Rule.required(),
+      to: [{ type: "formaDeLaMontura" }],
     }),
     defineField({
       name: "material",
-      title: "Material del Marco",
-      type: "string",
+      title: "Material de la Montura",
+      type: "reference",
+      to: [{ type: "materialDelMarco" }],
+      validation: (Rule) => Rule.required(),
     }),
   ],
 });
@@ -24,16 +29,21 @@ export const lenteSchema = defineField({
   name: "lente",
   title: "Lente",
   type: "object",
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "material",
       title: "Material del Lente",
-      type: "string",
+      type: "reference",
+      to: [{ type: "materialDelLente" }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "tipo",
       title: "Tipo de Lente",
-      type: "string",
+      type: "reference",
+      to: [{ type: "tipoDeLente" }],
+      validation: (Rule) => Rule.required(),
     }),
   ],
 });
@@ -55,6 +65,14 @@ const varianteDeGafa = defineField({
       type: "reference",
       to: [{ type: "colores" }],
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "colorDeLaVarilla",
+      title: "Color de la Varilla",
+      type: "reference",
+      to: [{ type: "colores" }],
+      validation: (Rule) => Rule.required(),
+      hidden: ({ document }) => document?._type === "gafasPremium",
     }),
     defineField({
       name: "colorDelLente",

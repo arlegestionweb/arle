@@ -1,5 +1,5 @@
 import ColombianPrice from "@/sanity/components/ColombianPrice";
-import { defineField } from "sanity";
+import { defineArrayMember, defineField } from "sanity";
 
 export const generoSchema = defineField({
   name: "genero",
@@ -11,6 +11,26 @@ export const generoSchema = defineField({
   },
 });
 
+export const resenaSchema = defineField({
+  name: "resena",
+  title: "Reseña",
+  type: "object",
+  group: "detalles",
+  fields: [
+    // videoSchema,
+    defineField({
+      name: "inspiracion",
+      title: "Inspiraicón, historia u otros",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "block",
+        }),
+      ],
+    }),
+  ],
+});
+
 export const etiquetaSchema = defineField({
   name: "etiqueta",
   title: "Etiqueta",
@@ -20,20 +40,20 @@ export const etiquetaSchema = defineField({
   },
 });
 
-export const precioSchema =  defineField({
+export const precioSchema = defineField({
   name: "precio",
   title: "Precio",
   type: "string",
   validation: (Rule) => Rule.required(),
   components: { input: ColombianPrice },
-})
+});
 
 export const mostrarCreditoSchema = defineField({
   name: "mostrarCredito",
   title: "Mostrar crédito",
   type: "boolean",
   initialValue: false,
-})
+});
 export const coleccionesDeMarcaRefSchema = defineField({
   name: "coleccionDeMarca",
   title: "Colección De Marca",
@@ -42,13 +62,12 @@ export const coleccionesDeMarcaRefSchema = defineField({
   hidden: ({ document }) => !document?.marca,
 });
 
-
 export const precioConDescuentoSchema = defineField({
   name: "precioConDescuento",
   title: "Precio con descuento",
   type: "string",
   components: { input: ColombianPrice },
-})
+});
 
 export const garantiaSchema = defineField({
   name: "garantia",

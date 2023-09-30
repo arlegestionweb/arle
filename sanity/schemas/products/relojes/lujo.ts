@@ -3,13 +3,13 @@ import { defineType, defineField } from "sanity";
 import { videoSchema } from "../../objects/video";
 import {
   detallesRelojSchema,
-  resenaRelojesSchema,
   variantesDeRelojesSchema,
 } from "../../objects/products/relojes";
 import {
   coleccionesDeMarcaRefSchema,
   garantiaSchema,
   mostrarCreditoSchema,
+  resenaSchema,
   slugSchema,
 } from "../../objects/products/generales";
 import bannersSchema from "../../objects/bannersSchema";
@@ -48,7 +48,7 @@ export const relojesLujoSchema = defineType({
     variantesDeRelojesSchema,
     // videoSchema,
     detallesRelojSchema,
-    resenaRelojesSchema,
+    resenaSchema,
     garantiaSchema,
     bannersSchema,
     coleccionesDeMarcaRefSchema,

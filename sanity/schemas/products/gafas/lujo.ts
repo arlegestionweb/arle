@@ -1,57 +1,58 @@
 import { defineType, defineField } from "sanity";
 
-import { imageArrayForProducts } from "../../objects/image";
-import { garantiaSchema, generoSchema, mostrarCreditoSchema, precioSchema, slugSchema } from "../../objects/products/generales";
-import { lenteSchema, monturaSchema } from "../../objects/products/gafas";
+import { garantiaSchema, resenaSchema, slugSchema } from "../../objects/products/generales";
+import { detallesDeGafaSchema, variantesDeGafaSchema } from "../../objects/products/gafas";
+import bannersSchema from "../../objects/bannersSchema";
 
 export const gafasLujoSchema = defineType({
   name: "gafasLujo",
   title: "Gafas de Lujo",
   type: "document",
   groups: [
-    {name: "general", title: "General", default: true},
+    {name: "general", title: "General"},
     {name: "detalles", title: "Detalles"},
+    {name: "variantes", title: "Variantes"},
   ],
   fields: [
     defineField({
       name: "marca",
       title: "Marca",
       type: "reference",
+      group: "general",
       to: [{ type: "marca" }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "modelo",
       title: "Modelo o Referencia",
+      group: "general",
       type: "string",
-    }),
-    imageArrayForProducts,
-    precioSchema,
-    defineField({
-      name: "tipo",
-      title: "Tipo",
-      type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "descripcion",
       title: "Descripción",
+      group: "general",
       type: "text",
     }),
+    resenaSchema,
+    bannersSchema,
     defineField({
-      name: "paisDeOrigen",
-      title: "País de origen",
-      type: "string",
+      name: "paisDeFabricacion",
+      title: "País de fabricación",
+      group: "detalles",
+      type: "reference",
+      to: [{ type: "paisDeFabricacion" }],
     }),
     defineField({
-      name: "incluye",
-      title: "Qué incluye",
+      name: "queIncluye",
+      title: "Qué incluye?",
+      group: "general",
       type: "string",
     }),
-
-    generoSchema,
+    detallesDeGafaSchema,
+    variantesDeGafaSchema,
     garantiaSchema,
-    monturaSchema,
-    lenteSchema,
-    mostrarCreditoSchema,
     slugSchema,
   ],
   preview: {
@@ -62,7 +63,7 @@ export const gafasLujoSchema = defineType({
     },
     prepare(selection) {
       const { title, subtitle, media } = selection;
-      if (!title || !media || !subtitle) return { title: "Sin título" };
+      if (!title || !media) return { title: "Sin título" };
 
       return {
         title,
@@ -72,3 +73,6 @@ export const gafasLujoSchema = defineType({
     },
   },
 });
+
+
+
