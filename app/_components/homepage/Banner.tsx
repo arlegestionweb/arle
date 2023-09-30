@@ -37,6 +37,8 @@ const Banner = ({ banners }: BannerProps) => {
       setScrollPosition(index);
     }
   };
+  console.log({banners});
+  
 
   return (
     <section className="max-w-screen h-[70vh] pt-[70px] md:pt-0 overflow-hidden relative group">

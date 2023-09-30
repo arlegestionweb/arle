@@ -1,7 +1,14 @@
 import { coleccionesSchema } from "./documents/colecciones";
 import { descuentosSchema } from "./documents/descuentos";
-import { colorSchema, cristalSchema, estiloDeRelojSchema, familiasOlfativasSchema, funcionDelRelojSchema, notasOlfativasSchema, tipoDeRelojSchema } from "./documents/documentosVarios";
+import {
+  coleccionesDeMarcaSchema,
+  colorSchema,
+  paisDeFabricacionSchema,
+} from "./documents/documentosVarios";
 import { marcasSchema } from "./documents/marcas";
+import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "./documents/productos/gafas";
+import { familiasOlfativasSchema, ingredientesSchema, notasOlfativasSchema } from "./documents/productos/perfumes";
+import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema } from "./documents/productos/relojes";
 import { recomendadosSchema } from "./documents/recomendados";
 import { ventaSchema } from "./documents/venta";
 import { homeSchema } from "./pages/homeSchema";
@@ -25,7 +32,6 @@ export const schemaTypes = [
   sobreNosotrosSchema,
   preguntasFrecuentesSchema,
 
-
   // products
   perfumePremiumSchema,
   perfumeLujoSchema,
@@ -33,7 +39,6 @@ export const schemaTypes = [
   gafasLujoSchema,
   relojesLujoSchema,
   relojesPremiumSchema,
-
 
   // documents
   marcasSchema,
@@ -48,4 +53,16 @@ export const schemaTypes = [
   colorSchema,
   familiasOlfativasSchema,
   notasOlfativasSchema,
-]
+  ingredientesSchema,
+  materialesDeCajaSchema,
+  coleccionesDeMarcaSchema,
+  tipoDeGafaSchema,
+  estiloDeGafaSchema,
+  paisDeFabricacionSchema,
+  formaDeLaMonturaSchema,
+  materialDelMarcoSchema,
+  tipoDeLenteSchema,
+  materialDelLenteSchema,
+  tipoDeMovimientoSchema,
+  materialesDelPulsoSchema,
+];

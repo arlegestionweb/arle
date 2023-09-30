@@ -1,6 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { detallesRelojSchema, variantesDeRelojesSchema } from "../../objects/products/relojes";
-import { garantiaSchema, slugSchema } from "../../objects/products/generales";
+import { garantiaSchema, mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
 
 
 export const relojesPremiumSchema = defineType({
@@ -8,8 +8,9 @@ export const relojesPremiumSchema = defineType({
   title: "Relojes Premium",
   type: "document",
   groups: [
-    { name: "general", title: "General", default: true },
+    { name: "general", title: "General" },
     { name: "detalles", title: "Detalles" },
+    { name: "variantes", title: "Variantes" },
   ],
   fields: [
     defineField({
@@ -31,11 +32,12 @@ export const relojesPremiumSchema = defineType({
       name: "descripcion",
       group: "general",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
     variantesDeRelojesSchema,
     garantiaSchema,
     detallesRelojSchema,
+    mostrarCreditoSchema,
     slugSchema,
   ],
   preview: {
@@ -46,6 +48,8 @@ export const relojesPremiumSchema = defineType({
     },
     prepare(selection) {
       const { title, subtitle, media } = selection;
+      if (!title || !media) return { title: "Sin título" };
+
       return {
         title,
         subtitle,

@@ -41,12 +41,12 @@ export const descuentosSchema = defineType({
         defineField({
           name: "inicio",
           title: "Inicio",
-          type: "date",
+          type: "datetime",
         }),
         defineField({
           name: "fin",
           title: "Fin",
-          type: "date",
+          type: "datetime",
         }),
       ],
     })

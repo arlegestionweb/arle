@@ -1,85 +1,26 @@
-import {
-  TbDeviceWatchCog,
-  TbDeviceWatchQuestion,
-  TbDeviceWatchStats2,
-} from "react-icons/tb";
 import ColorPreview from "../../components/ColorPreview"
 import { defineField, defineType } from "sanity";
+import { BsBookmarkStar } from "react-icons/bs";
 
-export const funcionDelRelojSchema = defineType({
-  name: "funcionDeReloj",
-  title: "Función del Reloj",
-  type: "document",
-  icon: TbDeviceWatchCog,
-  fields: [
-    defineField({
-      name: "titulo",
-      title: "Título",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "descripcion",
-      title: "Descripción",
-      type: "string",
-    }),
-  ],
-});
 
-export const tipoDeRelojSchema = defineType({
-  name: "tipoDeReloj",
-  title: "Tipo de Reloj",
-  type: "document",
-  icon: TbDeviceWatchQuestion,
-  fields: [
-    defineField({
-      name: "titulo",
-      title: "Título",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "descripcion",
-      title: "Descripción",
-      type: "string",
-    }),
-  ],
-});
-export const estiloDeRelojSchema = defineType({
-  name: "estiloDeReloj",
-  title: "Estilo de Reloj",
-  type: "document",
-  icon: TbDeviceWatchStats2,
-  fields: [
-    defineField({
-      name: "titulo",
-      title: "Título",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "descripcion",
-      title: "Descripción",
-      type: "string",
-    }),
-  ],
-});
 
-export const cristalSchema = defineType({
-  name: "cristal",
-  title: "Cristal",
+
+
+
+
+
+
+
+export const paisDeFabricacionSchema = defineType({
+  name: "paisDeFabricacion",
+  title: "País de Fabricación",
   type: "document",
   fields: [
     defineField({
-      name: "titulo",
-      title: "Título",
+      name: "nombre",
+      title: "Nombre",
       type: "string",
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "descripcion",
-      title: "Descripción",
-      type: "string",
     }),
   ],
 });
@@ -111,6 +52,8 @@ export const colorSchema = defineType({
     
     prepare(selection) {
       const { title, color } = selection;
+      if (!title || !color) return { title: "Sin título" };
+
       return {
         title,
         media: <ColorPreview title={title} color={color.hex} />,
@@ -120,29 +63,13 @@ export const colorSchema = defineType({
 });
 
 
-export const familiasOlfativasSchema = defineType({
-  name: "familiasOlfativas",
-  title: "Familias Olfativas",
-  type: "document",
-  fields: [
-    defineField({
-      name: "nombre",
-      title: "Nombre",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "descripcion",
-      title: "Descripción",
-      type: "string",
-    }),
-  ],
-});
 
-export const notasOlfativasSchema = defineType({
-  name: "notasOlfativas",
-  title: "Notas Olfativas",
+
+export const coleccionesDeMarcaSchema = defineType({
+  name: "coleccionesDeMarca",
+  title: "Colecciones de Marca",
   type: "document",
+  icon: BsBookmarkStar,
   fields: [
     defineField({
       name: "nombre",
@@ -151,9 +78,11 @@ export const notasOlfativasSchema = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "descripcion",
-      title: "Descripción",
-      type: "string",
-    }),
+      name: "marca",
+      title: "Marca",
+      type: "reference",
+      to: [{ type: "marca" }],
+    })
   ],
 }); 
+

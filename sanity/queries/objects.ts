@@ -9,9 +9,12 @@ export const bannersQuery = `
   "banners": banners[] {
     titulo,
     descripcion,
-    ${imageQuery}
+    "imagen": imagen.imagen{
+      alt,
+      "url": asset->url
+    },
   }
-  `;
+`;
 
 export const imageArrayQuery = `
 "imagenes": imagenes[] {

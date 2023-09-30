@@ -6,10 +6,10 @@ import {
   variantesDePerfumesSchema,
 } from "../../objects/products/perfumes";
 import {
-  generoSchema,
-  precioSchema,
+  mostrarCreditoSchema,
   slugSchema,
 } from "../../objects/products/generales";
+import bannersSchema from "../../objects/bannersSchema";
 
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
@@ -18,6 +18,7 @@ export const perfumeLujoSchema = defineType({
   groups: [
     { name: "general", title: "General" },
     { name: "detalles", title: "Detalles" },
+    {name: "variantes", title: "Variantes"},
   ],
   fields: [
     defineField({
@@ -25,12 +26,6 @@ export const perfumeLujoSchema = defineType({
       title: "Marca",
       type: "reference",
       to: [{ type: "marca" }],
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "modelo",
-      title: "Modelo",
-      type: "string",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -43,26 +38,37 @@ export const perfumeLujoSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
     variantesDePerfumesSchema,
-    detallesPerfumeSchema,
-
-    resenaPerfumesSchema,
     defineField({
       name: "parteDeUnSet",
       title: "Es parte de un set?",
       type: "boolean",
+      initialValue: false,
     }),
+    detallesPerfumeSchema,
+    defineField({
+      name: "coleccionDeMarca",
+      title: "Colección De Marca",
+      type: "reference",
+      to: [{ type: "coleccionesDeMarca" }],
+      hidden: ({ document }) => !document?.marca,
+      // validation: (Rule) => Rule.custom((coleccionDeMarca) => {}),
+    }),
+    resenaPerfumesSchema,
+    mostrarCreditoSchema,
+    bannersSchema,
     slugSchema,
   ],
   preview: {
     select: {
-      title: "modelo",
+      title: "titulo",
       media: "imagenes",
     },
     prepare(selection) {
       const { title, media } = selection;
+      if (!title || !media) return { title: "Sin título" };
       return {
         title,
         media: media[0],

@@ -23,7 +23,7 @@ export const homeSchema = defineType({
         defineField({
           name: "descripcion",
           title: "Descripción",
-          type: "string",
+          type: "text",
         }),
         imageObjectSchema
       ],
@@ -41,7 +41,7 @@ export const homeSchema = defineType({
         defineField({
           name: "descripcion",
           title: "Descripción",
-          type: "string",
+          type: "text",
         }),
         imageObjectSchema
       ],
@@ -59,7 +59,7 @@ export const homeSchema = defineType({
         defineField({
           name: "descripcion",
           title: "Descripción",
-          type: "string",
+          type: "text",
         }),
         imageObjectSchema,
       ],
@@ -91,7 +91,7 @@ export const homeSchema = defineType({
         defineField({
           name: "descripcion",
           title: "Descripción",
-          type: "string",
+          type: "text",
         }),
         defineField({
           name: "imagenes",

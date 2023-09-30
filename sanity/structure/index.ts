@@ -17,7 +17,14 @@ import { gafasPremiumSchema } from "../schemas/products/gafas/premium";
 import { relojesLujoSchema } from "../schemas/products/relojes/lujo";
 import { relojesPremiumSchema } from "../schemas/products/relojes/premium";
 import { recomendadosSchema } from "../schemas/documents/recomendados";
-import { colorSchema, cristalSchema, estiloDeRelojSchema, familiasOlfativasSchema, funcionDelRelojSchema, notasOlfativasSchema, tipoDeRelojSchema } from "../schemas/documents/documentosVarios";
+import {
+  coleccionesDeMarcaSchema,
+  colorSchema,
+  paisDeFabricacionSchema,
+} from "../schemas/documents/documentosVarios";
+import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema } from "../schemas/documents/productos/relojes";
+import { familiasOlfativasSchema, ingredientesSchema, notasOlfativasSchema } from "../schemas/documents/productos/perfumes";
+import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "../schemas/documents/productos/gafas";
 
 export default (S: StructureBuilder) => {
   const siteSettingsListItem = S.listItem()
@@ -29,8 +36,7 @@ export default (S: StructureBuilder) => {
         .schemaType(siteSettings.name)
         .documentId(siteSettings.name)
     );
-  
-    
+
   const adminVentas = S.listItem()
     .title("Admin Ventas")
     .icon(MdPointOfSale)
@@ -60,11 +66,23 @@ export default (S: StructureBuilder) => {
       colorSchema.name,
       familiasOlfativasSchema.name,
       notasOlfativasSchema.name,
+      ingredientesSchema.name,
+      materialesDeCajaSchema.name,
+      coleccionesDeMarcaSchema.name,
+      tipoDeGafaSchema.name,
+      estiloDeGafaSchema.name,
+      paisDeFabricacionSchema.name,
+      formaDeLaMonturaSchema.name,
+      materialDelMarcoSchema.name,
+      tipoDeLenteSchema.name,
+      materialDelLenteSchema.name,
+      tipoDeMovimientoSchema.name,
+      materialesDelPulsoSchema.name,
     ].includes(listItem.getId());
   };
 
   return S.list()
-    .title("Content")
+    .title("Contenido")
     .items([
       pages(S),
       S.divider(),

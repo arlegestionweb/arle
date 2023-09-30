@@ -1,7 +1,7 @@
 import { defineType, defineField } from "sanity";
 import { imageArrayForProducts } from "../../objects/image";
 
-import { slugSchema } from "../../objects/products/generales";
+import { mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
 import {
   detallesPerfumeSchema,
   variantesDePerfumesSchema,
@@ -14,6 +14,7 @@ export const perfumePremiumSchema = defineType({
   groups: [
     { name: "general", title: "General" },
     { name: "detalles", title: "Detalles" },
+    {name: "variantes", title: "Variantes"},
   ],
   fields: [
     defineField({
@@ -39,15 +40,17 @@ export const perfumePremiumSchema = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción",
-      type: "string",
+      type: "text",
     }),
     variantesDePerfumesSchema,
-    detallesPerfumeSchema,
     defineField({
       name: "parteDeUnSet",
       title: "Es parte de un set?",
       type: "boolean",
+      initialValue: false,
     }),
+    detallesPerfumeSchema,
+    mostrarCreditoSchema,
     slugSchema,
   ],
   preview: {
@@ -57,6 +60,8 @@ export const perfumePremiumSchema = defineType({
     },
     prepare(selection) {
       const { title, media } = selection;
+      if (!title || !media) return { title: "Sin título" };
+
       return {
         title,
         media: media[0],

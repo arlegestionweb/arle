@@ -1,18 +1,34 @@
-import { defineField } from "sanity";
-
-export const precioSchema = defineField({
-  name: "precio",
-  title: "Precio",
-  type: "string",
-});
+import ColombianPrice from "@/sanity/components/ColombianPrice";
+import { defineArrayMember, defineField } from "sanity";
 
 export const generoSchema = defineField({
   name: "genero",
   title: "Género",
   type: "string",
+  validation: (Rule) => Rule.required(),
   options: {
     list: ["mujer", "hombre", "unisex"],
   },
+});
+
+export const resenaSchema = defineField({
+  name: "resena",
+  title: "Reseña",
+  type: "object",
+  group: "detalles",
+  fields: [
+    // videoSchema,
+    defineField({
+      name: "inspiracion",
+      title: "Inspiraicón, historia u otros",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "block",
+        }),
+      ],
+    }),
+  ],
 });
 
 export const etiquetaSchema = defineField({
@@ -20,8 +36,37 @@ export const etiquetaSchema = defineField({
   title: "Etiqueta",
   type: "string",
   options: {
-    list: ["nuevo", "agotado", "mas vendido", "ultimas unidades"],
+    list: ["nuevo", "mas vendido", "ultimas unidades"],
   },
+});
+
+export const precioSchema = defineField({
+  name: "precio",
+  title: "Precio",
+  type: "string",
+  validation: (Rule) => Rule.required(),
+  components: { input: ColombianPrice },
+});
+
+export const mostrarCreditoSchema = defineField({
+  name: "mostrarCredito",
+  title: "Mostrar crédito",
+  type: "boolean",
+  initialValue: false,
+});
+export const coleccionesDeMarcaRefSchema = defineField({
+  name: "coleccionDeMarca",
+  title: "Colección De Marca",
+  type: "reference",
+  to: [{ type: "coleccionesDeMarca" }],
+  hidden: ({ document }) => !document?.marca,
+});
+
+export const precioConDescuentoSchema = defineField({
+  name: "precioConDescuento",
+  title: "Precio con descuento",
+  type: "string",
+  components: { input: ColombianPrice },
 });
 
 export const garantiaSchema = defineField({
@@ -29,6 +74,7 @@ export const garantiaSchema = defineField({
   title: "Garantía",
   type: "object",
   group: "detalles",
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "meses",
@@ -38,15 +84,15 @@ export const garantiaSchema = defineField({
     }),
     defineField({
       name: "descripcion",
-      title: "Descripción",
-      type: "string",
+      title: "Descripción de la garantía",
+      type: "text",
     }),
   ],
 });
 
 export const slugSchema = defineField({
   name: "slug",
-  title: "Slug",
+  title: "Link del producto",
   type: "slug",
   group: "general",
   validation: (Rule) => Rule.required(),

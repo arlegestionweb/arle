@@ -16,7 +16,7 @@ export const siteSettings = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción del sitio",
-      type: "string",
+      type: "text",
     }),
     defineField({
       name: "marcaPromocionada",
