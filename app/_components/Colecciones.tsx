@@ -1,11 +1,17 @@
+"use client";
 import { TColecciones } from "@/sanity/queries/pages/listingQueries";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "../_lib/utils";
+import { createUrl, makeNewParams } from "@/sanity/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 type ColeccionesProps = { colecciones: TColecciones, className?: string }
 
 const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
+
+// const Colecciones = ({ colecciones }: { colecciones: ColeccionType[] }) => {
+  const searchParams = useSearchParams();
   return (
     <section className={cn("bg-color-bg-surface-0-default pl-8 lg:px-8 lg:flex lg:flex-col lg:items-center", className)}>
       <h2 className="lg:max-w-[1280px] lg:px-9 w-full text-zinc-800 text-[28px] font-semibold font-lora leading-loose">

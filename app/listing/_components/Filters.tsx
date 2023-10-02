@@ -7,18 +7,23 @@ import { useState } from "react";
 import Link from "next/link";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Drawer from "../../_components/Drawer";
+// import Drawer from "../Drawer";
+import { useSearchParams } from "next/navigation";
+
 
 const Filters = ({
   areFiltersActive,
-  searchParams = {},
+  // searchParams = {},
 }: {
   areFiltersActive: boolean;
-  searchParams: {
-    [key: string]: string | string[] | undefined;
-  };
+  // searchParams: {
+  //   [key: string]: string | string[] | undefined;
+  // };
 }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-
+  const searchParams = useSearchParams();
+  
+  const search = searchParams.get("search");
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
   };
