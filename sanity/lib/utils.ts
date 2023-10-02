@@ -8,8 +8,8 @@ export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyUR
 };
 
 
-export const makeNewParams = (filterName: string, filterValue: string | undefined, searchParams = {}) => {
-  const newParams = new URLSearchParams(searchParams.toString());
+export const makeNewParams = (filterName: string, filterValue: string | undefined, oldSearchParams = {}) => {
+  const newParams = new URLSearchParams(oldSearchParams.toString());
 
   if (filterValue) {
     newParams.set(filterName, filterValue);
