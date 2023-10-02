@@ -20,7 +20,7 @@ const Colecciones = ({ colecciones }: { colecciones: ColeccionType[] }) => {
                   src={coleccion.imagen.url}
                   alt={coleccion.imagen.alt}
                   fill
-                  objectFit="cover"
+                  className="object-cover"
                 />
               </div>
             </Link>
