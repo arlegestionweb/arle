@@ -9,7 +9,7 @@ interface BurgerProps {
 const Burger = ({ onClickHandler, isNavOpen, barColor }: BurgerProps) => {
   return (
     <div
-      className="relative z-30 grid gap-2 cursor-pointer "
+      className="relative grid place-content-center z-30 gap-2  cursor-pointer "
       onClick={onClickHandler}
     >
       <Bar
@@ -42,7 +42,7 @@ const Bar = ({
 }: BarProps) => {
   return (
     <div
-      className={`${width} ${rotateZ} transition-all h-[2.5px]  ${barColor} rounded-md`}
+      className={`${width} ${rotateZ} transition-all h-[2px]  ${barColor} rounded-md`}
     />
   );
 };
