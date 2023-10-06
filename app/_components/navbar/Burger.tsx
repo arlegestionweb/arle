@@ -1,4 +1,5 @@
 import { MouseEventHandler } from "react";
+import Drawer from "./Drawer";
 
 interface BurgerProps {
   onClickHandler?: MouseEventHandler<HTMLDivElement>;
@@ -8,22 +9,24 @@ interface BurgerProps {
 
 const Burger = ({ onClickHandler, isNavOpen, barColor }: BurgerProps) => {
   return (
-    <div
-      className="relative grid place-content-center z-30 gap-2  cursor-pointer "
-      onClick={onClickHandler}
-    >
-      <Bar
-        rotateZ={!isNavOpen ? "rotate-0" : "rotate-45 translate-y-3"}
-        barColor={barColor}
-        width="w-7"
+    <div className="flex justify-center items-center" onClick={onClickHandler}>
+      <div className="relative grid place-content-center z-50 gap-2  cursor-pointer ">
+        <Bar
+          rotateZ={!isNavOpen ? "rotate-0" : "rotate-45 translate-y-3"}
+          barColor={barColor}
+          width="w-7"
         />
-      <Bar width={isNavOpen ? "w-0" : "w-7"} barColor={barColor} />
-      <Bar
-        rotateZ={!isNavOpen ? "rotate-0" : "-rotate-45 -translate-y-2"}
-        barColor={barColor}
-        
-        width="w-7"
-      />
+        <Bar
+          width={isNavOpen ? "w-0" : "w-7"}
+          barColor={barColor}
+        />
+        <Bar
+          rotateZ={!isNavOpen ? "rotate-0" : "-rotate-45 -translate-y-2"}
+          barColor={barColor}
+          width="w-7"
+        />
+      </div>
+      {isNavOpen && <Drawer isOpen={isNavOpen}/>}
     </div>
   );
 };
