@@ -5,8 +5,14 @@ import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { AiOutlineEnter } from "react-icons/ai";
+import { type } from "os";
+import { cn } from "@/app/_lib/utils";
 
-const SearchDesktop = () => {
+type SearchInputProps = {
+  className?: string;
+}
+
+const SearchInput = ({className}: SearchInputProps) => {
   const [value, setValue] = useState("");
   const { push: redirect } = useRouter();
 
@@ -18,7 +24,7 @@ const SearchDesktop = () => {
   };
 
   return (
-    <div className="flex items-center justify-between h-9 w-2/5 rounded-lg border bg-background px-3 pl-3 gap-2 py-[6px]">
+    <div className={cn("flex items-center justify-between h-9 w-2/5 rounded-lg border bg-background px-3 pl-3 gap-2 py-[6px]", className)}>
       <div className="flex items-center gap-2">
         <FiSearch />
         <input
@@ -37,4 +43,4 @@ const SearchDesktop = () => {
   );
 };
 
-export default SearchDesktop;
+export default SearchInput;
