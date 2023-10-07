@@ -1,5 +1,6 @@
 import { cn } from "@/app/_lib/utils";
 import React from "react";
+import Level1 from "./Level1";
 
 type DrawerProps = {
   isOpen?: boolean;
@@ -17,12 +18,17 @@ function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
       }}>
       <section
         className={cn(
-          `top-0 h-screen bg-white w-screen right-0 md:w-[300px]`,
+          `top-0 h-screen bg-white w-screen right-0 md:w-80`,
           animation === "slide-in-right"
             ? "animate-slide-in-right"
             : " animate-slide-in"
         )}
-        onClick={e => e.stopPropagation()}></section>
+        onClick={e => e.stopPropagation()}>
+
+          <Level1/>
+
+
+        </section>
     </div>
   );
 }

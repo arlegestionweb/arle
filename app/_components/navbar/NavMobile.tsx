@@ -8,7 +8,7 @@ import { FiShoppingCart, FiSearch } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AiOutlineEnter } from "react-icons/ai";
-import Drawer from "./Drawer";
+import Drawer from "./drawer";
 
 type MobileNavBarProps = {
   className?: string;
