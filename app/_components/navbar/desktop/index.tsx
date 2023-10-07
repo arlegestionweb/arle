@@ -47,7 +47,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
             barColor="bg-[#5D5A88]"
             onClickHandler={() => setIsNavOpen(!isNavOpen)}
           />    
-          {isNavOpen && <Drawer isOpen={isNavOpen} animation="slide-in-right"/>}
+          {isNavOpen && <Drawer isOpen={isNavOpen} animation="slide-in-right" onClose={()=>setIsNavOpen(!isNavOpen)}/>}
         </section>
       </section>
       <SubMenuDesktop />
