@@ -66,7 +66,7 @@ const Banner = ({ banners }: BannerProps) => {
         ))}
       </section>
 
-      <div className="flex absolute z-30 bottom-9 m-auto left-0 right-0 justify-center py-2">
+      <div className="flex absolute z-20 bottom-9 m-auto left-0 right-0 justify-center py-2">
         {banners.map((banner, index) => (
           <div
             key={index}
