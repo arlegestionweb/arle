@@ -4,6 +4,7 @@ import SearchDesktop from "./SearchDesktop";
 import SubMenuDesktop from "./SubMenuDesktop";
 import Burger from "../Burger";
 import { useState } from "react";
+import Drawer from "../Drawer";
 
 type NavDesktopProps = {
   className?: string;
@@ -45,7 +46,8 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
             isNavOpen={isNavOpen}
             barColor="bg-[#5D5A88]"
             onClickHandler={() => setIsNavOpen(!isNavOpen)}
-          />
+          />    
+          {isNavOpen && <Drawer isOpen={isNavOpen} animation="slide-in-right"/>}
         </section>
       </section>
       <SubMenuDesktop />

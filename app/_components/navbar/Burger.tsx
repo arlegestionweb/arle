@@ -26,7 +26,6 @@ const Burger = ({ onClickHandler, isNavOpen, barColor }: BurgerProps) => {
           width="w-7"
         />
       </div>
-      {isNavOpen && <Drawer isOpen={isNavOpen}/>}
     </div>
   );
 };
