@@ -1,5 +1,5 @@
-import { cn } from "@/app/_lib/utils";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { HiMiniArrowUpRight } from "react-icons/hi2";
 import SearchInput from "../SearchInput";
 import Button from "../../Button";
 import Layout from "./Layout";
@@ -81,7 +81,7 @@ const items: MenuItem = {
         },
       ],
     },
-  ]
+  ],
 };
 
 function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
@@ -91,35 +91,24 @@ function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
 
   const handleItemClick = (item: MenuItem) => {
     if (item.subMenu) {
-      setCurrentLevel( currentLevel + 1);
-
-      console.log('currentLevel', item);
-      
+      setCurrentLevel(currentLevel + 1);
       setMenuStack([...MenuStack, item]);
-      
+
       setMenu(item);
     } else {
-      // Si el elemento del menú no tiene submenú, puedes manejar la acción deseada aquí
-      // Por ejemplo, cerrar el menú o realizar alguna acción específica
+      // TODO: si no hay submenu, hacer algo
       console.log(`Hiciste clic en: ${item.label}`);
     }
-    
   };
 
   const handleBack = () => {
     // Regresar al menú anterior (nivel anterior)
     if (currentLevel > 0 && MenuStack) {
-      setMenu( MenuStack[currentLevel - 1]);
-      setMenuStack(MenuStack.slice(0, currentLevel ));
+      setMenu(MenuStack[currentLevel - 1]);
+      setMenuStack(MenuStack.slice(0, currentLevel));
       setCurrentLevel(currentLevel - 1);
     }
-    console.log('return to previous menu', MenuStack);
-    
   };
-
-  // useEffect(() => {
-  //   console.log( {'menu': menu, 'previousMenu': MenuStack, 'currentLevel': currentLevel});
-  // }, [menu, MenuStack, currentLevel]);
 
   return (
     <div
@@ -129,12 +118,7 @@ function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
         onClose && onClose();
       }}>
       <section
-        className={cn(
-          `top-0 h-screen bg-white w-screen right-0 md:w-80`,
-          animation === "slide-in-right"
-            ? "animate-slide-in-right"
-            : " animate-slide-in"
-        )}
+        className="top-0 h-screen bg-white w-screen right-0 md:w-80 animate-slide-in lg:animate-slide-in-right"
         onClick={e => e.stopPropagation()}>
         {/* Seccion inicial */}
 
@@ -153,14 +137,15 @@ function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
                 Productos
               </h5>
               <ul>
-                {items.subMenu && (items.subMenu as MenuItem[]).map((item, index) => (
-                  <li
-                    key={index}
-                    className="cursor-pointer h-9 py-3 text-zinc-800 font-inter leading-tight"
-                    onClick={() => handleItemClick(item)}>
-                    {item.label}
-                  </li>
-                ))}
+                {items.subMenu &&
+                  (items.subMenu as MenuItem[]).map((item, index) => (
+                    <li
+                      key={index}
+                      className="cursor-pointer h-9 py-3 text-zinc-800 font-inter leading-tight"
+                      onClick={() => handleItemClick(item)}>
+                      {item.label}
+                    </li>
+                  ))}
               </ul>
             </section>
             <section className="py-3">
@@ -179,32 +164,54 @@ function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
         {/* Levels  */}
         {currentLevel > 0 && (
           <Layout volver={handleBack}>
-            { MenuStack[1] && [...(MenuStack[1].subMenu as MenuItem[])].map((item, index) => (
-              <li
-                key={index}
-                className="cursor-pointer h-9 py-3 text-zinc-800 font-inter leading-tight"
-                onClick={() => handleItemClick(item)}>
-                {item.label}
-              </li>
-            ))}
+            <h5 className="py-3 text-zinc-800 text-lg font-medium font-inter leading-snug">
+              {MenuStack[1] && MenuStack[1].label}
+            </h5>
+            <SubMenu
+              items={MenuStack[1] && [...(MenuStack[1].subMenu as MenuItem[])]}
+              handleItemClick={handleItemClick}></SubMenu>
           </Layout>
         )}
 
-        {currentLevel === 2 && (
+        {currentLevel > 1 && (
           <Layout volver={handleBack}>
-            {(menu?.subMenu as MenuItem[]).map((item, index) => (
-              <li
-                key={index}
-                className="cursor-pointer h-9 py-3 text-zinc-800 font-inter leading-tight"
-                onClick={() => handleItemClick(item)}>
-                {item.label}
-              </li>
-            ))}
+            <h5 className="py-3 text-zinc-800 text-lg font-medium font-inter leading-snug">
+              {menu.label}
+            </h5>
+            <SubMenu
+              items={menu?.subMenu as MenuItem[]}
+              handleItemClick={handleItemClick}
+              Icon={() => <HiMiniArrowUpRight size={20} />}
+            />
           </Layout>
         )}
       </section>
     </div>
   );
 }
+
+const SubMenu = ({
+  items,
+  handleItemClick,
+  Icon,
+}: {
+  items: MenuItem[];
+  handleItemClick: (item: MenuItem) => void;
+  Icon?: React.FC;
+}) => {
+  return (
+      <ul className="h-2.5">
+        {items.map((item, index) => (
+          <li
+            key={index}
+            className="cursor-pointer h-9 py-3 text-zinc-800 font-inter leading-tight flex gap-2 items-center"
+            onClick={() => handleItemClick(item)}>
+            {Icon && <Icon />}
+            {item.label}
+          </li>
+        ))}
+      </ul>
+  );
+};
 
 export default Drawer;
