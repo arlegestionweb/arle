@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import SearchDesktop from "./SearchDesktop";
 import SubMenuDesktop from "./SubMenuDesktop";
 import Burger from "../Burger";
 import { useState } from "react";
-import Drawer from "../Drawer";
+import Drawer from "../drawer";
+import SearchInput from "../SearchInput";
 
 type NavDesktopProps = {
   className?: string;
@@ -21,7 +21,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
           <Image src={"/arlé-logo.png"} width={76} height={22} alt="logo" />
         </Link>
 
-        <SearchDesktop />
+        <SearchInput />
 
         <section className="flex gap-5">
           <Link href={'/'} className=" px-2 justify-center items-center gap-2 flex">
