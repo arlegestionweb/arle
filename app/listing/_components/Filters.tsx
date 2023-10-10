@@ -10,11 +10,10 @@ import Drawer from "../../_components/Drawer";
 // import Drawer from "../Drawer";
 import { useSearchParams } from "next/navigation";
 
-
 const Filters = ({
   areFiltersActive,
-  // searchParams = {},
-}: {
+}: // searchParams = {},
+{
   areFiltersActive: boolean;
   // searchParams: {
   //   [key: string]: string | string[] | undefined;
@@ -22,7 +21,18 @@ const Filters = ({
 }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const searchParams = useSearchParams();
+  const allParams: { [key: string]: any } = {};
   
+  searchParams.forEach((value, param) => {
+    if (!allParams[param]) {
+      allParams[param] = [];
+    }
+    allParams[param].push(value);
+  });
+  
+  console.log("All Params:", allParams);
+
+  // console.log("here", searchParams.values())
   const search = searchParams.get("search");
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
@@ -82,7 +92,41 @@ const Filters = ({
 };
 
 export default Filters;
-
+type FilterMenuProps = {
+  isFilterOpen: boolean;
+  toggleFilter: () => void;
+  areFiltersActive: boolean;
+};
+const FilterMenu = ({isFilterOpen, toggleFilter, areFiltersActive}: FilterMenuProps) => {
+  return (
+    <div
+      className={`${
+        isFilterOpen ? "w-screen" : "w-0"
+      } fixed z-10 top-[60px] left-0 transition-all h-screen bg-black bg-opacity-50 flex`}
+    >
+      <div
+        className={`${
+          isFilterOpen ? "" : "hidden"
+        } w-[80vw] max-w-[400px] h-screen bg-white grid place-content-center relative`}
+      >
+        <AiOutlineCloseCircle
+          onClick={toggleFilter}
+          className="cursor-pointer text-3xl absolute top-10 right-10"
+        />
+        {areFiltersActive && (
+          <Link
+            href="/listing"
+            onClick={toggleFilter}
+            className="text-3xl font-bold"
+          >
+            <Button type="submit">Quitar Filtros</Button>
+          </Link>
+        )}
+      </div>
+      <div className="w-[10vw] h-screen" onClick={toggleFilter} />
+    </div>
+  );
+};
 const BreadCrumbs = ({
   filters,
   searchParams,
