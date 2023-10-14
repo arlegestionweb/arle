@@ -36,16 +36,21 @@ const config: Config = {
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(0)' },
         },
-        // opcaity in
-        'fade-in': {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+        'slide-out': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+        // slide out from right
+        'slide-out-right': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(100%)' },
         },
       },
       animation: {
         'slide-in': 'slide-in 0.2s ease-out',
         'slide-in-right': 'slide-in-right 0.2s ease-out',
-        'fade-in': 'fade-in 0.2s ease-out',
+        'slide-out': 'slide-out 0.2s ease-out',
+        'slide-out-right': 'slide-out-right 0.2s ease-out',
       },
     },
   },

@@ -3,7 +3,7 @@ import Link from "next/link";
 import SubMenuDesktop from "./SubMenuDesktop";
 import Burger from "../Burger";
 import { useState } from "react";
-import Drawer from "../drawer";
+import MenuDrawer from "../menuDrawer";
 import SearchInput from "../SearchInput";
 
 type NavDesktopProps = {
@@ -47,7 +47,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
             barColor="bg-[#5D5A88]"
             onClickHandler={() => setIsNavOpen(!isNavOpen)}
           />    
-          {isNavOpen && <Drawer isOpen={isNavOpen} animation="slide-in-right" onClose={()=>setIsNavOpen(!isNavOpen)}/>}
+          <MenuDrawer isOpen={isNavOpen} animation="right" onClose={()=>setIsNavOpen(!isNavOpen)}/>
         </section>
       </section>
       <SubMenuDesktop />

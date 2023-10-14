@@ -3,17 +3,14 @@ import { HiMiniArrowUpRight } from "react-icons/hi2";
 import SearchInput from "../SearchInput";
 import Button from "../../Button";
 import Layout from "./Layout";
+import { MenuItem } from "../../types";
+import Drawer from "../../Drawer";
 
 type DrawerProps = {
   isOpen?: boolean;
-  onClose?: () => void;
-  animation?: "slide-in" | "slide-in-right";
+  onClose?: (callback?: () => void) => void;
+  animation?: "right" | "left";
 };
-
-interface MenuItem {
-  label: string;
-  subMenu?: MenuItem[] | MenuItem;
-}
 
 const items: MenuItem = {
   label: "Productos",
@@ -84,7 +81,7 @@ const items: MenuItem = {
   ],
 };
 
-function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
+function MenuDrawer({ isOpen, onClose, animation = "left" }: DrawerProps) {
   const [menu, setMenu] = useState<MenuItem>(items);
   const [MenuStack, setMenuStack] = useState<MenuItem[]>([menu]);
   const [currentLevel, setCurrentLevel] = useState<number>(0);
@@ -111,17 +108,14 @@ function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
   };
 
   return (
-    <section
-      className="fixed z-40 w-screen bg-black bg-opacity-40 left-0 top-0 flex justify-end animate-fade-in"
-      onClick={e => {
-        e.stopPropagation();
-        onClose && onClose();
-      }}>
-      <section
-        className="top-0 h-screen bg-white w-screen right-0 md:w-80 animate-slide-in lg:animate-slide-in-right"
-        onClick={e => e.stopPropagation()}>
-        {/* Seccion inicial */}
-
+    <>
+      <Drawer
+        isOpen={isOpen}
+        onClose={(callback) => {
+          onClose && onClose();
+          callback && callback();
+        }}
+        animation={animation}>
         <section className="grow flex flex-col gap-3">
           <header className="p-4 h-16 flex items-center border-b border-stone-300">
             <h4 className="text-zinc-800 text-xl font-bold font-inter leading-normal">
@@ -185,8 +179,8 @@ function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
             />
           </Layout>
         )}
-      </section>
-    </section>
+      </Drawer>
+    </>
   );
 }
 
@@ -200,18 +194,18 @@ const SubMenu = ({
   Icon?: React.FC;
 }) => {
   return (
-      <ul className="h-2.5">
-        {items.map((item, index) => (
-          <li
-            key={index}
-            className="cursor-pointer h-9 py-3 text-zinc-800 font-inter leading-tight flex gap-2 items-center"
-            onClick={() => handleItemClick(item)}>
-            {Icon && <Icon />}
-            {item.label}
-          </li>
-        ))}
-      </ul>
+    <ul className="h-2.5">
+      {items.map((item, index) => (
+        <li
+          key={index}
+          className="cursor-pointer h-9 py-3 text-zinc-800 font-inter leading-tight flex gap-2 items-center"
+          onClick={() => handleItemClick(item)}>
+          {Icon && <Icon />}
+          {item.label}
+        </li>
+      ))}
+    </ul>
   );
 };
 
-export default Drawer;
+export default MenuDrawer;
