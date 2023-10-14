@@ -111,7 +111,7 @@ function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
   };
 
   return (
-    <div
+    <section
       className="fixed z-40 w-screen bg-black bg-opacity-40 left-0 top-0 flex justify-end animate-fade-in"
       onClick={e => {
         e.stopPropagation();
@@ -186,7 +186,7 @@ function Drawer({ isOpen, onClose, animation = "slide-in" }: DrawerProps) {
           </Layout>
         )}
       </section>
-    </div>
+    </section>
   );
 }
 
