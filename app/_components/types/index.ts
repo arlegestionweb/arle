@@ -111,3 +111,8 @@ export type ColeccionType = {
   };
   productos?: (PerfumeLujoType | PerfumePremiumType | RelojType | GafaType)[];
 };
+
+export interface MenuItem {
+  label: string;
+  subMenu?: MenuItem[] | MenuItem;
+}
