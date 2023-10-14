@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "../_lib/utils";
 
 type DrawerProps = {
   isOpen?: boolean;
-  onClose?: ( callback?: ()=> void ) => void;
+  onClose?: (callback?: () => void) => void;
   animation?: "right" | "left";
   children: React.ReactNode | React.ReactNode[];
 };
@@ -11,41 +11,35 @@ type DrawerProps = {
 const Drawer = ({
   isOpen,
   onClose,
-  animation = "right",
+  animation = "left",
   children,
 }: DrawerProps) => {
-
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <section
-      ref={ref}
-      className={cn(
-        "fixed z-40 w-screen bg-black left-0 top-0 flex justify-end transition-all",
-        isOpen
-          ? "bg-opacity-40 0.2s ease-out"
-          : "bg-opacity-0 0.2s ease-out"
-      )}
-      onClick={e => {
-        e.stopPropagation();
-        if(!isOpen) ref.current?.classList.add("hidden");
-        onClose && onClose(()=>{
-        });
-      }}>
+    <>
+      <div
+        className={cn(
+          "fixed z-40 w-screen bg-black duration-300 opacity-40 h-screen left-0 top-0 ",
+          !isOpen && "hidden animate-fade-out"
+        )}
+        onClick={e => {
+          onClose && onClose();
+        }}
+      />
       <section
         className={cn(
-          `top-0 translate-x-[100%] h-screen bg-white w-screen md:w-80`,
+          `fixed z-40 top-0 ease-in-out duration-300 transition-all h-screen bg-white w-screen md:w-80`,
           [
-            isOpen
-              ? "translate-x-0 animate-slide-in-right"
-              : "translate-x-[100%] animate-slide-out-right",
+            animation === "right"
+              ? ["right-[-150%]", isOpen ? "right-0" : "right-[-150%]"]
+              : ["left-[-150%]", isOpen ? "left-0" : " left-[-150%]"],
           ]
-        )}
-        onClick={e => e.stopPropagation()}>
+        )}>
         {/* Seccion inicial */}
         {children}
       </section>
-    </section>
+    </>
   );
 };
 
