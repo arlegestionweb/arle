@@ -8,7 +8,7 @@ type LayoutProps = {
 
 const Layout = ({ volver, children }: LayoutProps) => {
   return (
-    <section className={"fixed animate-slide-in lg:animate-slide-in-right top-0 h-screen w-screen lg:w-80 bg-white shadow-2xl"}>
+    <section className={"fixed animate-slide-in md:animate-slide-in-right top-0 h-screen w-screen lg:w-80 bg-white shadow-2xl"}>
       <header className="p-4 h-16 flex items-center border-b border-stone-300">
         <h4
           className="cursor-pointer text-black text-base font-medium font-inter leading-[21px] flex items-center gap-1"
