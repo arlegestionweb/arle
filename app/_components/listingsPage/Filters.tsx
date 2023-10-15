@@ -6,6 +6,7 @@ import { FiFilter } from "react-icons/fi";
 import { useState } from "react";
 import Link from "next/link";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import Drawer from "../Drawer";
 
 const Filters = ({
   areFiltersActive,
@@ -22,10 +23,9 @@ const Filters = ({
     setIsFilterOpen(!isFilterOpen);
   };
 
-  const filters = Object.keys(searchParams).map((key) => {
+  const filters = Object.keys(searchParams).map(key => {
     return key;
   });
-
 
   return (
     <>
@@ -34,8 +34,7 @@ const Filters = ({
           <div onClick={toggleFilter}>
             <Button
               className="flex items-center gap-2"
-              active={areFiltersActive}
-            >
+              active={areFiltersActive}>
               <FiFilter />
               Filtros
             </Button>
@@ -44,18 +43,16 @@ const Filters = ({
             <LuSettings2 /> Sort by: {"Recents"}
           </Button>
         </div>
-        <BreadCrumbs filters={filters} searchParams={searchParams} />
+        <BreadCrumbs
+          filters={filters}
+          searchParams={searchParams}
+        />
       </section>
-      <div
-        className={`${
-          isFilterOpen ? "w-screen" : "w-0"
-        } fixed z-5 top-0 left-0 transition-all h-screen bg-black bg-opacity-50 flex`}
-      >
+      <Drawer
+        isOpen={isFilterOpen}
+        onClose={toggleFilter}>
         <div
-          className={`${
-            isFilterOpen ? "" : "hidden"
-          } w-[90vw] h-screen bg-white grid place-content-center relative`}
-        >
+          className={`w-80 h-screen bg-white grid place-content-center relative`}>
           <AiOutlineCloseCircle
             onClick={toggleFilter}
             className="cursor-pointer text-3xl absolute top-10 right-10"
@@ -64,39 +61,46 @@ const Filters = ({
             <Link
               href="/listing"
               onClick={toggleFilter}
-              className="text-3xl font-bold"
-            >
+              className="text-3xl font-bold">
               <Button>Quitar Filtros</Button>
             </Link>
           )}
         </div>
-        <div className="w-[10vw] h-screen" onClick={toggleFilter} />
-      </div>
+
+        <div
+          className="w-[10vw] h-screen"
+          onClick={toggleFilter}
+        />
+      </Drawer>
     </>
   );
 };
 
 export default Filters;
 
-
-const BreadCrumbs = ({filters, searchParams}: {
+const BreadCrumbs = ({
+  filters,
+  searchParams,
+}: {
   filters: string[];
   searchParams: {
     [key: string]: string | string[] | undefined;
-  }
+  };
 }) => {
-
-   
   return (
     <ul className="flex mt-2">
-    {filters?.map((filter, index) => (
-      <li key={filter} className={`${index >= 1 ? "ml-2" : ""} flex items-center gap-2 text-sm`}>
-        {!searchParams[filter] ? <></> : `${filter}:`}
-        <Link href={`?${filter}=${searchParams[filter]}`}>
-         {searchParams[filter]} 
-        </Link>
-      </li>
-    ))}
-  </ul>
-  )
+      {filters?.map((filter, index) => (
+        <li
+          key={filter}
+          className={`${
+            index >= 1 ? "ml-2" : ""
+          } flex items-center gap-2 text-sm`}>
+          {!searchParams[filter] ? <></> : `${filter}:`}
+          <Link href={`?${filter}=${searchParams[filter]}`}>
+            {searchParams[filter]}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
 };
