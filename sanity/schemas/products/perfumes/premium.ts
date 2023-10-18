@@ -25,12 +25,6 @@ export const perfumePremiumSchema = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "modelo",
-      title: "Modelo",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: "titulo",
       title: "Título",
       type: "string",

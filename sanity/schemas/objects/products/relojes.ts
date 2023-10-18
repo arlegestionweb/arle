@@ -60,6 +60,12 @@ export const varianteDeRelojes = defineField({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "mostrarUnidadesDispobibles",
+      title: "Mostrar unidades disponibles",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
       name: "unidadesDisponibles",
       title: "Unidades disponibles",
       type: "number",

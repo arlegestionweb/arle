@@ -1,10 +1,6 @@
-import { GiNoseSide } from "react-icons/gi";
 import { defineArrayMember, defineField } from "sanity";
-import { videoSchema } from "../video";
-import ColombianPrice from "@/sanity/components/ColombianPrice";
 import { etiquetaSchema, generoSchema, precioConDescuentoSchema, precioSchema } from "./generales";
 import { TbPerfume } from "react-icons/tb";
-import StarRating from "../../../components/StarRating";
 
 export const resenaPerfumesSchema = defineField({
   name: "resena",
@@ -65,6 +61,12 @@ const variantePerfumeSchema = defineField({
       type: "string",
     }),
     defineField({
+      name: "mostrarUnidadesDispobibles",
+      title: "Mostrar unidades disponibles",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
       name: "unidadesDisponibles",
       title: "Unidades disponibles",
       type: "number",
@@ -108,6 +110,7 @@ export const variantesDePerfumesSchema = defineField({
   of: [variantePerfumeSchema],
 });
 
+
 export const detallesPerfumeSchema = defineField({
   name: "detalles",
   title: "Detalles",
@@ -117,16 +120,9 @@ export const detallesPerfumeSchema = defineField({
     defineField({
       name: "concentracion",
       title: "Concentración",
-      type: "string",
+      type: "reference",
+      to: [{ type: "concentracion" }],
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "calificacion",
-      title: "Calificación",
-      type: "number",
-      components: {
-        input: StarRating,
-      },
     }),
     generoSchema,
     defineField({

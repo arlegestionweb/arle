@@ -19,6 +19,18 @@ export const familiasOlfativasSchema = defineType({
   ],
 });
 
+export const concentracionSchema = defineType({
+  name: "concentracion",
+  title: "Concentración",
+  type: "document",
+  fields: [
+    defineField({
+      name: "nombre",
+      title: "Nombre",
+      type: "string",
+    })
+  ]
+});
 export const notasOlfativasSchema = defineType({
   name: "notasOlfativas",
   title: "Notas Olfativas",
