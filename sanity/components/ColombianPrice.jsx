@@ -1,22 +1,8 @@
 import { Stack, TextInput } from "@sanity/ui";
 import { useEffect, useState } from "react";
 import {set, unset} from 'sanity'
+import { formatNumber } from "../lib/utils";
 
-function formatNumber(number) {
-  let numStr = number.toString();
-  let result = "";
-  let count = 0;
-
-  for (let i = numStr.length - 1; i >= 0; i--) {
-    count++;
-    result = numStr[i] + result;
-    if (count === 3 && i !== 0) {
-      result = "." + result;
-      count = 0;
-    }
-  }
-  return result;
-}
 
 const ColombianPrice = ({ elementProps, onChange, value }) => {
   const [number, setNumber] = useState("");

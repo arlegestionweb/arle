@@ -19,3 +19,19 @@ export const makeNewParams = (filterName: string, filterValue: string | undefine
 
   return newParams;
 };
+
+export const formatNumber = function (number: number | string): string {
+  let numStr = number.toString();
+  let result = "";
+  let count = 0;
+
+  for (let i = numStr.length - 1; i >= 0; i--) {
+    count++;
+    result = numStr[i] + result;
+    if (count === 3 && i !== 0) {
+      result = "." + result;
+      count = 0;
+    }
+  }
+  return result;
+}
