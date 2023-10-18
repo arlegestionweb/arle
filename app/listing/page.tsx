@@ -1,8 +1,8 @@
 import { getListingInitialLoadContent } from "@/sanity/queries/pages/listingQueries";
 import Productos from "./_components/Productos";
-import Filters from "./_components/Filters";
 import Colecciones from "../_components/Colecciones";
-import Banner from "../_components/homepage/Banner";
+// import Banner from "../_components/homepage/Banner";
+import Filters from "./_components/Filters/index";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -24,10 +24,9 @@ const Listing = async ({
     coleccion => !!coleccion.productos
   );
 
-  // const { colecciones } = pageContent;
-  // const coleccionContent = colecciones?.find(
-  //   (coleccion) => coleccion.titulo === coleccionSeleccionada
-  // );
+  const coleccionContent = colecciones?.find(
+    (coleccion) => coleccion.titulo === coleccionSeleccionada
+  );
 
   if (!pageContent?.relojes && !pageContent?.perfumes && !pageContent?.gafas) {
     return null;
@@ -66,11 +65,6 @@ const Listing = async ({
       );
     }
 
-    // if (campoDeBusquedaSeleccionado) {
-    //   // Assuming the product has a 'name' or 'titulo' field to match against. Adjust as needed.
-    //   matchesCampoDeBusqueda = producto.type.toLowerCase().includes(campoDeBusquedaSeleccionado.toLowerCase());
-    // }
-
     if (campoDeBusquedaSeleccionado) {
       matchesCampoDeBusqueda = Object.entries(producto).some(([key, value]) => {
         // If the value is an object and has a 'titulo' property, use that for comparison
@@ -89,13 +83,10 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
-  // console.log({filteredProducts, variants: filteredProducts?.map(producto => JSON.stringify({... producto.variantes}))});
-  
   return (
     <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
       <Filters
         areFiltersActive={areFiltersActive}
-        // searchParams={searchParams}
       />
 
       {!coleccionSeleccionada ? (
