@@ -22,9 +22,9 @@ import {
   colorSchema,
   paisDeFabricacionSchema,
 } from "../schemas/documents/documentosVarios";
-import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema } from "../schemas/documents/productos/relojes";
-import { familiasOlfativasSchema, ingredientesSchema, notasOlfativasSchema } from "../schemas/documents/productos/perfumes";
-import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "../schemas/documents/productos/gafas";
+import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema } from "../schemas/products/relojes";
+import { concentracionSchema, familiasOlfativasSchema, ingredientesSchema, notasOlfativasSchema } from "../schemas/products/perfumes";
+import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "../schemas/products/gafas";
 
 export default (S: StructureBuilder) => {
   const siteSettingsListItem = S.listItem()
@@ -78,6 +78,7 @@ export default (S: StructureBuilder) => {
       materialDelLenteSchema.name,
       tipoDeMovimientoSchema.name,
       materialesDelPulsoSchema.name,
+      concentracionSchema.name,
     ].includes(listItem.getId());
   };
 
