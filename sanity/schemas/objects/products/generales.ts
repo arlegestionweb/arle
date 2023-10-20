@@ -52,7 +52,7 @@ export const mostrarCreditoSchema = defineField({
   name: "mostrarCredito",
   title: "Mostrar crédito",
   type: "boolean",
-  initialValue: false,
+  initialValue: true,
 });
 export const coleccionesDeMarcaRefSchema = defineField({
   name: "coleccionDeMarca",

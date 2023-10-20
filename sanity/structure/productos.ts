@@ -1,4 +1,4 @@
-import { perfumeLujoSchema } from "./../schemas/products/perfumes/lujo";
+import { perfumeLujoSchema } from "../schemas/products/perfumes/lujo";
 import { TbPerfume } from "react-icons/tb";
 import { type StructureBuilder } from "sanity/desk";
 import { perfumePremiumSchema } from "../schemas/products/perfumes/premium";
