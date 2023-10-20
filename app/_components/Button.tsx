@@ -23,17 +23,17 @@ type ButtonProps = ComponentPropsWithoutRef<"button"> & VariantProps<typeof butt
   onClick?: () => void;
   className?: string;
   active?: boolean;
-}
-
-const Button = ({children, active, className = "", labelType}: ButtonProps) => {
+};
+const Button = ({ children, active, className = "", ...rest }: ButtonProps) => {
   return (
-    <button className={cn(buttonsVariants({labelType}), className)}>
+    <button
+      {...rest}
+      className={cn(`px-3 py-1.5 border border-black relative`, className)}
+    >
       {children}
-      {active && (
-        <RedDot />
-      )}
+      {active && <RedDot />}
     </button>
   );
-}
+};
 
 export default Button;

@@ -36,7 +36,7 @@ type OpenCloseFilterButtonProps = {
 };
 const OpenCloseFilterButton = ({ isOpen, onClick }: OpenCloseFilterButtonProps) => {
   return (
-    <button onClick={onClick} className="w-7 h-7 p-[7px] bg-neutral-100 grid place-content-center text-3xl relative">
+    <div onClick={onClick} className="w-7 h-7 p-[7px] bg-neutral-100 grid place-content-center text-3xl relative">
       {isOpen ? (
         <Line />
       ) : (
@@ -48,7 +48,7 @@ const OpenCloseFilterButton = ({ isOpen, onClick }: OpenCloseFilterButtonProps) 
           />
         </>
       )}
-    </button>
+    </div>
   );
 };
 
