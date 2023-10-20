@@ -143,6 +143,7 @@ FilterMenuProps) => {
           <FilterSection title="Marcas" active={!!searchParams.get("marca")}>
             {marcas?.map((marca) => (
               <InputBox
+                key={marca.titulo}
                 name="marca"
                 title={marca.titulo}
                 type="checkbox"
