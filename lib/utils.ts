@@ -1,3 +1,4 @@
+import { TypeProducts } from '@/app/_components/types';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 
 export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyURLSearchParams) => {
@@ -34,4 +35,21 @@ export const formatNumber = function (number: number | string): string {
     }
   }
   return result;
+}
+
+export const getAllMarcas = (products: TypeProducts) => products.map((product) => product.marca);
+
+export const spanishToCamelCase = function (input: string) {
+  // Split the input string into words
+  const words = input.split(/[\s]+/);
+
+  // Capitalize the first letter of each word and join them in camelCase
+  const camelCased = words.map(word => {
+    // Remove accents from the word
+    const wordWithoutAccents = word.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    // Capitalize the first letter and use the rest of the letters as is
+    return wordWithoutAccents.charAt(0).toUpperCase() + wordWithoutAccents.slice(1).toLowerCase();
+  }).join('');
+
+  return camelCased.charAt(0).toLowerCase() + camelCased.slice(1); // Make the first character lowercase
 }

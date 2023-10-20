@@ -4,7 +4,9 @@ import FilterSection from "./FilterSection";
 import InputBox from "./InputBox";
 import Button from "@/app/_components/Button";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createUrl } from "@/sanity/lib/utils";
+import { createUrl } from "@/lib/utils";
+import { MarcaType } from "@/app/_components/types";
+import { useRef } from "react";
 
 type TypeSearchParams = {
   [key: string]: string | string[] | undefined;
@@ -14,13 +16,17 @@ type FilterMenuProps = {
   toggleFilter: () => void;
   areFiltersActive: boolean;
   searchParams: TypeSearchParams;
+  marcas: MarcaType[];
 };
 const FilterMenu = ({
   isFilterOpen,
   toggleFilter,
   areFiltersActive,
+  marcas,
 }: // searchParams,
 FilterMenuProps) => {
+  const formRef = useRef<HTMLFormElement | null>(null);
+
   const { push } = useRouter();
   const searchParams = useSearchParams();
   console.log({ searchParams });
@@ -31,11 +37,19 @@ FilterMenuProps) => {
     const val = e.target as HTMLFormElement;
 
     const newParams = new URLSearchParams(searchParams.toString());
-    // console.log({newparamsBefore: newParams.toString()})
 
+    const checkboxValues: string[] = [];
     val.querySelectorAll("input").forEach((input) => {
-      if (input.checked) {
+      if (input.type === "checkbox" && input.checked) {
         console.log(input.name, input.value);
+        if (newParams.has(input.name)) {
+          checkboxValues.push(input.value);
+          newParams.set(input.name, checkboxValues.join("& "));
+        } else {
+          newParams.set(input.name, input.value);
+        }
+      }
+      if (input.type === "radio" && input.checked) {
         newParams.set(input.name, input.value);
       }
     });
@@ -43,6 +57,13 @@ FilterMenuProps) => {
     push(createUrl("/listing", newParams));
     toggleFilter();
   };
+
+  const resetForm = () => {
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+  };
+
   return (
     <div
       className={`${
@@ -54,7 +75,7 @@ FilterMenuProps) => {
           isFilterOpen ? "" : "hidden"
         } w-[80vw] max-w-[400px] h-screen bg-white flex-col relative`}
       >
-        <form onSubmit={onFormSubmit}>
+        <form onSubmit={onFormSubmit} ref={formRef}>
           <header className="flex justify-end p-4">
             <AiOutlineCloseCircle
               onClick={toggleFilter}
@@ -119,6 +140,19 @@ FilterMenuProps) => {
               defaultChecked={searchParams.get("genero")?.includes("hombre")}
             />
           </FilterSection>
+          <FilterSection title="Marcas" active={!!searchParams.get("marca")}>
+            {marcas?.map((marca) => (
+              <InputBox
+                name="marca"
+                title={marca.titulo}
+                type="checkbox"
+                defaultChecked={searchParams
+                  .get("marca")
+                  ?.includes(marca.titulo)}
+                value={marca.titulo}
+              />
+            ))}
+          </FilterSection>
           <footer className="flex justify-evenly py-5">
             <Button type="submit">Aplicar Filtros</Button>
             {areFiltersActive && (
@@ -129,7 +163,13 @@ FilterMenuProps) => {
           </footer>
         </form>
       </aside>
-      <div className="w-[10vw] h-screen" onClick={toggleFilter} />
+      <div
+        className="w-[10vw] h-screen"
+        onClick={() => {
+          toggleFilter();
+          resetForm();
+        }}
+      />
     </div>
   );
 };

@@ -18,8 +18,10 @@ export type NotaOlftativaType = {
   titulo: string;
   descripcion: string;
 };
+export type TypeProducts = (PerfumeLujoType | PerfumePremiumType | RelojType)[];
 
 type PerfumeType = {
+  marca: MarcaType;
   modelo: string;
   descripcion: string;
   imagenes: imageType[];
@@ -51,7 +53,7 @@ type PerfumePremiumExtraType = {
 export type PerfumeLujoType = PerfumeType & PerfumeLujoExtraType;
 export type PerfumePremiumType = PerfumeType & PerfumePremiumExtraType;
 
-type MarcaType = {
+export type MarcaType = {
   titulo: string;
   descripcion: string;
   logotipo: {

@@ -3,7 +3,7 @@ import { TColecciones } from "@/sanity/queries/pages/listingQueries";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "../_lib/utils";
-import { createUrl, makeNewParams } from "@/sanity/lib/utils";
+// import { createUrl, makeNewParams } from "@/sanity/lib/utils";
 import { useSearchParams } from "next/navigation";
 
 type ColeccionesProps = { colecciones: TColecciones, className?: string }

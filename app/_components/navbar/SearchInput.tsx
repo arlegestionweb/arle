@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FiSearch } from "react-icons/fi";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AiOutlineEnter } from "react-icons/ai";
-import { createUrl, makeNewParams } from "@/sanity/lib/utils";
+import { createUrl, makeNewParams } from "@/lib/utils";
 import { cn } from "@/app/_lib/utils";
 
 type SearchInputProps = {

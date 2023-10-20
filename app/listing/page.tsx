@@ -3,6 +3,7 @@ import Productos from "./_components/Productos";
 import Colecciones from "../_components/Colecciones";
 // import Banner from "../_components/homepage/Banner";
 import Filters from "./_components/Filters/index";
+import { getAllMarcas } from "@/lib/utils";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -83,10 +84,13 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
+  console.log(getAllMarcas(filteredProducts || []))
+  const marcas = getAllMarcas(filteredProducts || []);
   return (
     <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
       <Filters
         areFiltersActive={areFiltersActive}
+        marcas={marcas}
       />
 
       {!coleccionSeleccionada ? (

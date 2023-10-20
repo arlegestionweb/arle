@@ -1,7 +1,7 @@
 import { Stack, TextInput } from "@sanity/ui";
 import { useEffect, useState } from "react";
 import {set, unset} from 'sanity'
-import { formatNumber } from "../lib/utils";
+import { formatNumber } from "../../lib/utils";
 
 
 const ColombianPrice = ({ elementProps, onChange, value }) => {

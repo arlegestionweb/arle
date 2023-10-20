@@ -7,15 +7,18 @@ import { FiFilter } from "react-icons/fi";
 import { LuSettings2 } from "react-icons/lu";
 import BreadCrumbs from "./BreadCrumbs";
 import FilterMenu from "./FilterMenu";
+import { MarcaType } from "@/app/_components/types";
 
 type FiltersProps = {
   areFiltersActive: boolean;
   // searchParams: {
   //   [key: string]: string | string[] | undefined;
   // };
+  marcas: MarcaType[];
 }
 const Filters = ({
   areFiltersActive,
+  marcas
 }: FiltersProps
 ) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -65,6 +68,7 @@ const Filters = ({
         isFilterOpen={isFilterOpen}
         toggleFilter={toggleFilter}
         searchParams={allParams}
+        marcas={marcas}
       />
     </>
   );

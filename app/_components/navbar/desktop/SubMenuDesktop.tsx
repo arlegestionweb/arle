@@ -1,5 +1,5 @@
 "use client";
-import { createUrl, makeNewParams } from "@/sanity/lib/utils";
+import { createUrl, makeNewParams } from "@/lib/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
