@@ -155,9 +155,7 @@ function MenuDrawer({ isOpen, onClose, animation = "left" }: DrawerProps) {
           </section>
         </section>
 
-        {/* Levels  */}
-        {currentLevel > 0 && (
-          <Layout volver={handleBack}>
+          <Layout volver={handleBack} isOpen={currentLevel > 0} isMenuClose={isOpen}>
             <h5 className="py-3 text-zinc-800 text-lg font-medium font-inter leading-snug">
               {MenuStack[1] && MenuStack[1].label}
             </h5>
@@ -165,10 +163,8 @@ function MenuDrawer({ isOpen, onClose, animation = "left" }: DrawerProps) {
               items={MenuStack[1] && [...(MenuStack[1].subMenu as MenuItem[])]}
               handleItemClick={handleItemClick}></SubMenu>
           </Layout>
-        )}
 
-        {currentLevel > 1 && (
-          <Layout volver={handleBack}>
+          <Layout volver={handleBack} isOpen={currentLevel > 1} isMenuClose={isOpen}>
             <h5 className="py-3 text-zinc-800 text-lg font-medium font-inter leading-snug">
               {menu.label}
             </h5>
@@ -178,7 +174,6 @@ function MenuDrawer({ isOpen, onClose, animation = "left" }: DrawerProps) {
               Icon={() => <HiMiniArrowUpRight size={20} />}
             />
           </Layout>
-        )}
       </Drawer>
     </>
   );
@@ -195,7 +190,7 @@ const SubMenu = ({
 }) => {
   return (
     <ul className="h-2.5">
-      {items.map((item, index) => (
+      {items?.map((item, index) => (
         <li
           key={index}
           className="cursor-pointer h-9 py-3 text-zinc-800 font-inter leading-tight flex gap-2 items-center"
