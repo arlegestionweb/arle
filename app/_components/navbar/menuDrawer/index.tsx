@@ -92,10 +92,7 @@ function MenuDrawer({ isOpen, onClose, animation = "left" }: DrawerProps) {
       setMenuStack([...MenuStack, item]);
 
       setMenu(item);
-    } else {
-      // TODO: si no hay submenu, hacer algo
-      console.log(`Hiciste clic en: ${item.label}`);
-    }
+    } 
   };
 
   const handleBack = () => {
