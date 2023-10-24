@@ -2,6 +2,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 import { imageArrayForProducts, imageObjectSchema } from "../../objects/image";
 import {
   generoSchema,
+  inspiracionSchema,
   mostrarCreditoSchema,
 } from "../../objects/products/generales";
 import bannersSchema from "../../objects/bannersSchema";
@@ -82,32 +83,7 @@ export const perfumeLujoSchema = defineType({
         imageObjectSchema,
       ],
     }),
-    defineField({
-      name: "inspiracion",
-      title: "Inspiración",
-      type: "object",
-      group: "detalles",
-      fields: [
-        defineField({
-          name: "usarInspiracion",
-          title: "Usar inspiración?",
-          type: "boolean",
-        }),
-        defineField({
-          name: "resena",
-          title: "Reseña",
-          type: "text",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "imagen",
-          title: "Imagen",
-          type: "object",
-          validation: (Rule) => Rule.required(),
-          fields: [imageObjectSchema],
-        }),
-      ],
-    }),
+    inspiracionSchema,
     bannersSchema,
     defineField({
       name: "notasOlfativas",

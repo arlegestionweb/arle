@@ -1,5 +1,6 @@
 import ColombianPrice from "@/sanity/components/ColombianPrice";
 import { defineArrayMember, defineField } from "sanity";
+import { imageObjectSchema } from "../image";
 
 export const generoSchema = defineField({
   name: "genero",
@@ -38,6 +39,41 @@ export const etiquetaSchema = defineField({
   options: {
     list: ["nuevo", "mas vendido", "ultimas unidades"],
   },
+});
+
+export const inspiracionSchema = defineField({
+  name: "inspiracion",
+  title: "Inspiración",
+  type: "object",
+  group: "detalles",
+  fields: [
+    defineField({
+      name: "usarInspiracion",
+      title: "Usar inspiración?",
+      type: "boolean",
+    }),
+    defineField({
+      name: "contenido",
+      title: "Contenido",
+      type: "object",
+      fields: [
+        defineField({
+          name: "resena",
+          title: "Reseña",
+          type: "text",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "object",
+          validation: (Rule) => Rule.required(),
+          fields: [imageObjectSchema],
+        }),
+      ],
+      hidden: ({ parent }) => !parent?.usarInspiracion,
+    }),
+  ],
 });
 
 export const precioSchema = defineField({

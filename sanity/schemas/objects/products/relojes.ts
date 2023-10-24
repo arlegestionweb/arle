@@ -5,7 +5,7 @@ import {
   precioConDescuentoSchema,
   precioSchema,
 } from "./generales";
-import { imageArrayForProducts } from "../image";
+import { imageArrayForProducts, imageObjectSchema } from "../image";
 
 export const resistenciaAlAguaSchema = defineField({
   name: "resistenciaAlAgua",
@@ -23,7 +23,7 @@ export const tipoDeMovimientoRefSchema = defineField({
   validation: (Rule) => Rule.required(),
 });
 
-export const varianteDeRelojes = defineField({
+const varianteDeRelojes = defineField({
   name: "variante",
   title: "Variante",
   type: "object",
@@ -88,12 +88,88 @@ export const varianteDeRelojes = defineField({
         };
       }
       return {
-        title,
+        title: `Pulso ${title}`,
         subtitle: `$ ${subtitle}`,
         media: media[0],
       };
     },
   },
+});
+
+export const detallesLujoSchema = defineField({
+  name: "detalles",
+  title: "Detalles",
+  type: "object",
+  group: "detalles",
+
+  fields: [
+    defineField({
+      name: "usarDetalles",
+      title: "Usar detalles?",
+      type: "boolean",
+    }),
+    defineField({
+      name: "contenido",
+      title: "Contenido",
+      type: "object",
+      fields: [
+        defineField({
+          name: "texto",
+          title: "Texto",
+          type: "text",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "object",
+          validation: (Rule) => Rule.required(),
+          fields: [imageObjectSchema],
+        }),
+      ],
+      hidden: ({ parent }) => !parent?.usarDetalles,
+    }),
+  ],
+});
+
+export const movimientoObjSchema = defineField({
+  name: "movimiento",
+  title: "Movimiento",
+  type: "object",
+  group: "detalles",
+  fields: [
+    defineField({
+      name: "usarMovimiento",
+      title: "Usar movimiento?",
+      type: "boolean",
+    }),
+    defineField({
+      name: "contenido",
+      title: "Contenido",
+      type: "object",
+      fields: [
+        defineField({
+          name: "tipo",
+          title: "Tipo de Movimiento",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "descripcion",
+          title: "Descripción",
+          type: "text",
+        }),
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "object",
+          validation: (Rule) => Rule.required(),
+          fields: [imageObjectSchema],
+        }),
+      ],
+      hidden: ({ parent }) => !parent?.usarMovimiento,
+    }),
+  ],
 });
 
 export const variantesDeRelojesSchema = defineField({
@@ -143,14 +219,42 @@ export const funcionesSchema = defineField({
     }),
 });
 
-
-
 export const pulsoSchemaRef = defineField({
   name: "material",
   title: "Material del Pulso",
   type: "reference",
   to: [{ type: "materialDelPulso" }],
   validation: (Rule) => Rule.required(),
+});
+
+export const especificacionesLujoSchema = defineField({
+  name: "especificaciones",
+  title: "Especificaciones",
+  type: "object",
+  group: "detalles",
+  fields: [
+    defineField({
+      name: "resistenciaAlAgua",
+      title: "Resistencia al agua",
+      type: "string",
+    }),
+    funcionesSchema,
+    pulsoSchemaRef,
+    defineField({
+      name: "tipoDeReloj",
+      title: "Tipo de Reloj",
+      type: "reference",
+      to: [{ type: "tipoDeReloj" }],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "estiloDeReloj",
+      title: "Estilo de Reloj",
+      type: "reference",
+      to: [{ type: "estiloDeReloj" }],
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
 });
 
 export const cajaSchema = defineField({

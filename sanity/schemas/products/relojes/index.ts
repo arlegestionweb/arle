@@ -4,6 +4,7 @@ import {
   TbDeviceWatchStats2,
 } from "react-icons/tb";
 import { defineField, defineType } from "sanity";
+import { imageObjectSchema } from "../../objects/image";
 
 export const funcionDelRelojSchema = defineType({
   name: "funcionDeReloj",
@@ -79,6 +80,13 @@ export const tipoDeMovimientoSchema = defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "descripcion",
+      title: "descripción",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    imageObjectSchema,
   ],
 });
 
