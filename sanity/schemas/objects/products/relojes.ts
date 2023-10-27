@@ -96,41 +96,6 @@ const varianteDeRelojes = defineField({
   },
 });
 
-export const detallesLujoSchema = defineField({
-  name: "detalles",
-  title: "Detalles",
-  type: "object",
-  group: "detalles",
-
-  fields: [
-    defineField({
-      name: "usarDetalles",
-      title: "Usar detalles?",
-      type: "boolean",
-    }),
-    defineField({
-      name: "contenido",
-      title: "Contenido",
-      type: "object",
-      fields: [
-        defineField({
-          name: "texto",
-          title: "Texto",
-          type: "text",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "imagen",
-          title: "Imagen",
-          type: "object",
-          validation: (Rule) => Rule.required(),
-          fields: [imageObjectSchema],
-        }),
-      ],
-      hidden: ({ parent }) => !parent?.usarDetalles,
-    }),
-  ],
-});
 
 export const movimientoObjSchema = defineField({
   name: "movimiento",
@@ -227,7 +192,7 @@ export const pulsoSchemaRef = defineField({
   validation: (Rule) => Rule.required(),
 });
 
-export const especificacionesLujoSchema = defineField({
+export const especificacionesRelojesLujoSchema = defineField({
   name: "especificaciones",
   title: "Especificaciones",
   type: "object",

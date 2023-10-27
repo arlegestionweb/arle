@@ -6,7 +6,7 @@ import {
   paisDeFabricacionSchema,
 } from "./documents/documentosVarios";
 import { marcasSchema } from "./documents/marcas";
-import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "./products/gafas";
+import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDeLaVarillaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "./products/gafas";
 import { concentracionSchema, familiasOlfativasSchema, ingredientesSchema, notasOlfativasSchema } from "./products/perfumes";
 import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema } from "./products/relojes";
 import { recomendadosSchema } from "./documents/recomendados";
@@ -66,4 +66,5 @@ export const schemaTypes = [
   tipoDeMovimientoSchema,
   materialesDelPulsoSchema,
   concentracionSchema,
+  materialDeLaVarillaSchema,
 ];

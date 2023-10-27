@@ -1,7 +1,6 @@
 import React from "react";
 
 const ColorPreview = ({ title, color }) => {
-  console.log({ title, color });
   return (
     <div
       style={{

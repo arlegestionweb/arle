@@ -4,6 +4,7 @@ import {
   generoSchema,
   inspiracionSchema,
   mostrarCreditoSchema,
+  slugSchema,
 } from "../../objects/products/generales";
 import bannersSchema from "../../objects/bannersSchema";
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
@@ -139,5 +140,21 @@ export const perfumeLujoSchema = defineType({
       to: [{ type: "paisDeFabricacion" }],
     }),
     variantesDePerfumesSchema,
+    slugSchema,
   ],
+  preview: {
+    select: {
+      title: "titulo",
+      media: "imagenes",
+    },
+    prepare(selection) {
+      const { title, media } = selection;
+      if (!title || !media) return { title: "Sin título" };
+      if (!media) return {title}
+      return {
+        title,
+        media: media[0],
+      };
+    },
+  },
 });

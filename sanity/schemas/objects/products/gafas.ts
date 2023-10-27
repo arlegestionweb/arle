@@ -16,10 +16,17 @@ export const monturaSchema = defineField({
       to: [{ type: "formaDeLaMontura" }],
     }),
     defineField({
-      name: "material",
+      name: "materialMontura",
       title: "Material de la Montura",
       type: "reference",
       to: [{ type: "materialDelMarco" }],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "materialVarilla",
+      title: "Material de la Varilla",
+      type: "reference",
+      to: [{ type: "materialDeLaVarilla" }],
       validation: (Rule) => Rule.required(),
     }),
   ],
@@ -103,7 +110,28 @@ const varianteDeGafa = defineField({
       validation: (Rule) => Rule.required(),
     }),
     imageArrayForProducts,    
-  ]
+  ],
+  preview: {
+    select: {
+      title: "colorDeLaMontura.nombre",
+      subtitle: "precio",
+      media: "imagenes",
+    },
+    prepare(selection) {
+      const { title, subtitle, media } = selection;
+      if (!title || !subtitle || !media) {
+        return {
+          title: "Sin título",
+          subtitle: "Sin precio",
+        };
+      }
+      return {
+        title: `Pulso ${title}`,
+        subtitle: `$ ${subtitle}`,
+        media: media[0],
+      };
+    },
+  },
 })
 
 export const variantesDeGafaSchema = defineField({
@@ -141,9 +169,6 @@ export const detallesDeGafaSchema = defineField({
       to: [{ type: "estiloDeGafa" }],
       validation: (Rule) => Rule.required(),
     }),
-    generoSchema,
-    mostrarCreditoSchema,
-    coleccionesDeMarcaRefSchema,
     monturaSchema,
     lenteSchema,
   ]

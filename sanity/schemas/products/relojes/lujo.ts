@@ -1,6 +1,6 @@
 import { defineField, defineType } from "sanity";
-import { coleccionesDeMarcaRefSchema, garantiaSchema, generoSchema, inspiracionSchema, mostrarCreditoSchema } from "../../objects/products/generales";
-import { cajaSchema, detallesLujoSchema, especificacionesLujoSchema, movimientoObjSchema, variantesDeRelojesSchema } from "../../objects/products/relojes";
+import { coleccionesDeMarcaRefSchema, detallesLujoSchema, garantiaSchema, generoSchema, inspiracionSchema, mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
+import { cajaSchema, especificacionesRelojesLujoSchema, movimientoObjSchema, variantesDeRelojesSchema } from "../../objects/products/relojes";
 import bannersSchema from "../../objects/bannersSchema";
 
 export const relojesLujoSchema = defineType({
@@ -35,13 +35,14 @@ export const relojesLujoSchema = defineType({
     mostrarCreditoSchema,
     coleccionesDeMarcaRefSchema,
     inspiracionSchema,
-    detallesLujoSchema ,
+    detallesLujoSchema,
     movimientoObjSchema,
     bannersSchema,
     cajaSchema,
-    especificacionesLujoSchema,
+    especificacionesRelojesLujoSchema,
     garantiaSchema,
     variantesDeRelojesSchema,
+    slugSchema,
   ],
   preview: {
     select: {
