@@ -6,10 +6,9 @@ import { FiFilter } from "react-icons/fi";
 import { useState } from "react";
 import Link from "next/link";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import Drawer from "../../_components/Drawer";
-// import Drawer from "../Drawer";
 import { useSearchParams } from "next/navigation";
 import RedDot from "@/app/_components/RedDot";
+import Drawer from "@/app/_components/Drawer";
 
 const Filters = ({
   areFiltersActive,
