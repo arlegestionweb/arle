@@ -1,14 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
-import SearchDesktop from "./SearchDesktop";
 import SubMenuDesktop from "./SubMenuDesktop";
-
+import Burger from "../Burger";
+import { useState } from "react";
+import MenuDrawer from "../menuDrawer";
+import SearchInput from "../SearchInput";
 
 type NavDesktopProps = {
   className?: string;
 };
 
 const DesktopNavBar = ({ className }: NavDesktopProps) => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   return (
     <nav className={className}>
       <section
@@ -17,7 +21,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
           <Image src={"/arlé-logo.png"} width={76} height={22} alt="logo" />
         </Link>
 
-        <SearchDesktop/>
+        <SearchInput />
 
         <section className="flex gap-5">
           <Link href={'/'} className=" px-2 justify-center items-center gap-2 flex">
@@ -37,10 +41,16 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
             <div className="justify-center items-center gap-2.5 flex">
               <div className="text-neutral-600 text-base font-medium leading-normal">Kart</div>
             </div>
-          </Link> 
-        </section>      
+          </Link>
+          <Burger
+            isNavOpen={isNavOpen}
+            barColor="bg-[#5D5A88]"
+            onClickHandler={() => setIsNavOpen(!isNavOpen)}
+          />    
+          <MenuDrawer isOpen={isNavOpen} animation="right" onClose={()=>setIsNavOpen(!isNavOpen)}/>
+        </section>
       </section>
-      <SubMenuDesktop/>
+      <SubMenuDesktop />
     </nav>
   );
 };

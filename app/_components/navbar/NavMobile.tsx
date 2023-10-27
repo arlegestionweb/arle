@@ -8,6 +8,7 @@ import { FiShoppingCart, FiSearch } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AiOutlineEnter } from "react-icons/ai";
+import MenuDrawer from "./menuDrawer";
 
 type MobileNavBarProps = {
   className?: string;
@@ -32,6 +33,8 @@ const MobileNavBar = ({ className }: MobileNavBarProps) => {
           barColor="bg-[#5D5A88]"
           onClickHandler={() => setIsNavOpen(!isNavOpen)}
         />
+        
+        <MenuDrawer isOpen={isNavOpen}/>
       </div>
     </nav>
   );

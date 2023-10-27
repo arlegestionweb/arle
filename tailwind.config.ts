@@ -26,6 +26,44 @@ const config: Config = {
         md: `calc(var(--radius) - 2px)`,
         sm: 'calc(var(--radius) - 4px)',
       },
+      keyframes: {
+        'slide-in': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)', },
+        },
+        // slide in from right
+        'slide-in-right': {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'slide-out': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+        // slide out from right
+        'slide-out-right': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+        // fade in
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '0.4' },
+        },
+        // fade out
+        'fade-out': {
+          '0%': { opacity: '0.4' },
+          '100%': { opacity: '0' },
+        },
+      },
+      animation: {
+        'slide-in': 'slide-in 0.2s ease-out',
+        'slide-in-right': 'slide-in-right 0.2s ease-out',
+        'slide-out': 'slide-out 0.2s ease-out',
+        'slide-out-right': 'slide-out-right 0.2s ease-out',
+        'fade-in': 'fade-in 0.2s ease-out',
+        'fade-out': 'fade-out 0.2s ease-out',
+      },
     },
   },
   plugins: [],

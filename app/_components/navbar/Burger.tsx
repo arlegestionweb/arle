@@ -1,4 +1,5 @@
 import { MouseEventHandler } from "react";
+import MenuDrawer from "./menuDrawer";
 
 interface BurgerProps {
   onClickHandler?: MouseEventHandler<HTMLDivElement>;
@@ -8,22 +9,23 @@ interface BurgerProps {
 
 const Burger = ({ onClickHandler, isNavOpen, barColor }: BurgerProps) => {
   return (
-    <div
-      className="relative z-30 grid gap-2 cursor-pointer "
-      onClick={onClickHandler}
-    >
-      <Bar
-        rotateZ={!isNavOpen ? "rotate-0" : "rotate-45 translate-y-3"}
-        barColor={barColor}
-        width="w-7"
+    <div className="flex justify-center items-center" onClick={onClickHandler}>
+      <div className="relative grid place-content-center z-50 gap-2  cursor-pointer ">
+        <Bar
+          rotateZ={!isNavOpen ? "rotate-0" : "rotate-45 translate-y-3"}
+          barColor={barColor}
+          width="w-7"
         />
-      <Bar width={isNavOpen ? "w-0" : "w-7"} barColor={barColor} />
-      <Bar
-        rotateZ={!isNavOpen ? "rotate-0" : "-rotate-45 -translate-y-2"}
-        barColor={barColor}
-        
-        width="w-7"
-      />
+        <Bar
+          width={isNavOpen ? "w-0" : "w-7"}
+          barColor={barColor}
+        />
+        <Bar
+          rotateZ={!isNavOpen ? "rotate-0" : "-rotate-45 -translate-y-2"}
+          barColor={barColor}
+          width="w-7"
+        />
+      </div>
     </div>
   );
 };
@@ -42,7 +44,7 @@ const Bar = ({
 }: BarProps) => {
   return (
     <div
-      className={`${width} ${rotateZ} transition-all h-[2.5px]  ${barColor} rounded-md`}
+      className={`${width} ${rotateZ} transition-all h-[2px]  ${barColor} rounded-md`}
     />
   );
 };
