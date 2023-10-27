@@ -9,6 +9,12 @@ export const resenaPerfumesSchema = defineField({
   fields: [
     // videoSchema,
     defineField({
+      name: "usarInspiracion",
+      title: "Usar inspiración?",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
       name: "inspiracion",
       title: "Inspiraicón, historia u otros",
       type: "array",
@@ -117,6 +123,7 @@ export const detallesPerfumeSchema = defineField({
   type: "object",
   group: "detalles",
   fields: [
+    generoSchema,
     defineField({
       name: "concentracion",
       title: "Concentración",
@@ -124,25 +131,30 @@ export const detallesPerfumeSchema = defineField({
       to: [{ type: "concentracion" }],
       validation: (Rule) => Rule.required(),
     }),
-    generoSchema,
+    defineField({
+      name: "parteDeUnSet",
+      title: "Es parte de un set?",
+      type: "boolean",
+      initialValue: false,
+    }),
     defineField({
       name: "resenaCorta",
       title: "Reseña corta",
       type: "text",
       hidden: ({ document }) => document?._type !== "perfumePremium",
     }),
-    defineField({
-      name: "familiaOlfativa",
-      title: "Familia olfativa",
-      type: "reference",
-      to: [{ type: "familiasOlfativas" }],
-    }),
-
+    
     defineField({
       name: "notasOlfativas",
       title: "Notas olfativas",
       type: "object",
       fields: [
+        defineField({
+          name: "familiaOlfativa",
+          title: "Familia olfativa",
+          type: "reference",
+          to: [{ type: "familiasOlfativas" }],
+        }),
         defineField({
           name: "notasDeSalida",
           title: "Notas de salida",

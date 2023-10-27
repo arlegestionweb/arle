@@ -1,5 +1,8 @@
 import ColombianPrice from "@/sanity/components/ColombianPrice";
-import { defineArrayMember, defineField } from "sanity";
+import { SlugParent, defineArrayMember, defineField } from "sanity";
+import { imageObjectSchema } from "../image";
+import sanityClient from "@/sanity/sanityClient";
+import { removeSpanishAccents } from "@/utils/helpers";
 
 export const generoSchema = defineField({
   name: "genero",
@@ -9,6 +12,76 @@ export const generoSchema = defineField({
   options: {
     list: ["mujer", "hombre", "unisex"],
   },
+});
+export const detallesLujoSchema = defineField({
+  name: "detalles",
+  title: "Detalles",
+  type: "object",
+  group: "detalles",
+
+  fields: [
+    defineField({
+      name: "usarDetalles",
+      title: "Usar detalles?",
+      type: "boolean",
+    }),
+    defineField({
+      name: "contenido",
+      title: "Contenido",
+      type: "object",
+      fields: [
+        defineField({
+          name: "texto",
+          title: "Texto",
+          type: "text",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "object",
+          validation: (Rule) => Rule.required(),
+          fields: [imageObjectSchema],
+        }),
+      ],
+      hidden: ({ parent }) => !parent?.usarDetalles,
+    }),
+  ],
+});
+export const monturaDetallesSchema = defineField({
+  name: "monturaDetalles",
+  title: "Detalles",
+  type: "object",
+  group: "detalles",
+
+  fields: [
+    defineField({
+      name: "usarDetalles",
+      title: "Usar detalles?",
+      type: "boolean",
+    }),
+    defineField({
+      name: "contenido",
+      title: "Contenido",
+      type: "object",
+      fields: [
+        defineField({
+          name: "texto",
+          title: "Texto",
+          type: "text",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "object",
+          validation: (Rule) => Rule.required(),
+          fields: [imageObjectSchema],
+        }),
+      ],
+      hidden: ({ parent }) => !parent?.usarDetalles,
+    }),
+  ],
 });
 
 export const resenaSchema = defineField({
@@ -40,6 +113,41 @@ export const etiquetaSchema = defineField({
   },
 });
 
+export const inspiracionSchema = defineField({
+  name: "inspiracion",
+  title: "Inspiración",
+  type: "object",
+  group: "detalles",
+  fields: [
+    defineField({
+      name: "usarInspiracion",
+      title: "Usar inspiración?",
+      type: "boolean",
+    }),
+    defineField({
+      name: "contenido",
+      title: "Contenido",
+      type: "object",
+      fields: [
+        defineField({
+          name: "resena",
+          title: "Reseña",
+          type: "text",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "object",
+          validation: (Rule) => Rule.required(),
+          fields: [imageObjectSchema],
+        }),
+      ],
+      hidden: ({ parent }) => !parent?.usarInspiracion,
+    }),
+  ],
+});
+
 export const precioSchema = defineField({
   name: "precio",
   title: "Precio",
@@ -52,7 +160,7 @@ export const mostrarCreditoSchema = defineField({
   name: "mostrarCredito",
   title: "Mostrar crédito",
   type: "boolean",
-  initialValue: false,
+  initialValue: true,
 });
 export const coleccionesDeMarcaRefSchema = defineField({
   name: "coleccionDeMarca",
@@ -90,6 +198,28 @@ export const garantiaSchema = defineField({
   ],
 });
 
+// export const slugSchema = defineField({
+//   name: "slug",
+//   title: "Link del producto",
+//   type: "slug",
+//   group: "general",
+//   validation: (Rule) => Rule.required(),
+//   options: {
+//     source: "modelo",
+//     maxLength: 200,
+//     slugify: (input) => {
+//       return input.toLowerCase().replace(/\s+/g, "-").slice(0, 200);
+//     },
+//   },
+// });
+
+type CustomSlugParent = SlugParent & { 
+  marca?: { _ref: string };
+  modelo?: string;
+  titulo?: string;
+  _id?: string;
+  _type?: string;
+};
 export const slugSchema = defineField({
   name: "slug",
   title: "Link del producto",
@@ -97,10 +227,32 @@ export const slugSchema = defineField({
   group: "general",
   validation: (Rule) => Rule.required(),
   options: {
-    source: "modelo",
+    source: async (document: CustomSlugParent, options) => {
+      if (document.marca) {
+        if (document.modelo) {
+          return `${document.modelo}`;
+        }
+        if (document.titulo) {
+          return `${document.titulo}`;
+        }
+      }
+      return "sin-marca";
+    },
     maxLength: 200,
-    slugify: (input) => {
-      return input.toLowerCase().replace(/\s+/g, "-").slice(0, 200);
+    slugify: async (input, _, context) => {
+      const title = input
+      const client = context.getClient({ apiVersion: "2021-03-25" });
+      const { parent } = context as {parent: CustomSlugParent};
+      if (parent.marca && parent._id && parent._type) {
+        const marca = await client.fetch(
+          `*[_id == "${parent.marca?._ref}"][0]{titulo}`
+        );
+
+        const id = parent._id
+        const slug = `/${parent._type}/${removeSpanishAccents(marca.titulo)}/${title}/${id}`;
+        return slug.toLowerCase().replace(/\s+/g, "-").slice(0, 200).replace("drafts.", "");
+      }
+      return "acaba de llenar los datos para llenar este campo automaticamente"
     },
   },
 });

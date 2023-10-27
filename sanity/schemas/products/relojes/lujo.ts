@@ -1,17 +1,6 @@
-import { defineType, defineField } from "sanity";
-
-import { videoSchema } from "../../objects/video";
-import {
-  detallesRelojSchema,
-  variantesDeRelojesSchema,
-} from "../../objects/products/relojes";
-import {
-  coleccionesDeMarcaRefSchema,
-  garantiaSchema,
-  mostrarCreditoSchema,
-  resenaSchema,
-  slugSchema,
-} from "../../objects/products/generales";
+import { defineField, defineType } from "sanity";
+import { coleccionesDeMarcaRefSchema, detallesLujoSchema, garantiaSchema, generoSchema, inspiracionSchema, mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
+import { cajaSchema, especificacionesRelojesLujoSchema, movimientoObjSchema, variantesDeRelojesSchema } from "../../objects/products/relojes";
 import bannersSchema from "../../objects/bannersSchema";
 
 export const relojesLujoSchema = defineType({
@@ -28,7 +17,6 @@ export const relojesLujoSchema = defineType({
       name: "marca",
       title: "Marca",
       type: "reference",
-      group: "general",
       to: [{ type: "marca" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -36,23 +24,24 @@ export const relojesLujoSchema = defineType({
       name: "modelo",
       title: "Modelo o Referencia",
       type: "string",
-      group: "general",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "descripcion",
       title: "Descripción",
-      group: "general",
       type: "text",
     }),
-    variantesDeRelojesSchema,
-    // videoSchema,
-    detallesRelojSchema,
-    resenaSchema,
-    garantiaSchema,
-    bannersSchema,
-    coleccionesDeMarcaRefSchema,
+    generoSchema,
     mostrarCreditoSchema,
+    coleccionesDeMarcaRefSchema,
+    inspiracionSchema,
+    detallesLujoSchema,
+    movimientoObjSchema,
+    bannersSchema,
+    cajaSchema,
+    especificacionesRelojesLujoSchema,
+    garantiaSchema,
+    variantesDeRelojesSchema,
     slugSchema,
   ],
   preview: {
@@ -72,4 +61,4 @@ export const relojesLujoSchema = defineType({
       };
     },
   },
-});
+})

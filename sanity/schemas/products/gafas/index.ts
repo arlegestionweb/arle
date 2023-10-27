@@ -41,6 +41,19 @@ export const materialDelMarcoSchema = defineType({
     }),
   ],
 });
+export const materialDeLaVarillaSchema = defineType({
+  name: "materialDeLaVarilla",
+  title: "Material de la Varilla",
+  type: "document",
+  fields: [
+    defineField({
+      name: "titulo",
+      title: "Título",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+});
 export const materialDelLenteSchema = defineType({
   name: "materialDelLente",
   title: "Material del Lente",

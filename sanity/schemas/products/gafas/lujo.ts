@@ -1,7 +1,7 @@
 import { defineType, defineField } from "sanity";
 
-import { garantiaSchema, resenaSchema, slugSchema } from "../../objects/products/generales";
-import { detallesDeGafaSchema, variantesDeGafaSchema } from "../../objects/products/gafas";
+import { coleccionesDeMarcaRefSchema, detallesLujoSchema, garantiaSchema, generoSchema, inspiracionSchema, monturaDetallesSchema, mostrarCreditoSchema, resenaSchema, slugSchema } from "../../objects/products/generales";
+import { detallesDeGafaSchema, lenteSchema, monturaSchema, variantesDeGafaSchema } from "../../objects/products/gafas";
 import bannersSchema from "../../objects/bannersSchema";
 
 export const gafasLujoSchema = defineType({
@@ -35,40 +35,68 @@ export const gafasLujoSchema = defineType({
       group: "general",
       type: "text",
     }),
-    resenaSchema,
+    generoSchema,
+    mostrarCreditoSchema,
+    coleccionesDeMarcaRefSchema,
+    garantiaSchema,
+    inspiracionSchema,
+    detallesLujoSchema,
+    monturaDetallesSchema,
     bannersSchema,
     defineField({
-      name: "paisDeFabricacion",
-      title: "País de fabricación",
+      name: "especificaciones",
+      title: "Especificaciones",
       group: "detalles",
-      type: "reference",
-      to: [{ type: "paisDeFabricacion" }],
+      type: "object",
+      fields: [
+        defineField({
+          name: "paisDeFabricacion",
+          title: "País de fabricación",
+          group: "detalles",
+          type: "reference",
+          to: [{ type: "paisDeFabricacion" }],
+        }),
+        defineField({
+          name: "queIncluye",
+          title: "Qué incluye?",
+          group: "general",
+          type: "string",
+        }),
+        defineField({
+          name: "tipoDeGafa",
+          title: "Tipo de Gafa",
+          type: "reference",
+          to: [{ type: "tipoDeGafa" }],
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "estiloDeGafa",
+          title: "Estilo de Gafa",
+          type: "reference",
+          to: [{ type: "estiloDeGafa" }],
+          validation: (Rule) => Rule.required(),
+        }),
+        monturaSchema,
+        lenteSchema,
+      ]
     }),
-    defineField({
-      name: "queIncluye",
-      title: "Qué incluye?",
-      group: "general",
-      type: "string",
-    }),
-    detallesDeGafaSchema,
     variantesDeGafaSchema,
-    garantiaSchema,
     slugSchema,
   ],
   preview: {
     select: {
       title: "modelo",
       subtitle: "marca.titulo",
-      media: "imagenes",
+      media: "variantes",
     },
     prepare(selection) {
       const { title, subtitle, media } = selection;
       if (!title || !media) return { title: "Sin título" };
-
+      if (!media) return {title}
       return {
         title,
         subtitle,
-        media: media[0],
+        media: media[0].imagenes[0],
       };
     },
   },
