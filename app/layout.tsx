@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Lora, Raleway } from "next/font/google";
 import Navbar from "./_components/navbar";
+import Footer from "./_components/Footer";
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter'  });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${lora.variable} ${raleway.variable} overflow-x-hidden`}>
         <Navbar/>
         {children}
+        <Footer/>
       </body>
     </html>
   );
