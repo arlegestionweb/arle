@@ -95,7 +95,7 @@ const Listing = async ({
   // console.log({searchParams});
 
   return (
-    <main className="md:px-10 px-5 pt-[70px] md:pt-0">
+    <main className="bg-neutral-100 md:px-10 px-5 pt-[70px] md:pt-0">
       <Filters
         areFiltersActive={areFiltersActive}
         searchParams={searchParams}
