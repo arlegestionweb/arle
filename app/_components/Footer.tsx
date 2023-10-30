@@ -1,130 +1,86 @@
+import Image from "next/image";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedinIn,
+  FaTwitter,
+  FaYoutube,
+} from "react-icons/fa";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+
+
 const Footer = () => {
   return (
-    <section className="relative lg:pb-[402px]">
-      <footer className="lg:fixed bottom-0 -z-10">
-        <div className="w-screen h-[402px] px-4 pt-6 pb-4 bg-slate-900 justify-center items-start gap-2.5 inline-flex">
-          <div className="grow shrink basis-0 flex-col justify-start items-start gap-8 inline-flex">
-            <div className="self-stretch justify-start items-start gap-20 inline-flex">
-              <div className="flex-col justify-start items-start gap-4 inline-flex">
-                <div className="flex-col justify-start items-start gap-[4.80px] flex">
-                  <img
-                    className="w-[121px] h-[71.11px]"
-                    src="https://via.placeholder.com/121x71"
-                  />
-                </div>
-                <div className="text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                  Acerca de nosotros
-                </div>
-              </div>
-              <div className="grow shrink basis-0 h-[222px] justify-start items-start gap-20 flex">
-                <div className="flex-col justify-start items-start gap-4 inline-flex">
-                  <div className="text-center text-stone-400 text-2xl font-semibold font-['Crimson Text'] leading-7">
-                    Products
-                  </div>
-                  <div className="flex-col justify-start items-start gap-[18px] flex">
-                    <div className="text-center text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                      Perfumes
-                    </div>
-                    <div className="text-center text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                      Relojes
-                    </div>
-                    <div className="text-center text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                      Gafas
-                    </div>
-                    <div className="text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                      Estado de compra
-                    </div>
-                  </div>
-                </div>
-                <div className="w-72 flex-col justify-start items-start gap-4 inline-flex">
-                  <div className="justify-start items-start inline-flex">
-                    <div className="justify-start items-center gap-1.5 flex">
-                      <div className="text-center text-stone-400 text-2xl font-semibold font-['Crimson Text'] leading-7">
-                        Conoce nuestras sedes
-                      </div>
-                    </div>
-                  </div>
-                  <div className="self-stretch h-[132px] flex-col justify-start items-start gap-[18px] flex">
-                    <div className="self-stretch h-[57px] flex-col justify-center items-start gap-2 flex">
-                      <div className="self-stretch justify-start items-center gap-1 inline-flex">
-                        <div className="w-4 h-4 justify-center items-center gap-1 flex">
-                          <div className="w-4 h-4 relative"></div>
-                        </div>
-                        <div className="grow shrink basis-0 text-white text-lg font-bold font-['Tajawal'] leading-snug">
-                          [nombre-sede]
-                        </div>
-                      </div>
-                      <div className="self-stretch justify-start items-center gap-1 inline-flex">
-                        <div className="grow shrink basis-0 text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                          Jardín plaza, Cra. 98 #16 - 200, Cali, Valle del Cauca
-                        </div>
-                      </div>
-                    </div>
-                    <div className="self-stretch h-[57px] flex-col justify-center items-start gap-2 flex">
-                      <div className="self-stretch justify-start items-center gap-1 inline-flex">
-                        <div className="w-4 h-4 justify-center items-center gap-1 flex">
-                          <div className="w-4 h-4 relative"></div>
-                        </div>
-                        <div className="grow shrink basis-0 text-white text-lg font-bold font-['Tajawal'] leading-snug">
-                          [nombre-sede]
-                        </div>
-                      </div>
-                      <div className="self-stretch justify-start items-center gap-1 inline-flex">
-                        <div className="grow shrink basis-0 text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                          Jardín plaza, Cra. 98 #16 - 200, Cali, Valle del Cauca
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-[199px] flex-col justify-start items-start gap-4 inline-flex">
-                  <div className="text-center text-stone-400 text-2xl font-semibold font-['Crimson Text'] leading-7">
-                    Legal
-                  </div>
-                  <div className="self-stretch h-[178px] flex-col justify-start items-start gap-[18px] flex">
-                    <div className="self-stretch text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                      Términos y condiciones.
-                    </div>
-                    <div className="self-stretch text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                      Políticas de Privacidad.
-                    </div>
-                    <div className="self-stretch text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                      Garantías, cambios y devoluciones.
-                    </div>
-                    <div className="self-stretch text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                      Políticas de Envío.
-                    </div>
-                    <div className="self-stretch text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                      Políticas de Cookies.
-                    </div>
-                    <div className="self-stretch text-white text-lg font-normal font-['Tajawal'] leading-snug">
-                      Preguntas Frecuentes.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="self-stretch h-[108px] flex-col justify-start items-center gap-3 flex">
-              <div className="self-stretch justify-center items-start gap-4 inline-flex">
-                <div className="bg-stone-400 justify-center items-start gap-2.5 flex"></div>
-                <div className="bg-stone-400 justify-center items-start gap-2.5 flex"></div>
-                <div className="bg-stone-400 justify-center items-start gap-2.5 flex">
-                  <img
-                    className="w-[18px] h-[18px]"
-                    src="https://via.placeholder.com/18x18"
-                  />
-                </div>
-                <div className="bg-stone-400 justify-center items-start gap-2.5 flex"></div>
-                <div className="bg-stone-400 justify-center items-start gap-2.5 flex"></div>
-              </div>
-              <div className="self-stretch h-[0px] border border-white"></div>
-              <div className="self-stretch text-center text-stone-400 text-sm font-normal font-['DM Sans'] leading-normal">
-                Copyright © 2023 Arlé | All Rights Reserved |<br />
-                Términos y condiciones | Privacy Policy
-              </div>
-            </div>
+    <section className="relative lg:pb-[420px]">
+      <footer className="lg:fixed bottom-0 -z-10 min-h-[420px] w-screen px-4 md:px-10 py-6 md:py-7 text-white bg-[#00002E]">
+        <section className="flex flex-col lg:flex-row gap-10 lg:gap-20 pb-8">
+          <div>
+            <Image src={"/logo-footer.png"} width={121} height={72} alt="logo" />
+            <p className="text-lg">Acerca de nosotros</p>
           </div>
-        </div>
+          <div>
+            <h3 className="pb-4 text-stone-400 text-2xl font-semibold font-lora leading-7">Products</h3>
+            <ul className="space-y-2">
+              <li>Perfumes</li>
+              <li>Relojes</li>
+              <li>Gafas</li>
+              <li>Estado de compra</li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="pb-4 text-stone-400 text-2xl font-semibold font-lora leading-7">Conoce nuestras sedes</h3>
+            <ul className="space-y-2">
+              <li>
+                <div className="flex gap-1.5 items-center">
+                  <HiOutlineLocationMarker/>
+                  <h4 className="w-[268px] text-white font-bold font-inter leading-snug">[nombre-sede]</h4>
+                </div>
+                <div className="w-72 text-white font-normal font-raleway leading-snug">Jardín plaza, Cra. 98 #16 - 200, Cali, Valle del Cauca</div>
+              </li>
+              <li>
+                <div className="flex gap-1.5 items-center">
+                  <HiOutlineLocationMarker/>
+                  <h4 className="w-[268px] text-white font-bold font-inter leading-snug">[nombre-sede]</h4>
+                </div>
+                <div className="w-72 text-white font-normal font-raleway leading-snug">Jardín plaza, Cra. 98 #16 - 200, Cali, Valle del Cauca</div>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="pb-4 text-stone-400 text-2xl font-semibold font-lora leading-7">Legal</h3>
+            <ul className="space-y-2">
+              <li>Términos y condiciones</li>
+              <li>Política de privacidad</li>
+              <li>Garantías, cambios y devoluciones</li>
+              <li>Políticas de Envio.</li>
+              <li>Políticas de Cookies</li>
+              <li>Preguntas Frecuentes</li>
+            </ul>
+          </div>
+        </section>
+        <section className="border-b-[1px] pb-3 border-white text-white flex justify-center space-x-5">
+          <a className="w-9 h-9 flex bg-stone-400 text-black justify-center items-center" target="">
+            <FaFacebookF size={18}/>
+          </a>
+          <a className="w-9 h-9 flex bg-stone-400 text-black justify-center items-center" target="">
+            <FaTwitter size={18}/>
+          </a>
+          <a className="w-9 h-9 flex bg-stone-400 text-black justify-center items-center" target="">
+            <FaInstagram size={18}/>
+          </a>
+          <a className="w-9 h-9 flex bg-stone-400 text-black justify-center items-center" target="">
+            <FaLinkedinIn size={18}/>
+          </a>
+          <a className="w-9 h-9 flex bg-stone-400 text-black justify-center items-center" target="">
+            <FaYoutube size={18}/>
+          </a>
+        </section>
+        <section className="pt-3">
+          <div className="text-center text-stone-400 text-sm font-normal font-raleway leading-normal">
+            Copyright © 2023 Arlé | All Rights Reserved |<br />
+            Términos y condiciones | Privacy Policy
+          </div>
+        </section>
       </footer>
     </section>
   );
