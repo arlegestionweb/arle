@@ -1,13 +1,14 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { imageArrayForProducts, imageObjectSchema } from "../../objects/image";
+import { imageArrayForProducts } from "../../objects/image";
 import {
+  bannersDeProductoSchema,
   generoSchema,
   inspiracionSchema,
   mostrarCreditoSchema,
   slugSchema,
 } from "../../objects/products/generales";
-import bannersSchema from "../../objects/bannersSchema";
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
+import { notasOlfativasProdSchema } from ".";
 
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
@@ -81,43 +82,16 @@ export const perfumeLujoSchema = defineType({
           title: "Texto",
           type: "text",
         }),
-        imageObjectSchema,
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "imagenObject",
+        }),
       ],
     }),
     inspiracionSchema,
-    bannersSchema,
-    defineField({
-      name: "notasOlfativas",
-      title: "Notas olfativas",
-      group: "detalles",
-      type: "object",
-      fields: [
-        defineField({
-          name: "familiaOlfativa",
-          title: "Familia olfativa",
-          type: "reference",
-          to: [{ type: "familiasOlfativas" }],
-        }),
-        defineField({
-          name: "notasDeSalida",
-          title: "Notas de salida",
-          type: "reference",
-          to: [{ type: "notasOlfativas" }],
-        }),
-        defineField({
-          name: "notasDeBase",
-          title: "Notas de Base",
-          type: "reference",
-          to: [{ type: "notasOlfativas" }],
-        }),
-        defineField({
-          name: "notasDeCorazon",
-          title: "Notas de Corazón",
-          type: "reference",
-          to: [{ type: "notasOlfativas" }],
-        }),
-      ],
-    }),
+    bannersDeProductoSchema,
+    notasOlfativasProdSchema,
     defineField({
       name: "ingredientes",
       title: "Ingredientes",
@@ -133,11 +107,11 @@ export const perfumeLujoSchema = defineType({
       ],
     }),
     defineField({
-      name: "paisDeFabricacion",
-      title: "País de fabricación",
+      name: "paisDeOrigen",
+      title: "País de Origen",
       type: "reference",
       group: "detalles",
-      to: [{ type: "paisDeFabricacion" }],
+      to: [{ type: "paisDeOrigen" }],
     }),
     variantesDePerfumesSchema,
     slugSchema,
@@ -150,7 +124,7 @@ export const perfumeLujoSchema = defineType({
     prepare(selection) {
       const { title, media } = selection;
       if (!title || !media) return { title: "Sin título" };
-      if (!media) return {title}
+      if (!media) return { title };
       return {
         title,
         media: media[0],

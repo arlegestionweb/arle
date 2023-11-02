@@ -11,9 +11,9 @@ import { BsBookmarkStar } from "react-icons/bs";
 
 
 
-export const paisDeFabricacionSchema = defineType({
-  name: "paisDeFabricacion",
-  title: "País de Fabricación",
+export const paisDeOrigenSchema = defineType({
+  name: "paisDeOrigen",
+  title: "País de Origen",
   type: "document",
   fields: [
     defineField({

@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const familiasOlfativasSchema = defineType({
   name: "familiasOlfativas",
@@ -19,6 +19,53 @@ export const familiasOlfativasSchema = defineType({
   ],
 });
 
+export const notasOlfativasProdSchema = defineField({
+  name: "notasOlfativas",
+  title: "Notas olfativas",
+  type: "object",
+  fields: [
+    defineField({
+      name: "familiaOlfativa",
+      title: "Familia olfativa",
+      type: "reference",
+      to: [{ type: "familiasOlfativas" }],
+    }),
+    defineField({
+      name: "notasDeSalida",
+      title: "Notas de salida",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "notasOlfativas" }],
+        }),
+      ],
+    }),
+    defineField({
+      name: "notasDeBase",
+      title: "Notas de Base",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "notasOlfativas" }],
+        }),
+      ],
+    }),
+    defineField({
+      name: "notasDeCorazon",
+      title: "Notas de Corazón",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "notasOlfativas" }],
+        }),
+      ],
+    }),
+  ],
+});
+
 export const concentracionSchema = defineType({
   name: "concentracion",
   title: "Concentración",
@@ -28,8 +75,8 @@ export const concentracionSchema = defineType({
       name: "nombre",
       title: "Nombre",
       type: "string",
-    })
-  ]
+    }),
+  ],
 });
 export const notasOlfativasSchema = defineType({
   name: "notasOlfativas",
@@ -48,7 +95,7 @@ export const notasOlfativasSchema = defineType({
       type: "text",
     }),
   ],
-}); 
+});
 
 export const ingredientesSchema = defineType({
   name: "ingrediente",
@@ -67,4 +114,4 @@ export const ingredientesSchema = defineType({
       type: "text",
     }),
   ],
-}); 
+});

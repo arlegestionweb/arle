@@ -1,6 +1,5 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
 import { CogIcon } from "@sanity/icons";
-import { imageObjectSchema } from "./objects/image";
 
 export const siteSettings = defineType({
   name: "configuracion",
@@ -29,7 +28,11 @@ export const siteSettings = defineType({
       title: "Banner Navbar",
       type: "object",
       fields: [
-        imageObjectSchema,
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "imagenObject",
+        }),
       ]
     }),
     defineField({

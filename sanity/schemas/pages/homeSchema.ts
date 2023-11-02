@@ -1,4 +1,4 @@
-import { imageArrayMemberSchema, imageObjectSchema } from './../objects/image';
+import { imageArrayMemberSchema } from './../objects/image';
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { HomeIcon } from "@sanity/icons";
 import bannersSchema from '../objects/bannersSchema';
@@ -25,7 +25,11 @@ export const homeSchema = defineType({
           title: "Descripción",
           type: "text",
         }),
-        imageObjectSchema
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "imagenObject",
+        }),
       ],
     }),
     defineField({
@@ -43,7 +47,11 @@ export const homeSchema = defineType({
           title: "Descripción",
           type: "text",
         }),
-        imageObjectSchema
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "imagenObject",
+        }),
       ],
     }),
     defineField({
@@ -61,7 +69,11 @@ export const homeSchema = defineType({
           title: "Descripción",
           type: "text",
         }),
-        imageObjectSchema,
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "imagenObject",
+        }),
       ],
     }),
     defineField({
@@ -104,58 +116,5 @@ export const homeSchema = defineType({
         }),
       ]
     }),
-    // defineField({
-    //   name: "testimonios",
-    //   title: "Testimonios",
-    //   type: "object",
-    //   fields: [
-    //     defineField({
-    //       name: "titulo",
-    //       title: "Título",
-    //       type: "string",
-    //     }),
-    //     defineField({
-    //       name: "descripcion",
-    //       title: "Descripción",
-    //       type: "string",
-    //     }),
-    //     defineField({
-    //       name: "lista",
-    //       title: "Lista de Testimonios",
-    //       type: "array",
-    //       of: [
-    //         defineArrayMember({
-    //           name: "testimonio",
-    //           title: "Testimonio",
-    //           type: "object",
-    //           fields: [
-    //             defineField({
-    //               name: "titulo",
-    //               title: "Título",
-    //               type: "string",
-    //             }),
-    //             defineField({
-    //               name: "nombre",
-    //               title: "Nombre",
-    //               type: "string",
-    //             }),
-    //             defineField({
-    //               name: "cargo",
-    //               title: "Cargo",
-    //               type: "string",
-    //             }),
-    //             defineField({
-    //               name: "descripcion",
-    //               title: "Descripción",
-    //               type: "string",
-    //             }),
-    //             imageObjectSchema,
-    //           ]
-    //         })
-    //       ]
-    //     })
-    //   ],
-    // }),
-
   ],
 });

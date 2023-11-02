@@ -20,7 +20,7 @@ import { recomendadosSchema } from "../schemas/documents/recomendados";
 import {
   coleccionesDeMarcaSchema,
   colorSchema,
-  paisDeFabricacionSchema,
+  paisDeOrigenSchema,
 } from "../schemas/documents/documentosVarios";
 import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema } from "../schemas/products/relojes";
 import { concentracionSchema, familiasOlfativasSchema, ingredientesSchema, notasOlfativasSchema } from "../schemas/products/perfumes";
@@ -71,7 +71,7 @@ export default (S: StructureBuilder) => {
       coleccionesDeMarcaSchema.name,
       tipoDeGafaSchema.name,
       estiloDeGafaSchema.name,
-      paisDeFabricacionSchema.name,
+      paisDeOrigenSchema.name,
       formaDeLaMonturaSchema.name,
       materialDelMarcoSchema.name,
       tipoDeLenteSchema.name,

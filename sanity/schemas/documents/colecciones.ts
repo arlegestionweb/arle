@@ -1,5 +1,4 @@
 import { defineType, defineField } from "sanity";
-import { imageObjectSchema } from "../objects/image";
 
 export const coleccionesSchema = defineType({
   name: "colecciones",
@@ -16,7 +15,11 @@ export const coleccionesSchema = defineType({
       title: "Descripción",
       type: "text",
     }),
-    imageObjectSchema,
+    defineField({
+      name: "imagen",
+      title: "Imagen",
+      type: "imagenObject",
+    }),
     defineField({
       name: "productos",
       title: "Productos",

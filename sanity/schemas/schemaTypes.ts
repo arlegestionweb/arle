@@ -3,7 +3,7 @@ import { descuentosSchema } from "./documents/descuentos";
 import {
   coleccionesDeMarcaSchema,
   colorSchema,
-  paisDeFabricacionSchema,
+  paisDeOrigenSchema,
 } from "./documents/documentosVarios";
 import { marcasSchema } from "./documents/marcas";
 import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDeLaVarillaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "./products/gafas";
@@ -22,6 +22,7 @@ import { perfumePremiumSchema } from "./products/perfumes/premium";
 import { relojesLujoSchema } from "./products/relojes/lujo";
 import { relojesPremiumSchema } from "./products/relojes/premium";
 import { siteSettings } from "./siteSettings";
+import { imageObjectSchema } from "./objects/image";
 
 export const schemaTypes = [
   siteSettings,
@@ -58,7 +59,7 @@ export const schemaTypes = [
   coleccionesDeMarcaSchema,
   tipoDeGafaSchema,
   estiloDeGafaSchema,
-  paisDeFabricacionSchema,
+  paisDeOrigenSchema,
   formaDeLaMonturaSchema,
   materialDelMarcoSchema,
   tipoDeLenteSchema,
@@ -67,4 +68,8 @@ export const schemaTypes = [
   materialesDelPulsoSchema,
   concentracionSchema,
   materialDeLaVarillaSchema,
+
+
+  // objects
+  imageObjectSchema,
 ];

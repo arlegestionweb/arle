@@ -5,7 +5,7 @@ import {
   precioConDescuentoSchema,
   precioSchema,
 } from "./generales";
-import { imageArrayForProducts, imageObjectSchema } from "../image";
+import { imageArrayForProducts } from "../image";
 
 export const resistenciaAlAguaSchema = defineField({
   name: "resistenciaAlAgua",
@@ -127,9 +127,8 @@ export const movimientoObjSchema = defineField({
         defineField({
           name: "imagen",
           title: "Imagen",
-          type: "object",
+          type: "imagenObject",
           validation: (Rule) => Rule.required(),
-          fields: [imageObjectSchema],
         }),
       ],
       hidden: ({ parent }) => !parent?.usarMovimiento,

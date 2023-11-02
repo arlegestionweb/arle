@@ -1,8 +1,8 @@
 import ColombianPrice from "@/sanity/components/ColombianPrice";
 import { SlugParent, defineArrayMember, defineField } from "sanity";
-import { imageObjectSchema } from "../image";
-import sanityClient from "@/sanity/sanityClient";
 import { removeSpanishAccents } from "@/utils/helpers";
+import { PiFlagBannerFill } from "react-icons/pi";
+import { videoSchema } from "../video";
 
 export const generoSchema = defineField({
   name: "genero",
@@ -13,6 +13,55 @@ export const generoSchema = defineField({
     list: ["mujer", "hombre", "unisex"],
   },
 });
+
+
+export const bannersDeProductoSchema = defineField({
+  name: "bannersDeProducto",
+  title: "Banners",
+  type: "array",
+  of: [
+    defineArrayMember({
+      name: "banner",
+      title: "Banner",
+      type: "object",
+      icon: PiFlagBannerFill,
+      fields: [
+        defineField({
+          name: "imagenOVideo",
+          title: "Imagen o Video",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "imagenObject",
+          hidden: ({ parent }) => !parent?.imagenOVideo,
+        }),
+        defineField({
+          name: "video",
+          title: "Video",
+          type: "object",
+          hidden: ({ parent }) => parent?.imagenOVideo,
+          fields: [videoSchema],
+        }),
+      ],
+      preview: {
+        select: {
+          media: "imagen",
+        },
+        prepare(selection) {
+          const { media } = selection;
+          if (!media) return {title: "Sin imagen"};
+          return {
+            media,
+          };
+        },
+      },
+    }),
+  ],
+});
+
 export const detallesLujoSchema = defineField({
   name: "detalles",
   title: "Detalles",
@@ -39,9 +88,8 @@ export const detallesLujoSchema = defineField({
         defineField({
           name: "imagen",
           title: "Imagen",
-          type: "object",
+          type: "imagenObject",
           validation: (Rule) => Rule.required(),
-          fields: [imageObjectSchema],
         }),
       ],
       hidden: ({ parent }) => !parent?.usarDetalles,
@@ -50,14 +98,14 @@ export const detallesLujoSchema = defineField({
 });
 export const monturaDetallesSchema = defineField({
   name: "monturaDetalles",
-  title: "Detalles",
+  title: "Detalles de la Montura",
   type: "object",
   group: "detalles",
 
   fields: [
     defineField({
       name: "usarDetalles",
-      title: "Usar detalles?",
+      title: "Usar detalles de la Montura?",
       type: "boolean",
     }),
     defineField({
@@ -74,9 +122,8 @@ export const monturaDetallesSchema = defineField({
         defineField({
           name: "imagen",
           title: "Imagen",
-          type: "object",
+          type: "imagenObject",
           validation: (Rule) => Rule.required(),
-          fields: [imageObjectSchema],
         }),
       ],
       hidden: ({ parent }) => !parent?.usarDetalles,
@@ -138,9 +185,7 @@ export const inspiracionSchema = defineField({
         defineField({
           name: "imagen",
           title: "Imagen",
-          type: "object",
-          validation: (Rule) => Rule.required(),
-          fields: [imageObjectSchema],
+          type: "imagenObject",
         }),
       ],
       hidden: ({ parent }) => !parent?.usarInspiracion,
