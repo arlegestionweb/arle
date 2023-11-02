@@ -1,8 +1,6 @@
 import { defineArrayMember, defineField } from "sanity";
-import { imageObjectSchema } from "./image";
 import { videoSchema } from "./video";
 import { PiFlagBannerFill } from "react-icons/pi";
-
 
 export default defineField({
   name: "banners",
@@ -34,19 +32,15 @@ export default defineField({
         defineField({
           name: "imagen",
           title: "Imagen",
-          type: "object",
-          options: { collapsed: false,},
+          type: "imagenObject",
           hidden: ({ parent }) => !parent?.imagenOVideo,
-          fields: [imageObjectSchema],
         }),
         defineField({
           name: "video",
           title: "Video",
           type: "object",
           hidden: ({ parent }) => parent?.imagenOVideo,
-          fields: [
-            videoSchema,
-          ]
+          fields: [videoSchema],
         }),
       ],
       preview: {
@@ -57,13 +51,13 @@ export default defineField({
         prepare(selection) {
           const { title, media } = selection;
           if (!title) return { title: "Sin título" };
-    
+          if (!media) return { title };
           return {
             title,
             media,
           };
         },
-      }
+      },
     }),
   ],
 });

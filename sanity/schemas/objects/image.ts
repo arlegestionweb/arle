@@ -1,9 +1,12 @@
 import { defineField, defineArrayMember } from 'sanity';
 
 export const imageObjectSchema = defineField({
-  name: "imagen",
+  name: "imagenObject",
   title: "Imagen",
   type: "image",
+  options: {
+    collapsible: false,
+  },
   fields: [
     defineField({
       name: "alt",

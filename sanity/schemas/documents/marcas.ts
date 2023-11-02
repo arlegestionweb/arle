@@ -1,6 +1,5 @@
 import { defineType, defineField } from "sanity";
 import bannersSchema from "../objects/bannersSchema";
-import { imageObjectSchema } from "../objects/image";
 
 export const marcasSchema = defineType({
   name: "marca",
@@ -18,7 +17,13 @@ export const marcasSchema = defineType({
       title: "Logotipo",
       type: "object",
       // validation: (Rule) => Rule.required(),
-      fields: [imageObjectSchema],
+      fields: [
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "imagenObject",
+        }),
+      ],
     }),
     defineField({
       name: "descripcion",

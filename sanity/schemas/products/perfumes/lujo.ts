@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { imageArrayForProducts, imageObjectSchema } from "../../objects/image";
+import { imageArrayForProducts } from "../../objects/image";
 import {
   generoSchema,
   inspiracionSchema,
@@ -81,7 +81,11 @@ export const perfumeLujoSchema = defineType({
           title: "Texto",
           type: "text",
         }),
-        imageObjectSchema,
+        defineField({
+          name: "imagen",
+          title: "Imagen",
+          type: "imagenObject",
+        }),
       ],
     }),
     inspiracionSchema,

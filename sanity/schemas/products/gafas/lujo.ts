@@ -52,14 +52,12 @@ export const gafasLujoSchema = defineType({
         defineField({
           name: "paisDeFabricacion",
           title: "País de fabricación",
-          group: "detalles",
           type: "reference",
           to: [{ type: "paisDeFabricacion" }],
         }),
         defineField({
           name: "queIncluye",
           title: "Qué incluye?",
-          group: "general",
           type: "string",
         }),
         defineField({
