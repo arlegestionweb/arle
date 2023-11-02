@@ -3,7 +3,7 @@ import { descuentosSchema } from "./documents/descuentos";
 import {
   coleccionesDeMarcaSchema,
   colorSchema,
-  paisDeFabricacionSchema,
+  paisDeOrigenSchema,
 } from "./documents/documentosVarios";
 import { marcasSchema } from "./documents/marcas";
 import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDeLaVarillaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "./products/gafas";
@@ -59,7 +59,7 @@ export const schemaTypes = [
   coleccionesDeMarcaSchema,
   tipoDeGafaSchema,
   estiloDeGafaSchema,
-  paisDeFabricacionSchema,
+  paisDeOrigenSchema,
   formaDeLaMonturaSchema,
   materialDelMarcoSchema,
   tipoDeLenteSchema,

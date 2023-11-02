@@ -8,6 +8,7 @@ import {
   slugSchema,
 } from "../../objects/products/generales";
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
+import { notasOlfativasProdSchema } from ".";
 
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
@@ -90,38 +91,7 @@ export const perfumeLujoSchema = defineType({
     }),
     inspiracionSchema,
     bannersDeProductoSchema,
-    defineField({
-      name: "notasOlfativas",
-      title: "Notas olfativas",
-      group: "detalles",
-      type: "object",
-      fields: [
-        defineField({
-          name: "familiaOlfativa",
-          title: "Familia olfativa",
-          type: "reference",
-          to: [{ type: "familiasOlfativas" }],
-        }),
-        defineField({
-          name: "notasDeSalida",
-          title: "Notas de salida",
-          type: "reference",
-          to: [{ type: "notasOlfativas" }],
-        }),
-        defineField({
-          name: "notasDeBase",
-          title: "Notas de Base",
-          type: "reference",
-          to: [{ type: "notasOlfativas" }],
-        }),
-        defineField({
-          name: "notasDeCorazon",
-          title: "Notas de Corazón",
-          type: "reference",
-          to: [{ type: "notasOlfativas" }],
-        }),
-      ],
-    }),
+    notasOlfativasProdSchema,
     defineField({
       name: "ingredientes",
       title: "Ingredientes",
@@ -137,11 +107,11 @@ export const perfumeLujoSchema = defineType({
       ],
     }),
     defineField({
-      name: "paisDeFabricacion",
-      title: "País de fabricación",
+      name: "paisDeOrigen",
+      title: "País de Origen",
       type: "reference",
       group: "detalles",
-      to: [{ type: "paisDeFabricacion" }],
+      to: [{ type: "paisDeOrigen" }],
     }),
     variantesDePerfumesSchema,
     slugSchema,
@@ -154,7 +124,7 @@ export const perfumeLujoSchema = defineType({
     prepare(selection) {
       const { title, media } = selection;
       if (!title || !media) return { title: "Sin título" };
-      if (!media) return {title}
+      if (!media) return { title };
       return {
         title,
         media: media[0],

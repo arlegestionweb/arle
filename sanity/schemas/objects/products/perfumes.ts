@@ -1,6 +1,7 @@
 import { defineArrayMember, defineField } from "sanity";
 import { etiquetaSchema, generoSchema, precioConDescuentoSchema, precioSchema } from "./generales";
 import { TbPerfume } from "react-icons/tb";
+import { notasOlfativasProdSchema } from "../../products/perfumes";
 
 export const resenaPerfumesSchema = defineField({
   name: "resena",
@@ -144,36 +145,6 @@ export const detallesPerfumeSchema = defineField({
       hidden: ({ document }) => document?._type !== "perfumePremium",
     }),
     
-    defineField({
-      name: "notasOlfativas",
-      title: "Notas olfativas",
-      type: "object",
-      fields: [
-        defineField({
-          name: "familiaOlfativa",
-          title: "Familia olfativa",
-          type: "reference",
-          to: [{ type: "familiasOlfativas" }],
-        }),
-        defineField({
-          name: "notasDeSalida",
-          title: "Notas de salida",
-          type: "reference",
-          to: [{ type: "notasOlfativas" }],
-        }),
-        defineField({
-          name: "notasDeBase",
-          title: "Notas de Base",
-          type: "reference",
-          to: [{ type: "notasOlfativas" }],
-        }),
-        defineField({
-          name: "notasDeCorazon",
-          title: "Notas de Corazón",
-          type: "reference",
-          to: [{ type: "notasOlfativas" }],
-        }),
-      ],
-    }),
+    notasOlfativasProdSchema,
   ],
 });
