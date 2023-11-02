@@ -1,17 +1,25 @@
 import { defineType, defineField } from "sanity";
 
-import { coleccionesDeMarcaRefSchema, garantiaSchema, generoSchema, mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
-import { detallesDeGafaSchema, variantesDeGafaSchema } from "../../objects/products/gafas";
-import { imageArrayForProducts } from "../../objects/image";
+import {
+  coleccionesDeMarcaRefSchema,
+  garantiaSchema,
+  generoSchema,
+  mostrarCreditoSchema,
+  slugSchema,
+} from "../../objects/products/generales";
+import {
+  detallesDeGafaSchema,
+  variantesDeGafaSchema,
+} from "../../objects/products/gafas";
 
 export const gafasPremiumSchema = defineType({
   name: "gafasPremium",
   title: "Gafas Premium",
   type: "document",
   groups: [
-    {name: "general", title: "General"},
-    {name: "detalles", title: "Detalles"},
-    {name: "variantes", title: "Variantes"},
+    { name: "general", title: "General" },
+    { name: "detalles", title: "Detalles" },
+    { name: "variantes", title: "Variantes" },
   ],
   fields: [
     defineField({
@@ -40,8 +48,6 @@ export const gafasPremiumSchema = defineType({
     coleccionesDeMarcaRefSchema,
     garantiaSchema,
 
-
-
     detallesDeGafaSchema,
     variantesDeGafaSchema,
     slugSchema,
@@ -55,7 +61,7 @@ export const gafasPremiumSchema = defineType({
     prepare(selection) {
       const { title, subtitle, media } = selection;
       if (!title || !media) return { title: "Sin título" };
-      if (!media) return {title}
+      if (!media) return { title };
       return {
         title,
         subtitle,
@@ -64,6 +70,3 @@ export const gafasPremiumSchema = defineType({
     },
   },
 });
-
-
-

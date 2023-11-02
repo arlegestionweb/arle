@@ -1,17 +1,30 @@
 import { defineType, defineField } from "sanity";
 
-import { coleccionesDeMarcaRefSchema, detallesLujoSchema, garantiaSchema, generoSchema, inspiracionSchema, monturaDetallesSchema, mostrarCreditoSchema, resenaSchema, slugSchema } from "../../objects/products/generales";
-import { detallesDeGafaSchema, lenteSchema, monturaSchema, variantesDeGafaSchema } from "../../objects/products/gafas";
-import bannersSchema from "../../objects/bannersSchema";
+import {
+  bannersDeProductoSchema,
+  coleccionesDeMarcaRefSchema,
+  detallesLujoSchema,
+  garantiaSchema,
+  generoSchema,
+  inspiracionSchema,
+  monturaDetallesSchema,
+  mostrarCreditoSchema,
+  slugSchema,
+} from "../../objects/products/generales";
+import {
+  lenteSchema,
+  monturaSchema,
+  variantesDeGafaSchema,
+} from "../../objects/products/gafas";
 
 export const gafasLujoSchema = defineType({
   name: "gafasLujo",
   title: "Gafas de Lujo",
   type: "document",
   groups: [
-    {name: "general", title: "General"},
-    {name: "detalles", title: "Detalles"},
-    {name: "variantes", title: "Variantes"},
+    { name: "general", title: "General" },
+    { name: "detalles", title: "Detalles" },
+    { name: "variantes", title: "Variantes" },
   ],
   fields: [
     defineField({
@@ -42,7 +55,7 @@ export const gafasLujoSchema = defineType({
     inspiracionSchema,
     detallesLujoSchema,
     monturaDetallesSchema,
-    bannersSchema,
+    bannersDeProductoSchema,
     defineField({
       name: "especificaciones",
       title: "Especificaciones",
@@ -76,7 +89,7 @@ export const gafasLujoSchema = defineType({
         }),
         monturaSchema,
         lenteSchema,
-      ]
+      ],
     }),
     variantesDeGafaSchema,
     slugSchema,
@@ -90,7 +103,7 @@ export const gafasLujoSchema = defineType({
     prepare(selection) {
       const { title, subtitle, media } = selection;
       if (!title || !media) return { title: "Sin título" };
-      if (!media) return {title}
+      if (!media) return { title };
       return {
         title,
         subtitle,
@@ -99,6 +112,3 @@ export const gafasLujoSchema = defineType({
     },
   },
 });
-
-
-

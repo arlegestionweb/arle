@@ -16,7 +16,7 @@ export const generoSchema = defineField({
 
 
 export const bannersDeProductoSchema = defineField({
-  name: "banners",
+  name: "bannersDeProducto",
   title: "Banners",
   type: "array",
   of: [
@@ -26,16 +26,6 @@ export const bannersDeProductoSchema = defineField({
       type: "object",
       icon: PiFlagBannerFill,
       fields: [
-        defineField({
-          name: "titulo",
-          title: "Titulo",
-          type: "string",
-        }),
-        defineField({
-          name: "descripcion",
-          title: "Descripción",
-          type: "text",
-        }),
         defineField({
           name: "imagenOVideo",
           title: "Imagen o Video",
@@ -58,15 +48,12 @@ export const bannersDeProductoSchema = defineField({
       ],
       preview: {
         select: {
-          title: "titulo",
-          media: "imagen.imagen",
+          media: "imagen",
         },
         prepare(selection) {
-          const { title, media } = selection;
-          if (!title) return { title: "Sin título" };
-          if (!media) return { title };
+          const { media } = selection;
+          if (!media) return {title: "Sin imagen"};
           return {
-            title,
             media,
           };
         },

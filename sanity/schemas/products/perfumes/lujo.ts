@@ -1,12 +1,12 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { imageArrayForProducts } from "../../objects/image";
 import {
+  bannersDeProductoSchema,
   generoSchema,
   inspiracionSchema,
   mostrarCreditoSchema,
   slugSchema,
 } from "../../objects/products/generales";
-import bannersSchema from "../../objects/bannersSchema";
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
 
 export const perfumeLujoSchema = defineType({
@@ -89,7 +89,7 @@ export const perfumeLujoSchema = defineType({
       ],
     }),
     inspiracionSchema,
-    bannersSchema,
+    bannersDeProductoSchema,
     defineField({
       name: "notasOlfativas",
       title: "Notas olfativas",
