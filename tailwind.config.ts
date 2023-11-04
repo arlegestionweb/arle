@@ -20,6 +20,7 @@ const config: Config = {
         "inter": 'var(--font-inter)',
         "lora": 'var(--font-lora)',
         "raleway": 'var(--font-raleway)',
+        "tajawal": 'var(--font-tajawal)',
       },
       borderRadius: {
         lg: `var(--radius)`,
