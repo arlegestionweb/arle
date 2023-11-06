@@ -7,6 +7,7 @@ import {
 } from "../objects";
 
 import { z } from "zod";
+import { parse } from "path";
 
 const listingMainString = ` 
 {
@@ -44,7 +45,6 @@ const listingMainString = `
     "slug": slug.current,
   },
   "colecciones": *[_type == "colecciones"] {
-    ...,
     titulo,
     descripcion,
     ${imageQuery},
@@ -132,7 +132,7 @@ const zodProduct = z.union([zodPerfumeListingQuery, zodRelojListingQuery, zodGaf
 
 export type TProduct = z.infer<typeof zodProduct>;
 
-const zodColeccion = z.object({
+const zodColeccionProducto = z.object({
   marca: z.string(),
   type: z.string(),
   modelo: z.string().optional().nullable(),
@@ -149,7 +149,20 @@ const zodColeccion = z.object({
     .nullable(),
 });
 
-export type TColeccion = z.infer<typeof zodColeccion>;
+
+const zodCollectiones =  z.array(
+  z.object({
+    titulo: z.string(),
+    descripcion: z.string(),
+    imagen: z.object({
+      url: z.string(),
+      alt: z.string().optional().nullable(),
+    }),
+    productos: z.array(zodColeccionProducto),
+  })
+)
+
+export type TColecciones = z.infer<typeof zodCollectiones>;
 
 const zodListPage = z.object({
   listingContent: z.object({
@@ -162,28 +175,20 @@ const zodListPage = z.object({
 
   gafas: z.array(zodGafaListingQuery).optional(),
 
-  colecciones: z.array(
-    z.object({
-      titulo: z.string(),
-      descripcion: z.string(),
-      imagen: z.object({
-        url: z.string(),
-        alt: z.string().optional().nullable(),
-      }),
-      productos: z.array(zodColeccion),
-    })
-  ),
+  colecciones: zodCollectiones
 });
 
-export type TListingPage = z.infer<typeof zodListPage>;
 
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
-
+    console.log({colecciones: result.colecciones});
     const parsedResult = zodListPage.safeParse(result);
+    if (!parsedResult.success) {
+      throw new Error(parsedResult.error.message);
+    }
 
-    return result;
+    return parsedResult.data;
   } catch (error) {
     console.error(error);
   }

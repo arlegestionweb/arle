@@ -1,8 +1,8 @@
-import { TColeccion } from "@/sanity/queries/pages/listingQueries";
+import { TColecciones } from "@/sanity/queries/pages/listingQueries";
 import Image from "next/image";
 import Link from "next/link";
 
-const Colecciones = ({ colecciones }: { colecciones: TColeccion[] }) => {
+const Colecciones = ({ colecciones }: { colecciones: TColecciones }) => {
   return (
     <section className=" bg-neutral-100 pl-8 lg:px-8">
       <h2 className="self-stretch text-zinc-800 text-[28px] font-semibold font-lora leading-loose">
@@ -15,11 +15,11 @@ const Colecciones = ({ colecciones }: { colecciones: TColeccion[] }) => {
             className="w-[159px] h-[197px] md:w-72 md:h-[326px] snap-always snap-center"
           >
             <Link href={`?coleccion=${coleccion.titulo}`}>
-              {coleccion.imagenes && (
+              {coleccion.imagen && (
                 <div className="relative w-[159px] h-[159px] md:w-72 md:h-72">
                   <Image
-                    src={coleccion.imagenes[0].url}
-                    alt={coleccion.imagenes[0].alt || ""}
+                    src={coleccion.imagen.url}
+                    alt={coleccion.imagen.alt || ""}
                     fill
                     className="object-cover"
                   />
