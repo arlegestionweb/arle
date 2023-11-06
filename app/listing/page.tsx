@@ -1,24 +1,23 @@
-import { getListingInitialLoadContent } from "@/sanity/queries/pages/listingQueries";
+import { TListingPage, getListingInitialLoadContent } from "@/sanity/queries/pages/listingQueries";
 import {
   BannerType,
-  ColeccionType,
   PerfumeLujoType,
   PerfumePremiumType,
   RelojType,
 } from "../_components/types";
 import Colecciones from "../_components/Colecciones";
-import Productos from "../_components/listingsPage/Productos";
+import Productos from "./_components/Productos";
 import Filters from "../_components/listingsPage/Filters";
 
-type PageContentType = {
-  listingContent: {
-    banners: BannerType[];
-  };
-  perfumes: (PerfumeLujoType | PerfumePremiumType)[];
-  relojes: RelojType[];
-  colecciones: ColeccionType[];
-  gafas: any;
-};
+// type PageContentType = {
+//   listingContent: {
+//     banners: BannerType[];
+//   };
+//   perfumes: (PerfumeLujoType | PerfumePremiumType)[];
+//   relojes: RelojType[];
+//   // colecciones: ColeccionType[];
+//   gafas: any;
+// };
 
 export const revalidate = 10; // revalidate at most every hour
 const Listing = async ({
@@ -28,9 +27,10 @@ const Listing = async ({
     [key: string]: string | string[] | undefined;
   };
 }) => {
-  const pageContent = (await getListingInitialLoadContent()) as PageContentType;
-  const coleccionSeleccionada = searchParams.coleccion;
-  const tipoDeProductoSeleccionado = searchParams.producto;
+  const pageContent = (await getListingInitialLoadContent()) as TListingPage;
+  
+  const coleccionSeleccionada = null;
+  const tipoDeProductoSeleccionado = searchParams.producto as string;
   const campoDeBusquedaSeleccionado = searchParams.search as string;
 
   const colecciones = pageContent.colecciones.filter(
@@ -42,22 +42,12 @@ const Listing = async ({
     (coleccion) => coleccion.titulo === coleccionSeleccionada
   );
 
-  const productos = coleccionSeleccionada
-    ? coleccionContent?.productos
-    : [...pageContent.relojes, ...pageContent.perfumes, ...pageContent.gafas];
+  const productos = [...pageContent.relojes, ...pageContent.perfumes, 
+    // ...pageContent.gafas
+  ];
 
   const areFiltersActive =
     !!coleccionSeleccionada || !!tipoDeProductoSeleccionado || !!campoDeBusquedaSeleccionado;
-
-  // console.log({ areFiltersActive, productos });
-
-  // const filteredProducts = productos?.filter((producto) => {
-
-  //   if (tipoDeProductoSeleccionado) {
-  //     return producto.type.includes(tipoDeProductoSeleccionado);
-  //   }
-  //   return true;
-  // });
 
   const filteredProducts = productos?.filter((producto) => {
     let matchesTipoDeProducto = true;
@@ -92,7 +82,7 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
-  // console.log({searchParams});
+  console.log({filteredProducts});
 
   return (
     <main className="md:px-10 px-5 pt-[70px] md:pt-0">
@@ -100,13 +90,13 @@ const Listing = async ({
         areFiltersActive={areFiltersActive}
         searchParams={searchParams}
       />
-      {!coleccionSeleccionada ? (
+      {/* {!coleccionSeleccionada ? (
         <Colecciones colecciones={colecciones} />
       ) : (
         <h2 className="text-3xl font-bold capitalize">
           Coleccion {coleccionSeleccionada}
         </h2>
-      )}
+      )} */}
 
       {filteredProducts && filteredProducts.length > 0 ? <Productos productos={filteredProducts} /> : (
 
