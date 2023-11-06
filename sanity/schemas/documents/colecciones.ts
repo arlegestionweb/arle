@@ -37,6 +37,13 @@ export const coleccionesSchema = defineType({
           ],
         },
       ],
+      validation: (Rule) => Rule.custom(imagenes => {
+        if (!imagenes) return "Debe haber al menos un producto";
+        if (imagenes.length === 0) {
+          return "Debe haber al menos un producto";
+        }
+        return true;
+      }),
     }),
   ],
 });
