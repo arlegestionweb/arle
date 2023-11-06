@@ -8,7 +8,7 @@ import {
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
 
   if (isPerfume(producto)) {
-    console.log("perfumes", { producto });
+    // console.log("perfumes", { producto });
     return (
       <div className="w-[136px] h-[279px] flex-col justify-start items-start gap-2 inline-flex">
         <Image
@@ -26,7 +26,7 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
   }
 
   if (isReloj(producto)) {
-    console.log("relojes", { producto });
+    // console.log("relojes", { producto });
     return (
       <div className="w-[136px] h-[279px] flex-col justify-start items-start gap-2 inline-flex">
         <Image
