@@ -102,15 +102,6 @@ export type GafaType = {
   type: string;
 };
 
-export type ColeccionType = {
-  titulo: string;
-  descripcion: string;
-  imagen: {
-    alt: string;
-    url: string;
-  };
-  productos?: (PerfumeLujoType | PerfumePremiumType | RelojType | GafaType)[];
-};
 
 export interface MenuItem {
   label: string;
