@@ -182,8 +182,9 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
-    console.log({colecciones: result.colecciones});
+
     const parsedResult = zodListPage.safeParse(result);
+
     if (!parsedResult.success) {
       throw new Error(parsedResult.error.message);
     }
