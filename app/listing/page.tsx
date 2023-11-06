@@ -89,7 +89,6 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
-  console.log({ colecciones });
 
   return (
     <main className="md:px-10 px-5 pt-[70px] md:pt-0">
