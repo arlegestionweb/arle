@@ -11,8 +11,8 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 const Footer = () => {
   return (
     <section className="relative lg:pb-[100vh]">
-      <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen px-4 md:px-10 pt-6 md:pt-20  text-white bg-[#00002E]">
-        <div className="flex-1 flex justify-center items-center">
+      <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-10 pt-6 md:pt-20  text-white bg-[#00002E]">
+        <div className="flex-1 pt-10 pb-20 w-[182px] h-[130px] flex justify-center self-center items-center">
           <Image
             src={"/logo-footer.svg"}
             width={249}
@@ -20,12 +20,12 @@ const Footer = () => {
             alt="logo"
           />
         </div>
-        <section className="flex flex-col items-start justify-center lg:flex-row gap-10 lg:gap-20 pb-[50px]">
+        <section className="flex flex-col items-start justify-center lg:flex-row gap-[50px] lg:gap-20 pb-[50px]">
           <div>
-            <h3 className="pb-4 text-stone-400 text-2xl font-semibold font-tajawal leading-7">
+            <h3 className="pb-4 text-stone-400 font-lora text-2xl font-semibold leading-7">
               Products
             </h3>
-            <ul className="space-y-2">
+            <ul className="flex flex-col gap-4 text-lg">
               <li>Perfumes</li>
               <li>Relojes</li>
               <li>Gafas</li>
@@ -33,20 +33,20 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="pb-4 text-stone-400 text-2xl font-semibold font-tajawal leading-7">
+            <h3 className="pb-4 text-stone-400 font-lora text-2xl font-semibold leading-7">
               Arlé
             </h3>
-            <ul className="space-y-2">
+            <ul className="flex flex-col gap-4 text-lg">
               <li>Sobre Nosotros</li>
               <li>Nuestras Sedes</li>
               <li>Trabaja con Nosotros</li>
             </ul>
           </div>
           <div>
-            <h3 className="pb-4 text-stone-400 text-2xl font-semibold font-tajawal leading-7">
+            <h3 className="pb-4 text-stone-400 font-lora text-2xl font-semibold leading-7">
               Visítanos
             </h3>
-            <ul className="space-y-2">
+            <ul className="flex flex-col gap-4 text-lg">
               <li>
                 <div className="flex gap-1.5 items-center">
                   <HiOutlineLocationMarker />
@@ -72,10 +72,10 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="pb-4 text-stone-400 text-2xl font-semibold font-tajawal leading-7">
+            <h3 className="pb-4 text-stone-400 font-lora text-2xl font-semibold leading-7">
               Legal
             </h3>
-            <ul className="space-y-2">
+            <ul className="flex flex-col gap-4 text-lg">
               <li>Términos y condiciones</li>
               <li>Política de privacidad</li>
               <li>Garantías, cambios y devoluciones</li>
@@ -112,7 +112,7 @@ const Footer = () => {
             <FaYoutube size={18} />
           </a>
         </section>
-        <section className="py-3">
+        <section className="pt-3">
           <div className="text-center text-stone-400 text-sm font-normal font-raleway leading-normal">
             Copyright © 2023 Arlé | Todos los Derechos Reservados | Diseñado por GoJaguar.co
           </div>
