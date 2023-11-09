@@ -9,7 +9,7 @@ import {
 } from "../../objects/products/generales";
 import {
   detallesDeGafaSchema,
-  variantesDeGafaSchema,
+  variantesDeGafaPremiumSchema,
 } from "../../objects/products/gafas";
 
 export const gafasPremiumSchema = defineType({
@@ -49,7 +49,7 @@ export const gafasPremiumSchema = defineType({
     garantiaSchema,
 
     detallesDeGafaSchema,
-    variantesDeGafaSchema,
+    variantesDeGafaPremiumSchema,
     slugSchema,
   ],
   preview: {
