@@ -14,7 +14,7 @@ import {
 import {
   lenteSchema,
   monturaSchema,
-  variantesDeGafaSchema,
+  variantesDeGafaLujoSchema,
 } from "../../objects/products/gafas";
 
 export const gafasLujoSchema = defineType({
@@ -91,7 +91,7 @@ export const gafasLujoSchema = defineType({
         lenteSchema,
       ],
     }),
-    variantesDeGafaSchema,
+    variantesDeGafaLujoSchema,
     slugSchema,
   ],
   preview: {

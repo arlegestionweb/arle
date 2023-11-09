@@ -55,17 +55,11 @@ export const lenteSchema = defineField({
   ],
 });
 
-const varianteDeGafa = defineField({
+const varianteDeGafaLujo = defineField({
   name: "variante",
   title: "Variante",
   type: "object",
   fields: [
-    defineField({
-      name: "titulo",
-      title: "Título",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
     defineField({
       name: "colorDeLaMontura",
       title: "Color de la Montura",
@@ -126,7 +120,71 @@ const varianteDeGafa = defineField({
         };
       }
       return {
-        title: `Pulso ${title}`,
+        title: `Montura ${title}`,
+        subtitle: `$ ${subtitle}`,
+        media: media[0],
+      };
+    },
+  },
+})
+const varianteDeGafaPremium = defineField({
+  name: "variante",
+  title: "Variante",
+  type: "object",
+  fields: [
+    defineField({
+      name: "colorDeLaMontura",
+      title: "Color de la Montura",
+      type: "reference",
+      to: [{ type: "colores" }],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "colorDelLente",
+      title: "Color del Lente",
+      type: "reference",
+      to: [{ type: "colores" }],
+      validation: (Rule) => Rule.required(),
+    }),
+    precioSchema,
+    precioConDescuentoSchema,
+    etiquetaSchema,
+    defineField({
+      name: "codigo",
+      title: "Código",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "mostrarUnidadesDispobibles",
+      title: "Mostrar unidades disponibles",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
+      name: "unidadesDisponibles",
+      title: "Unidades disponibles",
+      type: "number",
+      validation: (Rule) => Rule.required(),
+    }),
+    imageArrayForProducts,    
+  ],
+  preview: {
+    select: {
+      title: "colorDeLaMontura.nombre",
+      subtitle: "precio",
+      media: "imagenes",
+    },
+    prepare(selection) {
+      const { title, subtitle, media } = selection;
+      if (!title || !subtitle || !media) {
+        return {
+          title: "Sin título",
+          subtitle: "Sin precio",
+        };
+      }
+      return {
+        title: `Montura ${title}`,
         subtitle: `$ ${subtitle}`,
         media: media[0],
       };
@@ -134,12 +192,26 @@ const varianteDeGafa = defineField({
   },
 })
 
-export const variantesDeGafaSchema = defineField({
+export const variantesDeGafaPremiumSchema = defineField({
   name: "variantes",
   title: "Variantes",
   group: "variantes",
   type: "array",
-  of: [varianteDeGafa],
+  of: [varianteDeGafaPremium],
+  validation: (Rule) => Rule.custom(variantes => {
+    if (!variantes) return "Debe haber al menos una variante";
+    if (variantes.length === 0) {
+      return "Debe haber al menos una variante";
+    }
+    return true;
+  }),
+})
+export const variantesDeGafaLujoSchema = defineField({
+  name: "variantes",
+  title: "Variantes",
+  group: "variantes",
+  type: "array",
+  of: [varianteDeGafaLujo],
   validation: (Rule) => Rule.custom(variantes => {
     if (!variantes) return "Debe haber al menos una variante";
     if (variantes.length === 0) {
