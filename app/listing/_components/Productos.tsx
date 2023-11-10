@@ -4,7 +4,7 @@ import { TProduct } from "@/sanity/queries/pages/listingQueries";
 
 const Productos = ({ productos }: { productos: TProduct[] }) => {
   return (
-    <div>
+    <div className="bg-slate-400 grid grid-cols-4 gap-y-6 gap-x-4">
       {productos?.map((producto) => (
         <Link href={`${producto.slug}`} key={producto.slug}>
           <ProductCard producto={producto} />

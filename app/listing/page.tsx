@@ -2,6 +2,7 @@ import { getListingInitialLoadContent } from "@/sanity/queries/pages/listingQuer
 import Productos from "./_components/Productos";
 import Filters from "../_components/listingsPage/Filters";
 import Colecciones from "../_components/Colecciones";
+import Banner from "../_components/homepage/Banner";
 
 
 export const revalidate = 10; // revalidate at most every hour
@@ -91,24 +92,31 @@ const Listing = async ({
 
 
   return (
-    <main className="md:px-10 px-5 pt-[70px] md:pt-0">
-      <Filters
-        areFiltersActive={areFiltersActive}
-        searchParams={searchParams}
-      />
+    <main className="pt-16 md:pt-0">
+      {/* <Banner /> */}
+
       {!coleccionSeleccionada ? (
-        <Colecciones colecciones={colecciones ?? []} />
-      ) : (
-        <h2 className="text-3xl font-bold capitalize">
+        <Colecciones colecciones={colecciones ?? []}  className="py-6 pl-4"/>
+        ) : (
+          <h2 className="text-3xl font-bold capitalize">
           Coleccion {coleccionSeleccionada}
         </h2>
       )}
 
-      {filteredProducts && filteredProducts.length > 0 ? (
-        <Productos productos={filteredProducts} />
-      ) : (
-        <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
-      )}
+      <section className="py-6 px-4 md:px-9">
+        <Filters
+          areFiltersActive={areFiltersActive}
+          searchParams={searchParams}
+          />
+      </section>
+
+      <section className="py-6 px-4 md:px-9">
+        {filteredProducts && filteredProducts.length > 0 ? (
+          <Productos productos={filteredProducts} />
+          ) : (
+            <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
+            )}
+      </section>
     </main>
   );
 };

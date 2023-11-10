@@ -6,40 +6,25 @@ import {
 } from "@/sanity/queries/pages/listingQueries";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
-
   if (isPerfume(producto)) {
-    console.log("perfumes", { producto });
     return (
-      <div className="w-[136px] h-[279px] flex-col justify-start items-start gap-2 inline-flex">
-        <Image
-          src={producto.imagenes[0].url}
-          alt={producto.imagenes[0].alt || ""}
-          width={136}
-          height={136}
-          className="object-cover min-w-[136px]"
-        />
-        {producto.titulo}
-        <br />
-        {producto.marca}
-      </div>
+      <CardLayout
+        src={producto.imagenes[0].url}
+        alt={producto.imagenes[0].alt || ""}
+        titulo={producto.titulo}
+        price={producto.marca}
+      />
     );
   }
 
   if (isReloj(producto)) {
-    console.log("relojes", { producto });
     return (
-      <div className="w-[136px] h-[279px] flex-col justify-start items-start gap-2 inline-flex">
-        <Image
-          src={producto.variantes[0].imagenes[0].url}
-          alt={producto.variantes[0].imagenes[0].alt || ""}
-          width={136}
-          height={136}
-          className="object-cover min-w-[136px]"
-        />
-        {producto.modelo}
-        <br />
-        {producto.marca}
-      </div>
+      <CardLayout
+        src={producto.variantes[0].imagenes[0].url}
+        alt={producto.variantes[0].imagenes[0].alt || ""}
+        titulo={producto.modelo}
+        price={producto.marca}
+      />
     );
   }
   // if (!producto.imagenes) return null;
@@ -47,6 +32,33 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
   return (
     <div className="w-[136px] h-[279px] flex-col justify-start items-start gap-2 inline-flex">
       gafas here
+    </div>
+  );
+};
+
+const CardLayout = ({
+  src,
+  alt,
+  titulo,
+  price,
+}: {
+  src: string;
+  alt: string;
+  titulo: string;
+  price: string;
+}) => {
+  return (
+    <div className="bg-blue-300 w-full h-[279px] flex-col justify-start items-start gap-2 inline-flex">
+      <Image
+        src={src}
+        alt={alt}
+        width={136}
+        height={136}
+        className="object-cover min-w-[136px]"
+      />
+      {titulo}
+      <br />
+      {price}
     </div>
   );
 };
