@@ -26,7 +26,6 @@ const MobileNavBar = ({ className }: MobileNavBarProps) => {
     >
       <Image src={"/arlé-logo.png"} width={76} height={22} alt="logo" />
       <div className="flex relative items-center gap-5 w-fit">
-        <MobileSearch />
         <Kart />
         <Burger
           isNavOpen={isNavOpen}
@@ -57,58 +56,4 @@ const Kart = () => {
   );
 };
 
-const MobileSearch = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const { push: redirect } = useRouter();
 
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const onClickHandler = () => {
-    // if (isSearchOpen) {
-    inputRef.current?.focus();
-    // }
-    setIsSearchOpen(!isSearchOpen);
-  };
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      // Add your logic here'
-      redirect(`/listing?search=${searchText}`, { scroll: false });
-    }
-  };
-
-  return (
-    <div
-      className={`${
-        isSearchOpen ? "w-32" : "w-10"
-      } h-10 relative cursor-pointer`}
-    >
-      <div
-        className={` ${
-          isSearchOpen
-            ? "border-black pl-8 pr-4 w-full"
-            : "w-10 border-gray-300"
-        } h-10 left-0 top-0  bg-white rounded-full border  flex items-center `}
-      >
-        <input
-          className={`${isSearchOpen ? "w-full" : "w-0"} focus:outline-none`}
-          onKeyDown={handleKeyDown}
-          value={searchText}
-          ref={inputRef}
-          onChange={(e) => setSearchText(e.target.value)}
-          type="text"
-        />
-        {isSearchOpen && (
-          <Link href={`/listing?search=${searchText}`}>
-            <AiOutlineEnter />
-          </Link>
-        )}
-      </div>
-      <div className="w-[19.20px] h-[19.20px] px-[1.60px] pt-[1.31px] pb-[1.89px] left-[10.40px] top-[10.40px] absolute justify-center items-center inline-flex">
-        <div className="w-4 h-4 relative">
-          <FiSearch onClick={onClickHandler} />
-        </div>
-      </div>
-    </div>
-  );
-};

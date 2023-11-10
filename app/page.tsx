@@ -16,7 +16,7 @@ const Home = async function () {
   ];
 
   return (
-    <main>
+    <main className="bg-neutral-100">
       <Banner banners={pageContent.banners} />
       {exploreSections.map((section, index) => (
         <ExploreSection

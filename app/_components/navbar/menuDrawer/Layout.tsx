@@ -14,7 +14,7 @@ const Layout = ({ volver, isOpen, isMenuClose, children }: LayoutProps) => {
     <section
       className={cn(
         "fixed top-0  h-screen duration-500 transition-all w-screen lg:w-80 bg-white shadow-2xl",
-        ["right-[100%]", isOpen && isMenuClose ? "right-0" : "right-[-100%]"]
+        ["right-[150%]", isOpen && isMenuClose ? "right-0" : "right-[-150%]"]
       )}>
       <header className="p-4 h-16 flex items-center border-b border-stone-300">
         <h4
@@ -24,7 +24,7 @@ const Layout = ({ volver, isOpen, isMenuClose, children }: LayoutProps) => {
           Volver
         </h4>
       </header>
-      <section className="px-4 flex flex-col">{children}</section>
+      <section className="pl-6 pr-4 lg:px-4 flex flex-col">{children}</section>
     </section>
   );
 };
