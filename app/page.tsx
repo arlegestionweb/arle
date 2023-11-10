@@ -7,7 +7,7 @@ import Button from "./_components/Button";
 
 const Home = async function () {
   const pageContent = await getHomepageContent();
-  console.log(pageContent);
+  // console.log(pageContent);
 
   const exploreSections = [
     pageContent.perfumes,
