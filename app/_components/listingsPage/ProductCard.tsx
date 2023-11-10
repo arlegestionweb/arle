@@ -4,6 +4,8 @@ import {
   isPerfume,
   isReloj,
 } from "@/sanity/queries/pages/listingQueries";
+import Button from "../Button";
+import { LuShoppingCart } from "react-icons/lu";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
   if (isPerfume(producto)) {
@@ -48,17 +50,25 @@ const CardLayout = ({
   price: string;
 }) => {
   return (
-    <div className="bg-blue-300 w-full h-[279px] flex-col justify-start items-start gap-2 inline-flex">
-      <Image
-        src={src}
-        alt={alt}
-        width={136}
-        height={136}
-        className="object-cover min-w-[136px]"
-      />
-      {titulo}
-      <br />
-      {price}
+    <div className="w-[288px] flex flex-col gap-4">
+      <section className="w-[288px] h-[288px] overflow-hidden bg-black">
+        <Image
+          src={src}
+          alt={alt}
+          width={288}
+          height={288}
+          className="object-cover"
+        />
+      </section>
+
+      <section className=" font-tajawal flex flex-col gap-3">
+        <h3 className="text-xl font-bold leading-6 text-[#303030]">{titulo}</h3>
+        <p className="text-[18px] font-medium leading-5 text-[#4f4f4f]">{price}</p>
+      </section>
+      <Button className="bg-black text-[#CFCFCF] flex justify-center items-center gap-2">
+      <LuShoppingCart/>
+        <span className="font-inter text-base font-medium leading-6">Agregar</span>
+      </Button>
     </div>
   );
 };
