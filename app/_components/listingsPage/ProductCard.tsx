@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import {
   TProduct,
@@ -6,11 +7,20 @@ import {
 } from "@/sanity/queries/pages/listingQueries";
 import Button from "../Button";
 import { LuShoppingCart } from "react-icons/lu";
+import ProductSlide from "./ProductSlide";
 
-const ProductoCard = ({ producto }: { producto: TProduct }) => {
+
+const ProductoCard = ({
+  producto,
+}: {
+  producto: TProduct;
+}) => {
+  console.log(producto);
+
   if (isPerfume(producto)) {
     return (
       <CardLayout
+        images={producto.imagenes}
         src={producto.imagenes[0].url}
         alt={producto.imagenes[0].alt || ""}
         titulo={producto.titulo}
@@ -22,6 +32,7 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
   if (isReloj(producto)) {
     return (
       <CardLayout
+        images={producto.variantes[0].imagenes}
         src={producto.variantes[0].imagenes[0].url}
         alt={producto.variantes[0].imagenes[0].alt || ""}
         titulo={producto.modelo}
@@ -43,22 +54,34 @@ const CardLayout = ({
   alt,
   titulo,
   price,
+  images,
 }: {
   src: string;
   alt: string;
   titulo: string;
   price: string;
+  images: {
+    url: string;
+    alt?: string | null | undefined;
+  }[];
 }) => {
   return (
     <>
-      <section className="w-full  overflow-hidden bg-black">
-        <Image
-          src={src}
-          alt={alt}
-          width={288}
-          height={288}
-          className="object-cover h-[180px] lg:h-[288px]"
-        />
+      <section className="w-full  overflow-hidden">
+        {images.length > 1 ? (
+          <ProductSlide
+            imagesProduct={images}
+            className=" h-[180px] lg:h-[288px]"
+          />
+        ) : (
+          <Image
+            src={src}
+            alt={alt}
+            width={288}
+            height={288}
+            className="object-cover h-[180px] lg:h-[288px]"
+          />
+        )}
       </section>
 
       <section className=" flex-1 justify-between font-tajawal flex flex-col gap-3">
