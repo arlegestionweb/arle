@@ -1,21 +1,15 @@
 "use client";
 import { useRef, useState } from "react";
 import GradientImage from "../GradientImage";
+import { BannerType } from "../types";
+import { cn } from "@/app/_lib/utils";
 
 type BannerProps = {
-  banners: [
-    {
-      titulo: string;
-      descripcion: string;
-      imagen: {
-        alt: string;
-        url: string;
-      };
-    }
-  ];
+  banners: BannerType[],
+  className?: string
 };
 
-const Banner = ({ banners }: BannerProps) => {
+const Banner = ({ banners, className }: BannerProps) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const bannerRef = useRef<HTMLElement>(null);
 
@@ -40,7 +34,7 @@ const Banner = ({ banners }: BannerProps) => {
   // console.log({ banners });
 
   return (
-    <section className="max-w-screen h-[70vh] pt-[70px] md:pt-0 overflow-hidden relative group">
+    <section className={cn("max-w-screen h-[70vh] pt-[70px] md:pt-0 overflow-hidden relative group", className)}>
       <section
         className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
         onScroll={handleScroll}
