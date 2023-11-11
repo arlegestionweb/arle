@@ -100,6 +100,8 @@ const Listing = async ({
     }
   } as BannerType));
 
+  
+
   return (
     <main className="pt-16 md:pt-0">
       <Banner banners={banner} className="h-[50vh]"/>
@@ -121,7 +123,9 @@ const Listing = async ({
 
       <section className="py-6 px-4 md:px-9">
         {filteredProducts && filteredProducts.length > 0 ? (
-          <Productos productos={filteredProducts} />
+          
+// * QUITAR BANNER
+          <Productos productos={filteredProducts}/>
           ) : (
             <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
             )}
