@@ -3,6 +3,7 @@ import Productos from "./_components/Productos";
 import Filters from "../_components/listingsPage/Filters";
 import Colecciones from "../_components/Colecciones";
 import Banner from "../_components/homepage/Banner";
+import { BannerType } from "../_components/types";
 
 
 export const revalidate = 10; // revalidate at most every hour
@@ -90,10 +91,18 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
+  const banner: BannerType[] = pageContent.listingContent.banners.map(banner => ({
+    titulo: banner.titulo,
+    descripcion: banner.descripcion,
+    imagen: {
+      url: banner.imagen?.asset.url || "",
+      alt: ""
+    }
+  } as BannerType));
 
   return (
     <main className="pt-16 md:pt-0">
-      {/* <Banner /> */}
+      <Banner banners={banner} className="h-[50vh]"/>
 
       {!coleccionSeleccionada ? (
         <Colecciones colecciones={colecciones ?? []}  className="py-6 pl-4"/>
