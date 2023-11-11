@@ -11,7 +11,7 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
       <h2 className="self-stretch text-zinc-800 text-[28px] font-semibold font-lora leading-loose">
         Colecciones
       </h2>
-      <ul className=" flex justify-between md:gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
+      <ul className=" flex justify-center md:gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
         {colecciones.map((coleccion) => (
           <li
             key={coleccion.titulo}

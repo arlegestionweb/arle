@@ -50,26 +50,30 @@ const CardLayout = ({
   price: string;
 }) => {
   return (
-    <div className="w-[288px] flex flex-col gap-4">
-      <section className="w-[288px] h-[288px] overflow-hidden bg-black">
+    <>
+      <section className="w-full  overflow-hidden bg-black">
         <Image
           src={src}
           alt={alt}
           width={288}
           height={288}
-          className="object-cover"
+          className="object-cover h-[180px] lg:h-[288px]"
         />
       </section>
 
-      <section className=" font-tajawal flex flex-col gap-3">
+      <section className=" flex-1 justify-between font-tajawal flex flex-col gap-3">
         <h3 className="text-xl font-bold leading-6 text-[#303030]">{titulo}</h3>
-        <p className="text-[18px] font-medium leading-5 text-[#4f4f4f]">{price}</p>
+        <p className="text-[18px] font-medium leading-5 text-[#4f4f4f]">
+          {price}
+        </p>
       </section>
       <Button className="bg-black text-[#CFCFCF] flex justify-center items-center gap-2">
-      <LuShoppingCart/>
-        <span className="font-inter text-base font-medium leading-6">Agregar</span>
+        <LuShoppingCart />
+        <span className="font-inter text-base font-medium leading-6">
+          Agregar
+        </span>
       </Button>
-    </div>
+    </>
   );
 };
 
