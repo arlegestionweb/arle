@@ -37,7 +37,7 @@ const ProductSlide = ({ imagesProduct, className }: ProductSlideProps) => {
   return (
     <section
       className={cn(
-        "max-w-screen h-[70vh] pt-[70px] md:pt-0 overflow-hidden relative group",
+        "max-w-screen h-[70vh] md:pt-0 overflow-hidden relative group",
         className
       )}>
       <section
@@ -51,7 +51,7 @@ const ProductSlide = ({ imagesProduct, className }: ProductSlideProps) => {
               `relative h-full w-full`,
               `snap-center snap-always ${
                 index === 1 && "snap-mandatory"
-              } min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`
+              } min-w-full flex-col justify-end items-center gap-2.5 inline-flex`
             )}>
             <Image
               alt={image.alt || "product"}
