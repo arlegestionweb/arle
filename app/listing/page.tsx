@@ -89,7 +89,6 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
-
   return (
     <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
       <Filters

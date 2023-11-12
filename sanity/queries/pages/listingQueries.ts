@@ -3,11 +3,9 @@ import {
   bannersQuery,
   imageArrayQuery,
   imageQuery,
-  marcaTipoModeloQuery,
 } from "../objects";
 
 import { z } from "zod";
-import { parse } from "path";
 
 const listingMainString = ` 
 {

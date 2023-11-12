@@ -32,7 +32,7 @@ export default function RootLayout({
   const headersList = headers();
   const pathname = headersList.get("x-invoke-path");
 
-  if (pathname === "/admin") {
+  if (pathname && pathname.includes("/admin")) {
     return (
       <html lang="en">
         <body>{children}</body>
@@ -52,3 +52,4 @@ export default function RootLayout({
     </html>
   );
 }
+// /perfumepremium/carolina-herrera/good-girl-supreme-edp/ff2cfa02-3708-4bdf-9211-c329b7b0fad5
