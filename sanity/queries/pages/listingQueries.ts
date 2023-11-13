@@ -64,13 +64,14 @@ const zodBanner = z.object({
   descripcion: z.string(),
   imagen: z
     .object({
-      asset: z.object({
-        url: z.string(),
-      }),
+      alt: z.string(),
+      url: z.string(),
     })
     .optional()
     .nullable(),
 });
+
+export type TBanner = z.infer<typeof zodBanner>;
 
 const zodPerfumeListingQuery = z.object({
   titulo: z.string(),
@@ -182,6 +183,9 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
+
+    console.log(result.listingContent.banners);
+    
 
     const parsedResult = zodListPage.safeParse(result);
 
