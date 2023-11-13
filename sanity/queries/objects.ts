@@ -9,7 +9,7 @@ export const bannersQuery = `
   "banners": banners[] {
     titulo,
     descripcion,
-    "imagen": imagen.imagen{
+    "imagen": imagen{
       alt,
       "url": asset->url
     },

@@ -1,12 +1,12 @@
 "use client";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import GradientImage from "../GradientImage";
-import { BannerType } from "../types";
 import { cn } from "@/app/_lib/utils";
+import { TBanner } from "@/sanity/queries/pages/listingQueries";
 
 type BannerProps = {
-  banners: BannerType[],
-  className?: string
+  banners: TBanner[];
+  className?: string;
 };
 
 const Banner = ({ banners, className }: BannerProps) => {
@@ -34,29 +34,34 @@ const Banner = ({ banners, className }: BannerProps) => {
   // console.log({ banners });
 
   return (
-    <section className={cn("max-w-screen h-[70vh] pt-[70px] md:pt-0 overflow-hidden relative group", className)}>
+    <section
+      className={cn(
+        "max-w-screen h-[70vh] pt-[70px] md:pt-0 overflow-hidden relative group",
+        className
+      )}>
       <section
         className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
         onScroll={handleScroll}
-        ref={bannerRef}
-      >
+        ref={bannerRef}>
         {banners.map((banner, index) => (
-          <GradientImage
-            key={index + banner.titulo}
-            src={banner.imagen.url}
-            alt={banner.imagen.alt}
-            layout="fill"
-            imageClassName="fit object-cover object-top"
-            containerclassName={`snap-center snap-always ${
-              index === 1 && "snap-mandatory"
-            } min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`}
-          >
-            <div className="sticky z-10 self-stretch h-[114px] flex-col justify-center items-center gap-2.5 flex">
-              <div className="self-stretch text-center text-white text-[32px] font-semibold font-lora uppercase leading-[38.40px]">
-                {banner.titulo}
-              </div>
-            </div>
-          </GradientImage>
+          <React.Fragment key={index + banner.titulo}>
+            {banner.imagen && (
+              <GradientImage
+                src={banner.imagen.url}
+                alt={banner.imagen.alt}
+                layout="fill"
+                imageClassName="fit object-cover object-top"
+                containerclassName={`snap-center snap-always ${
+                  index === 1 && "snap-mandatory"
+                } min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`}>
+                <div className="sticky z-10 self-stretch h-[114px] flex-col justify-center items-center gap-2.5 flex">
+                  <div className="self-stretch text-center text-white text-[32px] font-semibold font-lora uppercase leading-[38.40px]">
+                    {banner.titulo}
+                  </div>
+                </div>
+              </GradientImage>
+            )}
+          </React.Fragment>
         ))}
       </section>
 

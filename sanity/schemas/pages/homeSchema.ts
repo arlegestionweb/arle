@@ -1,7 +1,8 @@
 import { imageArrayMemberSchema } from './../objects/image';
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { HomeIcon } from "@sanity/icons";
-import bannersSchema from '../objects/bannersSchema';
+import { PiFlagBannerFill } from 'react-icons/pi';
+import { videoSchema } from '../objects/video';
 
 export const homeSchema = defineType({
   name: "homepage",
@@ -9,7 +10,65 @@ export const homeSchema = defineType({
   type: "document",
   icon: HomeIcon,
   fields: [
-    bannersSchema,
+    defineField({
+      name: "banners1",
+      title: "Banners",
+      type: "array",
+      of: [
+        defineArrayMember({
+          name: "banner",
+          title: "Banner",
+          type: "object",
+          icon: PiFlagBannerFill,
+          fields: [
+            defineField({
+              name: "titulo",
+              title: "Titulo",
+              type: "string",
+            }),
+            defineField({
+              name: "descripcion",
+              title: "Descripción",
+              type: "text",
+            }),
+            defineField({
+              name: "imagenOVideo",
+              title: "Imagen o Video",
+              type: "boolean",
+              initialValue: true,
+            }),
+            defineField({
+              name: "imagen",
+              title: "Imagen",
+              type: "imagenObject",
+              hidden: ({ parent }) => !parent?.imagenOVideo,
+            }),
+            defineField({
+              name: "video",
+              title: "Video",
+              type: "object",
+              hidden: ({ parent }) => parent?.imagenOVideo,
+              fields: [videoSchema],
+            }),
+          ],
+          preview: {
+            select: {
+              title: "titulo",
+              media: "imagen",
+            },
+            prepare(selection) {
+              const { title, media } = selection;
+              if (!title) return { title: "Sin título" };
+              if (!media) return { title };
+              return {
+                title,
+                media,
+              };
+            },
+          },
+        }),
+      ],
+    }),
     defineField({
       name: "perfumes",
       title: "Perfumes",
