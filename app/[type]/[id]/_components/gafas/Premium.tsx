@@ -1,13 +1,13 @@
-import { TProduct } from "@/sanity/queries/pages/productPage/zodSchemas.ts/productPage";
+import { TGafaPremium } from "@/sanity/queries/pages/types";
 
 type TGafaPremiumProps = {
-  product: TProduct;
+  product: TGafaPremium;
 };
 
 const GafaPremium = ({product}: TGafaPremiumProps) => {
   return (
     <div>
-      <h1>Gafa Premium</h1>
+      <h1>{product.marca} {product.modelo}</h1>
     </div>
   );
 };

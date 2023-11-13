@@ -153,3 +153,118 @@ export const perfumeLujoSchema = z.object({
   genero: z.string(),
 });
 
+
+export const gafasLujoSchema = z.object({
+  mostrarCredito: z.boolean(),
+  especificaciones: z.object({
+    tipoDeGafa: z.string(),
+    estiloDeGafa: z.string(),
+    lente: z.object({
+      tipo: z.string(),
+      material: z.string(),
+    }),
+    queIncluye: z.string(),
+    montura: z.object({
+      formaDeLaMontura: z.string(),
+      materialMontura: z.string(),
+      materialVarilla: z.string(),
+    }),
+    paisDeOrigen: z.string(),
+  }),
+  _id: z.string(),
+  descripcion: z.string(),
+  marca: z.string(),
+  _type: z.string(),
+  garantia: z.object({
+    meses: z.number(),
+  }),
+  inspiracion: z.object({
+    usarInspiracion: z.boolean(),
+    contenido: z.object({
+      resena: z.string(),
+      imagen: z.object({
+        alt: z.string(),
+        url: z.string(),
+      }),
+    }),
+  }),
+  variantes: z.array(
+    z.object({
+      mostrarUnidadesDispobibles: z.boolean(),
+      colorDeLaMontura: z.object({
+        nombre: z.string(),
+        color: z.string(),
+      }),
+      etiqueta: z.string(),
+      colorDeLaVarilla: z.object({
+        nombre: z.string(),
+        color: z.string(),
+      }),
+      codigo: z.string(),
+      precio: z.string(),
+      unidadesDisponibles: z.number(),
+      colorDelLente: z.object({
+        nombre: z.string(),
+        color: z.string(),
+      }),
+      imagenes: z.array(
+        z.object({
+          alt: z.string(),
+          url: z.string(),
+        })
+      ),
+    })
+  ),
+  modelo: z.string(),
+  slug: z.string(),
+  genero: z.string(),
+});
+
+export const gafasPremiumSchema = z.object({
+  _type: z.string(),
+  marca: z.string(),
+  _id: z.string(),
+  variantes: z.array(
+    z.object({
+      colorDelLente: z.object({
+        nombre: z.string(),
+        color: z.string(),
+      }),
+      colorDeLaMontura: z.object({
+        nombre: z.string(),
+        color: z.string(),
+      }),
+      imagenes: z.array(
+        z.object({
+          alt: z.string(),
+          url: z.string(),
+        })
+      ),
+      codigo: z.string(),
+      unidadesDisponibles: z.number(),
+      precio: z.string(),
+      etiqueta: z.string(),
+      mostrarUnidadesDispobibles: z.boolean(),
+    })
+  ),
+  modelo: z.string(),
+  slug: z.string(),
+  genero: z.string(),
+  descripcion: z.string(),
+  detalles: z.object({
+    tipoDeGafa: z.string(),
+    estiloDeGafa: z.string(),
+    lente: z.object({
+      tipo: z.string(),
+      material: z.string(),
+    }),
+    montura: z.object({
+      formaDeLaMontura: z.string(),
+      materialMontura: z.string(),
+      materialVarilla: z.string(),
+    }),
+  }),
+  garantia: z.object({
+    meses: z.number(),
+  }),
+});

@@ -1,6 +1,13 @@
 import sanityClient from "@/sanity/sanityClient";
 import { z } from "zod";
-import { perfumeLujoSchema, perfumePremiumSchema, relojLujoSchema, relojPremiumSchema } from "../zodSchemas";
+import {
+  gafasLujoSchema,
+  gafasPremiumSchema,
+  perfumeLujoSchema,
+  perfumePremiumSchema,
+  relojLujoSchema,
+  relojPremiumSchema,
+} from "../zodSchemas";
 
 type TProductType =
   | "relojesLujo"
@@ -152,20 +159,121 @@ const productQuery: Record<TProductType, string> = {
     parteDeUnSet,
     descripcion
   }`,
-  gafasLujo: `{...}`,
-  gafasPremium: `{...}`,
+  gafasLujo: `{
+    mostrarCredito,
+    "especificaciones": especificaciones {
+      "tipoDeGafa": tipoDeGafa -> titulo,
+      "estiloDeGafa": estiloDeGafa -> titulo,
+      "lente": lente {
+        "tipo": tipo -> titulo,
+        "material": material -> titulo,
+      },
+      queIncluye,
+      "montura": montura {
+        "formaDeLaMontura": formaDeLaMontura -> titulo,
+        "materialMontura": materialMontura -> titulo,
+        "materialVarilla": materialVarilla -> titulo,
+      },
+      "paisDeOrigen": paisDeOrigen -> nombre
+    },
+    _id,
+    descripcion,
+    "marca": marca->titulo,
+    _type,
+    "garantia": garantia { 
+      meses 
+    },
+    "inspiracion": inspiracion { 
+      usarInspiracion, 
+      "contenido": contenido {
+        resena,
+        "imagen": imagen {
+          alt,
+          "url": asset->url,
+        }
+      } 
+    },
+    "variantes": variantes [] {
+      mostrarUnidadesDispobibles,
+      "colorDeLaMontura": colorDeLaMontura -> {
+        nombre,
+        "color": color.hex
+      },
+      etiqueta,
+      "colorDeLaVarilla": colorDeLaVarilla -> {
+        nombre,
+        "color": color.hex
+      },
+      codigo,
+      precio,
+      unidadesDisponibles,
+      "colorDelLente": colorDelLente -> {
+        nombre,
+        "color": color.hex
+      },
+      "imagenes": imagenes[]{
+        alt,
+        "url": asset->url,
+      }, 
+    },
+    modelo,
+    "slug": slug.current,
+    genero
+  }`,
+  gafasPremium: `{
+    _type,
+    "marca": marca->titulo,
+    _id,
+    "variantes": variantes[] {
+      "colorDelLente": colorDelLente -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaMontura": colorDeLaMontura -> {
+        nombre,
+        "color": color.hex
+      },
+      "imagenes": imagenes[] {
+        alt,
+        "url": asset->url,
+      },
+      codigo,
+      unidadesDisponibles,
+      precio,
+      etiqueta,
+      mostrarUnidadesDispobibles
+    },
+    modelo,
+    "slug": slug.current, 
+    genero,
+    descripcion,
+    "detalles": detalles {
+      "tipoDeGafa": tipoDeGafa -> titulo,
+      "estiloDeGafa": estiloDeGafa -> titulo,
+      "lente": lente {
+        "tipo": tipo -> titulo,
+        "material": material -> titulo,
+      },
+      "montura": montura {
+        "formaDeLaMontura": formaDeLaMontura -> titulo,
+        "materialMontura": materialMontura -> titulo,
+        "materialVarilla": materialVarilla -> titulo,
+      }
+    },
+    "garantia": garantia { 
+      meses
+    }
+  }`,
 };
-
 
 const schemas: Record<TProductType, z.ZodSchema<any>> = {
   relojesLujo: relojLujoSchema,
   relojesPremium: relojPremiumSchema,
-  gafasLujo: z.object({}),
-  gafasPremium: z.object({}),
+  gafasLujo: gafasLujoSchema,
+  gafasPremium: gafasPremiumSchema,
   perfumeLujo: perfumeLujoSchema,
   perfumePremium: perfumePremiumSchema,
 };
-
 
 export const getProductById = async (id: string, productType: TProductType) => {
   const query = productQuery[productType];
@@ -174,14 +282,12 @@ export const getProductById = async (id: string, productType: TProductType) => {
     await sanityClient.fetch(`*[_type == "${productType}" && _id == "${id}"][0]
   ${query}`);
 
-  const productSchema = schemas[productType];
+  // console.log({ fetchResult, detalles: fetchResult.detalles.montura });
 
-  console.log({fetchResult})
+  const productSchema = schemas[productType];
 
   const product = productSchema.safeParse(fetchResult);
 
-  // console.log({productParsing: product});
-  
   if (!product.success) {
     throw new Error(product.error.message);
   }
