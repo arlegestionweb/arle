@@ -2,8 +2,10 @@
 import React, { useRef, useState } from "react";
 import { cn } from "@/app/_lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 type ProductSlideProps = {
+  slug: string
   imagesProduct: {
     url: string;
     alt?: string | null | undefined;
@@ -11,7 +13,7 @@ type ProductSlideProps = {
   className?: string;
 };
 
-const ProductSlide = ({ imagesProduct, className }: ProductSlideProps) => {
+const ProductSlide = ({slug, imagesProduct, className }: ProductSlideProps) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const productRef = useRef<HTMLElement>(null);
 
@@ -53,12 +55,14 @@ const ProductSlide = ({ imagesProduct, className }: ProductSlideProps) => {
                 index === 1 && "snap-mandatory"
               } min-w-full flex-col justify-end items-center gap-2.5 inline-flex`
             )}>
-            <Image
-              alt={image.alt || "product"}
-              src={image.url}
-              fill
-              className={`object-cover fit object-top`}
-            />
+            <Link href={slug}>
+              <Image
+                alt={image.alt || "product"}
+                src={image.url}
+                fill
+                className={`object-cover fit object-top`}
+              />
+            </Link>
           </div>
         ))}
       </section>
@@ -67,8 +71,8 @@ const ProductSlide = ({ imagesProduct, className }: ProductSlideProps) => {
         {imagesProduct.map((image, index) => (
           <div
             key={index}
-            className={`w-[9px] h-[9px] rounded-full bg-black mx-1.5 cursor-pointer ${
-              index === scrollPosition ? "opacity-50" : "opacity-20"
+            className={`w-[9px] h-[9px] rounded-full mix-blend-difference bg-black mx-1.5 cursor-pointer ${
+              index === scrollPosition ? "opacity-80" : "opacity-30"
             }`}
             onClick={() => changeScrollPosition(index)}
           />
