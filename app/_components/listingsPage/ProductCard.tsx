@@ -79,7 +79,7 @@ const CardLayout = ({
             alt={alt}
             width={288}
             height={288}
-            className="object-cover h-[180px] lg:h-[288px]"
+            className="object-cover h-[180px] w-full lg:h-[288px]"
           />
         )}
       </section>

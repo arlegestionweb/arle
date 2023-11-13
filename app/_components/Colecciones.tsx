@@ -7,8 +7,8 @@ type ColeccionesProps = { colecciones: TColecciones, className?: string }
 
 const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
   return (
-    <section className={cn("bg-neutral-100 pl-8 lg:px-8", className)}>
-      <h2 className="self-stretch text-zinc-800 text-[28px] font-semibold font-lora leading-loose">
+    <section className={cn("bg-[#cbbba0] pl-8 lg:px-8 flex flex-col items-center", className)}>
+      <h2 className="max-w-[1280px] lg:px-9 w-full text-zinc-800 text-[28px] font-semibold font-lora leading-loose">
         Colecciones
       </h2>
       <ul className=" flex justify-center md:gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
