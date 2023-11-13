@@ -26,8 +26,7 @@ const ProductPage = async ({ params }: TPageProps) => {
 
   
   return (
-    <main className="min-h-screen bg-indigo-400">
-      Enter here!!!
+    <main className="min-h-screen">
       {params.type === "gafasLujo" && <GafaLujo product={product} />}
       {params.type === "gafasPremium" && <GafaPremium product={product} />}
       {params.type === "perfumeLujo" && <PerfumeLujo product={product}/>}

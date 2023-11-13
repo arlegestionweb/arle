@@ -1,13 +1,13 @@
-import { TProduct } from "@/sanity/queries/pages/productPage";
+import { TPerfumeLujo } from "@/sanity/queries/pages/types";
 
 type TPerfumeLujoProps = {
-  product: TProduct;
+  product: TPerfumeLujo;
 };
 
 const PerfumeLujo = ({product}: TPerfumeLujoProps) => {
   return (
     <div>
-      <h1>Perfume Lujo</h1>
+      <h1>{product.marca} {product.titulo}</h1>
     </div>
   );
 };

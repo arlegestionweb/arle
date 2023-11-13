@@ -1,13 +1,14 @@
-import { TProduct } from "@/sanity/queries/pages/productPage";
+import { TRelojPremium } from "@/sanity/queries/pages/types";
 
 type TRelojPremiumProps = {
-  product: TProduct;
+  product: TRelojPremium;
 };
 
 const RelojPremium = ({product}: TRelojPremiumProps) => {
+
   return (
     <div>
-      <h1>Reloj Premium</h1>
+      <h1>{product.marca} {product.modelo}</h1>
     </div>
   );
 };

@@ -1,13 +1,15 @@
-import { TProduct } from "@/sanity/queries/pages/productPage";
+import { TPerfumePremium } from "@/sanity/queries/pages/types";
 
 type TPerfumePremiumProps = {
-  product: TProduct;
+  product: TPerfumePremium;
 };
 
 const PerfumePremium = ({product}: TPerfumePremiumProps) => {
+  console.log({product});
+  
   return (
     <div>
-      <h1>Perfume Premium</h1>
+      <h1>{product.marca} {product.titulo}</h1>
     </div>
   );
 };

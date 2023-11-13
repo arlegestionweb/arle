@@ -1,4 +1,4 @@
-import { TProduct } from "@/sanity/queries/pages/productPage";
+import { TProduct } from "@/sanity/queries/pages/productPage/zodSchemas.ts/productPage";
 
 type TGafaPremiumProps = {
   product: TProduct;
