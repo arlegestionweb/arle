@@ -7,7 +7,7 @@ const Productos = ({ productos }: { productos: TProduct[]}) => {
       {productos?.map((producto) => (
         // TODO make link
         // <Link href={`${producto.slug}`} 
-        <div key={producto.slug} className="w-full justify-between flex flex-col gap-4">
+        <div key={producto.slug} className="relative pb-6 w-full justify-between flex flex-col gap-4">
           <ProductCard producto={producto}/>
         </div>
       ))}

@@ -9,33 +9,44 @@ import Button from "../Button";
 import { LuShoppingCart } from "react-icons/lu";
 import ProductSlide from "./ProductSlide";
 import Link from "next/link";
+import Labels from "../Labels";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
-  console.log(producto);
+  // TODO: REFACTORIZAR, no repetir codigo
 
   if (isPerfume(producto)) {
     return (
-      <CardLayout
-        link={producto.slug}
-        images={producto.imagenes}
-        src={producto.imagenes[0].url}
-        alt={producto.imagenes[0].alt || ""}
-        titulo={producto.titulo}
-        price={producto.marca}
-      />
+      <>
+        {producto.variantes[0].etiqueta && (
+          <Labels label={producto.variantes[0].etiqueta} className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"/>
+        )}
+        <CardLayout
+          link={producto.slug}
+          images={producto.imagenes}
+          src={producto.imagenes[0].url}
+          alt={producto.imagenes[0].alt || ""}
+          titulo={producto.titulo}
+          price={producto.marca}
+        />
+      </>
     );
   }
 
   if (isReloj(producto)) {
     return (
-      <CardLayout
-        link={producto.slug}
-        images={producto.variantes[0].imagenes}
-        src={producto.variantes[0].imagenes[0].url}
-        alt={producto.variantes[0].imagenes[0].alt || ""}
-        titulo={producto.modelo}
-        price={producto.marca}
-      />
+      <>
+        {producto.variantes[0].etiqueta && (
+          <Labels label={producto.variantes[0].etiqueta} className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"/>
+        )}
+        <CardLayout
+          link={producto.slug}
+          images={producto.variantes[0].imagenes}
+          src={producto.variantes[0].imagenes[0].url}
+          alt={producto.variantes[0].imagenes[0].alt || ""}
+          titulo={producto.modelo}
+          price={producto.marca}
+        />
+      </>
     );
   }
   // if (!producto.imagenes) return null;
@@ -59,7 +70,7 @@ const CardLayout = ({
   alt: string;
   titulo: string;
   price: string;
-  link: string
+  link: string;
   images: {
     url: string;
     alt?: string | null | undefined;
@@ -69,7 +80,7 @@ const CardLayout = ({
     <>
       <section className="w-full  overflow-hidden">
         {images.length > 1 ? (
-          <ProductSlide 
+          <ProductSlide
             slug={link}
             imagesProduct={images}
             className=" h-[180px] lg:h-[288px]"
