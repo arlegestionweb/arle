@@ -91,7 +91,7 @@ const Listing = async ({
     <main className=" pt-16 md:pt-0">
       <Banner
         banners={pageContent.listingContent.banners}
-        className="h-[50vh]"
+        className="h-[50vh] pt-0"
       />
 
       {!coleccionSeleccionada ? (
