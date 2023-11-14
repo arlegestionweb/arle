@@ -9,16 +9,21 @@ import Button from "../Button";
 import { LuShoppingCart } from "react-icons/lu";
 import ProductSlide from "./ProductSlide";
 import Link from "next/link";
-import Labels from "../Labels";
+import Labels, { LabelTypes } from "../Labels";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
   // TODO: REFACTORIZAR, no repetir codigo
+  console.log(producto);
 
   if (isPerfume(producto)) {
     return (
       <>
         {producto.variantes[0].etiqueta && (
-          <Labels label={producto.variantes[0].etiqueta} className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"/>
+          <Labels
+            labelType={producto.variantes[0].etiqueta as LabelTypes}
+            label={producto.variantes[0].etiqueta as LabelTypes}
+            className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+          />
         )}
         <CardLayout
           link={producto.slug}
@@ -36,7 +41,11 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
     return (
       <>
         {producto.variantes[0].etiqueta && (
-          <Labels label={producto.variantes[0].etiqueta} className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"/>
+          <Labels
+            labelType={producto.variantes[0].etiqueta as LabelTypes}
+            label={producto.variantes[0].etiqueta as LabelTypes}
+            className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+          />
         )}
         <CardLayout
           link={producto.slug}
