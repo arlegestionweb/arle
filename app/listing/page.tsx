@@ -103,7 +103,7 @@ const Listing = async ({
           Coleccion {coleccionSeleccionada}
         </h2>
       )}
-      <section className="flex flex-col items-center">
+      <section className="bg-[#ffffff] flex flex-col items-center">
         <section className="max-w-[1280px] w-full py-6 px-4 md:px-9 flex">
           <Filters
             areFiltersActive={areFiltersActive}
