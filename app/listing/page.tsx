@@ -88,14 +88,10 @@ const Listing = async ({
   });
 
   return (
-    <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
+    <main className="bg-neutral-100 min-h-screen pt-[70px] md:pt-0">
       <Banner
         banners={pageContent.listingContent.banners}
         className="h-[50vh] pt-0"
-      />
-      <Filters
-        areFiltersActive={areFiltersActive}
-        searchParams={searchParams}
       />
       {!coleccionSeleccionada ? (
         <Colecciones
