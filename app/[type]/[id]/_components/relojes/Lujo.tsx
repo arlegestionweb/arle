@@ -1,7 +1,7 @@
-import { TProduct } from "@/sanity/queries/pages/productPage/zodSchemas.ts/productPage";
+import { TRelojLujo } from "@/sanity/queries/pages/types";
 
 type TRelojLujoProps = {
-  product: TProduct;
+  product: TRelojLujo;
 };
 
 const RelojLujo = ({product}: TRelojLujoProps) => {
