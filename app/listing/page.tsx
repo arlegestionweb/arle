@@ -93,6 +93,7 @@ const Listing = async ({
         banners={pageContent.listingContent.banners}
         className="h-[50vh] pt-0"
       />
+
       {!coleccionSeleccionada ? (
         <Colecciones
           colecciones={colecciones ?? []}
