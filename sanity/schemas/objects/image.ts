@@ -27,6 +27,7 @@ export const imageArrayMemberSchema = defineArrayMember({
       title: "Texto Alternativo",
       description: "Para buscadores de internet (SEO)",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
   ],
 })
