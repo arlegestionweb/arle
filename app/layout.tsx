@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter, Lora, Raleway, Tajawal } from "next/font/google";
+import { Inter, Lora, Raleway, Tajawal, Kanit } from "next/font/google";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/Footer";
 import { headers } from "next/headers";
@@ -15,6 +15,12 @@ const tajawal = Tajawal({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-tajawal",
+});
+
+const kanit = Kanit({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-kanit",
 });
 
 export const metadata: Metadata = {
@@ -43,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${lora.variable} ${raleway.variable} ${tajawal.variable} overflow-x-hidden`}
+        className={`${inter.variable} ${lora.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} overflow-x-hidden`}
       >
         <Navbar />
         {children}

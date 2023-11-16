@@ -10,3 +10,37 @@ export const removeSpanishAccents = function(str: string) {
     .replace(/[ñ]/g, "n")
     .replace(/[ç]/g, "c");
 }
+
+
+export const colombianPriceStringToNumber = (price: string) => {
+  return Number(
+    price
+      .split("$ ")
+      .join("")
+      .split(".")
+      .join("")
+      .split("'")
+      .join("")
+  );
+};
+
+export const numberToColombianPriceString = (price: number) => {
+  let [integerPart, decimalPart] = price.toString().split('.');
+  let result = "";
+  let count = 0;
+
+  for (let i = integerPart.length - 1; i >= 0; i--) {
+    count++;
+    result = integerPart[i] + result;
+    if (count === 3 && i !== 0) {
+      result = "." + result;
+      count = 0;
+    }
+  }
+
+  if (decimalPart) {
+    result = result + '.' + decimalPart;
+  }
+
+  return result;
+}
