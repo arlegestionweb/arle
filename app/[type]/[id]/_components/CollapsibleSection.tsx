@@ -21,7 +21,7 @@ const CollapsibleProductSection = ({
   return (
     <section className={`relative border-b border-stone-300 pb-[24px] ${classNames}`}>
       {title && (
-        <h2 className="text-zinc-800 text-lg font-bold bg-red-300 w-fit font-tajawal leading-snug mb-[20.5px] relative">
+        <h2 className="text-zinc-800 text-lg font-bold w-fit font-tajawal leading-snug mb-[20.5px] relative">
           {title}
           {titleActive && <RedDot position="centerRight" />} 
         </h2>

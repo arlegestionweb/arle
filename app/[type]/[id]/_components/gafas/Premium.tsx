@@ -6,6 +6,9 @@ import {
   numberToColombianPriceString,
 } from "@/utils/helpers";
 import CollapsibleProductSection from "../CollapsibleSection";
+import SeccionEspecificaciones from "../SeccionEspecificaciones";
+import { GiftIcon, MessagesIcon, ShippingBoxIcon } from "../Icons";
+import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 
 type TGafaPremiumProps = {
   product: TGafaPremium;
@@ -54,9 +57,9 @@ const GafaPremium = ({ product }: TGafaPremiumProps) => {
         <CollapsibleProductSection classNames="mt-2" title="Descripción">
           <p>{product.descripcion}</p>
         </CollapsibleProductSection>
-        <CollapsibleProductSection classNames="mt-2" title="Especificaciones" titleActive>
-          <p>{product.descripcion}</p>
-        </CollapsibleProductSection>
+        <EspecificacionesGafa product={product} />
+
+       <NuestrasComprasIncluyen garantia={product.garantia} />
       </section>
     </>
   );
@@ -64,4 +67,31 @@ const GafaPremium = ({ product }: TGafaPremiumProps) => {
 
 export default GafaPremium;
 
-  
+type TEspecificacionesProps = {
+  product: TGafaPremium;
+};
+
+const EspecificacionesGafa = ({ product }: TEspecificacionesProps) => {
+  return (
+    <CollapsibleProductSection
+      classNames="mt-2"
+      title="Especificaciones"
+      titleActive
+    >
+      <div className="grid grid-cols-2 gap-2">
+        <SeccionEspecificaciones title="Modelo" paragraph={product.modelo} />
+        <SeccionEspecificaciones title="Género" paragraph={product.genero} />
+        <SeccionEspecificaciones
+          title="Forma de Montura"
+          paragraph={product.detalles.montura.formaDeLaMontura}
+        />
+        <SeccionEspecificaciones title="Marca" paragraph={product.marca} />
+        <SeccionEspecificaciones
+          title="Tipo"
+          paragraph={product.detalles.tipoDeGafa}
+        />
+      </div>
+    </CollapsibleProductSection>
+  );
+};
+
