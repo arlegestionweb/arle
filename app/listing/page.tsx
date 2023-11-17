@@ -2,10 +2,9 @@ import { getListingInitialLoadContent } from "@/sanity/queries/pages/listingQuer
 import Productos from "./_components/Productos";
 import Filters from "../_components/listingsPage/Filters";
 import Colecciones from "../_components/Colecciones";
-
+import Banner from "../_components/homepage/Banner";
 
 export const revalidate = 10; // revalidate at most every hour
-
 
 const Listing = async ({
   searchParams,
@@ -15,13 +14,12 @@ const Listing = async ({
   };
 }) => {
   const pageContent = await getListingInitialLoadContent();
-
   const coleccionSeleccionada = null;
   const tipoDeProductoSeleccionado = searchParams.producto as string;
   const campoDeBusquedaSeleccionado = searchParams.search as string;
 
   const colecciones = pageContent?.colecciones.filter(
-    (coleccion) => !!coleccion.productos
+    coleccion => !!coleccion.productos
   );
 
   // const { colecciones } = pageContent;
@@ -32,10 +30,10 @@ const Listing = async ({
   if (!pageContent?.relojes && !pageContent?.perfumes && !pageContent?.gafas) {
     return null;
   }
-  
+
   // const productos= coleccionSeleccionada
   //   ? coleccionContent?.productos
-  //   : pageContent?.relojes || pageContent.perfumes 
+  //   : pageContent?.relojes || pageContent.perfumes
   //   ? [
   //       ...pageContent.relojes,
   //       ...pageContent.perfumes,
@@ -43,11 +41,11 @@ const Listing = async ({
   //   : [];
 
   const productos =
-    pageContent?.relojes && pageContent.perfumes && pageContent.gafas
+    pageContent?.relojes && pageContent.perfumes
       ? [
           ...pageContent.relojes,
           ...pageContent.perfumes,
-          ...pageContent.gafas
+          // ...pageContent.gafas
         ]
       : [];
 
@@ -56,7 +54,7 @@ const Listing = async ({
     !!tipoDeProductoSeleccionado ||
     !!campoDeBusquedaSeleccionado;
 
-  const filteredProducts = productos?.filter((producto) => {
+  const filteredProducts = productos?.filter(producto => {
     let matchesTipoDeProducto = true;
     let matchesCampoDeBusqueda = true;
 
@@ -89,26 +87,39 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
-  console.log({filteredProducts})
   return (
-    <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
-      <Filters
-        areFiltersActive={areFiltersActive}
-        searchParams={searchParams}
+    <main className="bg-neutral-100 min-h-screen pt-[70px] md:pt-0">
+      <Banner
+        banners={pageContent.listingContent.banners}
+        className="h-[50vh] pt-0"
       />
+
       {!coleccionSeleccionada ? (
-        <Colecciones colecciones={colecciones ?? []} />
+        <Colecciones
+          colecciones={colecciones ?? []}
+          className="py-6 pl-4"
+        />
       ) : (
         <h2 className="text-3xl font-bold capitalize">
           Coleccion {coleccionSeleccionada}
         </h2>
       )}
+      <section className="bg-[#ffffff] flex flex-col items-center">
+        <section className="max-w-[1280px] w-full py-6 px-4 md:px-9 flex">
+          <Filters
+            areFiltersActive={areFiltersActive}
+            searchParams={searchParams}
+          />
+        </section>
 
-      {filteredProducts && filteredProducts.length > 0 ? (
-        <Productos productos={filteredProducts} />
-      ) : (
-        <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
-      )}
+        <section className="max-w-[1280px] w-full py-6 px-4 md:px-9">
+          {filteredProducts && filteredProducts.length > 0 ? (
+            <Productos productos={filteredProducts} />
+          ) : (
+            <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
+          )}
+        </section>
+      </section>
     </main>
   );
 };
