@@ -43,10 +43,10 @@ const Filters = ({
             <LuSettings2 /> Sort by: {"Recents"}
           </Button>
         </div>
-        <BreadCrumbs
+        {/* <BreadCrumbs
           filters={filters}
           searchParams={searchParams}
-        />
+        /> */}
       </section>
       <Drawer
         isOpen={isFilterOpen}
