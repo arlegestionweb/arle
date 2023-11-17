@@ -1,8 +1,16 @@
 import sanityClient from "@/sanity/sanityClient";
 import { bannersQuery, imageQuery } from "../objects";
 
+// TODO debe ser objeto 
 const homepageQueryString = `*[_type == "homepage"]{
-  ${bannersQuery},
+  "banners": banners1[] {
+    titulo,
+    descripcion,
+    "imagen": imagen{
+      alt,
+      "url": asset->url
+    },
+  },
   "perfumes": perfumes{
     titulo,
     descripcion,
@@ -50,6 +58,10 @@ const homepageQueryString = `*[_type == "homepage"]{
 export const getHomepageContent = async () => {
   try {
     const result = await sanityClient.fetch(homepageQueryString);
+
+    console.log(result[0].banners);
+    
+
     return result[0];
   } catch (error) {
     console.error(error);
