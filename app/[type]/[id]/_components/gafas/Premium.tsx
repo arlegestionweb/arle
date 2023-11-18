@@ -9,6 +9,7 @@ import CollapsibleProductSection from "../CollapsibleSection";
 import SeccionEspecificaciones from "../SeccionEspecificaciones";
 import { GiftIcon, MessagesIcon, ShippingBoxIcon } from "../Icons";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
+import MobileAddToCart from "../MobileAddToCart";
 
 type TGafaPremiumProps = {
   product: TGafaPremium;
@@ -24,7 +25,7 @@ const GafaPremium = ({ product }: TGafaPremiumProps) => {
         height={400}
         alt={product.variantes[0].imagenes[0].alt}
       />
-      <section className="flex flex-col px-5">
+      <section className="flex flex-col px-5 w-full relative">
         <header>
           <h1 className="text-zinc-800 text-[32px] font-normal font-kanit leading-10 w-full">
             {product.marca} {product.modelo}
@@ -59,7 +60,8 @@ const GafaPremium = ({ product }: TGafaPremiumProps) => {
         </CollapsibleProductSection>
         <EspecificacionesGafa product={product} />
 
-       <NuestrasComprasIncluyen garantia={product.garantia} />
+        <NuestrasComprasIncluyen garantia={product.garantia} />
+        <MobileAddToCart />
       </section>
     </>
   );
@@ -94,4 +96,3 @@ const EspecificacionesGafa = ({ product }: TEspecificacionesProps) => {
     </CollapsibleProductSection>
   );
 };
-

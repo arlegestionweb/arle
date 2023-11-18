@@ -36,3 +36,15 @@ export const SecurityCheckIcon = () => {
     <Image src="/icons/securityCheck.png" width={20} height={20} alt="Icono de seguridad" />
   );
 }
+
+export const ShoppingCartIcon = () => {
+  return (
+    <Image src="/icons/shopping-cart.png" width={16} height={16} alt="Icono de carrito de compras" />
+  );
+}
+
+export const FastShoppingCartIcon = () => {
+  return (
+    <Image src="/icons/fast-shopping-cart.png" width={16} height={16} alt="Icono de carrito de compras rápido" />
+  );
+}
