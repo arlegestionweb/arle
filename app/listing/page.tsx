@@ -41,11 +41,11 @@ const Listing = async ({
   //   : [];
 
   const productos =
-    pageContent?.relojes && pageContent.perfumes
+    pageContent?.relojes && pageContent.perfumes && pageContent.gafas
       ? [
           ...pageContent.relojes,
           ...pageContent.perfumes,
-          // ...pageContent.gafas
+          ...pageContent.gafas
         ]
       : [];
 

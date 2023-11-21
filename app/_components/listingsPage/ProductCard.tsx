@@ -1,7 +1,9 @@
 "use client";
 import Image from "next/image";
 import {
+  TGafa,
   TProduct,
+  isGafa,
   isPerfume,
   isReloj,
 } from "@/sanity/queries/pages/listingQueries";
@@ -25,14 +27,7 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
             className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
           />
         )}
-        <CardLayout
-          link={producto.slug}
-          images={producto.imagenes}
-          src={producto.imagenes[0].url}
-          alt={producto.imagenes[0].alt || ""}
-          titulo={producto.titulo}
-          price={producto.marca}
-        />
+        <CardLayout product={producto} />
       </>
     );
   }
@@ -47,17 +42,26 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
             className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
           />
         )}
-        <CardLayout
-          link={producto.slug}
-          images={producto.variantes[0].imagenes}
-          src={producto.variantes[0].imagenes[0].url}
-          alt={producto.variantes[0].imagenes[0].alt || ""}
-          titulo={producto.modelo}
-          price={producto.marca}
-        />
+        <CardLayout product={producto} />
       </>
     );
   }
+
+  if (isGafa(producto)) {
+    return (
+      <>
+        {producto.variantes[0].etiqueta && (
+          <Labels
+            labelType={producto.variantes[0].etiqueta as LabelTypes}
+            label={producto.variantes[0].etiqueta as LabelTypes}
+            className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+          />
+        )}
+        <CardLayout product={producto} />
+      </>
+    );
+  }
+
   // if (!producto.imagenes) return null;
 
   return (
@@ -67,38 +71,41 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
   );
 };
 
-const CardLayout = ({
-  src,
-  alt,
-  titulo,
-  price,
-  link,
-  images,
-}: {
-  src: string;
-  alt: string;
-  titulo: string;
-  price: string;
-  link: string;
-  images: {
-    url: string;
-    alt?: string | null | undefined;
-  }[];
-}) => {
+const CardLayout = ({ product }: { product: TProduct }) => {
   return (
     <>
       <section className="w-full  overflow-hidden">
-        {images.length > 1 ? (
+        {(isPerfume(product) && product.imagenes.length > 1) ||
+        (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
+        (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
           <ProductSlide
-            slug={link}
-            imagesProduct={images}
+            slug={product.slug}
+            imagesProduct={
+              isPerfume(product)
+                ? product.imagenes
+                : isReloj(product)
+                ? product.variantes[0].imagenes
+                : (product as TGafa).variantes[0].imagenes
+            }
             className=" h-[180px] lg:h-[288px]"
           />
         ) : (
-          <Link href={link}>
+          <Link href={product.slug}>
             <Image
-              src={src}
-              alt={alt}
+              src={
+                isPerfume(product)
+                  ? product.imagenes[0].url
+                  : isReloj(product)
+                  ? product.variantes[0].imagenes[0].url
+                  : (product as TGafa).variantes[0].imagenes[0].url
+              }
+              alt={
+                isPerfume(product)
+                  ? product.imagenes[0].url
+                  : isReloj(product)
+                  ? product.variantes[0].imagenes[0].alt!
+                  : (product as TGafa).variantes[0].imagenes[0].alt!
+              }
               width={288}
               height={288}
               className="object-cover h-[180px] w-full lg:h-[288px]"
@@ -108,9 +115,19 @@ const CardLayout = ({
       </section>
 
       <section className=" flex-1 justify-between font-tajawal flex flex-col gap-3">
-        <h3 className="text-xl font-bold leading-6 text-[#303030]">{titulo}</h3>
+        <h3 className="text-xl font-bold leading-6 text-[#303030]">
+          {isPerfume(product)
+            ? product.titulo
+            : isReloj(product)
+            ? product.modelo
+            : ([] as any)}
+        </h3>
         <p className="text-[18px] font-medium leading-5 text-[#4f4f4f]">
-          {price}
+          {isPerfume(product)
+            ? product.variantes[0].precio
+            : isReloj(product)
+            ? product.variantes[0].precio
+            : ([] as any)}
         </p>
       </section>
       <Button className="bg-black text-[#CFCFCF] flex justify-center items-center gap-2">

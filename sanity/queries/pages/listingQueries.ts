@@ -40,9 +40,20 @@ const listingMainString = `
     "slug": slug.current,
   },
   "gafas": *[_type == "gafasLujo" || _type == "gafasPremium"] {
-    ...,
+    "marca": marca->titulo,
+    _id,
+    "variantes": variantes []{
+      precio,
+      etiqueta,
+      unidadesDisponibles,
+      "imagenes": imagenes[]{
+        alt,
+        "url": asset->url,
+      },
+    },
+    modelo,
     "type": _type,
-    "slug": slug.current,
+    "slug": slug.current
   },
   "colecciones": *[_type == "colecciones"] {
     titulo,
@@ -58,6 +69,27 @@ const listingMainString = `
   
 }
 `;
+
+const zodGafaListingQuery = z.object({
+  marca: z.string(),
+  _id: z.string(),
+  variantes: z.array(
+    z.object({
+      precio: z.string(),
+      etiqueta: z.string(),
+      unidadesDisponibles: z.number(),
+      imagenes: z.array(
+        z.object({
+          alt: z.string().optional().nullable(),
+          url: z.string(),
+        })
+      ),
+    })
+  ),
+  modelo: z.string(),
+  type: z.string(),
+  slug: z.string(),
+});
 
 const zodBanner = z.object({
   titulo: z.string(),
@@ -117,11 +149,6 @@ const zodRelojListingQuery = z.object({
 });
 
 export type TReloj = z.infer<typeof zodRelojListingQuery>;
-
-const zodGafaListingQuery = z.object({
-  slug: z.string(),
-  type: z.string(),
-});
 
 export type TGafa = z.infer<typeof zodGafaListingQuery>;
 
