@@ -12,6 +12,7 @@ import { LuShoppingCart } from "react-icons/lu";
 import ProductSlide from "./ProductSlide";
 import Link from "next/link";
 import Labels, { LabelTypes } from "../../_components/Labels";
+import { colombianPriceStringToNumber, getPriceRangeString } from "@/utils/helpers";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
   // console.log(producto);
@@ -32,12 +33,9 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
 
 const CardLayout = ({ product }: { product: TProduct }) => {
 
-  const productPrices = product.variantes.map(variante => variante.precio);
-  console.log({productPrices, variantes: product.variantes});
+  const productPrices = product.variantes.map(variante => colombianPriceStringToNumber(variante.precio)).sort((a, b) => a - b);
   
-  
-  // const maxPrice = Math.max(...productPrices);
-
+  const stringPrice = getPriceRangeString(productPrices);  
 
   return (
     <>
@@ -90,7 +88,7 @@ const CardLayout = ({ product }: { product: TProduct }) => {
             : ([] as any)}
         </h3>
         <p className="text-[18px] font-medium leading-5 text-[#4f4f4f]">
-          ${product.variantes[0].precio}
+          {stringPrice}
         </p>
       </section>
       <Button labelType={"dark"} className="flex justify-center items-center gap-2">
