@@ -31,6 +31,14 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
 };
 
 const CardLayout = ({ product }: { product: TProduct }) => {
+
+  const productPrices = product.variantes.map(variante => variante.precio);
+  console.log({productPrices, variantes: product.variantes});
+  
+  
+  // const maxPrice = Math.max(...productPrices);
+
+
   return (
     <>
       <section className="w-full  overflow-hidden">
