@@ -1,41 +1,142 @@
+"use client";
 import Image from "next/image";
 import {
-  GafaType,
-  PerfumeLujoType,
-  PerfumePremiumType,
-  RelojType,
-} from "../types";
+  TGafa,
+  TProduct,
+  isGafa,
+  isPerfume,
+  isReloj,
+} from "@/sanity/queries/pages/listingQueries";
+import Button from "../Button";
+import { LuShoppingCart } from "react-icons/lu";
+import ProductSlide from "./ProductSlide";
+import Link from "next/link";
+import Labels, { LabelTypes } from "../Labels";
 
-const ProductoCard = ({
-  producto,
-}: {
-  producto: PerfumeLujoType | PerfumePremiumType | RelojType | GafaType;
-}) => {
-  if (!producto.imagenes) return null;
-  function hasMarca(obj: any): obj is { marca: { titulo: string } } {
-    return !!obj.marca && typeof obj.marca.titulo === 'string';
+const ProductoCard = ({ producto }: { producto: TProduct }) => {
+  // TODO: REFACTORIZAR, no repetir codigo
+  console.log(producto);
+
+  if (isPerfume(producto)) {
+    return (
+      <>
+        {producto.variantes[0].etiqueta && (
+          <Labels
+            labelType={producto.variantes[0].etiqueta as LabelTypes}
+            label={producto.variantes[0].etiqueta as LabelTypes}
+            className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+          />
+        )}
+        <CardLayout product={producto} />
+      </>
+    );
   }
 
+  if (isReloj(producto)) {
+    return (
+      <>
+        {producto.variantes[0].etiqueta && (
+          <Labels
+            labelType={producto.variantes[0].etiqueta as LabelTypes}
+            label={producto.variantes[0].etiqueta as LabelTypes}
+            className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+          />
+        )}
+        <CardLayout product={producto} />
+      </>
+    );
+  }
 
+  if (isGafa(producto)) {
+    return (
+      <>
+        {producto.variantes[0].etiqueta && (
+          <Labels
+            labelType={producto.variantes[0].etiqueta as LabelTypes}
+            label={producto.variantes[0].etiqueta as LabelTypes}
+            className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+          />
+        )}
+        <CardLayout product={producto} />
+      </>
+    );
+  }
+
+  // if (!producto.imagenes) return null;
 
   return (
     <div className="w-[136px] h-[279px] flex-col justify-start items-start gap-2 inline-flex">
-      <Image
-        src={producto.imagenes[0].url}
-        alt={producto.imagenes[0].alt}
-        width={136}
-        height={136}
-        className="object-cover min-w-[136px]"
-      />
-      {producto.modelo}
-      {hasMarca(producto) && producto.type.includes("reloj") && (
-        <>
-          <br />
-          {producto.marca.titulo}
-        </>
-      )}
-      <br />${producto.precio}
+      gafas here
     </div>
+  );
+};
+
+const CardLayout = ({ product }: { product: TProduct }) => {
+  return (
+    <>
+      <section className="w-full  overflow-hidden">
+        {(isPerfume(product) && product.imagenes.length > 1) ||
+        (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
+        (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
+          <ProductSlide
+            slug={product.slug}
+            imagesProduct={
+              isPerfume(product)
+                ? product.imagenes
+                : isReloj(product)
+                ? product.variantes[0].imagenes
+                : (product as TGafa).variantes[0].imagenes
+            }
+            className=" h-[180px] lg:h-[288px]"
+          />
+        ) : (
+          <Link href={product.slug}>
+            <Image
+              src={
+                isPerfume(product)
+                  ? product.imagenes[0].url
+                  : isReloj(product)
+                  ? product.variantes[0].imagenes[0].url
+                  : (product as TGafa).variantes[0].imagenes[0].url
+              }
+              alt={
+                isPerfume(product)
+                  ? product.imagenes[0].url
+                  : isReloj(product)
+                  ? product.variantes[0].imagenes[0].alt!
+                  : (product as TGafa).variantes[0].imagenes[0].alt!
+              }
+              width={288}
+              height={288}
+              className="object-cover h-[180px] w-full lg:h-[288px]"
+            />
+          </Link>
+        )}
+      </section>
+
+      <section className=" flex-1 justify-between font-tajawal flex flex-col gap-3">
+        <h3 className="text-xl font-bold leading-6 text-[#303030]">
+          {isPerfume(product)
+            ? product.titulo
+            : isReloj(product)
+            ? product.modelo
+            : ([] as any)}
+        </h3>
+        <p className="text-[18px] font-medium leading-5 text-[#4f4f4f]">
+          {isPerfume(product)
+            ? product.variantes[0].precio
+            : isReloj(product)
+            ? product.variantes[0].precio
+            : ([] as any)}
+        </p>
+      </section>
+      <Button className="bg-black text-[#CFCFCF] flex justify-center items-center gap-2">
+        <LuShoppingCart />
+        <span className="font-inter text-base font-medium leading-6">
+          Agregar
+        </span>
+      </Button>
+    </>
   );
 };
 

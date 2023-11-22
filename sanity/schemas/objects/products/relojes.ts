@@ -69,7 +69,7 @@ const varianteDeRelojes = defineField({
       name: "unidadesDisponibles",
       title: "Unidades disponibles",
       type: "number",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().min(0).error('Unidades disponibles no pueden ser menos de 0'),
     }),
     imageArrayForProducts,
   ],

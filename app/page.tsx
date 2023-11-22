@@ -7,7 +7,7 @@ import Button from "./_components/Button";
 
 const Home = async function () {
   const pageContent = await getHomepageContent();
-  console.log(pageContent);
+  // console.log(pageContent);
 
   const exploreSections = [
     pageContent.perfumes,
@@ -24,8 +24,8 @@ const Home = async function () {
           section={section}
         />
       ))}
-      <section className="py-6 md:py-12 bg-neutral-100">
-        <Colecciones colecciones={pageContent.colecciones} />
+      <section className="bg-neutral-100">
+        <Colecciones colecciones={pageContent.colecciones} className="py-6 md:py-12"/>
       </section>
       <AboutArle sobre={pageContent.sobre}/>
       <section className="bg-[#EDE7DE] px-4 py-6 md:py-12 flex flex-col justify-center items-center gap-5 md:gap-6">

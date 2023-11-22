@@ -1,6 +1,5 @@
 import ColombianPrice from "@/sanity/components/ColombianPrice";
 import { SlugParent, defineArrayMember, defineField } from "sanity";
-import { removeSpanishAccents } from "@/utils/helpers";
 import { PiFlagBannerFill } from "react-icons/pi";
 import { videoSchema } from "../video";
 
@@ -13,7 +12,6 @@ export const generoSchema = defineField({
     list: ["mujer", "hombre", "unisex"],
   },
 });
-
 
 export const bannersDeProductoSchema = defineField({
   name: "bannersDeProducto",
@@ -52,7 +50,7 @@ export const bannersDeProductoSchema = defineField({
         },
         prepare(selection) {
           const { media } = selection;
-          if (!media) return {title: "Sin imagen"};
+          if (!media) return { title: "Sin imagen" };
           return {
             media,
           };
@@ -258,7 +256,7 @@ export const garantiaSchema = defineField({
 //   },
 // });
 
-type CustomSlugParent = SlugParent & { 
+type CustomSlugParent = SlugParent & {
   marca?: { _ref: string };
   modelo?: string;
   titulo?: string;
@@ -285,19 +283,13 @@ export const slugSchema = defineField({
     },
     maxLength: 200,
     slugify: async (input, _, context) => {
-      const title = input
-      const client = context.getClient({ apiVersion: "2021-03-25" });
-      const { parent } = context as {parent: CustomSlugParent};
-      if (parent.marca && parent._id && parent._type) {
-        const marca = await client.fetch(
-          `*[_id == "${parent.marca?._ref}"][0]{titulo}`
-        );
-
-        const id = parent._id
-        const slug = `/${parent._type}/${removeSpanishAccents(marca.titulo)}/${title}/${id}`;
-        return slug.toLowerCase().replace(/\s+/g, "-").slice(0, 200).replace("drafts.", "");
+      const { parent } = context as { parent: CustomSlugParent };
+      if (parent._id && parent._type) {
+        const id = parent._id;
+        const slug = `/${parent._type}/${id}`;
+        return slug.replace(/\s+/g, "-").slice(0, 200).replace("drafts.", "");
       }
-      return "acaba de llenar los datos para llenar este campo automaticamente"
-    },
+      return "acaba de llenar los datos para llenar este campo automaticamente";
+    }
   },
 });
