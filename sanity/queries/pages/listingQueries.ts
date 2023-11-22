@@ -3,11 +3,9 @@ import {
   bannersQuery,
   imageArrayQuery,
   imageQuery,
-  marcaTipoModeloQuery,
 } from "../objects";
 
 import { z } from "zod";
-import { parse } from "path";
 
 const listingMainString = ` 
 {
@@ -117,7 +115,7 @@ const zodPerfumeListingQuery = z.object({
   ),
   variantes: z.array(
     z.object({
-      precio: z.string().transform((val) => Number(val)),
+      precio: z.string(),
       unidadesDisponibles: z.number(),
       tamano: z.number(),
       etiqueta: z.string().optional().nullable(),
@@ -134,7 +132,7 @@ const zodRelojListingQuery = z.object({
   type: z.string(),
   variantes: z.array(
     z.object({
-      precio: z.string().transform((val) => Number(val)),
+      precio: z.string(),
       unidadesDisponibles: z.number(),
       etiqueta: z.string().optional().nullable(),
       imagenes: z.array(
@@ -211,14 +209,14 @@ export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
 
-    console.log(result.listingContent.banners);
     
-
+    
     const parsedResult = zodListPage.safeParse(result);
-
+    
     if (!parsedResult.success) {
       throw new Error(parsedResult.error.message);
     }
+    console.log({gafa: parsedResult.data.gafas, variantes: parsedResult.data.gafas?.map(producto => JSON.stringify({... producto.variantes}))});
 
     return parsedResult.data;
   } catch (error) {

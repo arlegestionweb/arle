@@ -1,6 +1,6 @@
 import { getListingInitialLoadContent } from "@/sanity/queries/pages/listingQueries";
 import Productos from "./_components/Productos";
-import Filters from "../_components/listingsPage/Filters";
+import Filters from "./_components/Filters";
 import Colecciones from "../_components/Colecciones";
 import Banner from "../_components/homepage/Banner";
 
@@ -87,6 +87,8 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
+  // console.log({filteredProducts, variants: filteredProducts?.map(producto => JSON.stringify({... producto.variantes}))});
+  
   return (
     <main className="bg-neutral-100 min-h-screen pt-[70px] md:pt-0">
       <Banner

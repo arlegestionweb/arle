@@ -5,7 +5,7 @@ type TPerfumePremiumProps = {
 };
 
 const PerfumePremium = ({product}: TPerfumePremiumProps) => {
-  console.log({product});
+  // console.log({product});
   
   return (
     <div>

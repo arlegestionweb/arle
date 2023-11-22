@@ -1,4 +1,4 @@
-import ProductCard from "../../_components/listingsPage/ProductCard";
+import ProductCard from "./ProductCard";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
 
 const Productos = ({ productos }: { productos: TProduct[]}) => {
