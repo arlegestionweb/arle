@@ -59,7 +59,7 @@ export const getHomepageContent = async () => {
   try {
     const result = await sanityClient.fetch(homepageQueryString);
 
-    console.log(result[0].banners);
+    // console.log(result[0].banners);
     
 
     return result[0];

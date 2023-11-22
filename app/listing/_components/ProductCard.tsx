@@ -7,67 +7,26 @@ import {
   isPerfume,
   isReloj,
 } from "@/sanity/queries/pages/listingQueries";
-import Button from "../Button";
+import Button from "../../_components/Button";
 import { LuShoppingCart } from "react-icons/lu";
 import ProductSlide from "./ProductSlide";
 import Link from "next/link";
-import Labels, { LabelTypes } from "../Labels";
+import Labels, { LabelTypes } from "../../_components/Labels";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
-  // TODO: REFACTORIZAR, no repetir codigo
-  console.log(producto);
-
-  if (isPerfume(producto)) {
-    return (
-      <>
-        {producto.variantes[0].etiqueta && (
-          <Labels
-            labelType={producto.variantes[0].etiqueta as LabelTypes}
-            label={producto.variantes[0].etiqueta as LabelTypes}
-            className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
-          />
-        )}
-        <CardLayout product={producto} />
-      </>
-    );
-  }
-
-  if (isReloj(producto)) {
-    return (
-      <>
-        {producto.variantes[0].etiqueta && (
-          <Labels
-            labelType={producto.variantes[0].etiqueta as LabelTypes}
-            label={producto.variantes[0].etiqueta as LabelTypes}
-            className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
-          />
-        )}
-        <CardLayout product={producto} />
-      </>
-    );
-  }
-
-  if (isGafa(producto)) {
-    return (
-      <>
-        {producto.variantes[0].etiqueta && (
-          <Labels
-            labelType={producto.variantes[0].etiqueta as LabelTypes}
-            label={producto.variantes[0].etiqueta as LabelTypes}
-            className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
-          />
-        )}
-        <CardLayout product={producto} />
-      </>
-    );
-  }
-
-  // if (!producto.imagenes) return null;
+  // console.log(producto);
 
   return (
-    <div className="w-[136px] h-[279px] flex-col justify-start items-start gap-2 inline-flex">
-      gafas here
-    </div>
+    <>
+      {producto.variantes[0].etiqueta && (
+        <Labels
+          labelType={producto.variantes[0].etiqueta as LabelTypes}
+          label={producto.variantes[0].etiqueta as LabelTypes}
+          className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+        />
+      )}
+      <CardLayout product={producto} />
+    </>
   );
 };
 
@@ -123,11 +82,7 @@ const CardLayout = ({ product }: { product: TProduct }) => {
             : ([] as any)}
         </h3>
         <p className="text-[18px] font-medium leading-5 text-[#4f4f4f]">
-          {isPerfume(product)
-            ? product.variantes[0].precio
-            : isReloj(product)
-            ? product.variantes[0].precio
-            : ([] as any)}
+          ${product.variantes[0].precio}
         </p>
       </section>
       <Button className="bg-black text-[#CFCFCF] flex justify-center items-center gap-2">

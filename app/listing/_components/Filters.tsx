@@ -1,12 +1,12 @@
 "use client";
 
-import Button from "../Button";
+import Button from "../../_components/Button";
 import { LuSettings2 } from "react-icons/lu";
 import { FiFilter } from "react-icons/fi";
 import { useState } from "react";
 import Link from "next/link";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import Drawer from "../Drawer";
+import Drawer from "../../_components/Drawer";
 
 const Filters = ({
   areFiltersActive,
