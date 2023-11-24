@@ -3,6 +3,9 @@ import Image from "next/image";
 import {
   TGafa,
   TProduct,
+  TVarianteGafa,
+  TVariantePerdume,
+  TVarianteReloj,
   isGafa,
   isPerfume,
   isReloj,
@@ -12,14 +15,9 @@ import { LuShoppingCart } from "react-icons/lu";
 import ProductSlide from "./ProductSlide";
 import Link from "next/link";
 import Labels, { LabelTypes } from "../../_components/Labels";
-import {
-  colombianPriceStringToNumber,
-  getPriceRangeString,
-} from "@/utils/helpers";
 import { useState } from "react";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
-  // console.log(producto);
 
   return (
     <>
@@ -35,17 +33,12 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
   );
 };
 
-type TVariant = TProduct["variantes"][0];
+type TVariant = TVariantePerdume | TVarianteGafa | TVarianteReloj;
 
 const CardLayout = ({ product }: { product: TProduct }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
     product.variantes[0]
   );
-  const productPrices = product.variantes
-    .map((variante) => colombianPriceStringToNumber(variante.precio))
-    .sort((a, b) => a - b);
-
-  const stringPrice = getPriceRangeString(productPrices);
 
   return (
     <>
@@ -103,7 +96,7 @@ const CardLayout = ({ product }: { product: TProduct }) => {
           setSelectedVariant={setSelectedVariant}
         />
         <p className="text-[18px] font-medium leading-5 text-[#4f4f4f]">
-          {stringPrice}
+          ${selectedVariant.precio}
         </p>
       </section>
       <Button labelType={"dark"} className="flex justify-center items-center gap-2">
@@ -127,34 +120,32 @@ const VariantSelector = ({
   selectedVariant: TVariant;
   setSelectedVariant: (variant: TVariant) => void;
 }) => {
-  // console.log({ variants: product.variantes, productType });
 
   if (isPerfume(product)) {
-    // const sizes = product.variantes.map((variante) => variante.tamano);
-
-    // console.log({ sizes });
 
     return (
-      <div className="flex gap-2 flex-col w-fit bg-red-200">
+      <div className="flex gap-2 flex-col w-fit">
         <h4>Tamaño (ml):</h4>
         <div className="flex gap-2">
           {product.variantes.map((variante) => {
-            const isVariantSelected =
-              variante.tamano === selectedVariant.tamano;
-            return (
-              <button
-                onClick={() => setSelectedVariant(variante)}
-                className={`w-[27px] h-[26px] px-5 py-3 rounded border flex-col justify-center items-center gap-2.5 inline-flex ${
-                  isVariantSelected
-                    ? "bg-neutral-100 border-black"
-                    : "border-slate-200"
-                }`}
-              >
-                <span className="text-center text-slate-600 text-base font-medium font-tajawal leading-tight">
+            if ("tamano" in variante && "tamano" in selectedVariant) {
+              const isVariantSelected =
+                variante.tamano === selectedVariant.tamano;
+              return (
+                <button
+                  onClick={() => setSelectedVariant(variante)}
+                  className={`w-[27px] h-[26px] px-5 py-3 rounded border flex-col justify-center items-center gap-2.5 inline-flex ${
+                    isVariantSelected
+                      ? "bg-neutral-100 border-black"
+                      : "bg-neutral-200 border-neutral-300"
+                  }`}
+                >
                   {variante.tamano}
-                </span>
-              </button>
-            );
+                </button>
+              );
+            }
+            // TODO the other variant types
+            return null;
           })}
         </div>
       </div>
