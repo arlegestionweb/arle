@@ -22,7 +22,7 @@ const Footer = () => {
         </div>
         <section className="flex flex-col items-start justify-center lg:flex-row gap-[50px] lg:gap-20 pb-[50px]">
           <div>
-            <h3 className="pb-4 text-stone-400 font-lora text-2xl font-semibold leading-7">
+            <h3 className="pb-4 text-guidelines-on-color-beige font-lora text-2xl font-semibold leading-7">
               Products
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
@@ -33,7 +33,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="pb-4 text-stone-400 font-lora text-2xl font-semibold leading-7">
+            <h3 className="pb-4 text-guidelines-on-color-beige font-lora text-2xl font-semibold leading-7">
               Arlé
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
@@ -43,7 +43,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="pb-4 text-stone-400 font-lora text-2xl font-semibold leading-7">
+            <h3 className="pb-4 text-guidelines-on-color-beige font-lora text-2xl font-semibold leading-7">
               Visítanos
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
@@ -72,7 +72,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="pb-4 text-stone-400 font-lora text-2xl font-semibold leading-7">
+            <h3 className="pb-4 text-guidelines-on-color-beige font-lora text-2xl font-semibold leading-7">
               Legal
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
@@ -87,33 +87,33 @@ const Footer = () => {
         </section>
         <section className="border-b-[1px] pb-3 border-white text-white flex justify-center md:justify-end space-x-5">
           <a
-            className="w-9 h-9 flex bg-stone-400 text-black justify-center items-center"
+            className="w-9 h-9 flex bg-guidelines-on-color-beige text-black justify-center items-center"
             target="">
             <FaFacebookF size={18} />
           </a>
           <a
-            className="w-9 h-9 flex bg-stone-400 text-black justify-center items-center"
+            className="w-9 h-9 flex bg-guidelines-on-color-beige text-black justify-center items-center"
             target="">
             <FaTwitter size={18} />
           </a>
           <a
-            className="w-9 h-9 flex bg-stone-400 text-black justify-center items-center"
+            className="w-9 h-9 flex bg-guidelines-on-color-beige text-black justify-center items-center"
             target="">
             <FaInstagram size={18} />
           </a>
           <a
-            className="w-9 h-9 flex bg-stone-400 text-black justify-center items-center"
+            className="w-9 h-9 flex bg-guidelines-on-color-beige text-black justify-center items-center"
             target="">
             <FaLinkedinIn size={18} />
           </a>
           <a
-            className="w-9 h-9 flex bg-stone-400 text-black justify-center items-center"
+            className="w-9 h-9 flex bg-guidelines-on-color-beige text-black justify-center items-center"
             target="">
             <FaYoutube size={18} />
           </a>
         </section>
         <section className="pt-3">
-          <div className="text-center text-stone-400 text-sm font-normal font-raleway leading-normal">
+          <div className="text-center text-guidelines-on-color-beige text-sm font-normal font-raleway leading-normal">
             Copyright © 2023 Arlé | Todos los Derechos Reservados | Diseñado por GoJaguar.co
           </div>
         </section>

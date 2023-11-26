@@ -16,7 +16,7 @@ const Home = async function () {
   ];
 
   return (
-    <main className="bg-neutral-100">
+    <main className="bg-color-bg-surface-0-default">
       <Banner banners={pageContent.banners} />
       {exploreSections.map((section, index) => (
         <ExploreSection
@@ -24,11 +24,11 @@ const Home = async function () {
           section={section}
         />
       ))}
-      <section className="bg-neutral-100">
+      <section className="bg-color-bg-surface-0-default">
         <Colecciones colecciones={pageContent.colecciones} className="py-6 md:py-12"/>
       </section>
       <AboutArle sobre={pageContent.sobre}/>
-      <section className="bg-[#EDE7DE] px-4 py-6 md:py-12 flex flex-col justify-center items-center gap-5 md:gap-6">
+      <section className="bg-beige px-4 py-6 md:py-12 flex flex-col justify-center items-center gap-5 md:gap-6">
 
         <h3 className="text-zinc-800  text-center font-lora text-2xl md:text-[28px] font-semibold leading-[115%]">Eleva tu experiencia con nuestra asesoría</h3>
         <ul className="pl-8 list-disc flex flex-col justify-center md:items-center gap-4 text-zinc-800 text-base font-normal font-raleway leading-tight">

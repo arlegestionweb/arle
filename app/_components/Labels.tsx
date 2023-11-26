@@ -8,7 +8,7 @@ const labelsVariants = cva(
   {
     variants: {
       labelType: {
-        nuevo: "bg-[#fff] border-[#bebebe]",
+        nuevo: "bg-color-bg-surface-1-default border-[#bebebe]",
         "más vendido": "bg-[#e8f0e6] border-[#396231] text-[#274a21]",
         "pocas unidades": "bg-[#ffecc0] border-[#805a00] text-[#583e00]",
         agotado: "bg-[#fceae9] border-[#b52d2a] text-[#7d1f1d]",

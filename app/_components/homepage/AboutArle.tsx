@@ -30,9 +30,9 @@ const AboutArle = ({ sobre }: AboutArleProps) => {
           alt={sobre.imagenes[0].alt}
           src={sobre.imagenes[0].url}
           layout="fill"
-          containerclassName="w-full h-[400px] bg-white self-stretch">
+          containerclassName="w-full h-[400px] bg-color-bg-surface-1-default self-stretch">
           <div className="sticky px-4 py-6 w-full h-full flex items-end md:hidden">
-            <Button className="px-4 py-2 w-full bg-white justify-center items-center inline-flex">
+            <Button className="px-4 py-2 w-full bg-color-bg-surface-1-default justify-center items-center inline-flex">
               <span className="text-zinc-800 text-lg font-medium font-inter leading-[27px]">
                 Listen our poadcast
               </span>

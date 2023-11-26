@@ -27,7 +27,7 @@ const CollapsibleProductSection = ({
         </h2>
       )}
       <button
-        className="absolute top-0 right-0 w-7 h-7 bg-neutral-100 grid place-content-center"
+        className="absolute top-0 right-0 w-7 h-7 bg-color-bg-surface-0-default grid place-content-center"
         onClick={toggleIsCollapsed}
       >
         {isCollapsed ? <PlusIcon /> : <MinusIcon />}
