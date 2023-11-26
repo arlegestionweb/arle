@@ -9,7 +9,7 @@ import {
 } from "@/sanity/queries/pages/listingQueries";
 import Button from "../../_components/Button";
 import { LuShoppingCart } from "react-icons/lu";
-import ProductSlide from "./ProductSlide";
+import ProductSlide from "../../_components/ProductSlide";
 import Link from "next/link";
 import Labels, { LabelTypes } from "../../_components/Labels";
 

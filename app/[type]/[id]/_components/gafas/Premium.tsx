@@ -10,22 +10,28 @@ import SeccionEspecificaciones from "../SeccionEspecificaciones";
 import { GiftIcon, MessagesIcon, ShippingBoxIcon } from "../Icons";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import MobileAddToCart from "../MobileAddToCart";
+import ProductSlide from '../../../../_components/ProductSlide';
+import Labels, { LabelTypes } from "@/app/_components/Labels";
 
 type TGafaPremiumProps = {
   product: TGafaPremium;
 };
 
 const GafaPremium = ({ product }: TGafaPremiumProps) => {
+  console.log(product.variantes[0].imagenes);
+  
   return (
     <>
-      <Image
-        className="w-full object-cover"
-        src={product.variantes[0].imagenes[0].url}
-        width={300}
-        height={400}
-        alt={product.variantes[0].imagenes[0].alt}
-      />
-      <section className="flex flex-col px-5 w-full relative">
+      <ProductSlide 
+        slug={product.slug}
+        imagesProduct={product.variantes[0].imagenes}
+        className="max-h-[377px]"/>
+
+      <section className="flex flex-col px-5 w-full relative">  
+        <Labels 
+          className="relative max-w-fit mt-4 mb-2"
+          labelType={product.variantes[0].etiqueta as LabelTypes}
+          label={product.variantes[0].etiqueta as LabelTypes}/>
         <header>
           <h1 className="text-zinc-800 text-[32px] font-normal font-kanit leading-10 w-full">
             {product.marca} {product.modelo}
