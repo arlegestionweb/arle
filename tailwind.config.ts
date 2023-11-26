@@ -15,6 +15,10 @@ const config: Config = {
       },
       colors: {
         background: 'var(--background)',
+        "color-bg-surface-1-default": "#ffffff",
+        "color-bg-surface-0-default": "#f5f5f5",
+        beige: "#EDE7DE",
+        "guidelines-on-color-beige": "#CBBBA0"
       },
       fontFamily: {
         "inter": 'var(--font-inter)',

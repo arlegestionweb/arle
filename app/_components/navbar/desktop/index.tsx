@@ -34,7 +34,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
               <div className="text-black text-base font-medium leading-normal">About</div>
             </div>
           </Link>  
-          <Link href={'/'} className="px-3 py-1.5 bg-neutral-100 justify-center items-center gap-2 flex">
+          <Link href={'/'} className="px-3 py-1.5 bg-color-bg-surface-0-default justify-center items-center gap-2 flex">
             <div className="w-4 h-4 justify-center items-center gap-1 flex">
               <div className="w-4 h-4 relative"></div>
             </div>

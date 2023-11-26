@@ -13,7 +13,7 @@ const Layout = ({ volver, isOpen, isMenuClose, children }: LayoutProps) => {
   return (
     <section
       className={cn(
-        "fixed top-0  h-screen duration-500 transition-all w-screen lg:w-80 bg-white shadow-2xl",
+        "fixed top-0  h-screen duration-500 transition-all w-screen lg:w-80 bg-color-bg-surface-1-default shadow-2xl",
         ["right-[150%]", isOpen && isMenuClose ? "right-0" : "right-[-150%]"]
       )}>
       <header className="p-4 h-16 flex items-center border-b border-stone-300">

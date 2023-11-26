@@ -90,7 +90,7 @@ const Listing = async ({
   // console.log({filteredProducts, variants: filteredProducts?.map(producto => JSON.stringify({... producto.variantes}))});
   
   return (
-    <main className="bg-neutral-100 min-h-screen pt-[70px] md:pt-0">
+    <main className="bg-color-bg-surface-0-default min-h-screen pt-[70px] md:pt-0">
       <Banner
         banners={pageContent.listingContent.banners}
         className="h-[50vh] pt-0"
@@ -106,7 +106,7 @@ const Listing = async ({
           Coleccion {coleccionSeleccionada}
         </h2>
       )}
-      <section className="bg-[#ffffff] flex flex-col items-center">
+      <section className="bg-color-bg-surface-1-default flex flex-col items-center">
         <section className="max-w-[1280px] w-full py-6 px-4 md:px-9 flex">
           <Filters
             areFiltersActive={areFiltersActive}

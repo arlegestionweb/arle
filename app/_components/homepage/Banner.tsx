@@ -70,7 +70,7 @@ const Banner = ({ banners, className }: BannerProps) => {
           <div
             key={index}
             className={`w-2.5 h-2.5 rounded-full mx-1.5 cursor-pointer ${
-              index === scrollPosition ? "bg-white" : "bg-[#8f8e94]"
+              index === scrollPosition ? "bg-color-bg-surface-1-default" : "bg-[#8f8e94]"
             }`}
             onClick={() => changeScrollPosition(index)}
           />

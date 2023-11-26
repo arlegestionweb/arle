@@ -52,7 +52,7 @@ const Filters = ({
         isOpen={isFilterOpen}
         onClose={toggleFilter}>
         <div
-          className={`w-80 h-screen bg-white grid place-content-center relative`}>
+          className={`w-80 h-screen bg-color-bg-surface-1-default grid place-content-center relative`}>
           <AiOutlineCloseCircle
             onClick={toggleFilter}
             className="cursor-pointer text-3xl absolute top-10 right-10"

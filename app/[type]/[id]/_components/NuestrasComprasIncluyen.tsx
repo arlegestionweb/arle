@@ -55,7 +55,7 @@ const ItemComprasIncluyen = ({
   description: string;
 }) => {
   return (
-    <div className="px-2 py-3 bg-white border border-stone-300 items-center justify-start gap-[9px] inline-flex w-full">
+    <div className="px-2 py-3 bg-color-bg-surface-1-default border border-stone-300 items-center justify-start gap-[9px] inline-flex w-full">
       {icon}
       <div>
         <h3 className="basis-0 text-zinc-800 text-sm font-bold font-tajawal leading-[16.80px]">

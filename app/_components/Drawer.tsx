@@ -29,7 +29,7 @@ const Drawer = ({
       />
       <section
         className={cn(
-          `fixed z-40 top-0 ease-in-out duration-200 transition-all h-screen bg-white w-screen md:w-80`,
+          `fixed z-40 top-0 ease-in-out duration-200 transition-all h-screen bg-color-bg-surface-1-default w-screen md:w-80`,
           [
             animation === "right"
               ? ["right-[-150%]", isOpen ? "right-0" : "right-[-150%]"]

@@ -85,7 +85,7 @@ const CardLayout = ({ product }: { product: TProduct }) => {
           ${product.variantes[0].precio}
         </p>
       </section>
-      <Button className="bg-black text-[#CFCFCF] flex justify-center items-center gap-2">
+      <Button labelType={"dark"} className="flex justify-center items-center gap-2">
         <LuShoppingCart />
         <span className="font-inter text-base font-medium leading-6">
           Agregar
