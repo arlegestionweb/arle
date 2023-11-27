@@ -8,7 +8,7 @@ const buttonsVariants = cva(
   {
     variants: {
       labelType: {
-        light: "bg-white text-black",
+        light: "bg-color-bg-surface-1-default text-black",
         dark: "bg-black text-[#CFCFCF]",
       },
     },
