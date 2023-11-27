@@ -12,6 +12,7 @@ import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import MobileAddToCart from "../MobileAddToCart";
 import ProductSlide from '../../../../_components/ProductSlide';
 import Labels, { LabelTypes } from "@/app/_components/Labels";
+import ProductViewer from "@/app/_components/gafas/ProductView";
 
 type TGafaPremiumProps = {
   product: TGafaPremium;
@@ -21,13 +22,10 @@ const GafaPremium = ({ product }: TGafaPremiumProps) => {
   console.log(product.variantes[0].imagenes);
   
   return (
-    <>
-      <ProductSlide 
-        slug={product.slug}
-        imagesProduct={product.variantes[0].imagenes}
-        className="max-h-[377px]"/>
+    <section className="lg:grid lg:grid-cols-12 row-auto max-w-[1280px]">
+      <ProductViewer product={product} className="col-start-7 col-span-6"/>
 
-      <section className="flex flex-col px-5 w-full relative">  
+      <section className="col-span-6 col-start-1 row-start-1 flex flex-col px-5 w-full relative">  
         <Labels 
           className="relative max-w-fit mt-4 mb-2"
           labelType={product.variantes[0].etiqueta as LabelTypes}
@@ -70,7 +68,7 @@ const GafaPremium = ({ product }: TGafaPremiumProps) => {
         <NuestrasComprasIncluyen garantia={product.garantia} />
         <MobileAddToCart />
       </section>
-    </>
+    </section>
   );
 };
 
