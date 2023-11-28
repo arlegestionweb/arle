@@ -57,13 +57,14 @@ const GafaPremium = ({ product }: TGafaPremiumProps) => {
         <section className="mt-2">
           <Cantidad />
         </section>
+        <MobileAddToCart className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block"/>
         <CollapsibleProductSection classNames="mt-2" title="Descripción">
           <p>{product.descripcion}</p>
         </CollapsibleProductSection>
         <EspecificacionesGafa product={product} />
 
         <NuestrasComprasIncluyen garantia={product.garantia} />
-        <MobileAddToCart />
+        <MobileAddToCart className="lg:hidden"/>
       </section>
     </section>
   );
