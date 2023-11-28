@@ -16,6 +16,7 @@ const ProductViewer = ({ product, className }: ProductViewerProps) => {
         slug={product.slug}
         imagesProduct={product.variantes[0].imagenes}
         className={cn("max-h-[377px] lg:hidden", className)}
+        isLink={false}
       />
       <ProductGrid
         product={product}

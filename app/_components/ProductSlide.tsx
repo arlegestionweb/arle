@@ -5,15 +5,21 @@ import Image from "next/image";
 import Link from "next/link";
 
 type ProductSlideProps = {
-  slug: string
+  slug: string;
   imagesProduct: {
     url: string;
     alt?: string | null | undefined;
   }[];
   className?: string;
+  isLink?: boolean;
 };
 
-const ProductSlide = ({slug, imagesProduct, className }: ProductSlideProps) => {
+const ProductSlide = ({
+  slug,
+  imagesProduct,
+  className,
+  isLink = true,
+}: ProductSlideProps) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const productRef = useRef<HTMLElement>(null);
 
@@ -55,14 +61,25 @@ const ProductSlide = ({slug, imagesProduct, className }: ProductSlideProps) => {
                 index === 1 && "snap-mandatory"
               } min-w-full flex-col justify-end items-center gap-2.5 inline-flex`
             )}>
-            <Link href={slug}>
-              <Image
-                alt={image.alt || "product"}
-                src={image.url}
-                fill
-                className={`object-cover fit object-top`}
-              />
-            </Link>
+            {isLink ? (
+              <Link href={slug}>
+                <Image
+                  alt={image.alt || "product"}
+                  src={image.url}
+                  fill
+                  className={`object-cover fit object-top`}
+                />
+              </Link>
+            ) : (
+              <div>
+                <Image
+                  alt={image.alt || "product"}
+                  src={image.url}
+                  fill
+                  className={`object-cover fit object-top`}
+                />
+              </div>
+            )}
           </div>
         ))}
       </section>
