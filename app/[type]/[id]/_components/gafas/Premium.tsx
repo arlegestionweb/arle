@@ -22,10 +22,10 @@ const GafaPremium = ({ product }: TGafaPremiumProps) => {
   console.log(product.variantes[0].imagenes);
   
   return (
-    <section className="lg:grid lg:grid-cols-12 row-auto max-w-[1280px]">
-      <ProductViewer product={product} className="col-start-7 col-span-6"/>
+    <section className="lg:grid lg:grid-cols-12 gap-8 row-auto w-full md:px-8 lg:max-w-[calc(1280px+32px)]">
+      <ProductViewer product={product} className="col-start-8 col-span-1"/>
 
-      <section className="col-span-6 col-start-1 row-start-1 flex flex-col px-5 w-full relative">  
+      <section className="col-span-6 col-start-1 row-start-1 flex flex-col px-5 lg:px-0 w-full relative">  
         <Labels 
           className="relative max-w-fit mt-4 mb-2"
           labelType={product.variantes[0].etiqueta as LabelTypes}
