@@ -1,18 +1,18 @@
+import PremiumLayout from "@/app/_components/premium/PremiumLayout";
 import { TPerfumePremium } from "@/sanity/queries/pages/types";
 
 type TPerfumePremiumProps = {
   product: TPerfumePremium;
 };
 
-const PerfumePremium = ({product}: TPerfumePremiumProps) => {
+const PerfumePremium = ({ product }: TPerfumePremiumProps) => {
   // console.log({product});
-  
+
   return (
-    <div>
-      <h1>{product.marca} {product.titulo}</h1>
-    </div>
+    <PremiumLayout product={product}>
+      <>HOASS</>
+    </PremiumLayout>
   );
 };
-
 
 export default PerfumePremium;
