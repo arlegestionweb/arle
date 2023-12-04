@@ -51,9 +51,9 @@ const CardLayout = ({ product }: { product: TProduct }) => {
             imagesProduct={
               isPerfume(product)
                 ? product.imagenes
-                : isReloj(product)
-                ? product.variantes[0].imagenes
-                : (product as TGafa).variantes[0].imagenes
+                : "imagenes" in selectedVariant
+                ? selectedVariant.imagenes
+                : []
             }
             className=" h-[180px] lg:h-[288px]"
           />
@@ -63,9 +63,9 @@ const CardLayout = ({ product }: { product: TProduct }) => {
               src={
                 isPerfume(product)
                   ? product.imagenes[0].url
-                  : isReloj(product)
-                  ? product.variantes[0].imagenes[0].url
-                  : (product as TGafa).variantes[0].imagenes[0].url
+                  : "imagenes" in selectedVariant
+                  ? selectedVariant.imagenes[0].url
+                  : ""
               }
               alt={
                 isPerfume(product)
@@ -115,8 +115,8 @@ type TVarianSelectorProps<T extends TProduct> = {
   product: T;
   selectedVariant: T["variantes"][0];
   setSelectedVariant: (variant: T["variantes"][0]) => void;
-}
-const VariantSelector = <T extends TProduct> ({
+};
+const VariantSelector = <T extends TProduct>({
   product,
   setSelectedVariant,
   selectedVariant,
@@ -126,7 +126,7 @@ const VariantSelector = <T extends TProduct> ({
       <div className="flex gap-2 flex-col w-fit">
         <h4>Tamaño (ml):</h4>
         <div className="flex gap-2">
-          {product.variantes.map((variante, index) => {
+          {product.variantes.map((variante: TVariant, index) => {
             if ("tamano" in variante && "tamano" in selectedVariant) {
               const isVariantSelected =
                 variante.tamano === selectedVariant.tamano;
@@ -157,9 +157,16 @@ const VariantSelector = <T extends TProduct> ({
         <h4>Color:</h4>
         <ul className="flex gap-2">
           {product.variantes.map((variante, index) => (
-            <li key={`${variante.colorDeLaMontura.nombre}-${index}`} 
-            
-            className={"codigoDeReferencia" in selectedVariant && variante.codigoDeReferencia === selectedVariant.codigoDeReferencia ? `border-2 border-black p-[1px]` : ""}>
+            <li
+              key={`${variante.colorDeLaMontura.nombre}-${index}`}
+              className={
+                "codigoDeReferencia" in selectedVariant &&
+                variante.codigoDeReferencia ===
+                  selectedVariant.codigoDeReferencia
+                  ? `border-2 border-black p-[1px]`
+                  : ""
+              }
+            >
               <ColorSelector
                 onClick={() => setSelectedVariant(variante)}
                 color1={variante.colorDeLaMontura}
@@ -178,8 +185,17 @@ const VariantSelector = <T extends TProduct> ({
       <>
         <h4>Color:</h4>
         <ul className="flex gap-2">
-          {product.variantes.map((variante, index) => (
-            <li key={`${variante.colorCaja.nombre}-${index}`}>
+          {product.variantes.map((variante: TVarianteReloj, index) => (
+            <li
+              key={`${variante.colorCaja.nombre}-${index}`}
+              className={
+                "codigoDeReferencia" in selectedVariant &&
+                selectedVariant.codigoDeReferencia ===
+                  variante.codigoDeReferencia
+                  ? `border-2 border-black p-[1px]`
+                  : ""
+              }
+            >
               <ColorSelector
                 onClick={() => setSelectedVariant(variante)}
                 color1={variante.colorCaja}
@@ -194,7 +210,12 @@ const VariantSelector = <T extends TProduct> ({
   }
 };
 
-const ColorSelector = ({color1, onClick, color2, color3}: {
+const ColorSelector = ({
+  color1,
+  onClick,
+  color2,
+  color3,
+}: {
   onClick: () => void;
   color1: TColor;
   color2: TColor;
@@ -202,22 +223,27 @@ const ColorSelector = ({color1, onClick, color2, color3}: {
 }) => {
   return (
     <button
-    onClick={onClick}
-    className={`w-[27px] h-[26px] rounded border flex ${
-      // variante.colorDeLaMontura.color === selectedVariant.colorDeLaMontura.color
-      //   ? "bg-neutral-100 border-black"
-      //   : "bg-neutral-200 border-neutral-300"
-      "border-neutral-300"
-    }`}
-  >
-    <ColorBar color={color1} />
-    <ColorBar color={color2} />
-    <ColorBar color={color3} />
-  </button>
-  )
-}
+      onClick={onClick}
+      className={`w-[27px] h-[26px] rounded border flex ${
+        // variante.colorDeLaMontura.color === selectedVariant.colorDeLaMontura.color
+        //   ? "bg-neutral-100 border-black"
+        //   : "bg-neutral-200 border-neutral-300"
+        "border-neutral-300"
+      }`}
+    >
+      <ColorBar color={color1} />
+      <ColorBar color={color2} />
+      <ColorBar color={color3} />
+    </button>
+  );
+};
 const ColorBar = ({ color }: { color: TColor }) => (
-  <div className={`w-1/3 h-full relative group`} style={{ backgroundColor: color.color }}>
-    <div className="absolute -left-2/3 -top-5 opacity-0 group-hover:opacity-100 w-fit whitespace-nowrap">{color.nombre}</div>
+  <div
+    className={`w-1/3 h-full relative group`}
+    style={{ backgroundColor: color.color }}
+  >
+    <div className="absolute -left-2/3 -top-5 opacity-0 group-hover:opacity-100 w-fit whitespace-nowrap">
+      {color.nombre}
+    </div>
   </div>
 );

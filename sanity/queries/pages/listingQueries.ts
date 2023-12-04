@@ -182,6 +182,8 @@ const zodVarianteReloj = z.object({
   colorPulso: zodColorSchema,
   colorTablero: zodColorSchema,
   colorCaja: zodColorSchema,
+  registroInvima: z.string(),
+  codigoDeReferencia: z.string(),
 });
 export type TVarianteReloj = z.infer<typeof zodVarianteReloj>;
 
