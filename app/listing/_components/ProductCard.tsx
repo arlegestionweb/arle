@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
 import {
+  TColor,
   TGafa,
   TProduct,
   TVarianteGafa,
-  TVariantePerdume,
+  TVariantePerfume,
   TVarianteReloj,
   isGafa,
   isPerfume,
@@ -18,7 +19,6 @@ import Labels, { LabelTypes } from "../../_components/Labels";
 import { useState } from "react";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
-
   return (
     <>
       {producto.variantes[0].etiqueta && (
@@ -33,7 +33,7 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
   );
 };
 
-type TVariant = TVariantePerdume | TVarianteGafa | TVarianteReloj;
+type TVariant = TVariantePerfume | TVarianteGafa | TVarianteReloj;
 
 const CardLayout = ({ product }: { product: TProduct }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
@@ -111,23 +111,22 @@ const CardLayout = ({ product }: { product: TProduct }) => {
 
 export default ProductoCard;
 
-const VariantSelector = ({
+type TVarianSelectorProps<T extends TProduct> = {
+  product: T;
+  selectedVariant: T["variantes"][0];
+  setSelectedVariant: (variant: T["variantes"][0]) => void;
+}
+const VariantSelector = <T extends TProduct> ({
   product,
   setSelectedVariant,
   selectedVariant,
-}: {
-  product: TProduct;
-  selectedVariant: TVariant;
-  setSelectedVariant: (variant: TVariant) => void;
-}) => {
-
+}: TVarianSelectorProps<T>) => {
   if (isPerfume(product)) {
-
     return (
       <div className="flex gap-2 flex-col w-fit">
         <h4>Tamaño (ml):</h4>
         <div className="flex gap-2">
-          {product.variantes.map((variante) => {
+          {product.variantes.map((variante, index) => {
             if ("tamano" in variante && "tamano" in selectedVariant) {
               const isVariantSelected =
                 variante.tamano === selectedVariant.tamano;
@@ -139,17 +138,86 @@ const VariantSelector = ({
                       ? "bg-neutral-100 border-black"
                       : "bg-neutral-200 border-neutral-300"
                   }`}
+                  key={`${variante.tamano}-${variante.precio}-${index}`}
                 >
                   {variante.tamano}
                 </button>
               );
             }
-            // TODO the other variant types
-            return null;
           })}
         </div>
       </div>
     );
   }
-  return <div>escoge color</div>;
+
+  if (isGafa(product)) {
+    // product.variantes[0].colorDeLaMontura.color;
+    return (
+      <>
+        <h4>Color:</h4>
+        <ul className="flex gap-2">
+          {product.variantes.map((variante, index) => (
+            <li key={`${variante.colorDeLaMontura.nombre}-${index}`} 
+            
+            className={"codigoDeReferencia" in selectedVariant && variante.codigoDeReferencia === selectedVariant.codigoDeReferencia ? `border-2 border-black p-[1px]` : ""}>
+              <ColorSelector
+                onClick={() => setSelectedVariant(variante)}
+                color1={variante.colorDeLaMontura}
+                color2={variante.colorDelLente}
+                color3={variante.colorDeLaVarilla}
+              />
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  }
+  if (isReloj(product)) {
+    // product.variantes[0].colorDeLaMontura.color;
+    return (
+      <>
+        <h4>Color:</h4>
+        <ul className="flex gap-2">
+          {product.variantes.map((variante, index) => (
+            <li key={`${variante.colorCaja.nombre}-${index}`}>
+              <ColorSelector
+                onClick={() => setSelectedVariant(variante)}
+                color1={variante.colorCaja}
+                color2={variante.colorPulso}
+                color3={variante.colorTablero}
+              />
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  }
 };
+
+const ColorSelector = ({color1, onClick, color2, color3}: {
+  onClick: () => void;
+  color1: TColor;
+  color2: TColor;
+  color3: TColor;
+}) => {
+  return (
+    <button
+    onClick={onClick}
+    className={`w-[27px] h-[26px] rounded border flex ${
+      // variante.colorDeLaMontura.color === selectedVariant.colorDeLaMontura.color
+      //   ? "bg-neutral-100 border-black"
+      //   : "bg-neutral-200 border-neutral-300"
+      "border-neutral-300"
+    }`}
+  >
+    <ColorBar color={color1} />
+    <ColorBar color={color2} />
+    <ColorBar color={color3} />
+  </button>
+  )
+}
+const ColorBar = ({ color }: { color: TColor }) => (
+  <div className={`w-1/3 h-full relative group`} style={{ backgroundColor: color.color }}>
+    <div className="absolute -left-2/3 -top-5 opacity-0 group-hover:opacity-100 w-fit whitespace-nowrap">{color.nombre}</div>
+  </div>
+);

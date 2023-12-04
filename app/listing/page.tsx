@@ -4,7 +4,9 @@ import Filters from "./_components/Filters";
 import Colecciones from "../_components/Colecciones";
 import Banner from "../_components/homepage/Banner";
 
-export const revalidate = 10; // revalidate at most every hour
+// export const revalidate = 10; // revalidate at most every hour
+
+export const dynamic = "force-dynamic";
 
 const Listing = async ({
   searchParams,

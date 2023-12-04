@@ -1,3 +1,4 @@
+import Button from "@/app/_components/Button";
 import { FastShoppingCartIcon, ShoppingCartIcon } from "./Icons";
 
 const MobileAddToCart = () => {

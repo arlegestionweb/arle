@@ -17,7 +17,9 @@ const listingMainString = `
       precio,
       unidadesDisponibles,
       tamano,
-      etiqueta
+      etiqueta,
+      codigoDeReferencia,
+      registroInvima
     },
     "slug": slug.current,
   },
@@ -30,6 +32,20 @@ const listingMainString = `
       unidadesDisponibles,
       etiqueta,
       ${imageArrayQuery},
+      "colorCaja": colorCaja->{
+        nombre,
+        "color": color.hex
+      },
+      "colorTablero": colorTablero->{
+        nombre,
+        "color": color.hex
+      },
+      "colorPulso": colorPulso-> {
+        nombre,
+        "color": color.hex
+      },
+      codigoDeReferencia,
+      registroInvima
     },
     "slug": slug.current,
   },
@@ -44,6 +60,20 @@ const listingMainString = `
         alt,
         "url": asset->url,
       },
+      "colorDeLaMontura": colorDeLaMontura->{
+        nombre,
+        "color": color.hex
+      },
+      "colorDelLente": colorDelLente->{
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaVarilla": colorDeLaVarilla->{
+        nombre,
+        "color": color.hex
+      },
+      codigoDeReferencia,
+      registroInvima
     },
     modelo,
     "type": _type,
@@ -63,6 +93,12 @@ const listingMainString = `
   
 }
 `;
+const zodColorSchema = z.object({
+  nombre: z.string(),
+  color: z.string(),
+});
+
+export type TColor = z.infer<typeof zodColorSchema>;
 
 const zodVarianteGafa = z.object({
   precio: z.string(),
@@ -74,6 +110,11 @@ const zodVarianteGafa = z.object({
       url: z.string(),
     })
   ),
+  colorDeLaMontura: zodColorSchema,
+  colorDelLente: zodColorSchema,
+  colorDeLaVarilla: zodColorSchema,
+  codigoDeReferencia: z.string(),
+  registroInvima: z.string(),
 });
 
 export type TVarianteGafa = z.infer<typeof zodVarianteGafa>;
@@ -106,9 +147,11 @@ const zodVariantePerfume = z.object({
   unidadesDisponibles: z.number(),
   tamano: z.number(),
   etiqueta: z.string().optional().nullable(),
+  registroInvima: z.string(),
+  codigoDeReferencia: z.string(),
 });
 
-export type TVariantePerdume = z.infer<typeof zodVariantePerfume>;
+export type TVariantePerfume = z.infer<typeof zodVariantePerfume>;
 
 const zodPerfumeListingQuery = z.object({
   titulo: z.string(),
@@ -136,6 +179,9 @@ const zodVarianteReloj = z.object({
       alt: z.string().optional().nullable(),
     })
   ),
+  colorPulso: zodColorSchema,
+  colorTablero: zodColorSchema,
+  colorCaja: zodColorSchema,
 });
 export type TVarianteReloj = z.infer<typeof zodVarianteReloj>;
 
@@ -214,18 +260,11 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
-
     const parsedResult = zodListPage.safeParse(result);
 
     if (!parsedResult.success) {
       throw new Error(parsedResult.error.message);
     }
-    console.log({
-      gafa: parsedResult.data.gafas,
-      variantes: parsedResult.data.gafas?.map((producto) =>
-        JSON.stringify({ ...producto.variantes })
-      ),
-    });
 
     return parsedResult.data;
   } catch (error) {
