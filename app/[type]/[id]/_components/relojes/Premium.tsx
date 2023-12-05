@@ -22,7 +22,7 @@ const RelojPremium = ({ product }: TRelojPremiumProps) => {
         title="Descripción">
         <p>{product.descripcion}</p>
       </CollapsibleProductSection>
-      <EspecificacionesGafa product={product} />
+      <EspecificacionesReloj product={product} />
 
       <NuestrasComprasIncluyen garantia={product.garantia} />
       <MobileAddToCart className="lg:hidden" />
@@ -36,7 +36,7 @@ type TEspecificacionesProps = {
   product: TRelojPremium;
 };
 
-const EspecificacionesGafa = ({ product }: TEspecificacionesProps) => {
+const EspecificacionesReloj = ({ product }: TEspecificacionesProps) => {
   return (
     <CollapsibleProductSection
       classNames="mt-2"

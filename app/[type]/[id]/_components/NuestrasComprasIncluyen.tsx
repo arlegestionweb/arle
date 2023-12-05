@@ -8,7 +8,7 @@ import {
 const NuestrasComprasIncluyen = ({
   garantia,
 }: {
-  garantia: {
+  garantia?: {
     meses: number;
   };
 }) => {
@@ -33,11 +33,13 @@ const NuestrasComprasIncluyen = ({
           description="Contáctanos para solucionar tus dudas."
           icon={<MessagesIcon />}
         />
-        <ItemComprasIncluyen
-          title={`Garantía de ${garantia.meses} meses`}
-          description="En todos nuestros productos"
-          icon={<SecurityCheckIcon />}
-        />
+        {garantia && (
+          <ItemComprasIncluyen
+            title={`Garantía de ${garantia.meses} meses`}
+            description="En todos nuestros productos"
+            icon={<SecurityCheckIcon />}
+          />
+        )}
       </div>
     </section>
   );
