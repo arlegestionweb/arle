@@ -17,7 +17,7 @@ type ProductViewerProps = {
 
 const ProductViewer = ({ product, className }: ProductViewerProps) => {
   const imagenes = isPerfumePremium(product)
-    ? []
+    ? product.imagenes
     : product.variantes[0].imagenes;
 
   return (
