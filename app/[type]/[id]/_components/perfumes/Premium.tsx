@@ -19,11 +19,13 @@ const PerfumePremium = ({ product }: TPerfumePremiumProps) => {
         <Cantidad />
       </section>
       <MobileAddToCart className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block" />
-      <CollapsibleProductSection
-        classNames="mt-2"
-        title="Descripción">
-        <p>{product.descripcion}</p>
-      </CollapsibleProductSection>
+      {product.descripcion ? (
+        <CollapsibleProductSection
+          classNames="mt-2"
+          title="Descripción">
+          <p>{product.descripcion}</p>
+        </CollapsibleProductSection>
+      ) : (<></>)}
       <EspecificacionesPerfume product={product} />
 
       <NuestrasComprasIncluyen />
