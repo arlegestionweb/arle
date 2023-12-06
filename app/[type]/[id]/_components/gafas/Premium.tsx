@@ -30,7 +30,7 @@ const GafaPremium = ({ product }: TGafaPremiumProps) => {
           <h1 className="text-zinc-800 text-[32px] font-normal font-kanit leading-10 w-full">
             {product.marca} {product.modelo}
           </h1>
-          <span>CODE: {product.variantes[0].codigo}</span>
+          <span>CODE: {product.variantes[0].codigoDeReferencia}</span>
           <p className="text-zinc-800 text-[32px] font-normal font-kanit leading-9">
             ${product.variantes[0].precio}
           </p>

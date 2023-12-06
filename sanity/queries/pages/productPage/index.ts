@@ -39,7 +39,8 @@ const productQuery: Record<TProductType, string> = {
           "url": asset->url,
         },
         unidadesDisponibles,
-        codigo,
+        codigoDeReferencia,
+        registroInvima,
         etiqueta,
         "colorCaja": colorCaja -> {
           nombre,
@@ -77,7 +78,8 @@ const productQuery: Record<TProductType, string> = {
         alt,
         "url": asset->url,
       },
-      codigo,
+      codigoDeReferencia,
+      registroInvima,
       etiqueta,
       unidadesDisponibles,
       "colorCaja": colorCaja -> { 
@@ -154,6 +156,7 @@ const productQuery: Record<TProductType, string> = {
       etiqueta,
       precio,
       codigoDeReferencia,
+      registroInvima,
       unidadesDisponibles,
     },
     parteDeUnSet,
@@ -204,7 +207,8 @@ const productQuery: Record<TProductType, string> = {
         nombre,
         "color": color.hex
       },
-      codigo,
+      codigoDeReferencia,
+      registroInvima,
       precio,
       unidadesDisponibles,
       "colorDelLente": colorDelLente -> {
@@ -237,7 +241,8 @@ const productQuery: Record<TProductType, string> = {
         alt,
         "url": asset->url,
       },
-      codigo,
+      codigoDeReferencia,
+      registroInvima,
       unidadesDisponibles,
       precio,
       etiqueta,
