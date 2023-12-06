@@ -1,5 +1,4 @@
 import { MouseEventHandler } from "react";
-import MenuDrawer from "./menuDrawer";
 
 interface BurgerProps {
   onClickHandler?: MouseEventHandler<HTMLDivElement>;

@@ -15,7 +15,8 @@ const variantSchema = z.object({
   colorTablero: colorSchema,
   imagenes: z.array(imageSchema),
   unidadesDisponibles: z.number(),
-  codigo: z.string(),
+  codigoDeReferencia: z.string(),
+  registroInvima: z.string(),
   etiqueta: z.string().nullable().optional(),
   colorCaja: colorSchema,
   colorPulso: colorSchema,
@@ -102,9 +103,10 @@ export const perfumePremiumSchema = z.object({
   variantes: z.array(
     z.object({
       tamano: z.number(),
-      etiqueta: z.string(),
+      etiqueta: z.string().optional().nullable(),
       precio: z.string(),
       codigoDeReferencia: z.string(),
+      registroInvima: z.string(),
       unidadesDisponibles: z.number(),
     })
   ),
@@ -195,12 +197,13 @@ export const gafasLujoSchema = z.object({
         nombre: z.string(),
         color: z.string(),
       }),
-      etiqueta: z.string(),
+      etiqueta: z.string().optional().nullable(),
       colorDeLaVarilla: z.object({
         nombre: z.string(),
         color: z.string(),
       }),
-      codigo: z.string(),
+      codigoDeReferencia: z.string(),
+      registroInvima: z.string(),
       precio: z.string(),
       unidadesDisponibles: z.number(),
       colorDelLente: z.object({
@@ -240,10 +243,10 @@ export const gafasPremiumSchema = z.object({
           url: z.string(),
         })
       ),
-      codigo: z.string(),
+      codigoDeReferencia: z.string(),
       unidadesDisponibles: z.number(),
       precio: z.string(),
-      etiqueta: z.string(),
+      etiqueta: z.string().optional().nullable(),
       mostrarUnidadesDispobibles: z.boolean(),
     })
   ),
