@@ -21,6 +21,8 @@ type TPageProps = {
   };
 };
 
+export const dynamic = 'force-dynamic'
+
 const ProductPage = async ({ params }: TPageProps) => {
   const product = await getProductById(params.id, params.type);
 
