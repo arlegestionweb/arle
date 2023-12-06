@@ -11,19 +11,23 @@ type TGafaPremiumProps = {
 };
 
 const GafaPremium = ({ product }: TGafaPremiumProps) => {
-  console.log(product.variantes[0].imagenes);
-
+  console.log(product.descripcion);
+  
   return (
     <PremiumLayout product={product}>
       <section className="mt-2">
         <Cantidad />
       </section>
       <MobileAddToCart className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block" />
-      <CollapsibleProductSection
-        classNames="mt-2"
-        title="Descripción">
-        <p>{product.descripcion}</p>
-      </CollapsibleProductSection>
+
+      {product.descripcion ? (
+        <CollapsibleProductSection
+          classNames="mt-2"
+          title="Descripción">
+          <p>{product.descripcion}</p>
+        </CollapsibleProductSection>
+      ) : (<></>)}
+      
       <EspecificacionesGafa product={product} />
 
       <NuestrasComprasIncluyen garantia={product.garantia} />
