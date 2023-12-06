@@ -291,6 +291,6 @@ export const getProductById = async (id: string, productType: TProductType) => {
   if (!product.success) {
     throw new Error(product.error.message);
   }
-
+  
   return product.data;
 };

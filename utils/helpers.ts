@@ -44,3 +44,13 @@ export const numberToColombianPriceString = (price: number) => {
 
   return result;
 }
+
+
+export const getPriceRangeString = function(productPrices: number[]): string {
+  const minProductPrice = Math.min(...productPrices);
+  const maxProductPrice = Math.max(...productPrices);
+
+  return minProductPrice === maxProductPrice
+    ? `$${numberToColombianPriceString(minProductPrice)}`
+    : `$${numberToColombianPriceString(minProductPrice)} - $${numberToColombianPriceString(maxProductPrice)}`;
+}

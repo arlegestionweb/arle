@@ -54,8 +54,14 @@ const varianteDeRelojes = defineField({
     precioConDescuentoSchema,
     etiquetaSchema,
     defineField({
-      name: "codigo",
-      title: "Código",
+      name: "codigoDeReferencia",
+      title: "Código de referencia",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "registroInvima",
+      title: "Registro Invima",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),

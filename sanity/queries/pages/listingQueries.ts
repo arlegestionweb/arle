@@ -1,9 +1,5 @@
 import sanityClient from "@/sanity/sanityClient";
-import {
-  bannersQuery,
-  imageArrayQuery,
-  imageQuery,
-} from "../objects";
+import { bannersQuery, imageArrayQuery, imageQuery } from "../objects";
 
 import { z } from "zod";
 
@@ -21,7 +17,9 @@ const listingMainString = `
       precio,
       unidadesDisponibles,
       tamano,
-      etiqueta
+      etiqueta,
+      codigoDeReferencia,
+      registroInvima
     },
     "slug": slug.current,
   },
@@ -34,6 +32,20 @@ const listingMainString = `
       unidadesDisponibles,
       etiqueta,
       ${imageArrayQuery},
+      "colorCaja": colorCaja->{
+        nombre,
+        "color": color.hex
+      },
+      "colorTablero": colorTablero->{
+        nombre,
+        "color": color.hex
+      },
+      "colorPulso": colorPulso-> {
+        nombre,
+        "color": color.hex
+      },
+      codigoDeReferencia,
+      registroInvima
     },
     "slug": slug.current,
   },
@@ -48,6 +60,20 @@ const listingMainString = `
         alt,
         "url": asset->url,
       },
+      "colorDeLaMontura": colorDeLaMontura->{
+        nombre,
+        "color": color.hex
+      },
+      "colorDelLente": colorDelLente->{
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaVarilla": colorDeLaVarilla->{
+        nombre,
+        "color": color.hex
+      },
+      codigoDeReferencia,
+      registroInvima
     },
     modelo,
     "type": _type,
@@ -67,23 +93,36 @@ const listingMainString = `
   
 }
 `;
+const zodColorSchema = z.object({
+  nombre: z.string(),
+  color: z.string(),
+});
+
+export type TColor = z.infer<typeof zodColorSchema>;
+
+const zodVarianteGafa = z.object({
+  precio: z.string(),
+  etiqueta: z.string(),
+  unidadesDisponibles: z.number(),
+  imagenes: z.array(
+    z.object({
+      alt: z.string().optional().nullable(),
+      url: z.string(),
+    })
+  ),
+  colorDeLaMontura: zodColorSchema,
+  colorDelLente: zodColorSchema,
+  colorDeLaVarilla: zodColorSchema,
+  codigoDeReferencia: z.string(),
+  registroInvima: z.string(),
+});
+
+export type TVarianteGafa = z.infer<typeof zodVarianteGafa>;
 
 const zodGafaListingQuery = z.object({
   marca: z.string(),
   _id: z.string(),
-  variantes: z.array(
-    z.object({
-      precio: z.string(),
-      etiqueta: z.string(),
-      unidadesDisponibles: z.number(),
-      imagenes: z.array(
-        z.object({
-          alt: z.string().optional().nullable(),
-          url: z.string(),
-        })
-      ),
-    })
-  ),
+  variantes: z.array(zodVarianteGafa),
   modelo: z.string(),
   type: z.string(),
   slug: z.string(),
@@ -103,6 +142,17 @@ const zodBanner = z.object({
 
 export type TBanner = z.infer<typeof zodBanner>;
 
+const zodVariantePerfume = z.object({
+  precio: z.string(),
+  unidadesDisponibles: z.number(),
+  tamano: z.number(),
+  etiqueta: z.string().optional().nullable(),
+  registroInvima: z.string(),
+  codigoDeReferencia: z.string(),
+});
+
+export type TVariantePerfume = z.infer<typeof zodVariantePerfume>;
+
 const zodPerfumeListingQuery = z.object({
   titulo: z.string(),
   marca: z.string(),
@@ -113,36 +163,35 @@ const zodPerfumeListingQuery = z.object({
       alt: z.string().optional().nullable(),
     })
   ),
-  variantes: z.array(
-    z.object({
-      precio: z.string(),
-      unidadesDisponibles: z.number(),
-      tamano: z.number(),
-      etiqueta: z.string().optional().nullable(),
-    })
-  ),
+  variantes: z.array(zodVariantePerfume),
   slug: z.string(),
 });
 
 export type TPerfume = z.infer<typeof zodPerfumeListingQuery>;
 
+const zodVarianteReloj = z.object({
+  precio: z.string(),
+  unidadesDisponibles: z.number(),
+  etiqueta: z.string().optional().nullable(),
+  imagenes: z.array(
+    z.object({
+      url: z.string(),
+      alt: z.string().optional().nullable(),
+    })
+  ),
+  colorPulso: zodColorSchema,
+  colorTablero: zodColorSchema,
+  colorCaja: zodColorSchema,
+  registroInvima: z.string(),
+  codigoDeReferencia: z.string(),
+});
+export type TVarianteReloj = z.infer<typeof zodVarianteReloj>;
+
 const zodRelojListingQuery = z.object({
   marca: z.string(),
   modelo: z.string(),
   type: z.string(),
-  variantes: z.array(
-    z.object({
-      precio: z.string(),
-      unidadesDisponibles: z.number(),
-      etiqueta: z.string().optional().nullable(),
-      imagenes: z.array(
-        z.object({
-          url: z.string(),
-          alt: z.string().optional().nullable(),
-        })
-      ),
-    })
-  ),
+  variantes: z.array(zodVarianteReloj),
   slug: z.string(),
 });
 
@@ -150,11 +199,18 @@ export type TReloj = z.infer<typeof zodRelojListingQuery>;
 
 export type TGafa = z.infer<typeof zodGafaListingQuery>;
 
-export const isPerfume = (product: TProduct): product is TPerfume => product.type.includes("perfume");  
-export const isReloj = (product: TProduct): product is TReloj => product.type.includes("reloj");
-export const isGafa = (product: TProduct): product is TGafa => product.type.includes("gafa");
+export const isPerfume = (product: TProduct): product is TPerfume =>
+  product.type.includes("perfume");
+export const isReloj = (product: TProduct): product is TReloj =>
+  product.type.includes("reloj");
+export const isGafa = (product: TProduct): product is TGafa =>
+  product.type.includes("gafa");
 
-const zodProduct = z.union([zodPerfumeListingQuery, zodRelojListingQuery, zodGafaListingQuery]);
+const zodProduct = z.union([
+  zodPerfumeListingQuery,
+  zodRelojListingQuery,
+  zodGafaListingQuery,
+]);
 
 export type TProduct = z.infer<typeof zodProduct>;
 
@@ -175,8 +231,7 @@ const zodColeccionProducto = z.object({
     .nullable(),
 });
 
-
-const zodCollectiones =  z.array(
+const zodCollectiones = z.array(
   z.object({
     titulo: z.string(),
     descripcion: z.string(),
@@ -186,7 +241,7 @@ const zodCollectiones =  z.array(
     }),
     productos: z.array(zodColeccionProducto),
   })
-)
+);
 
 export type TColecciones = z.infer<typeof zodCollectiones>;
 
@@ -201,22 +256,17 @@ const zodListPage = z.object({
 
   gafas: z.array(zodGafaListingQuery).optional(),
 
-  colecciones: zodCollectiones
+  colecciones: zodCollectiones,
 });
-
 
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
-
-    
-    
     const parsedResult = zodListPage.safeParse(result);
-    
+
     if (!parsedResult.success) {
       throw new Error(parsedResult.error.message);
     }
-    console.log({gafa: parsedResult.data.gafas, variantes: parsedResult.data.gafas?.map(producto => JSON.stringify({... producto.variantes}))});
 
     return parsedResult.data;
   } catch (error) {

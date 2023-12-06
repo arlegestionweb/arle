@@ -7,7 +7,6 @@ import {
 } from "@/utils/helpers";
 import CollapsibleProductSection from "../CollapsibleSection";
 import SeccionEspecificaciones from "../SeccionEspecificaciones";
-import { GiftIcon, MessagesIcon, ShippingBoxIcon } from "../Icons";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import MobileAddToCart from "../MobileAddToCart";
 
@@ -16,6 +15,7 @@ type TGafaPremiumProps = {
 };
 
 const GafaPremium = ({ product }: TGafaPremiumProps) => {
+
   return (
     <>
       <Image

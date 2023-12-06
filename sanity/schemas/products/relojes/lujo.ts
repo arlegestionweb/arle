@@ -1,6 +1,20 @@
 import { defineField, defineType } from "sanity";
-import { bannersDeProductoSchema, coleccionesDeMarcaRefSchema, detallesLujoSchema, garantiaSchema, generoSchema, inspiracionSchema, mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
-import { cajaSchema, especificacionesRelojesLujoSchema, movimientoObjSchema, variantesDeRelojesSchema } from "../../objects/products/relojes";
+import {
+  bannersDeProductoSchema,
+  coleccionesDeMarcaRefSchema,
+  detallesLujoSchema,
+  garantiaSchema,
+  generoSchema,
+  inspiracionSchema,
+  mostrarCreditoSchema,
+  slugSchema,
+} from "../../objects/products/generales";
+import {
+  cajaSchema,
+  especificacionesRelojesLujoSchema,
+  movimientoObjSchema,
+  variantesDeRelojesSchema,
+} from "../../objects/products/relojes";
 
 export const relojesLujoSchema = defineType({
   name: "relojesLujo",
@@ -60,4 +74,4 @@ export const relojesLujoSchema = defineType({
       };
     },
   },
-})
+});

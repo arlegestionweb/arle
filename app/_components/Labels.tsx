@@ -51,6 +51,7 @@ const variants = {
   },
 }
 
+
 interface LabelsProps extends VariantProps<typeof labelsVariants> {
   label: LabelTypes;
   className?: string;
