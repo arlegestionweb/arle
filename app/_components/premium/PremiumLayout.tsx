@@ -17,9 +17,9 @@ type PremiumLayoutProps = {
 };
 
 const PremiumLayout = ({ product, children }: PremiumLayoutProps) => {
-  const [modelo, codigo] = isPerfumePremium(product)
-    ? [product.titulo, product.variantes[0].codigoDeReferencia]
-    : [product.modelo, product.variantes[0].codigo];
+  const [modelo] = isPerfumePremium(product)
+    ? [product.titulo]
+    : [product.modelo];
 
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto w-full md:px-8 lg:max-w-[calc(1280px+32px)]">
@@ -40,7 +40,7 @@ const PremiumLayout = ({ product, children }: PremiumLayoutProps) => {
             {product.marca} {modelo}
           </h1>
           <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-            CODE: {codigo}
+            CODE: {product.variantes[0].codigoDeReferencia}
           </span>
           <p className="text-zinc-800 text-[32px] font-normal font-kanit leading-9">
             ${product.variantes[0].precio}
