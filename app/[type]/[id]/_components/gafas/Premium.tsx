@@ -18,6 +18,8 @@ type TGafaPremiumProps = {
 };
 
 const GafaPremium = ({ product }: TGafaPremiumProps) => {
+  console.log(product.variantes[0].imagenes);
+  
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 row-auto w-full md:px-8 lg:max-w-[calc(1280px+32px)]">
       <ProductViewer product={product} className="col-start-8 col-span-1"/>
