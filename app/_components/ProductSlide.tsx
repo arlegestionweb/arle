@@ -67,7 +67,7 @@ const ProductSlide = ({
                   alt={image.alt || "product"}
                   src={image.url}
                   fill
-                  className={`object-cover fit object-top`}
+                  className={`object-cover fit object-center`}
                 />
               </Link>
             ) : (
@@ -76,7 +76,7 @@ const ProductSlide = ({
                   alt={image.alt || "product"}
                   src={image.url}
                   fill
-                  className={`object-cover fit object-top`}
+                  className={`object-cover fit object-center`}
                 />
               </div>
             )}
