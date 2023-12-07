@@ -61,7 +61,7 @@ const ProductGrid = ({
               src={image.url}
               alt={image.alt}
               fill
-              className={`object-cover`}
+              className={`object-cover object-center`}
             />
           </div>
         ))}
