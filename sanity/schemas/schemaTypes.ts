@@ -14,7 +14,7 @@ import { ventaSchema } from "./documents/venta";
 import { homeSchema } from "./pages/homeSchema";
 import { listingSchema } from "./pages/listingSchema";
 import { preguntasFrecuentesSchema } from "./pages/preguntasFrecuentesSchema";
-import { sobreNosotrosSchema } from "./pages/sobreNosotros";
+import { sobreNosotrosSchema } from "./pages/sobreNosotrosSchema";
 import { gafasLujoSchema } from "./products/gafas/lujo";
 import { gafasPremiumSchema } from "./products/gafas/premium";
 import { perfumeLujoSchema } from "./products/perfumes/lujo";
@@ -22,7 +22,10 @@ import { perfumePremiumSchema } from "./products/perfumes/premium";
 import { relojesLujoSchema } from "./products/relojes/lujo";
 import { relojesPremiumSchema } from "./products/relojes/premium";
 import { siteSettings } from "./siteSettings";
-import { imageObjectSchema } from "./objects/image";
+import { imageObjectSchema, videoObjectSchema } from "./objects/image";
+import { contentSchema } from "./objects/contentSchema";
+import { nuestrasSedesSchema, sedeSchema } from "./pages/nuestrasSedesSchema";
+import { trabajaConNosotrosSchema } from "./pages/trabajaConNosotrosSchema";
 
 export const schemaTypes = [
   siteSettings,
@@ -31,7 +34,9 @@ export const schemaTypes = [
   homeSchema,
   listingSchema,
   sobreNosotrosSchema,
+  nuestrasSedesSchema,
   preguntasFrecuentesSchema,
+  trabajaConNosotrosSchema,
 
   // products
   perfumePremiumSchema,
@@ -68,8 +73,12 @@ export const schemaTypes = [
   materialesDelPulsoSchema,
   concentracionSchema,
   materialDeLaVarillaSchema,
+  sedeSchema,
 
 
   // objects
   imageObjectSchema,
+  videoObjectSchema,
+  contentSchema,
+
 ];
