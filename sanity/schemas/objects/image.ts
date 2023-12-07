@@ -16,6 +16,23 @@ export const imageObjectSchema = defineField({
     }),
   ],
 })
+export const videoObjectSchema = defineField({
+  name: "video",
+  title: "Imagen",
+  type: "file",
+  options: {
+    accept: "video/*",
+    collapsible: false,
+  },
+  fields: [
+    defineField({
+      name: "alt",
+      title: "Texto Alternativo",
+      description: "Para buscadores de internet (SEO)",
+      type: "string",
+    }),
+  ],
+})
 
 export const imageArrayMemberSchema = defineArrayMember({
   name: "imagen",
