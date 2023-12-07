@@ -3,10 +3,13 @@ import { type StructureBuilder } from "sanity/desk";
 import { homeSchema } from "../schemas/pages/homeSchema";
 import { listingSchema } from "../schemas/pages/listingSchema";
 import { BsCollection } from "react-icons/bs";
-import { sobreNosotrosSchema } from "../schemas/pages/sobreNosotros";
+import { sobreNosotrosSchema } from "../schemas/pages/sobreNosotrosSchema";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { preguntasFrecuentesSchema } from "../schemas/pages/preguntasFrecuentesSchema";
-import { FaQuestion } from "react-icons/fa";
+import { FaNetworkWired, FaQuestion } from "react-icons/fa";
+import { nuestrasSedesSchema } from "../schemas/pages/nuestrasSedesSchema";
+import { MdLocationPin } from "react-icons/md";
+import { trabajaConNosotrosSchema } from "../schemas/pages/trabajaConNosotrosSchema";
 
 export default (S: StructureBuilder) => {
   const homePageListItem = S.listItem()
@@ -38,6 +41,24 @@ export default (S: StructureBuilder) => {
         .schemaType(sobreNosotrosSchema.name)
         .documentId(sobreNosotrosSchema.name)
     );
+  const nuenstrasSedesListItem = S.listItem()
+    .title(nuestrasSedesSchema.title || "")
+    .icon(MdLocationPin)
+    .child(
+      S.editor()
+        .id(nuestrasSedesSchema.name)
+        .schemaType(nuestrasSedesSchema.name)
+        .documentId(nuestrasSedesSchema.name)
+    );
+  const trabajaConNosotrosListItem = S.listItem()
+    .title(trabajaConNosotrosSchema.title || "")
+    .icon(FaNetworkWired)
+    .child(
+      S.editor()
+        .id(trabajaConNosotrosSchema.name)
+        .schemaType(trabajaConNosotrosSchema.name)
+        .documentId(trabajaConNosotrosSchema.name)
+    );
   const preguntasFrecuentesListItem = S.listItem()
     .title(preguntasFrecuentesSchema.title || "")
     .icon(FaQuestion)
@@ -59,6 +80,10 @@ export default (S: StructureBuilder) => {
           listingListItem,
           S.divider(),
           sobreNosotrosListItem,
+          S.divider(),
+          nuenstrasSedesListItem,
+          S.divider(),
+          trabajaConNosotrosListItem,
           S.divider(),
           preguntasFrecuentesListItem,
           S.divider(),
