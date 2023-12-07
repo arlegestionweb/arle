@@ -1,69 +1,38 @@
 import { TGafaPremium } from "@/sanity/queries/pages/types";
-import Image from "next/image";
 import Cantidad from "../Cantidad";
-import {
-  colombianPriceStringToNumber,
-  numberToColombianPriceString,
-} from "@/utils/helpers";
 import CollapsibleProductSection from "../CollapsibleSection";
 import SeccionEspecificaciones from "../SeccionEspecificaciones";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import MobileAddToCart from "../MobileAddToCart";
+import PremiumLayout from "@/app/_components/premium/PremiumLayout";
 
 type TGafaPremiumProps = {
   product: TGafaPremium;
 };
 
 const GafaPremium = ({ product }: TGafaPremiumProps) => {
-
+  console.log(product.descripcion);
+  
   return (
-    <>
-      <Image
-        className="w-full object-cover"
-        src={product.variantes[0].imagenes[0].url}
-        width={300}
-        height={400}
-        alt={product.variantes[0].imagenes[0].alt}
-      />
-      <section className="flex flex-col px-5 w-full relative">
-        <header>
-          <h1 className="text-zinc-800 text-[32px] font-normal font-kanit leading-10 w-full">
-            {product.marca} {product.modelo}
-          </h1>
-          <span>CODE: {product.variantes[0].codigoDeReferencia}</span>
-          <p className="text-zinc-800 text-[32px] font-normal font-kanit leading-9">
-            ${product.variantes[0].precio}
-          </p>
-          <div className="text-justify">
-            <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-              Págalo a 4 cuotas de $
-              {numberToColombianPriceString(
-                colombianPriceStringToNumber(product.variantes[0].precio) / 4
-              )}{" "}
-              sin intereses.
-              <br />
-              [provider]
-            </span>
-            <span className="text-neutral-600 text-sm font-normal font-tajawal leading-[16.80px]">
-              .{" "}
-            </span>
-            <span className="text-zinc-800 text-sm font-normal font-tajawal leading-[16.80px]">
-              Learn More
-            </span>
-          </div>{" "}
-        </header>
-        <section className="mt-2">
-          <Cantidad />
-        </section>
-        <CollapsibleProductSection classNames="mt-2" title="Descripción">
+    <PremiumLayout product={product}>
+      <section className="mt-2">
+        <Cantidad />
+      </section>
+      <MobileAddToCart className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block" />
+
+      {product.descripcion ? (
+        <CollapsibleProductSection
+          classNames="mt-2"
+          title="Descripción">
           <p>{product.descripcion}</p>
         </CollapsibleProductSection>
-        <EspecificacionesGafa product={product} />
+      ) : (<></>)}
+      
+      <EspecificacionesGafa product={product} />
 
-        <NuestrasComprasIncluyen garantia={product.garantia} />
-        <MobileAddToCart />
-      </section>
-    </>
+      <NuestrasComprasIncluyen garantia={product.garantia} />
+      <MobileAddToCart className="lg:hidden" />
+    </PremiumLayout>
   );
 };
 
@@ -78,16 +47,24 @@ const EspecificacionesGafa = ({ product }: TEspecificacionesProps) => {
     <CollapsibleProductSection
       classNames="mt-2"
       title="Especificaciones"
-      titleActive
-    >
+      titleActive>
       <div className="grid grid-cols-2 gap-2">
-        <SeccionEspecificaciones title="Modelo" paragraph={product.modelo} />
-        <SeccionEspecificaciones title="Género" paragraph={product.genero} />
+        <SeccionEspecificaciones
+          title="Modelo"
+          paragraph={product.modelo}
+        />
+        <SeccionEspecificaciones
+          title="Género"
+          paragraph={product.genero}
+        />
         <SeccionEspecificaciones
           title="Forma de Montura"
           paragraph={product.detalles.montura.formaDeLaMontura}
         />
-        <SeccionEspecificaciones title="Marca" paragraph={product.marca} />
+        <SeccionEspecificaciones
+          title="Marca"
+          paragraph={product.marca}
+        />
         <SeccionEspecificaciones
           title="Tipo"
           paragraph={product.detalles.tipoDeGafa}
