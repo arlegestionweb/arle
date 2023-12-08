@@ -81,7 +81,7 @@ export const sedeSchema = defineType({
     defineField({
       name: "text",
       title: "Texto descriptivo",
-      type: "string",
+      type: "text",
     }),
     defineField({
       name: "video",
