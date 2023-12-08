@@ -17,6 +17,41 @@ type TProductType =
   | "gafasLujo"
   | "gafasPremium";
 
+const contenidoQuery = `
+  "contenido": contenido {
+    resena,
+    "imagen": imagen {
+      alt,
+      "url": asset->url,
+  }
+}`;
+const inspiracionQuery = `inspiracion { 
+  usarInspiracion, 
+  ${contenidoQuery}
+}`;
+
+const detallesQuery = ` "detalles": detalles {
+  usarDetalles,
+  ${contenidoQuery}
+}`;
+
+const movimientoQuery = ` "movimiento": movimiento {
+  usarMovimiento,
+  ${contenidoQuery}
+}`;
+
+const bannersQuery = `"banners": bannersDeProducto [] {
+  imagenOVideo,
+  "imagen": imagen {
+    alt,
+    "url": asset->url,
+  },
+  "video": video {
+    "url": asset->url,
+    alt
+  }
+}`;
+
 const productQuery: Record<TProductType, string> = {
   relojesLujo: `{
     genero,
@@ -24,47 +59,57 @@ const productQuery: Record<TProductType, string> = {
     "marca": marca->titulo,
     _type,
     _id,
-    "detalles": detalles {
-      ...,
-      usarDetalles,
+    ${detallesQuery},
+    "especificaciones": especificaciones {
+      "tipoDeReloj": tipoDeReloj -> titulo,
+      "estiloDeReloj": estiloDeReloj -> titulo,
+      resistenciaAlAgua,
+      "funciones": funciones [] -> {
+        titulo,
+        descripcion
+      },
+      "material": material -> nombre
     },
     "variantes": variantes[]{
-        precio,
-        "colorTablero": colorTablero -> {
-          nombre,
-          "color": color.hex
-        },
-        "imagenes": imagenes[]{
-          alt,
-          "url": asset->url,
-        },
-        unidadesDisponibles,
-        codigoDeReferencia,
-        registroInvima,
-        etiqueta,
-        "colorCaja": colorCaja -> {
-          nombre,
-          "color": color.hex
-        },
-        "colorPulso": colorPulso -> {
-          nombre,
-          "color": color.hex
-        },
-        _type,
+      precioConDescuento,
+      precio,
+      "colorTablero": colorTablero -> {
+        nombre,
+        "color": color.hex
+      },
+      "imagenes": imagenes[]{
+        alt,
+        "url": asset->url,
+      },
+      unidadesDisponibles,
+      codigoDeReferencia,
+      registroInvima,
+      etiqueta,
+      "colorCaja": colorCaja -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorPulso": colorPulso -> {
+        nombre,
+        "color": color.hex
+      },
+      _type,
     },
-    "inspiracion": inspiracion {
-      usarInspiracion,
-      ...
-    },
+    "inspiracion": ${inspiracionQuery},    
     modelo,
     "garantia": garantia {
       meses,
     },
-    "movimiento": movimiento {
-      usarMovimiento,
-      ...
-    },
-    "slug": slug.current,
+   ${movimientoQuery},
+  "caja": caja { 
+    diametro, 
+    "material": material -> nombre, 
+    "cristal": cristal -> titulo
+  },
+  coleccionDeMarca,
+  descripcion,
+  ${bannersQuery},
+  "slug": slug.current,
   }
 `,
   relojesPremium: `{
@@ -107,16 +152,36 @@ const productQuery: Record<TProductType, string> = {
     }
   }`,
   perfumeLujo: `{
-    "inspiracion": inspiracion { 
-      usarInspiracion, 
-      "contenido": contenido {...}
-     },
-    "notasOlfativas": notasOlfativas { 
-      "familiaOlfativa": familiaOlfativa {...}
-    },
     titulo,
-    mostrarCredito,
+    "inspiracion": ${inspiracionQuery},    
+    "variantes": variantes[] {
+      codigoDeReferencia,
+      unidadesDisponibles,
+      registroInvima,
+      precioConDescuento,
+      mostrarUnidadesDispobibles,
+      tamano,
+      precio
+    },
+    genero,
+    _type,
+    "slug": slug.current,
+    _id,
+    parteDeUnSet,
     "concentracion": concentracion -> nombre,
+    "imagenes": imagenes[]{
+        alt,
+        "url": asset->url,
+      },    
+    "notasOlfativas": notasOlfativas {
+      "notasDeBase": notasDeBase [] -> nombre,
+      "notasDeSalida": notasDeSalida [] -> nombre,
+      "familiaOlfativa": familiaOlfativa -> nombre,
+      "notasDeCorazon": notasDeCorazon [] -> nombre
+    },
+    "ingredientes": ingredientes [] -> nombre,
+    mostrarCredito,
+    "marca": marca -> titulo,
     "descripcion": descripcion {
       texto,
       "imagen": imagen {
@@ -124,17 +189,12 @@ const productQuery: Record<TProductType, string> = {
         "url": asset->url,
       }
     },
-    "marca": marca -> titulo,
-    _id,
-    "slug": slug.current,
-    "variantes": variantes[] {...},
-    parteDeUnSet,
-    "imagenes": imagenes[]{
-      alt,
-      "url": asset->url,
-    },
-    _type,
-    genero
+    "paisDeOrigen": paisDeOrigen -> nombre,
+   ${bannersQuery},
+    "coleccionDeMarca": coleccionDeMarca -> {
+      nombre,
+      "marca": marca -> titulo
+    }
   }`,
   perfumePremium: `{ 
     "slug": slug.current,
@@ -163,6 +223,7 @@ const productQuery: Record<TProductType, string> = {
     descripcion
   }`,
   gafasLujo: `{
+    ${bannersQuery},
     mostrarCredito,
     "especificaciones": especificaciones {
       "tipoDeGafa": tipoDeGafa -> titulo,
@@ -184,18 +245,10 @@ const productQuery: Record<TProductType, string> = {
     "marca": marca->titulo,
     _type,
     "garantia": garantia { 
-      meses 
+      meses, 
+      descripcion
     },
-    "inspiracion": inspiracion { 
-      usarInspiracion, 
-      "contenido": contenido {
-        resena,
-        "imagen": imagen {
-          alt,
-          "url": asset->url,
-        }
-      } 
-    },
+    "inspiracion": ${inspiracionQuery},    
     "variantes": variantes [] {
       mostrarUnidadesDispobibles,
       "colorDeLaMontura": colorDeLaMontura -> {
@@ -210,6 +263,7 @@ const productQuery: Record<TProductType, string> = {
       codigoDeReferencia,
       registroInvima,
       precio,
+      precioConDescuento,
       unidadesDisponibles,
       "colorDelLente": colorDelLente -> {
         nombre,
@@ -222,7 +276,30 @@ const productQuery: Record<TProductType, string> = {
     },
     modelo,
     "slug": slug.current,
-    genero
+    genero,
+    "detalles": detalles {
+      usarDetalles,
+      "contenido": contenido {
+        texto,
+        "imagen": imagen {
+          alt,
+          "url": asset->url,
+        }
+      }
+    },
+    "monturaDetalles":  {
+      usarDetalles,
+     "detalles": detalles {
+        "contenido": contenido {
+          texto,
+          "imagen": imagen {
+            alt,
+            "url": asset->url,
+          }
+        }
+      },
+      descripcion,
+    }
   }`,
   gafasPremium: `{
     _type,
@@ -287,15 +364,13 @@ export const getProductById = async (id: string, productType: TProductType) => {
     await sanityClient.fetch(`*[_type == "${productType}" && _id == "${id}"][0]
   ${query}`);
 
-  // console.log({ fetchResult, detalles: fetchResult.detalles.montura });
-
   const productSchema = schemas[productType];
 
   const product = productSchema.safeParse(fetchResult);
-
+  //
   if (!product.success) {
     throw new Error(product.error.message);
   }
-  
+
   return product.data;
 };

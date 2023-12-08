@@ -18,7 +18,6 @@ import { relojesLujoSchema } from "../schemas/products/relojes/lujo";
 import { relojesPremiumSchema } from "../schemas/products/relojes/premium";
 import { recomendadosSchema } from "../schemas/documents/recomendados";
 import {
-  coleccionesDeMarcaSchema,
   colorSchema,
   paisDeOrigenSchema,
 } from "../schemas/documents/documentosVarios";
@@ -68,7 +67,6 @@ export default (S: StructureBuilder) => {
       notasOlfativasSchema.name,
       ingredientesSchema.name,
       materialesDeCajaSchema.name,
-      coleccionesDeMarcaSchema.name,
       tipoDeGafaSchema.name,
       estiloDeGafaSchema.name,
       paisDeOrigenSchema.name,

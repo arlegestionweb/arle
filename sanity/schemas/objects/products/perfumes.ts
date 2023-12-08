@@ -98,6 +98,7 @@ const variantePerfumeSchema = defineField({
       return {
         title: `${title} ml`,
         subtitle: `$ ${subtitle}`,
+        media: TbPerfume
       };
     },
   },

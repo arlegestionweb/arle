@@ -1,6 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { detallesRelojSchema, variantesDeRelojesSchema } from "../../objects/products/relojes";
-import { garantiaSchema, mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
+import { coleccionesDeMarcaSchema, garantiaSchema, mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
 
 
 export const relojesPremiumSchema = defineType({
@@ -38,6 +38,7 @@ export const relojesPremiumSchema = defineType({
     garantiaSchema,
     detallesRelojSchema,
     mostrarCreditoSchema,
+    coleccionesDeMarcaSchema,
     slugSchema,
   ],
   preview: {

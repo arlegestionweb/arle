@@ -34,18 +34,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
 
-
-  const headersList = headers();
-  const pathname = headersList.get("x-invoke-path");
-
-  if (pathname && pathname.includes("/admin")) {
-    return (
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    );
-  }
-
   return (
     <html lang="en">
       <body

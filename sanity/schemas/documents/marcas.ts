@@ -1,4 +1,4 @@
-import { defineType, defineField } from "sanity";
+import { defineType, defineField, defineArrayMember } from "sanity";
 import bannersSchema from "../objects/bannersSchema";
 
 export const marcasSchema = defineType({
@@ -31,6 +31,18 @@ export const marcasSchema = defineType({
       type: "text",
     }),
     bannersSchema,
+    defineField({
+      name: "colecciones",
+      title: "Colecciones",
+      type: "array",
+      of: [
+        defineArrayMember({
+          name: "coleccion",
+          title: "Colección",
+          type: "string",
+        }),
+      ],
+    }),
   ],
   preview: {
     select: {

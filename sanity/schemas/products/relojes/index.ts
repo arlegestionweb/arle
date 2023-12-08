@@ -1,3 +1,4 @@
+import { GiCrystalGrowth, GiMaterialsScience } from "react-icons/gi";
 import {
   TbDeviceWatchCog,
   TbDeviceWatchQuestion,
@@ -58,6 +59,7 @@ export const cristalSchema = defineType({
   name: "cristal",
   title: "Cristal",
   type: "document",
+  icon: GiCrystalGrowth,
   fields: [
     defineField({
       name: "titulo",
@@ -97,6 +99,7 @@ export const materialesDeCajaSchema = defineType({
   name: "materialDeCaja",
   title: "Material de Caja",
   type: "document",
+  icon: GiMaterialsScience,
   fields: [
     defineField({
       name: "nombre",
@@ -115,6 +118,7 @@ export const materialesDelPulsoSchema = defineType({
   name: "materialDelPulso",
   title: "Material del Pulso",
   type: "document",
+  icon: GiMaterialsScience,
   fields: [
     defineField({
       name: "nombre",

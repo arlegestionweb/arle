@@ -2,6 +2,7 @@ import ColombianPrice from "@/sanity/components/ColombianPrice";
 import { SlugParent, defineArrayMember, defineField } from "sanity";
 import { PiFlagBannerFill } from "react-icons/pi";
 import { videoSchema } from "../video";
+import ColeccionDeMarcaInput from "@/sanity/components/SelectColeccionDeMarca";
 
 export const generoSchema = defineField({
   name: "genero",
@@ -12,6 +13,15 @@ export const generoSchema = defineField({
     list: ["mujer", "hombre", "unisex"],
   },
 });
+
+export const coleccionesDeMarcaSchema = defineField({
+  name: "coleccionDeMarca",
+  title: "Colección de la marca",
+  type: "string",
+  components: {
+    input: ColeccionDeMarcaInput,
+  }
+})
 
 export const bannersDeProductoSchema = defineField({
   name: "bannersDeProducto",
@@ -52,6 +62,7 @@ export const bannersDeProductoSchema = defineField({
           const { media } = selection;
           if (!media) return { title: "Sin imagen" };
           return {
+            title: "Banner",
             media,
           };
         },
@@ -210,7 +221,7 @@ export const coleccionesDeMarcaRefSchema = defineField({
   title: "Colección De Marca",
   type: "reference",
   to: [{ type: "coleccionesDeMarca" }],
-  hidden: ({ document }) => !document?.marca,
+  // hidden: ({ document }) => !document?.marca,
 });
 
 export const precioConDescuentoSchema = defineField({

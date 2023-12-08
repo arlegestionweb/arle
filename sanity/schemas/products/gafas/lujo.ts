@@ -2,7 +2,7 @@ import { defineType, defineField } from "sanity";
 
 import {
   bannersDeProductoSchema,
-  coleccionesDeMarcaRefSchema,
+  coleccionesDeMarcaSchema,
   detallesLujoSchema,
   garantiaSchema,
   generoSchema,
@@ -50,7 +50,6 @@ export const gafasLujoSchema = defineType({
     }),
     generoSchema,
     mostrarCreditoSchema,
-    coleccionesDeMarcaRefSchema,
     garantiaSchema,
     inspiracionSchema,
     detallesLujoSchema,
@@ -92,6 +91,7 @@ export const gafasLujoSchema = defineType({
       ],
     }),
     variantesDeGafaLujoSchema,
+    coleccionesDeMarcaSchema,
     slugSchema,
   ],
   preview: {

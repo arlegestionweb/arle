@@ -1,20 +1,13 @@
 import ColorPreview from "../../components/ColorPreview"
 import { defineField, defineType } from "sanity";
 import { BsBookmarkStar } from "react-icons/bs";
-
-
-
-
-
-
-
-
-
+import { FaFlag } from "react-icons/fa6";
 
 export const paisDeOrigenSchema = defineType({
   name: "paisDeOrigen",
   title: "País de Origen",
   type: "document",
+  icon: FaFlag,
   fields: [
     defineField({
       name: "nombre",
@@ -63,26 +56,4 @@ export const colorSchema = defineType({
 });
 
 
-
-
-export const coleccionesDeMarcaSchema = defineType({
-  name: "coleccionesDeMarca",
-  title: "Colecciones de Marca",
-  type: "document",
-  icon: BsBookmarkStar,
-  fields: [
-    defineField({
-      name: "nombre",
-      title: "Nombre",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "marca",
-      title: "Marca",
-      type: "reference",
-      to: [{ type: "marca" }],
-    })
-  ],
-}); 
 
