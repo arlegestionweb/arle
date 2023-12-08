@@ -1,4 +1,4 @@
-import { defineType, defineField } from "sanity";
+import { defineType, defineField, defineArrayMember } from "sanity";
 
 export const sobreNosotrosSchema = defineType({
   name: "sobreNosotros",
@@ -29,7 +29,35 @@ export const sobreNosotrosSchema = defineType({
       name: "marcasAliadas",
       title: "Marcas Aliadas",
       type: "array",
-      of: [{ type: "reference", to: [{ type: "marca" }] }],
+      of: [
+        defineArrayMember({
+          name: "marca",
+          title: "Marca",
+          type: "object",
+          fields: [
+            defineField({
+              name: "titulo",
+              title: "Título",
+              type: "string",
+            }),
+            defineField({
+              name: "logo",
+              title: "Logo",
+              type: "imagenObject",
+            }),
+          ],
+          preview: {
+            select: {
+              title: "titulo",
+              media: "logo",
+            },
+            prepare: ({title, media}) => ({
+              title,
+              media,
+            }),
+          },
+        })
+      ],
     }),
   ],
 });

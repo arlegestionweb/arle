@@ -96,7 +96,7 @@ export const sedeSchema = defineType({
     defineField({
       name: "map",
       title: "Ubicación en el mapa",
-      type: "string",
+      type: "text",
     }),
   ],
   preview: {
