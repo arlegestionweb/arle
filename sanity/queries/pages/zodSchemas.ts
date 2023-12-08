@@ -12,6 +12,7 @@ const imageSchema = z.object({
 
 const variantSchema = z.object({
   precio: z.string(),
+  precioConDescuento: z.string().nullable().optional(),
   colorTablero: colorSchema,
   imagenes: z.array(imageSchema),
   unidadesDisponibles: z.number(),
@@ -47,7 +48,15 @@ const garantiaSchema = z.object({
   descripcion: z.string().nullable().optional(),
 });
 
+const imagenSchema = z.object({
+  alt: z.string(),
+  url: z.string(),
+});
 
+const contenidoSchema = z.object({
+  resena: z.string(),
+  imagen: imagenSchema,
+});
 export const relojLujoSchema = z.object({
   genero: generoSchema,
   mostrarCredito: z.boolean(),
@@ -56,6 +65,19 @@ export const relojLujoSchema = z.object({
   _id: z.string(),
   detalles: z.object({
     usarDetalles: z.boolean(),
+    contenido: contenidoSchema.optional().nullable(),
+  }),
+  especificaciones: z.object({
+    tipoDeReloj: z.string(),
+    estiloDeReloj: z.string(),
+    resistenciaAlAgua: z.string(),
+    funciones: z.array(
+      z.object({
+        titulo: z.string(),
+        descripcion: z.string().optional().nullable(),
+      })
+    ),
+    material: z.string(),
   }),
   variantes: z.array(variantSchema),
   inspiracion: z.object({
@@ -114,15 +136,7 @@ export const perfumePremiumSchema = z.object({
   descripcion: z.string(),
 });
 
-const imagenSchema = z.object({
-  alt: z.string(),
-  url: z.string(),
-});
 
-const contenidoSchema = z.object({
-  resena: z.string(),
-  imagen: imagenSchema,
-});
 
 const inspiracionSchema = z.object({
   usarInspiracion: z.boolean(),

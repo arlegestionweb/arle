@@ -17,6 +17,41 @@ type TProductType =
   | "gafasLujo"
   | "gafasPremium";
 
+const contenidoQuery = `
+  "contenido": contenido {
+    resena,
+    "imagen": imagen {
+      alt,
+      "url": asset->url,
+  }
+}`;
+const inspiracionQuery = `inspiracion { 
+  usarInspiracion, 
+  ${contenidoQuery}
+}`;
+
+const detallesQuery = ` "detalles": detalles {
+  usarDetalles,
+  ${contenidoQuery}
+}`;
+
+const movimientoQuery = ` "movimiento": movimiento {
+  usarMovimiento,
+  ${contenidoQuery}
+}`;
+
+const bannersQuery = `"banners": bannersDeProducto [] {
+  imagenOVideo,
+  "imagen": imagen {
+    alt,
+    "url": asset->url,
+  },
+  "video": video {
+    "url": asset->url,
+    alt
+  }
+}`;
+
 const productQuery: Record<TProductType, string> = {
   relojesLujo: `{
     genero,
@@ -24,47 +59,57 @@ const productQuery: Record<TProductType, string> = {
     "marca": marca->titulo,
     _type,
     _id,
-    "detalles": detalles {
-      ...,
-      usarDetalles,
+    ${detallesQuery},
+    "especificaciones": especificaciones {
+      "tipoDeReloj": tipoDeReloj -> titulo,
+      "estiloDeReloj": estiloDeReloj -> titulo,
+      resistenciaAlAgua,
+      "funciones": funciones [] -> {
+        titulo,
+        descripcion
+      },
+      "material": material -> nombre
     },
     "variantes": variantes[]{
-        precio,
-        "colorTablero": colorTablero -> {
-          nombre,
-          "color": color.hex
-        },
-        "imagenes": imagenes[]{
-          alt,
-          "url": asset->url,
-        },
-        unidadesDisponibles,
-        codigoDeReferencia,
-        registroInvima,
-        etiqueta,
-        "colorCaja": colorCaja -> {
-          nombre,
-          "color": color.hex
-        },
-        "colorPulso": colorPulso -> {
-          nombre,
-          "color": color.hex
-        },
-        _type,
+      precioConDescuento,
+      precio,
+      "colorTablero": colorTablero -> {
+        nombre,
+        "color": color.hex
+      },
+      "imagenes": imagenes[]{
+        alt,
+        "url": asset->url,
+      },
+      unidadesDisponibles,
+      codigoDeReferencia,
+      registroInvima,
+      etiqueta,
+      "colorCaja": colorCaja -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorPulso": colorPulso -> {
+        nombre,
+        "color": color.hex
+      },
+      _type,
     },
-    "inspiracion": inspiracion {
-      usarInspiracion,
-      ...
-    },
+    "inspiracion": ${inspiracionQuery},    
     modelo,
     "garantia": garantia {
       meses,
     },
-    "movimiento": movimiento {
-      usarMovimiento,
-      ...
-    },
-    "slug": slug.current,
+   ${movimientoQuery},
+  "caja": caja { 
+    diametro, 
+    "material": material -> nombre, 
+    "cristal": cristal -> titulo
+  },
+  coleccionDeMarca,
+  descripcion,
+  ${bannersQuery},
+  "slug": slug.current,
   }
 `,
   relojesPremium: `{
@@ -107,18 +152,8 @@ const productQuery: Record<TProductType, string> = {
     }
   }`,
   perfumeLujo: `{
-    ...,
     titulo,
-    "inspiracion": inspiracion { 
-        usarInspiracion, 
-        "contenido": contenido {
-          resena,
-          "imagen": imagen {
-            alt,
-            "url": asset->url,
-          }
-        }
-       },    
+    "inspiracion": ${inspiracionQuery},    
     "variantes": variantes[] {
       codigoDeReferencia,
       unidadesDisponibles,
@@ -155,17 +190,7 @@ const productQuery: Record<TProductType, string> = {
       }
     },
     "paisDeOrigen": paisDeOrigen -> nombre,
-    "banners": bannersDeProducto [] {
-      imagenOVideo,
-      "imagen": imagen {
-        alt,
-        "url": asset->url,
-      },
-      "video": video {
-        "url": asset->url,
-        alt
-      }
-    },
+   ${bannersQuery},
     "coleccionDeMarca": coleccionDeMarca -> {
       nombre,
       "marca": marca -> titulo
@@ -221,16 +246,7 @@ const productQuery: Record<TProductType, string> = {
     "garantia": garantia { 
       meses 
     },
-    "inspiracion": inspiracion { 
-      usarInspiracion, 
-      "contenido": contenido {
-        resena,
-        "imagen": imagen {
-          alt,
-          "url": asset->url,
-        }
-      } 
-    },
+    "inspiracion": ${inspiracionQuery},    
     "variantes": variantes [] {
       mostrarUnidadesDispobibles,
       "colorDeLaMontura": colorDeLaMontura -> {
@@ -256,6 +272,7 @@ const productQuery: Record<TProductType, string> = {
       }, 
     },
     modelo,
+    ${bannersQuery},
     "slug": slug.current,
     genero
   }`,
@@ -322,19 +339,15 @@ export const getProductById = async (id: string, productType: TProductType) => {
     await sanityClient.fetch(`*[_type == "${productType}" && _id == "${id}"][0]
   ${query}`);
 
-  
+  // console.log({ esp: fetchResult.variantes });
   const productSchema = schemas[productType];
-  
+
   const product = productSchema.safeParse(fetchResult);
-  // 
+  //
   if (!product.success) {
     throw new Error(product.error.message);
   }
-  console.log({ col: product.data });
-  
+  // console.log({ col: product.data });
+
   return product.data;
 };
-
-
-
-

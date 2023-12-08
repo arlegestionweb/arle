@@ -16,9 +16,11 @@ const ColeccionDeMarcaInput = (props) => {
       );
       setColecciones(colecciones);
     };
-
+  
     fetchColecciones();
   }, []);
+
+  
   const handleChange = useCallback(
     (event) => {
       const value = event.target.value;
