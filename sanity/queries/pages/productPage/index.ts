@@ -107,16 +107,45 @@ const productQuery: Record<TProductType, string> = {
     }
   }`,
   perfumeLujo: `{
-    "inspiracion": inspiracion { 
-      usarInspiracion, 
-      "contenido": contenido {...}
-     },
-    "notasOlfativas": notasOlfativas { 
-      "familiaOlfativa": familiaOlfativa {...}
-    },
     titulo,
-    mostrarCredito,
+    "inspiracion": inspiracion { 
+        usarInspiracion, 
+        "contenido": contenido {
+          resena,
+          "imagen": imagen {
+            alt,
+            "url": asset->url,
+          }
+        }
+       },    
+    "variantes": variantes[] {
+      codigoDeReferencia,
+      unidadesDisponibles,
+      registroInvima,
+      precioConDescuento,
+      mostrarUnidadesDispobibles,
+      tamano,
+      precio
+    },
+    genero,
+    _type,
+    "slug": slug.current,
+    _id,
+    parteDeUnSet,
     "concentracion": concentracion -> nombre,
+    "imagenes": imagenes[]{
+        alt,
+        "url": asset->url,
+      },    
+    "notasOlfativas": notasOlfativas {
+      "notasDeBase": notasDeBase [] -> nombre,
+      "notasDeSalida": notasDeSalida [] -> nombre,
+      "familiaOlfativa": familiaOlfativa -> nombre,
+      "notasDeCorazon": notasDeCorazon [] -> nombre
+    },
+    "ingredientes": ingredientes [] -> nombre,
+    mostrarCredito,
+    "marca": marca -> titulo,
     "descripcion": descripcion {
       texto,
       "imagen": imagen {
@@ -124,17 +153,18 @@ const productQuery: Record<TProductType, string> = {
         "url": asset->url,
       }
     },
-    "marca": marca -> titulo,
-    _id,
-    "slug": slug.current,
-    "variantes": variantes[] {...},
-    parteDeUnSet,
-    "imagenes": imagenes[]{
-      alt,
-      "url": asset->url,
-    },
-    _type,
-    genero
+    "paisDeOrigen": paisDeOrigen -> nombre,
+    "banners": bannersDeProducto [] {
+      imagenOVideo,
+      "imagen": imagen {
+        alt,
+        "url": asset->url,
+      },
+      "video": video {
+        "url": asset->url,
+        alt
+      }
+    }
   }`,
   perfumePremium: `{ 
     "slug": slug.current,
@@ -287,15 +317,19 @@ export const getProductById = async (id: string, productType: TProductType) => {
     await sanityClient.fetch(`*[_type == "${productType}" && _id == "${id}"][0]
   ${query}`);
 
-  // console.log({ fetchResult, detalles: fetchResult.detalles.montura });
-
+  
   const productSchema = schemas[productType];
-
+  
   const product = productSchema.safeParse(fetchResult);
-
+  // 
+  // console.log({ product, error: product.error?.message });
   if (!product.success) {
     throw new Error(product.error.message);
   }
   
   return product.data;
 };
+
+
+
+

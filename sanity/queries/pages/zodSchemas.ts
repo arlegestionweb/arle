@@ -114,48 +114,68 @@ export const perfumePremiumSchema = z.object({
   descripcion: z.string(),
 });
 
-export const perfumeLujoSchema = z.object({
-  inspiracion: z.object({
-    usarInspiracion: z.boolean(),
-    contenido: z.object({
-      // replace with actual structure
-    }),
-  }),
-  notasOlfativas: z.object({
-    familiaOlfativa: z.object({
-      // replace with actual structure
-    }),
-  }),
-  titulo: z.string(),
-  mostrarCredito: z.boolean(),
-  concentracion: z.string(),
-  descripcion: z.object({
-    texto: z.string(),
-    imagen: z.object({
-      alt: z.string(),
-      url: z.string(),
-    }),
-  }),
-  marca: z.string(),
-  _id: z.string(),
-  slug: z.string(),
-  variantes: z.array(
-    z.object({
-      // replace with actual structure
-    })
-  ),
-  parteDeUnSet: z.boolean(),
-  imagenes: z.array(
-    z.object({
-      alt: z.string(),
-      url: z.string(),
-    })
-  ),
-  _type: z.string(),
-  genero: z.string(),
+const imagenSchema = z.object({
+  alt: z.string(),
+  url: z.string(),
 });
 
+const contenidoSchema = z.object({
+  resena: z.string(),
+  imagen: imagenSchema,
+});
 
+const inspiracionSchema = z.object({
+  usarInspiracion: z.boolean(),
+  contenido: contenidoSchema.optional().nullable(),
+});
+
+const variantesSchema = z.object({
+  codigoDeReferencia: z.string(),
+  unidadesDisponibles: z.number(),
+  registroInvima: z.string(),
+  precioConDescuento: z.string().optional().nullable(),
+  mostrarUnidadesDispobibles: z.boolean(),
+  tamano: z.number(),
+  precio: z.string(),
+});
+
+const notasSchema = z.object({
+  notasDeBase: z.array(z.string()),
+  notasDeSalida: z.array(z.string()),
+  familiaOlfativa: z.string(),
+  notasDeCorazon: z.array(z.string()),
+});
+
+const descripcionSchema = z.object({
+  texto: z.string(),
+  imagen: imagenSchema,
+});
+
+const bannerSchema = z.object({
+  imagenOVideo: z.boolean(),
+  imagen: imagenSchema.optional().nullable(),
+  video: imagenSchema.optional().nullable(),
+});
+
+export const perfumeLujoSchema = z.object({
+  titulo: z.string(),
+  inspiracion: inspiracionSchema,
+  variantes: z.array(variantesSchema),
+  genero: z.string(),
+  _type: z.string(),
+  slug: z.string(),
+  _id: z.string(),
+  parteDeUnSet: z.boolean(),
+  concentracion: z.string(),
+  imagenes: z.array(imagenSchema),
+  notasOlfativas: notasSchema,
+  ingredientes: z.array(z.string()),
+  mostrarCredito: z.boolean(),
+  marca: z.string(),
+  descripcion: descripcionSchema,
+  paisDeOrigen: z.string(),
+  banners: z.array(bannerSchema),
+});
 export const gafasLujoSchema = z.object({
   mostrarCredito: z.boolean(),
   especificaciones: z.object({

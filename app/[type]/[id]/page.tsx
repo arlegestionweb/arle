@@ -29,12 +29,12 @@ const ProductPage = async ({ params }: TPageProps) => {
   
   return (
     <main className="min-h-screen bg-background pb-10 flex flex-col justify-center items-center">
-      {params.type === "gafasLujo" && <GafaLujo product={product} />}
+      {/* {params.type === "gafasLujo" && <GafaLujo product={product} />} */}
       {params.type === "gafasPremium" && <GafaPremium product={product} />}
       {params.type === "perfumeLujo" && <PerfumeLujo product={product}/>}
       {params.type === "perfumePremium" && <PerfumePremium product={product}/>}
       {params.type === "relojesPremium" && <RelojPremium product={product}/>}
-      {params.type === "relojesLujo" && <RelojLujo product={product}/>}
+      {/* {params.type === "relojesLujo" && <RelojLujo product={product}/>} */}
     </main>
   );
 };
