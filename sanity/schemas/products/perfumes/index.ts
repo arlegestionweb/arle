@@ -1,9 +1,13 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { FaTemperatureHalf } from "react-icons/fa6";
+import { GiNoseFront, GiNoseSide } from "react-icons/gi";
+import { RiTestTubeFill } from "react-icons/ri";
 
 export const familiasOlfativasSchema = defineType({
   name: "familiasOlfativas",
   title: "Familias Olfativas",
   type: "document",
+  icon: GiNoseSide,
   fields: [
     defineField({
       name: "nombre",
@@ -70,6 +74,7 @@ export const concentracionSchema = defineType({
   name: "concentracion",
   title: "Concentración",
   type: "document",
+  icon: FaTemperatureHalf,
   fields: [
     defineField({
       name: "nombre",
@@ -82,6 +87,7 @@ export const notasOlfativasSchema = defineType({
   name: "notasOlfativas",
   title: "Notas Olfativas",
   type: "document",
+  icon: GiNoseFront,
   fields: [
     defineField({
       name: "nombre",
@@ -101,6 +107,7 @@ export const ingredientesSchema = defineType({
   name: "ingrediente",
   title: "Ingrediente",
   type: "document",
+  icon: RiTestTubeFill,
   fields: [
     defineField({
       name: "nombre",

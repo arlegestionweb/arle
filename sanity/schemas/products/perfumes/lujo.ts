@@ -10,6 +10,7 @@ import {
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
 import { notasOlfativasProdSchema } from ".";
 
+
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
   title: "Perfumes de Lujo",

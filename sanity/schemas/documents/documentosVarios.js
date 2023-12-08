@@ -1,20 +1,13 @@
 import ColorPreview from "../../components/ColorPreview"
 import { defineField, defineType } from "sanity";
 import { BsBookmarkStar } from "react-icons/bs";
-
-
-
-
-
-
-
-
-
+import { FaFlag } from "react-icons/fa6";
 
 export const paisDeOrigenSchema = defineType({
   name: "paisDeOrigen",
   title: "País de Origen",
   type: "document",
+  icon: FaFlag,
   fields: [
     defineField({
       name: "nombre",

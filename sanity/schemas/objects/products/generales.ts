@@ -52,6 +52,7 @@ export const bannersDeProductoSchema = defineField({
           const { media } = selection;
           if (!media) return { title: "Sin imagen" };
           return {
+            title: "Banner",
             media,
           };
         },
