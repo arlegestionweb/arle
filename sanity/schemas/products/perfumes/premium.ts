@@ -1,7 +1,7 @@
 import { defineType, defineField } from "sanity";
 import { imageArrayForProducts } from "../../objects/image";
 
-import { mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
+import { coleccionesDeMarcaSchema, mostrarCreditoSchema, slugSchema } from "../../objects/products/generales";
 import {
   detallesPerfumeSchema,
   variantesDePerfumesSchema,
@@ -45,6 +45,7 @@ export const perfumePremiumSchema = defineType({
     }),
     detallesPerfumeSchema,
     mostrarCreditoSchema,
+    coleccionesDeMarcaSchema,
     slugSchema,
   ],
   preview: {

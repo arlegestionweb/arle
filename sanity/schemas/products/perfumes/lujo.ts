@@ -2,6 +2,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 import { imageArrayForProducts } from "../../objects/image";
 import {
   bannersDeProductoSchema,
+  coleccionesDeMarcaSchema,
   generoSchema,
   inspiracionSchema,
   mostrarCreditoSchema,
@@ -9,7 +10,6 @@ import {
 } from "../../objects/products/generales";
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
 import { notasOlfativasProdSchema } from ".";
-import ColeccionDeMarcaInput from "@/sanity/components/SelectColeccionDeMarca"
 
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
@@ -109,15 +109,7 @@ export const perfumeLujoSchema = defineType({
       to: [{ type: "paisDeOrigen" }],
     }),
     variantesDePerfumesSchema,
-    defineField({
-      name: "coleccionDeMarca",
-      title: "Colección de la marca",
-      type: "string",
-      components: {
-        input: ColeccionDeMarcaInput,
-      }
-      
-    }),
+    coleccionesDeMarcaSchema,
     slugSchema,
   ],
   preview: {
