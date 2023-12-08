@@ -223,6 +223,7 @@ const productQuery: Record<TProductType, string> = {
     descripcion
   }`,
   gafasLujo: `{
+    ${bannersQuery},
     mostrarCredito,
     "especificaciones": especificaciones {
       "tipoDeGafa": tipoDeGafa -> titulo,
@@ -244,7 +245,8 @@ const productQuery: Record<TProductType, string> = {
     "marca": marca->titulo,
     _type,
     "garantia": garantia { 
-      meses 
+      meses, 
+      descripcion
     },
     "inspiracion": ${inspiracionQuery},    
     "variantes": variantes [] {
@@ -261,6 +263,7 @@ const productQuery: Record<TProductType, string> = {
       codigoDeReferencia,
       registroInvima,
       precio,
+      precioConDescuento,
       unidadesDisponibles,
       "colorDelLente": colorDelLente -> {
         nombre,
@@ -272,9 +275,31 @@ const productQuery: Record<TProductType, string> = {
       }, 
     },
     modelo,
-    ${bannersQuery},
     "slug": slug.current,
-    genero
+    genero,
+    "detalles": detalles {
+      usarDetalles,
+      "contenido": contenido {
+        texto,
+        "imagen": imagen {
+          alt,
+          "url": asset->url,
+        }
+      }
+    },
+    "monturaDetalles":  {
+      usarDetalles,
+     "detalles": detalles {
+        "contenido": contenido {
+          texto,
+          "imagen": imagen {
+            alt,
+            "url": asset->url,
+          }
+        }
+      },
+      descripcion,
+    }
   }`,
   gafasPremium: `{
     _type,
@@ -339,7 +364,6 @@ export const getProductById = async (id: string, productType: TProductType) => {
     await sanityClient.fetch(`*[_type == "${productType}" && _id == "${id}"][0]
   ${query}`);
 
-  // console.log({ esp: fetchResult.variantes });
   const productSchema = schemas[productType];
 
   const product = productSchema.safeParse(fetchResult);
@@ -347,7 +371,6 @@ export const getProductById = async (id: string, productType: TProductType) => {
   if (!product.success) {
     throw new Error(product.error.message);
   }
-  // console.log({ col: product.data });
 
   return product.data;
 };

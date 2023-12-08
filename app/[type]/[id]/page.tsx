@@ -6,6 +6,8 @@ import PerfumePremium from "./_components/perfumes/Premium";
 import RelojLujo from "./_components/relojes/Lujo";
 import RelojPremium from "./_components/relojes/Premium";
 
+export const dynamic = 'force-dynamic'
+
 type TPageProps = {
   params: {
     type:
@@ -21,7 +23,6 @@ type TPageProps = {
   };
 };
 
-export const dynamic = 'force-dynamic'
 
 const ProductPage = async ({ params }: TPageProps) => {
   const product = await getProductById(params.id, params.type);
@@ -29,7 +30,7 @@ const ProductPage = async ({ params }: TPageProps) => {
   
   return (
     <main className="min-h-screen bg-background pb-10 flex flex-col justify-center items-center">
-      {/* {params.type === "gafasLujo" && <GafaLujo product={product} />} */}
+      {params.type === "gafasLujo" && <GafaLujo product={product} />}
       {params.type === "gafasPremium" && <GafaPremium product={product} />}
       {params.type === "perfumeLujo" && <PerfumeLujo product={product}/>}
       {params.type === "perfumePremium" && <PerfumePremium product={product}/>}

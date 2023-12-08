@@ -54,17 +54,17 @@ const imagenSchema = z.object({
 });
 
 const contenidoSchema = z.object({
-  resena: z.string(),
-  imagen: imagenSchema,
+  resena: z.string().optional().nullable(),
+  imagen: imagenSchema.optional().nullable(),
 });
 export const relojLujoSchema = z.object({
   genero: generoSchema,
-  mostrarCredito: z.boolean(),
+  mostrarCredito: z.boolean().optional().nullable(),
   marca: z.string(),
   _type: z.literal("relojesLujo"),
   _id: z.string(),
   detalles: z.object({
-    usarDetalles: z.boolean(),
+    usarDetalles: z.boolean().optional().nullable(),
     contenido: contenidoSchema.optional().nullable(),
   }),
   especificaciones: z.object({
@@ -81,14 +81,14 @@ export const relojLujoSchema = z.object({
   }),
   variantes: z.array(variantSchema),
   inspiracion: z.object({
-    usarInspiracion: z.boolean(),
+    usarInspiracion: z.boolean().optional().nullable(),
   }),
   modelo: z.string(),
   garantia: z.object({
     meses: z.number(),
   }),
   movimiento: z.object({
-    usarMovimiento: z.boolean(),
+    usarMovimiento: z.boolean().optional().nullable(),
   }),
   slug: z.string(),
 });
@@ -114,7 +114,7 @@ export const perfumePremiumSchema = z.object({
   }),
   titulo: z.string(),
   _type: z.literal("perfumePremium"),
-  mostrarCredito: z.boolean(),
+  mostrarCredito: z.boolean().optional().nullable(),
   imagenes: z.array(
     z.object({
       alt: z.string(),
@@ -132,14 +132,14 @@ export const perfumePremiumSchema = z.object({
       unidadesDisponibles: z.number(),
     })
   ),
-  parteDeUnSet: z.boolean(),
+  parteDeUnSet: z.boolean().optional().nullable(),
   descripcion: z.string(),
 });
 
 
 
 const inspiracionSchema = z.object({
-  usarInspiracion: z.boolean(),
+  usarInspiracion: z.boolean().optional().nullable(),
   contenido: contenidoSchema.optional().nullable(),
 });
 
@@ -148,7 +148,7 @@ const variantesSchema = z.object({
   unidadesDisponibles: z.number(),
   registroInvima: z.string(),
   precioConDescuento: z.string().optional().nullable(),
-  mostrarUnidadesDispobibles: z.boolean(),
+  mostrarUnidadesDispobibles: z.boolean().optional().nullable(),
   tamano: z.number(),
   precio: z.string(),
 });
@@ -166,7 +166,7 @@ const descripcionSchema = z.object({
 });
 
 const bannerSchema = z.object({
-  imagenOVideo: z.boolean(),
+  imagenOVideo: z.boolean().optional().nullable(),
   imagen: imagenSchema.optional().nullable(),
   video: imagenSchema.optional().nullable(),
 });
@@ -184,12 +184,12 @@ export const perfumeLujoSchema = z.object({
   _type: z.string(),
   slug: z.string(),
   _id: z.string(),
-  parteDeUnSet: z.boolean(),
+  parteDeUnSet: z.boolean().optional().nullable(),
   concentracion: z.string(),
   imagenes: z.array(imagenSchema),
   notasOlfativas: notasSchema,
   ingredientes: z.array(z.string()),
-  mostrarCredito: z.boolean(),
+  mostrarCredito: z.boolean().optional().nullable(),
   marca: z.string(),
   descripcion: descripcionSchema,
   paisDeOrigen: z.string(),
@@ -197,7 +197,8 @@ export const perfumeLujoSchema = z.object({
   coleccionDeMarca: coleccionDeMarca.optional().nullable(),
 });
 export const gafasLujoSchema = z.object({
-  mostrarCredito: z.boolean(),
+  banners: z.array(bannerSchema),
+  mostrarCredito: z.boolean().optional().nullable(),
   especificaciones: z.object({
     tipoDeGafa: z.string(),
     estiloDeGafa: z.string(),
@@ -214,25 +215,20 @@ export const gafasLujoSchema = z.object({
     paisDeOrigen: z.string(),
   }),
   _id: z.string(),
-  descripcion: z.string(),
+  descripcion: z.string().optional().nullable(),
   marca: z.string(),
   _type: z.string(),
   garantia: z.object({
     meses: z.number(),
+    descripcion: z.string().optional().nullable(),
   }),
   inspiracion: z.object({
-    usarInspiracion: z.boolean(),
-    contenido: z.object({
-      resena: z.string(),
-      imagen: z.object({
-        alt: z.string(),
-        url: z.string(),
-      }),
-    }),
+    usarInspiracion: z.boolean().optional().nullable(),
+    contenido: contenidoSchema.optional().nullable(),
   }),
   variantes: z.array(
     z.object({
-      mostrarUnidadesDispobibles: z.boolean(),
+      mostrarUnidadesDispobibles: z.boolean().optional().nullable(),
       colorDeLaMontura: z.object({
         nombre: z.string(),
         color: z.string(),
@@ -245,6 +241,7 @@ export const gafasLujoSchema = z.object({
       codigoDeReferencia: z.string(),
       registroInvima: z.string(),
       precio: z.string(),
+      precioConDescuento: z.string().optional().nullable(),
       unidadesDisponibles: z.number(),
       colorDelLente: z.object({
         nombre: z.string(),
@@ -261,6 +258,21 @@ export const gafasLujoSchema = z.object({
   modelo: z.string(),
   slug: z.string(),
   genero: z.string(),
+  detalles: z.object({
+    usarDetalles: z.boolean().optional().nullable(),
+    contenido: z.object({
+      texto: z.string().optional().nullable(),
+      imagen: imagenSchema.optional().nullable(),
+    }).optional().nullable(),
+  
+  }),
+  monturaDetalles: z.object({
+    usarDetalles: z.boolean().optional().nullable(),
+    contenido: z.object({
+      texto: z.string().optional().nullable(),
+      imagen: imagenSchema.optional().nullable(),
+    }).optional().nullable(),
+  }),
 });
 
 export const gafasPremiumSchema = z.object({
@@ -287,7 +299,7 @@ export const gafasPremiumSchema = z.object({
       unidadesDisponibles: z.number(),
       precio: z.string(),
       etiqueta: z.string().optional().nullable(),
-      mostrarUnidadesDispobibles: z.boolean(),
+      mostrarUnidadesDispobibles: z.boolean().optional().nullable(),
     })
   ),
   modelo: z.string(),
