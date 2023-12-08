@@ -1,4 +1,6 @@
+"use client";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   FaFacebookF,
   FaInstagram,
@@ -9,6 +11,9 @@ import {
 import { HiOutlineLocationMarker } from "react-icons/hi";
 
 const Footer = () => {
+  const pathname = usePathname()
+
+  if (pathname.includes("admin")) return;
   return (
     <section className="relative lg:pb-[100vh]">
       <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-10 pt-6 md:pt-20  text-white bg-[#00002E]">

@@ -28,11 +28,11 @@ const ColeccionDeMarcaInput = (props) => {
   return (
     <Select id="coleccionDeMarca" value={value} onChange={handleChange}>
       <option value="">None</option>
-      {colecciones.map((coleccion) => (
+      {colecciones ? colecciones.map((coleccion) => (
         <option key={coleccion} value={coleccion}>
           {coleccion}
         </option>
-      ))}
+      )) : []}
     </Select>
   );
 };
