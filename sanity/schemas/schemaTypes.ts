@@ -1,7 +1,6 @@
 import { coleccionesSchema } from "./documents/colecciones";
 import { descuentosSchema } from "./documents/descuentos";
 import {
-  coleccionesDeMarcaSchema,
   colorSchema,
   paisDeOrigenSchema,
 } from "./documents/documentosVarios";
@@ -56,7 +55,6 @@ export const schemaTypes = [
   notasOlfativasSchema,
   ingredientesSchema,
   materialesDeCajaSchema,
-  coleccionesDeMarcaSchema,
   tipoDeGafaSchema,
   estiloDeGafaSchema,
   paisDeOrigenSchema,

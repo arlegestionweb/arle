@@ -9,7 +9,7 @@ import {
 } from "../../objects/products/generales";
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
 import { notasOlfativasProdSchema } from ".";
-
+import ColeccionDeMarcaInput from "@/sanity/components/SelectColeccionDeMarca"
 
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
@@ -63,15 +63,7 @@ export const perfumeLujoSchema = defineType({
       group: "detalles",
       initialValue: false,
     }),
-    defineField({
-      name: "coleccionDeMarca",
-      title: "Colección De Marca",
-      type: "reference",
-      group: "detalles",
-      to: [{ type: "coleccionesDeMarca" }],
-      hidden: ({ document }) => !document?.marca,
-      // validation: (Rule) => Rule.custom((coleccionDeMarca) => {}),
-    }),
+
     defineField({
       name: "descripcion",
       title: "Descripción",
@@ -82,11 +74,13 @@ export const perfumeLujoSchema = defineType({
           name: "texto",
           title: "Texto",
           type: "text",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
+          validation: (Rule) => Rule.required(),
         }),
       ],
     }),
@@ -115,6 +109,15 @@ export const perfumeLujoSchema = defineType({
       to: [{ type: "paisDeOrigen" }],
     }),
     variantesDePerfumesSchema,
+    defineField({
+      name: "coleccionDeMarca",
+      title: "Colección de la marca",
+      type: "string",
+      components: {
+        input: ColeccionDeMarcaInput,
+      }
+      
+    }),
     slugSchema,
   ],
   preview: {

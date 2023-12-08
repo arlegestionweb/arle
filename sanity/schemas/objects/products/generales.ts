@@ -211,7 +211,7 @@ export const coleccionesDeMarcaRefSchema = defineField({
   title: "Colección De Marca",
   type: "reference",
   to: [{ type: "coleccionesDeMarca" }],
-  hidden: ({ document }) => !document?.marca,
+  // hidden: ({ document }) => !document?.marca,
 });
 
 export const precioConDescuentoSchema = defineField({

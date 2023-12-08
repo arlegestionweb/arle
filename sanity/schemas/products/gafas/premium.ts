@@ -1,7 +1,6 @@
 import { defineType, defineField } from "sanity";
 
 import {
-  coleccionesDeMarcaRefSchema,
   garantiaSchema,
   generoSchema,
   mostrarCreditoSchema,
@@ -45,7 +44,6 @@ export const gafasPremiumSchema = defineType({
     }),
     generoSchema,
     mostrarCreditoSchema,
-    coleccionesDeMarcaRefSchema,
     garantiaSchema,
 
     detallesDeGafaSchema,

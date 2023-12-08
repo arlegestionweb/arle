@@ -1,7 +1,6 @@
 import { defineField, defineType } from "sanity";
 import {
   bannersDeProductoSchema,
-  coleccionesDeMarcaRefSchema,
   detallesLujoSchema,
   garantiaSchema,
   generoSchema,
@@ -43,10 +42,10 @@ export const relojesLujoSchema = defineType({
       name: "descripcion",
       title: "Descripción",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
     generoSchema,
     mostrarCreditoSchema,
-    coleccionesDeMarcaRefSchema,
     inspiracionSchema,
     detallesLujoSchema,
     movimientoObjSchema,
