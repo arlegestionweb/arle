@@ -116,7 +116,7 @@ type TVarianSelectorProps<T extends TProduct> = {
   selectedVariant: T["variantes"][0];
   setSelectedVariant: (variant: T["variantes"][0]) => void;
 };
-const VariantSelector = <T extends TProduct>({
+export const VariantSelector = <T extends TProduct>({
   product,
   setSelectedVariant,
   selectedVariant,
