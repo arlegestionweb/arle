@@ -18,7 +18,7 @@ export const trabajaConNosotrosSchema = defineType({
     }),
    defineField({
     name: "imagen",
-    title: "Imagen",
+    title: "Imagen de fondo",
     type: "imagenObject",
    }),
    defineField({
