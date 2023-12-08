@@ -107,6 +107,7 @@ const productQuery: Record<TProductType, string> = {
     }
   }`,
   perfumeLujo: `{
+    ...,
     titulo,
     "inspiracion": inspiracion { 
         usarInspiracion, 
@@ -164,6 +165,10 @@ const productQuery: Record<TProductType, string> = {
         "url": asset->url,
         alt
       }
+    },
+    "coleccionDeMarca": coleccionDeMarca -> {
+      nombre,
+      "marca": marca -> titulo
     }
   }`,
   perfumePremium: `{ 
@@ -322,10 +327,10 @@ export const getProductById = async (id: string, productType: TProductType) => {
   
   const product = productSchema.safeParse(fetchResult);
   // 
-  // console.log({ product, error: product.error?.message });
   if (!product.success) {
     throw new Error(product.error.message);
   }
+  console.log({ col: product.data });
   
   return product.data;
 };

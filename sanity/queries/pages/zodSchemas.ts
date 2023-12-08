@@ -157,6 +157,11 @@ const bannerSchema = z.object({
   video: imagenSchema.optional().nullable(),
 });
 
+const coleccionDeMarca = z.object({
+  nombre: z.string(),
+  marca: z.string(),
+});
+
 export const perfumeLujoSchema = z.object({
   titulo: z.string(),
   inspiracion: inspiracionSchema,
@@ -175,6 +180,7 @@ export const perfumeLujoSchema = z.object({
   descripcion: descripcionSchema,
   paisDeOrigen: z.string(),
   banners: z.array(bannerSchema),
+  coleccionDeMarca: coleccionDeMarca.optional().nullable(),
 });
 export const gafasLujoSchema = z.object({
   mostrarCredito: z.boolean(),
