@@ -1,3 +1,4 @@
+import ColombianPrice from "@/sanity/components/ColombianPrice";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 
@@ -73,6 +74,9 @@ export const trabajaConNosotrosSchema = defineType({
             name: "salary",
             title: "salario",
             type: "string",
+            components: {
+              input: ColombianPrice,
+            }
           }),
           defineField({
             name: "aboutJob",
@@ -80,7 +84,18 @@ export const trabajaConNosotrosSchema = defineType({
             type: "array",
             of: [{type: "block"}]
           })
-        ]
+        ],
+        preview: {
+          select: {
+            title: "titulo",
+            media: "sede.imagenes",
+          },
+          prepare: ({title, media}) => ({
+            title,
+            media: media[0],
+          }),
+        }
+
       })
     ]
    })
