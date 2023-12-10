@@ -8,7 +8,6 @@ import {
 import Cantidad from "../Cantidad";
 import InfoSection from "../InfoSection";
 import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
-import GalleryProduct from "@/app/_components/lujo/GalleryProduct";
 import MobileAddToCart from "../MobileAddToCart";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import { useState } from "react";
