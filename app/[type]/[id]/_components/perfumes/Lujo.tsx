@@ -27,13 +27,13 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
         />
       </div>
 
-      <section className="px-4 pb-6">
+      <section className="pb-6">
         <Labels
-          className="relative max-w-fit mt-4 mb-2"
+          className="mx-4 relative max-w-fit mt-4 mb-2"
           labelType={"ultimas unidades"}
           label={"ultimas unidades"}
         />
-        <header>
+        <header className="px-4 ">
           <h1 className="text-zinc-800 text-[32px] font-normal font-kanit leading-10 w-full">
             {product.marca}
           </h1>
@@ -41,13 +41,13 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
             CODE:
           </span>
           <p className="text-zinc-800 text-[32px] font-normal font-kanit leading-9">
-            $90000
+            ${product.variantes[0].precio}
           </p>
           <div className="text-justify">
             <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
               Págalo a 4 cuotas de $
               {numberToColombianPriceString(
-                colombianPriceStringToNumber("90000") / 4
+                colombianPriceStringToNumber(product.variantes[0].precio) / 4
               )}{" "}
               sin intereses.
               <br />
@@ -68,11 +68,33 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
           setSelectedVariant={setSelectedVariant}
         /> */}
 
-        <section className="mt-2">
+        <section className="px-4 mt-2 mb-6">
           <Cantidad />
         </section>
 
-        
+        <section className="bg-slate-900 min-h-[40vh] pt-6">
+          <section className="px-4 flex flex-col gap-2 pb-5">
+            <h2 className="text-color-bg-surface-1-default text-2xl font-normal font-crimson leading-7">
+              Descripción
+            </h2>
+            <p className="grow shrink basis-0 text-color-bg-surface-0-default text-lg font-normal font-tajawal leading-snug">
+              {product.descripcion.texto}
+            </p>
+          </section>
+          <div className="relative w-full h-64">
+            <Image
+              alt={product.descripcion.imagen.alt}
+              src={product.descripcion.imagen.url}
+              layout="fill"
+              className="object-cover"
+            />
+          </div>
+        </section>
+
+        <section>
+          
+        </section>
+
       </section>
     </section>
   );
