@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 type ProductSlideProps = {
-  slug: string;
+  slug?: string;
   imagesProduct: {
     url: string;
     alt?: string | null | undefined;
@@ -62,7 +62,7 @@ const ProductSlide = ({
               } min-w-full flex-col justify-end items-center gap-2.5 inline-flex`
             )}>
             {isLink ? (
-              <Link href={slug}>
+              <Link href={slug || ""}>
                 <Image
                   alt={image.alt || "product"}
                   src={image.url}
