@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -20,42 +20,34 @@ const GalleryProduct = ({ imagesProduct }: GalleryProductProps) => {
       }
     })
     .map((img, idx) => {
-      if ( imagesProduct.length > 1) {
+      if (imagesProduct.length > 1) {
         return (
           <section
             key={`${img.url}-${idx}`}
-            className="relative w-14 h-14 more-images">
+            className="relative min-w-[80px] w-20 h-20 mr-3">
             <Image
               src={img.url}
-              alt={"vehicle"}
+              alt={img.alt || "perfume"}
               fill
-              style={{ objectFit: "cover" }}
               onClick={() => setIndex(idx)}
-              className={idx === index ? "current" : ""}
+              className="object-cover fit object-center min-h-20"
             />
-            <p
-              onClick={() => {
-                setIndex(idx);
-              }}>
-              +{imagesProduct.length - 6}
-            </p>
           </section>
         );
       }
     });
 
   return (
-    <section className="relative max-h-[473px]">
-      <Image
-        alt={imagesProduct[index].alt || ""}
-        src={imagesProduct[index].url}
-        width={300}
-        height={473}
-        className="object-cover w-full h-[473px]"
-      />
-      <div>
-      {thumbnailElement}
+    <section className="flex flex-col">
+      <div  className="relative w-screen h-[377px]">
+        <Image
+          alt={imagesProduct[index].alt || ""}
+          src={imagesProduct[index].url}
+          fill
+          className="object-cover object-center"
+        />
       </div>
+      <div className="no-scrollbar flex justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-screen p-2">{thumbnailElement}</div>
     </section>
   );
 };
