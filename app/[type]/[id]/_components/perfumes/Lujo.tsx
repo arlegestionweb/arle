@@ -8,26 +8,19 @@ import {
 import Cantidad from "../Cantidad";
 import InfoSection from "../InfoSection";
 import ProductSlide from "@/app/_components/ProductSlide";
+import GalleryProduct from "@/app/_components/lujo/GalleryProduct";
 
 type TPerfumeLujoProps = {
   product: TPerfumeLujo;
 };
 
 const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
-  console.log(product.banners);
+  console.log(product.imagenes);
 
   return (
     <section>
       {/* Product view */}
-      <div className="relative max-h-[473px]">
-        <Image
-          alt={product.imagenes[0].alt}
-          src={product.imagenes[0].url}
-          width={300}
-          height={473}
-          className="object-cover w-full h-[473px]"
-        />
-      </div>
+      <GalleryProduct imagesProduct={product.imagenes} />
 
       <section className="pb-6">
         <Labels
