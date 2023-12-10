@@ -1,9 +1,15 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter, Lora, Raleway, Tajawal, Kanit } from "next/font/google";
+import {
+  Inter,
+  Lora,
+  Raleway,
+  Tajawal,
+  Kanit,
+  Crimson_Text,
+} from "next/font/google";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/Footer";
-import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -23,6 +29,12 @@ const kanit = Kanit({
   variable: "--font-kanit",
 });
 
+const crimson_Text = Crimson_Text({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--crimson-text",
+});
+
 export const metadata: Metadata = {
   title: "Arlé",
   description: "Tienda de accesorios Arlé",
@@ -33,12 +45,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${lora.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} overflow-x-hidden`}
-      >
+        className={`${inter.variable} ${lora.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson_Text.variable} overflow-x-hidden`}>
         <Navbar />
         {children}
         <Footer />

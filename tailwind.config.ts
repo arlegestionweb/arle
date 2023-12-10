@@ -26,6 +26,7 @@ const config: Config = {
         "raleway": 'var(--font-raleway)',
         "tajawal": 'var(--font-tajawal)',
         "kanit": 'var(--font-kanit)',
+        "crimson": 'var(--crimson-text)',
       },
       borderRadius: {
         lg: `var(--radius)`,
