@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/app/_lib/utils";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -10,7 +11,7 @@ type GalleryProductProps = {
   className?: string;
 };
 
-const GalleryProduct = ({ imagesProduct }: GalleryProductProps) => {
+const GalleryProduct = ({ imagesProduct, className }: GalleryProductProps) => {
   const [index, setIndex] = useState(0);
 
   const thumbnailElement = imagesProduct
@@ -38,8 +39,8 @@ const GalleryProduct = ({ imagesProduct }: GalleryProductProps) => {
     });
 
   return (
-    <section className="flex flex-col">
-      <div  className="relative w-screen h-[377px]">
+    <section className={cn("flex flex-col", className)}>
+      <div  className={"relative w-full h-[377px] lg:h-[569px]"}>
         <Image
           alt={imagesProduct[index].alt || ""}
           src={imagesProduct[index].url}
@@ -47,7 +48,7 @@ const GalleryProduct = ({ imagesProduct }: GalleryProductProps) => {
           className="object-cover object-center"
         />
       </div>
-      <div className="no-scrollbar flex justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-screen p-2">{thumbnailElement}</div>
+      <div className="no-scrollbar flex lg:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2">{thumbnailElement}</div>
     </section>
   );
 };
