@@ -80,6 +80,10 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
         <NuestrasComprasIncluyen />
       </section>
 
+      <section className="px-4 mt-28 py-6 lg:hidden">
+        <NuestrasComprasIncluyen />
+      </section>
+
       <MobileAddToCart className="lg:hidden" />
     </>
   );
