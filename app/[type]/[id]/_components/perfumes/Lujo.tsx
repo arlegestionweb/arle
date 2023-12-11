@@ -9,6 +9,8 @@ import Cantidad from "../Cantidad";
 import InfoSection from "../InfoSection";
 import ProductSlide from "@/app/_components/ProductSlide";
 import GalleryProduct from "@/app/_components/lujo/GalleryProduct";
+import MobileAddToCart from "../MobileAddToCart";
+import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 
 type TPerfumeLujoProps = {
   product: TPerfumeLujo;
@@ -26,9 +28,9 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
           imagesProduct={product.imagenes}
         />
 
-        <section className="pb-6 row-start-1 col-start-7 col-span-6 ">
+        <section className="row-start-1 col-start-7 col-span-6 flex flex-col">
           <Labels
-            className="mx-4 relative max-w-fit mt-4 mb-2"
+            className="mx-4 relative max-w-fit mt-4 lg:mt-0 mb-2"
             labelType={"ultimas unidades"}
             label={"ultimas unidades"}
           />
@@ -71,6 +73,14 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
           <section className="px-4 mt-2 mb-6">
             <Cantidad />
           </section>
+
+
+          <MobileAddToCart className="hidden static shadow-none w-full px-4 gap-6 space-y-2 lg:block" />
+
+          <section className="px-4">
+            <NuestrasComprasIncluyen/>
+          </section>
+
         </section>
       </section>
 
@@ -91,7 +101,7 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
             descripcion={product.inspiracion.contenido!.resena || ""}
             alt={product.inspiracion.contenido!.imagen?.alt || ""}
             url={product.inspiracion.contenido!.imagen?.url || ""}
-            className="text-slate-900 lg:max-w-[calc(1280px+32px)]"
+            className="text-slate-900 lg:max-w-[calc(1280px+32px)] flex-row-reverse"
           />
         </div>
       )}
@@ -115,6 +125,8 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
           className="w-full lg:max-w-[calc(1280px+32px)]"
         />
       </div>
+
+      <MobileAddToCart className="lg:hidden" />
     </>
   );
 };
