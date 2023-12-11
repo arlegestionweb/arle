@@ -16,7 +16,7 @@ const InfoSection = (props: InfoProps) => {
   return (
     <section
       className={cn(
-        "bg-slate-900 min-h-[40vh] pt-6 text-color-bg-surface-1-default",
+        "min-h-[40vh] pt-6 text-color-bg-surface-1-default",
         props.className
       )}>
       <section className="px-4 flex flex-col gap-2 pb-5">
