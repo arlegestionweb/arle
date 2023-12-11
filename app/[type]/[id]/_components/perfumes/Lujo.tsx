@@ -38,7 +38,9 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
             <h1 className="text-zinc-800 text-[32px] font-normal font-kanit leading-10 w-full">
               {product.marca}
             </h1>
-            <h2>{product.marca} | {product.genero}</h2>
+            <h2>
+              {product.marca} | {product.genero}
+            </h2>
             <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
               CODE:{product.variantes[0].codigoDeReferencia}
             </span>
@@ -74,13 +76,11 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
             <Cantidad />
           </section>
 
-
           <MobileAddToCart className="hidden static shadow-none w-full px-4 gap-6 space-y-2 lg:block" />
 
-          <section className="px-4">
-            <NuestrasComprasIncluyen/>
+          <section className="px-4 hidden lg:block">
+            <NuestrasComprasIncluyen />
           </section>
-
         </section>
       </section>
 
@@ -125,6 +125,10 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
           className="w-full lg:max-w-[calc(1280px+32px)]"
         />
       </div>
+
+      <section className="px-4 mt-28 py-6 lg:hidden">
+        <NuestrasComprasIncluyen />
+      </section>
 
       <MobileAddToCart className="lg:hidden" />
     </>
