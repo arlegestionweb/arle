@@ -16,10 +16,10 @@ const InfoSection = (props: InfoProps) => {
   return (
     <section
       className={cn(
-        "min-h-[40vh] pt-6 text-color-bg-surface-1-default",
+        "min-h-[40vh] pt-6 lg:py-12 text-color-bg-surface-1-default lg:flex gap-6 items-center",
         props.className
       )}>
-      <section className="px-4 flex flex-col gap-2 pb-5">
+      <section className="px-4 flex flex-col gap-2 pb-5 flex-1">
         {!props.DesciptionComp ? (
           <>
             <h2 className="text-2xl font-semibold font-crimson leading-7">
@@ -33,18 +33,18 @@ const InfoSection = (props: InfoProps) => {
           <>{props.DesciptionComp}</>
         )}
       </section>
-      {!props.ImageComp ? (
-        <div className="relative w-full h-64">
+      <div className="relative w-full h-64 lg:h-72 flex-1">
+        {!props.ImageComp ? (
           <Image
             alt={props.alt || ""}
             src={props.url || ""}
             fill
             className="object-cover"
           />
-        </div>
-      ) : (
-        <>{props.ImageComp}</>
-      )}
+        ) : (
+          <>{props.ImageComp}</>
+        )}
+      </div>
     </section>
   );
 };
