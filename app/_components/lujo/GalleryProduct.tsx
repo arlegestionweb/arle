@@ -2,6 +2,7 @@
 import { cn } from "@/app/_lib/utils";
 import Image from "next/image";
 import React, { useState } from "react";
+import CarouselProduct from "./CarouselProduct";
 
 type GalleryProductProps = {
   imagesProduct: {
@@ -39,7 +40,7 @@ const GalleryProduct = ({ imagesProduct, className }: GalleryProductProps) => {
     });
 
   return (
-    <section className={cn("flex flex-col", className)}>
+    <section className={cn("flex flex-col items-center", className)}>
       <div  className={"relative w-full h-[377px] lg:h-[569px]"}>
         <Image
           alt={imagesProduct[index].alt || ""}
@@ -48,7 +49,8 @@ const GalleryProduct = ({ imagesProduct, className }: GalleryProductProps) => {
           className="object-cover object-center"
         />
       </div>
-      <div className="no-scrollbar flex lg:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2">{thumbnailElement}</div>
+      <div className="no-scrollbar flex lg:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">{thumbnailElement}</div>
+      <CarouselProduct imagesProduct={imagesProduct} className="hidden my-2 md:justify-center justify-start md:flex h-20 "/>
     </section>
   );
 };
