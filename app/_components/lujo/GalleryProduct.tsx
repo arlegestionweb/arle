@@ -50,7 +50,7 @@ const GalleryProduct = ({ imagesProduct, className }: GalleryProductProps) => {
         />
       </div>
       <div className="no-scrollbar flex lg:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">{thumbnailElement}</div>
-      <CarouselProduct imagesProduct={imagesProduct} className="hidden my-2 md:justify-center justify-start md:flex h-20 "/>
+      <CarouselProduct setProduct={setIndex} imagesProduct={imagesProduct} className="hidden my-2 md:justify-center justify-start md:flex h-20 "/>
     </section>
   );
 };
