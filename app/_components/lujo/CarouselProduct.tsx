@@ -3,17 +3,21 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
+type ImageType =  {
+  url: string;
+  alt?: string | null | undefined;
+}
+
 type CarouselProductProps = {
-  imagesProduct: {
-    url: string;
-    alt?: string | null | undefined;
-  }[];
+  imagesProduct: ImageType[];
   className?: string;
+  setProduct:  React.Dispatch<React.SetStateAction<number>>
 };
 
 const CarouselProduct = ({
   imagesProduct,
   className,
+  setProduct
 }: CarouselProductProps) => {
   const [startIndex, setStartIndex] = useState(0);
 
@@ -32,6 +36,11 @@ const CarouselProduct = ({
     return imagesProduct[arrayIndex];
   });
 
+  const selectImages = (image: ImageType) => {
+    const imageIndex = imagesProduct.indexOf(image);
+    setProduct(imageIndex)
+  }
+  
   return (
     <div className={cn("relative w-fit", className)}>
       <button
@@ -43,7 +52,9 @@ const CarouselProduct = ({
         {visibleImages.map((img, idx) => (
           <div
             key={`${img.url}-${idx}`}
-            className="relative min-w-[80px] w-20 h-20">
+            className="relative min-w-[80px] w-20 h-20"
+            onClick={()=>selectImages(img)}
+            >
             <Image
               src={img.url}
               alt={img.alt || "perfume"}
