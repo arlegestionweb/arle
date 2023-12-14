@@ -7,8 +7,11 @@ const Page = async () => {
 
   console.log(pageContent);
 
-  
-  return <main>{pageContent?.titulo}</main>;
+
+  return <main>
+    <h1>Hola mundito</h1>
+    {pageContent?.titulo}
+  </main>;
 };
 
 export default Page;
