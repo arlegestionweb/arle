@@ -21,7 +21,7 @@ const Listing = async ({
 }) => {
   const pageContent = await getListingInitialLoadContent();
   const coleccionSeleccionada = null;
-  const tipoDeProductoSeleccionado = searchParams.producto as string;
+  const tipoDeProductoSeleccionado = searchParams.type as string;
   const campoDeBusquedaSeleccionado = searchParams.search as string;
 
   const colecciones = pageContent?.colecciones.filter(
@@ -61,35 +61,37 @@ const Listing = async ({
     !!tipoDeProductoSeleccionado ||
     !!campoDeBusquedaSeleccionado;
 
-  const filteredProducts = productos?.filter((producto) => {
-    let matchesTipoDeProducto = true;
-    let matchesCampoDeBusqueda = true;
+  // const filteredProducts = productos?.filter((producto) => {
+  //   let matchesTipoDeProducto = true;
+  //   let matchesCampoDeBusqueda = true;
 
-    if (tipoDeProductoSeleccionado) {
-      matchesTipoDeProducto = producto.type.includes(
-        tipoDeProductoSeleccionado
-      );
-    }
+  //   if (tipoDeProductoSeleccionado) {
+  //     matchesTipoDeProducto = producto.type.includes(
+  //       tipoDeProductoSeleccionado
+  //     );
+  //   }
 
-    if (campoDeBusquedaSeleccionado) {
-      matchesCampoDeBusqueda = Object.entries(producto).some(([key, value]) => {
-        // If the value is an object and has a 'titulo' property, use that for comparison
-        if (typeof value === "object" && value !== null && "titulo" in value) {
-          const tituloValue = (value as { titulo: string }).titulo;
-          return tituloValue
-            .toLowerCase()
-            .includes(campoDeBusquedaSeleccionado.toLowerCase());
-        }
-        // Otherwise, convert non-string values to string for comparison
-        const valueStr = String(value).toLowerCase();
-        return valueStr.includes(campoDeBusquedaSeleccionado.toLowerCase());
-      });
-    }
+  //   if (campoDeBusquedaSeleccionado) {
+  //     matchesCampoDeBusqueda = Object.entries(producto).some(([key, value]) => {
+  //       // If the value is an object and has a 'titulo' property, use that for comparison
+  //       if (typeof value === "object" && value !== null && "titulo" in value) {
+  //         const tituloValue = (value as { titulo: string }).titulo;
+  //         return tituloValue
+  //           .toLowerCase()
+  //           .includes(campoDeBusquedaSeleccionado.toLowerCase());
+  //       }
+  //       // Otherwise, convert non-string values to string for comparison
+  //       const valueStr = String(value).toLowerCase();
+  //       return valueStr.includes(campoDeBusquedaSeleccionado.toLowerCase());
+  //     });
+  //   }
 
-    return matchesTipoDeProducto && matchesCampoDeBusqueda;
-  });
+  //   return matchesTipoDeProducto && matchesCampoDeBusqueda;
+  // });
 
-  console.log({ searchParams });
+  // console.log({ searchParams });
+
+  
   function filterData(data: TProduct[]) {
     return data.filter((item) =>
       Object.keys(searchParams).every(
