@@ -28,7 +28,7 @@ FilterMenuProps) => {
 
   const { push } = useRouter();
   const searchParams = useSearchParams();
-  console.log({ searchParams });
+  // console.log({ searchParams });
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,10 +49,12 @@ FilterMenuProps) => {
         }
       }
       if (input.type === "radio" && input.checked) {
+        // console.log(input.dataset)
         newParams.set(input.name, input.value);
       }
     });
 
+    newParams.forEach((value, key) => console.log(key, value))
     push(createUrl("/listing", newParams));
     toggleFilter();
   };
@@ -128,14 +130,23 @@ FilterMenuProps) => {
           <FilterSection title="Género" active={!!searchParams.get("genero")}>
             <InputBox
               name="genero"
+              title="Unisex"
+              type="radio"
+              value={"unisex"}
+              defaultChecked={searchParams.get("genero")?.includes("unisex")}
+            />
+            <InputBox
+              name="genero"
               title="Mujer"
               type="radio"
+              value={"mujer"}
               defaultChecked={searchParams.get("genero")?.includes("mujer")}
             />
             <InputBox
               name="genero"
               title="Hombre"
               type="radio"
+              value={"hombre"}
               defaultChecked={searchParams.get("genero")?.includes("hombre")}
             />
           </FilterSection>

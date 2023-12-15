@@ -80,7 +80,7 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
-  // console.log({filteredProducts});
+  console.log({searchParams});
   const marcas = getAllMarcas(filteredProducts);
   return (
     <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
