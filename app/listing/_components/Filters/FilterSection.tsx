@@ -18,7 +18,7 @@ const FilterSection = ({
         <h3 className="font-bold relative">
           {title}{" "}
           {active ? (
-            <RedDot classNames="absolute -right-4 top-1/2 -translate-y-1/2" />
+            <RedDot position="centerRight" />
           ) : (
             ""
           )}

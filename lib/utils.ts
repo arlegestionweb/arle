@@ -1,4 +1,4 @@
-import { TypeProducts } from '@/app/_components/types';
+import { TProduct } from '@/sanity/queries/pages/listingQueries';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 
 export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyURLSearchParams) => {
@@ -37,7 +37,7 @@ export const formatNumber = function (number: number | string): string {
   return result;
 }
 
-export const getAllMarcas = (products: TypeProducts) => products.map((product) => product.marca);
+export const getAllMarcas = (products: TProduct[]) => products.map((product) => product.marca);
 
 export const spanishToCamelCase = function (input: string) {
   // Split the input string into words

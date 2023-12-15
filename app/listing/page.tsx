@@ -22,7 +22,7 @@ const Listing = async ({
   const campoDeBusquedaSeleccionado = searchParams.search as string;
 
   const colecciones = pageContent?.colecciones.filter(
-    coleccion => !!coleccion.productos
+    (coleccion) => !!coleccion.productos
   );
 
   const coleccionContent = colecciones?.find(
@@ -44,11 +44,7 @@ const Listing = async ({
 
   const productos =
     pageContent?.relojes && pageContent.perfumes && pageContent.gafas
-      ? [
-          ...pageContent.relojes,
-          ...pageContent.perfumes,
-          ...pageContent.gafas
-        ]
+      ? [...pageContent.relojes, ...pageContent.perfumes, ...pageContent.gafas]
       : [];
 
   const areFiltersActive =
@@ -56,7 +52,7 @@ const Listing = async ({
     !!tipoDeProductoSeleccionado ||
     !!campoDeBusquedaSeleccionado;
 
-  const filteredProducts = productos?.filter(producto => {
+  const filteredProducts = productos?.filter((producto) => {
     let matchesTipoDeProducto = true;
     let matchesCampoDeBusqueda = true;
 
@@ -84,20 +80,14 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
-  console.log(getAllMarcas(filteredProducts || []))
-  const marcas = getAllMarcas(filteredProducts || []);
+  // console.log({filteredProducts});
+  const marcas = getAllMarcas(filteredProducts);
   return (
     <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
-      <Filters
-        areFiltersActive={areFiltersActive}
-        marcas={marcas}
-      />
+      <Filters areFiltersActive={areFiltersActive} marcas={marcas} />
 
       {!coleccionSeleccionada ? (
-        <Colecciones
-          colecciones={colecciones ?? []}
-          className="py-6 pl-4"
-        />
+        <Colecciones colecciones={colecciones ?? []} className="py-6 pl-4" />
       ) : (
         <h2 className="text-3xl font-bold capitalize">
           Coleccion {coleccionSeleccionada}
@@ -105,10 +95,7 @@ const Listing = async ({
       )}
       <section className="bg-color-bg-surface-1-default flex flex-col items-center">
         <section className="max-w-[1280px] w-full py-6 px-4 md:px-9 flex">
-          <Filters
-            areFiltersActive={areFiltersActive}
-            searchParams={searchParams}
-          />
+          {/* <Filters marcas={marcas} areFiltersActive={areFiltersActive} /> */}
         </section>
 
         <section className="max-w-[1280px] w-full py-6 px-4 md:px-9">

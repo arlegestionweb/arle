@@ -5,7 +5,6 @@ import InputBox from "./InputBox";
 import Button from "@/app/_components/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/lib/utils";
-import { MarcaType } from "@/app/_components/types";
 import { useRef } from "react";
 
 type TypeSearchParams = {
@@ -16,7 +15,7 @@ type FilterMenuProps = {
   toggleFilter: () => void;
   areFiltersActive: boolean;
   searchParams: TypeSearchParams;
-  marcas: MarcaType[];
+  marcas: string[];
 };
 const FilterMenu = ({
   isFilterOpen,
@@ -68,7 +67,7 @@ FilterMenuProps) => {
     <div
       className={`${
         isFilterOpen ? "w-screen" : "w-0"
-      } fixed z-10 top-[60px] left-0 transition-all h-screen bg-black bg-opacity-50 flex`}
+      } fixed z-50 top-[60px] left-0 transition-all h-screen bg-black bg-opacity-50 flex`}
     >
       <aside
         className={`${
@@ -143,14 +142,14 @@ FilterMenuProps) => {
           <FilterSection title="Marcas" active={!!searchParams.get("marca")}>
             {marcas?.map((marca) => (
               <InputBox
-                key={marca.titulo}
+                key={marca}
                 name="marca"
-                title={marca.titulo}
+                title={marca}
                 type="checkbox"
                 defaultChecked={searchParams
                   .get("marca")
-                  ?.includes(marca.titulo)}
-                value={marca.titulo}
+                  ?.includes(marca)}
+                value={marca}
               />
             ))}
           </FilterSection>
