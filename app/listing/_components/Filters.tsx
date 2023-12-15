@@ -30,7 +30,7 @@ const Filters = ({
     allParams[param].push(value);
   });
 
-  console.log("All Params:", allParams);
+  // console.log("All Params:", allParams);
 
   // console.log("here", searchParams.values())
   const search = searchParams.get("search");

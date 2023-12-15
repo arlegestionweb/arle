@@ -28,13 +28,6 @@ const Listing = async ({
     (coleccion) => !!coleccion.productos
   );
 
-  // const newParams = new URLSearchParams(searchParams.toString());
-
-  // let filters: { [key: string]: string } = {};
-  // for (let [key, value] of searchParams) {
-  //   filters[key] = value;
-  // }
-
   // const coleccionContent = colecciones?.find(
   //   (coleccion) => coleccion.titulo === coleccionSeleccionada
   // );
@@ -91,7 +84,7 @@ const Listing = async ({
 
   // console.log({ searchParams });
 
-  
+
   function filterData(data: TProduct[]) {
     return data.filter((item) =>
       Object.keys(searchParams).every(
