@@ -1,4 +1,7 @@
-import { getListingInitialLoadContent } from "@/sanity/queries/pages/listingQueries";
+import {
+  TProduct,
+  getListingInitialLoadContent,
+} from "@/sanity/queries/pages/listingQueries";
 import Productos from "./_components/Productos";
 import Colecciones from "../_components/Colecciones";
 // import Banner from "../_components/homepage/Banner";
@@ -25,9 +28,16 @@ const Listing = async ({
     (coleccion) => !!coleccion.productos
   );
 
-  const coleccionContent = colecciones?.find(
-    (coleccion) => coleccion.titulo === coleccionSeleccionada
-  );
+  // const newParams = new URLSearchParams(searchParams.toString());
+
+  // let filters: { [key: string]: string } = {};
+  // for (let [key, value] of searchParams) {
+  //   filters[key] = value;
+  // }
+
+  // const coleccionContent = colecciones?.find(
+  //   (coleccion) => coleccion.titulo === coleccionSeleccionada
+  // );
 
   if (!pageContent?.relojes && !pageContent?.perfumes && !pageContent?.gafas) {
     return null;
@@ -46,7 +56,6 @@ const Listing = async ({
     pageContent?.relojes && pageContent.perfumes && pageContent.gafas
       ? [...pageContent.relojes, ...pageContent.perfumes, ...pageContent.gafas]
       : [];
-
   const areFiltersActive =
     !!coleccionSeleccionada ||
     !!tipoDeProductoSeleccionado ||
@@ -80,8 +89,21 @@ const Listing = async ({
     return matchesTipoDeProducto && matchesCampoDeBusqueda;
   });
 
-  console.log({searchParams});
-  const marcas = getAllMarcas(filteredProducts);
+  console.log({ searchParams });
+  function filterData(data: TProduct[]) {
+    return data.filter((item) =>
+      Object.keys(searchParams).every(
+        (filterName) =>
+          searchParams[filterName] === null ||
+          (item as { [key: string]: any })[filterName]?.includes(
+            searchParams[filterName]
+          )
+      )
+    );
+  }
+  const newFilteredProducts = filterData(productos);
+  const marcas = getAllMarcas(newFilteredProducts);
+
   return (
     <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
       <Filters areFiltersActive={areFiltersActive} marcas={marcas} />
@@ -99,8 +121,8 @@ const Listing = async ({
         </section>
 
         <section className="max-w-[1280px] w-full py-6 px-4 md:px-9">
-          {filteredProducts && filteredProducts.length > 0 ? (
-            <Productos productos={filteredProducts} />
+          {newFilteredProducts && newFilteredProducts.length > 0 ? (
+            <Productos productos={newFilteredProducts} />
           ) : (
             <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
           )}

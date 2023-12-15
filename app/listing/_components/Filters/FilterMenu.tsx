@@ -88,23 +88,23 @@ FilterMenuProps) => {
             active={!!searchParams.get("producto")}
           >
             <InputBox
-              name="producto"
+              name="type"
               title="Gafas"
-              defaultChecked={searchParams.get("producto")?.includes("gafa")}
+              defaultChecked={searchParams.get("type")?.includes("gafa")}
               type="radio"
               value={"gafa"}
             />
             <InputBox
-              name="producto"
+              name="type"
               title="Reloj"
-              defaultChecked={searchParams.get("producto")?.includes("reloj")}
+              defaultChecked={searchParams.get("type")?.includes("reloj")}
               type="radio"
               value={"reloj"}
             />
             <InputBox
-              name="producto"
+              name="type"
               title="Perfume"
-              defaultChecked={searchParams.get("producto")?.includes("perfume")}
+              defaultChecked={searchParams.get("type")?.includes("perfume")}
               type="radio"
               value={"perfume"}
             />
