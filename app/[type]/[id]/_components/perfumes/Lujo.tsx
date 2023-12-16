@@ -106,7 +106,8 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
         </div>
       )}
 
-      <div className="bg-slate-900 w-screen flex justify-center">
+      <section className="bg-slate-900 w-screen flex justify-center">
+
         <InfoSection
           titulo="Inspiración"
           DesciptionComp={<DetallesProducto />}
@@ -122,9 +123,9 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
               isLink={false}
             />
           }
-          className="w-full lg:max-w-[calc(1280px+32px)]"
+          className="w-full  lg:max-w-[calc(1280px+32px)]"
         />
-      </div>
+      </section>
 
       <section className="px-4 mt-28 py-6 lg:hidden">
         <NuestrasComprasIncluyen />
@@ -139,93 +140,8 @@ export default PerfumeLujo;
 
 const DetallesProducto = () => {
   return (
-    <div className="w-80 px-4 pt-4 pb-5 border-b border-zinc-700 flex-col justify-start items-center gap-5 inline-flex">
-      <div className="self-stretch h-8 justify-start items-center inline-flex">
-        <div className="px-3 py-1 border-b-2 border-white flex-col justify-center items-center inline-flex">
-          <div className="justify-center items-center gap-2.5 inline-flex">
-            <div className="text-white text-base font-medium font-inter leading-normal">
-              Notas olfativas
-            </div>
-          </div>
-        </div>
-        <div className="px-3 py-1 border-b-2 border-zinc-700 flex-col justify-center items-center inline-flex">
-          <div className="justify-center items-center gap-2.5 inline-flex">
-            <div className="text-neutral-200 text-base font-medium font-inter leading-normal">
-              Ingredientes
-            </div>
-          </div>
-        </div>
-        <div className="px-3 py-1 border-b-2 border-zinc-700 flex-col justify-center items-center inline-flex">
-          <div className="justify-center items-center gap-2.5 inline-flex">
-            <div className="text-neutral-200 text-base font-medium font-inter leading-normal">
-              Info adicional
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="self-stretch h-[340px] flex-col justify-start items-center gap-5 flex">
-        <div className="self-stretch h-[52px] flex-col justify-center items-start gap-2 flex">
-          <div className="self-stretch justify-start items-center gap-1 inline-flex">
-            <div className="grow shrink basis-0 text-neutral-200 text-lg font-bold font-tajawal leading-snug">
-              Familia olfativa
-            </div>
-          </div>
-          <div className="self-stretch justify-start items-center gap-1 inline-flex">
-            <div className="grow shrink basis-0 text-zinc-100 text-lg font-normal font-tajawal leading-snug">
-              Amaderada: Cálida, elegante y natural.
-            </div>
-          </div>
-        </div>
-        <div className="self-stretch h-[52px] flex-col justify-center items-start gap-2 flex">
-          <div className="self-stretch justify-start items-center gap-1 inline-flex">
-            <div className="grow shrink basis-0 text-white text-lg font-bold font-tajawal leading-snug">
-              Top Notes
-            </div>
-          </div>
-          <div className="self-stretch justify-start items-center gap-1 inline-flex">
-            <div className="grow shrink basis-0 text-white text-lg font-normal font-tajawal leading-snug">
-              Bergamot, Pink Pepper, Cardamom, Heliotrope.
-            </div>
-          </div>
-        </div>
-        <div className="self-stretch h-[52px] flex-col justify-center items-start gap-2 flex">
-          <div className="self-stretch justify-start items-center gap-1 inline-flex">
-            <div className="grow shrink basis-0 text-white text-lg font-bold font-tajawal leading-snug">
-              Heart Notes
-            </div>
-          </div>
-          <div className="self-stretch justify-start items-center gap-1 inline-flex">
-            <div className="grow shrink basis-0 text-white text-lg font-normal font-tajawal leading-snug">
-              Jasmine, Lavender, Bitter almond, Geranium.
-            </div>
-          </div>
-        </div>
-        <div className="self-stretch h-[52px] flex-col justify-center items-start gap-2 flex">
-          <div className="self-stretch justify-start items-center gap-1 inline-flex">
-            <div className="grow shrink basis-0 text-white text-lg font-bold font-tajawal leading-snug">
-              Base Notes
-            </div>
-          </div>
-          <div className="self-stretch justify-start items-center gap-1 inline-flex">
-            <div className="grow shrink basis-0 text-white text-lg font-normal font-tajawal leading-snug">
-              Vanilla, Amber, Sandalwood, Natural Oud, Gaiac Wood
-            </div>
-          </div>
-        </div>
-        <div className="self-stretch h-[52px] flex-col justify-center items-start gap-2 flex">
-          <div className="self-stretch justify-start items-center gap-1 inline-flex">
-            <div className="grow shrink basis-0 text-white text-lg font-bold font-tajawal leading-snug">
-              Best time to wear
-            </div>
-          </div>
-          <div className="self-stretch justify-start items-center gap-1 inline-flex">
-            <div className="grow shrink basis-0 text-white text-lg font-normal font-tajawal leading-snug">
-              During the colder months, or when going out on an adventure
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <section className="">
+      
+    </section>
   );
 };
