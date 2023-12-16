@@ -19,7 +19,7 @@ const InfoSection = (props: InfoProps) => {
         "min-h-[40vh] h-auto pt-6 lg:py-12 text-color-bg-surface-1-default lg:flex gap-6 items-center",
         props.className
       )}>
-      <section className="px-4 flex flex-col gap-2 pb-5 flex-1">
+      <section className="px-4 w-full h-full flex flex-col justify-center items-center gap-2 pb-5 flex-1">
         {!props.DesciptionComp ? (
           <>
             <h2 className="text-2xl font-semibold font-crimson leading-7">
