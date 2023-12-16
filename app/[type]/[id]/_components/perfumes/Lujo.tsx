@@ -11,6 +11,8 @@ import ProductSlide from "@/app/_components/ProductSlide";
 import GalleryProduct from "@/app/_components/lujo/GalleryProduct";
 import MobileAddToCart from "../MobileAddToCart";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
+import { useState } from "react";
+import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
 
 type TPerfumeLujoProps = {
   product: TPerfumeLujo;
@@ -137,11 +139,3 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
 };
 
 export default PerfumeLujo;
-
-const DetallesProducto = () => {
-  return (
-    <section className="">
-      
-    </section>
-  );
-};
