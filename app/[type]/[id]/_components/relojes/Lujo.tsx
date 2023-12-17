@@ -13,6 +13,7 @@ const RelojLujo = ({product}: TRelojLujoProps) => {
       <HeroProduct
         product={product}
         images={product.variantes[0].imagenes}
+        
       />
     </>
   );

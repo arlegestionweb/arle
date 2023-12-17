@@ -8,8 +8,8 @@ import {
 import Labels from "../Labels";
 import GalleryProduct from "./GalleryProduct";
 import { TGafaLujo, TPerfumeLujo, TRelojLujo, isPerfumeLujo } from "@/sanity/queries/pages/types";
-import { imageType } from "../types";
 import { isPerfume } from "@/sanity/queries/pages/listingQueries";
+import { imageType } from "../types";
 
 type HeroProductProps = {
   product: TPerfumeLujo | TRelojLujo | TGafaLujo;
@@ -23,6 +23,7 @@ const HeroProduct = ({ product, images }: HeroProductProps) => {
       <GalleryProduct
         className="col-start-1 col-span-6"
         imagesProduct={images}
+        orientation={isPerfumeLujo(product) ? "horizontal": "vertical"}
       />
 
       <section className="row-start-1 col-start-7 col-span-6 flex flex-col">
