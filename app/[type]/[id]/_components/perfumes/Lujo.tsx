@@ -13,78 +13,21 @@ import MobileAddToCart from "../MobileAddToCart";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import { useState } from "react";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
+import HeroProduct from "@/app/_components/lujo/HeroProduct";
 
 type TPerfumeLujoProps = {
   product: TPerfumeLujo;
 };
 
 const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
-  console.log(product);
+  
 
   return (
     <>
-      <section className="lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto w-full lg:max-w-[calc(1280px+32px)]">
-        {/* Product view */}
-        <GalleryProduct
-          className="col-start-1 col-span-6"
-          imagesProduct={product.imagenes}
-        />
-
-        <section className="row-start-1 col-start-7 col-span-6 flex flex-col">
-          <Labels
-            className="mx-4 relative max-w-fit mt-4 lg:mt-0 mb-2"
-            labelType={"ultimas unidades"}
-            label={"ultimas unidades"}
-          />
-          <header className="px-4 ">
-            <h1 className="text-zinc-800 text-[32px] font-normal font-kanit leading-10 w-full">
-              {product.marca}
-            </h1>
-            <h2>
-              {product.marca} | {product.genero}
-            </h2>
-            <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-              CODE:{product.variantes[0].codigoDeReferencia}
-            </span>
-            <p className="text-zinc-800 text-[32px] font-normal font-kanit leading-9">
-              ${product.variantes[0].precio}
-            </p>
-            <div className="text-justify">
-              <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-                Págalo a 4 cuotas de $
-                {numberToColombianPriceString(
-                  colombianPriceStringToNumber(product.variantes[0].precio) / 4
-                )}{" "}
-                sin intereses.
-                <br />
-                [provider]
-              </span>
-              <span className="text-neutral-600 text-sm font-normal font-tajawal leading-[16.80px]">
-                .{" "}
-              </span>
-              <span className="text-zinc-800 text-sm font-normal font-tajawal leading-[16.80px]">
-                Learn More
-              </span>
-            </div>{" "}
-          </header>
-
-          {/* <VariantSelector
-          product={product}
-          selectedVariant={selectedVariant}
-          setSelectedVariant={setSelectedVariant}
-        /> */}
-
-          <section className="px-4 mt-2 mb-6">
-            <Cantidad />
-          </section>
-
-          <MobileAddToCart className="hidden static shadow-none w-full px-4 gap-6 space-y-2 lg:block" />
-
-          <section className="px-4 hidden lg:block">
-            <NuestrasComprasIncluyen />
-          </section>
-        </section>
-      </section>
+      <HeroProduct
+        product={product}
+        images={product.imagenes}
+      />
 
       <div className="bg-slate-900 w-screen flex justify-center">
         <InfoSection
