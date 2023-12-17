@@ -11,13 +11,15 @@ type ImageType =  {
 type CarouselProductProps = {
   imagesProduct: ImageType[];
   className?: string;
-  setProduct:  React.Dispatch<React.SetStateAction<number>>
+  setProduct:  React.Dispatch<React.SetStateAction<number>>,
+  isHorizontal?: boolean
 };
 
 const CarouselProduct = ({
   imagesProduct,
   className,
-  setProduct
+  setProduct,
+  isHorizontal,
 }: CarouselProductProps) => {
   const [startIndex, setStartIndex] = useState(0);
 
@@ -42,17 +44,18 @@ const CarouselProduct = ({
   }
   
   return (
-    <div className={cn("relative w-fit", className)}>
-      <button
+    <div className={cn("relative w-fit",  className)}>
+      {isHorizontal && <button
         onClick={prevImages}
         className="absolute z-20 -left-[35px] top-1/2 transform -translate-y-1/2 w-7 h-7 p-[7px] opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
         <IoIosArrowBack />
-      </button>
-      <div className="flex space-x-3 overflow-hidden">
+      </button>}
+      <div className={cn("flex space-x-3 lg:space-x-0 lg:gap-y-2 lg:flex-col lg:justify-start lg:items-center", isHorizontal && "overflow-hidden flex-row h-full")}>
+
         {visibleImages.map((img, idx) => (
           <div
             key={`${img.url}-${idx}`}
-            className="relative min-w-[80px] w-20 h-20"
+            className="relative min-w-[80px] w-20 h-20 "
             onClick={()=>selectImages(img)}
             >
             <Image
@@ -65,11 +68,11 @@ const CarouselProduct = ({
           </div>
         ))}
       </div>
-      <button
+      {isHorizontal && <button
         onClick={nextImages}
         className="absolute -right-[35px] top-1/2 transform -translate-y-1/2 w-7 h-7 p-[7px] opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
         <IoIosArrowForward />
-      </button>
+      </button>}
     </div>
   );
 };
