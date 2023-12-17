@@ -25,7 +25,7 @@ const InfoSection = (props: InfoProps) => {
             <h2 className="text-2xl font-semibold font-crimson leading-7">
               {props.titulo}
             </h2>
-            <p className="grow shrink basis-0 opacity-95 text-lg font-normal font-tajawal leading-snug">
+            <p className="basis-0 opacity-95 text-lg font-normal font-tajawal leading-snug">
               {props.descripcion}
             </p>
           </>

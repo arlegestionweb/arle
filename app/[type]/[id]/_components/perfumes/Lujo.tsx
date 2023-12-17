@@ -7,7 +7,7 @@ import {
 } from "@/utils/helpers";
 import Cantidad from "../Cantidad";
 import InfoSection from "../InfoSection";
-import ProductSlide from "@/app/_components/ProductSlide";
+import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
 import GalleryProduct from "@/app/_components/lujo/GalleryProduct";
 import MobileAddToCart from "../MobileAddToCart";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
@@ -19,7 +19,7 @@ type TPerfumeLujoProps = {
 };
 
 const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
-  console.log(product.ingredientes, product.notasOlfativas);
+  console.log(product);
 
   return (
     <>
@@ -119,12 +119,13 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
           }
           ImageComp={
             <ProductSlide
-              imagesProduct={[
-                {
-                  alt: product.banners[0].imagen?.alt,
-                  url: product.banners[0].imagen?.url || "",
-                },
-              ]}
+              imagesProduct={product.banners.map(
+                element =>
+                  ({
+                    url: element.imagen?.url,
+                    alt: element.imagen?.alt,
+                  } as ProductImage)
+              )}
               className="max-h-[377px] w-full"
               isLink={false}
             />
