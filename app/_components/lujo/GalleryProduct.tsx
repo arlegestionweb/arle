@@ -10,9 +10,10 @@ type GalleryProductProps = {
     alt?: string | null | undefined;
   }[];
   className?: string;
+  orientation?: "vertical" | "horizontal"
 };
 
-const GalleryProduct = ({ imagesProduct, className }: GalleryProductProps) => {
+const GalleryProduct = ({ imagesProduct, className, orientation = "horizontal" }: GalleryProductProps) => {
   const [index, setIndex] = useState(0);
 
   const thumbnailElement = imagesProduct
@@ -41,7 +42,7 @@ const GalleryProduct = ({ imagesProduct, className }: GalleryProductProps) => {
 
   return (
     <section className={cn("flex flex-col items-center", className)}>
-      <div  className={"relative w-full h-[377px] lg:h-[569px]"}>
+      <div className={"relative w-full h-[377px] lg:h-[569px]"}>
         <Image
           alt={imagesProduct[index].alt || ""}
           src={imagesProduct[index].url}
@@ -49,8 +50,16 @@ const GalleryProduct = ({ imagesProduct, className }: GalleryProductProps) => {
           className="object-cover object-center"
         />
       </div>
-      <div className="no-scrollbar flex lg:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">{thumbnailElement}</div>
-      <CarouselProduct setProduct={setIndex} imagesProduct={imagesProduct} className="hidden my-2 md:justify-center justify-start md:flex h-20 "/>
+      <div className="no-scrollbar flex lg:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">
+        {thumbnailElement}
+      </div>
+      {imagesProduct.length != 1 && (
+        <CarouselProduct
+          setProduct={setIndex}
+          imagesProduct={imagesProduct}
+          className="hidden my-2 md:justify-center justify-start md:flex h-20 "
+        />
+      )}
     </section>
   );
 };

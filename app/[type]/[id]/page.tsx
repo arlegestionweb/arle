@@ -35,7 +35,7 @@ const ProductPage = async ({ params }: TPageProps) => {
       {params.type === "perfumeLujo" && <PerfumeLujo product={product}/>}
       {params.type === "perfumePremium" && <PerfumePremium product={product}/>}
       {params.type === "relojesPremium" && <RelojPremium product={product}/>}
-      {/* {params.type === "relojesLujo" && <RelojLujo product={product}/>} */}
+      {params.type === "relojesLujo" && <RelojLujo product={product}/>}
     </main>
   );
 };
