@@ -4,15 +4,18 @@ import { cn } from "@/app/_lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
+export type ProductImage = {
+  url: string;
+  alt?: string | null | undefined;
+}
 type ProductSlideProps = {
   slug?: string;
-  imagesProduct: {
-    url: string;
-    alt?: string | null | undefined;
-  }[];
+  imagesProduct: ProductImage[];
   className?: string;
   isLink?: boolean;
 };
+
+
 
 const ProductSlide = ({
   slug,
