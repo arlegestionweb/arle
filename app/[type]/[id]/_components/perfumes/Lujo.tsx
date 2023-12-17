@@ -19,7 +19,7 @@ type TPerfumeLujoProps = {
 };
 
 const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
-  console.log(product.imagenes);
+  console.log(product.ingredientes, product.notasOlfativas);
 
   return (
     <>
@@ -109,10 +109,14 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
       )}
 
       <section className="bg-slate-900 w-screen flex justify-center">
-
         <InfoSection
           titulo="Inspiración"
-          DesciptionComp={<DetallesProducto />}
+          DesciptionComp={
+            <DetallesProducto
+              notasOlfativas={product.notasOlfativas}
+              ingredientes={product.ingredientes}
+            />
+          }
           ImageComp={
             <ProductSlide
               imagesProduct={[
@@ -129,7 +133,7 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
         />
       </section>
 
-      <section className="px-4 mt-28 py-6 lg:hidden">
+      <section className="px-4 py-6 lg:hidden">
         <NuestrasComprasIncluyen />
       </section>
 
