@@ -1,15 +1,18 @@
 import { TGafaLujo } from "@/sanity/queries/pages/types";
+import HeroProduct from "@/app/_components/lujo/HeroProduct";
 
 type TGafaLujoProps = {
   product: TGafaLujo;
 };
 
-const GafaLujo = ({product}: TGafaLujoProps) => {
-  
+const GafaLujo = ({ product }: TGafaLujoProps) => {
   return (
-    <div>
-      <h1>{product.marca} {product.modelo}</h1>
-    </div>
+    <>
+      <HeroProduct
+        product={product}
+        images={product.variantes[0].imagenes}
+      />
+    </>
   );
 };
 

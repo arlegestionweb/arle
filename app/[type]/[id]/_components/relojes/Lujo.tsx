@@ -1,4 +1,5 @@
 import { TRelojLujo } from "@/sanity/queries/pages/types";
+import HeroProduct from "@/app/_components/lujo/HeroProduct";
 
 type TRelojLujoProps = {
   product: TRelojLujo;
@@ -6,9 +7,12 @@ type TRelojLujoProps = {
 
 const RelojLujo = ({product}: TRelojLujoProps) => {
   return (
-    <div>
-      <h1>{product.marca} {product.modelo}</h1>
-    </div>
+    <>
+      <HeroProduct
+        product={product}
+        images={product.variantes[0].imagenes}
+      />
+    </>
   );
 };
 
