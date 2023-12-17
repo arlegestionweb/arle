@@ -10,10 +10,14 @@ type GalleryProductProps = {
     alt?: string | null | undefined;
   }[];
   className?: string;
-  orientation?: "vertical" | "horizontal"
+  orientation?: "vertical" | "horizontal";
 };
 
-const GalleryProduct = ({ imagesProduct, className, orientation = "horizontal" }: GalleryProductProps) => {
+const GalleryProduct = ({
+  imagesProduct,
+  className,
+  orientation = "horizontal",
+}: GalleryProductProps) => {
   const [index, setIndex] = useState(0);
 
   const thumbnailElement = imagesProduct
@@ -41,7 +45,12 @@ const GalleryProduct = ({ imagesProduct, className, orientation = "horizontal" }
     });
 
   return (
-    <section className={cn("flex flex-col items-center", className)}>
+    <section
+      className={cn(
+        "flex flex-col items-center",
+        orientation == "vertical" && "lg:flex-row-reverse items-start gap-2",
+        className
+      )}>
       <div className={"relative w-full h-[377px] lg:h-[569px]"}>
         <Image
           alt={imagesProduct[index].alt || ""}
@@ -57,7 +66,8 @@ const GalleryProduct = ({ imagesProduct, className, orientation = "horizontal" }
         <CarouselProduct
           setProduct={setIndex}
           imagesProduct={imagesProduct}
-          className="hidden my-2 md:justify-center justify-start md:flex h-20 "
+          className={cn("hidden my-2 md:justify-center justify-start md:flex h-20", orientation == "vertical" && "lg:h-full lg:gap-2")}
+          isHorizontal={orientation != "vertical"}
         />
       )}
     </section>
