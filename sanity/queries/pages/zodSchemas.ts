@@ -52,6 +52,9 @@ const imagenSchema = z.object({
   alt: z.string(),
   url: z.string(),
 });
+const videoSchema = z.object({
+  url: z.string(),
+});
 
 const contenidoSchema = z.object({
   resena: z.string().optional().nullable(),
@@ -168,7 +171,7 @@ const descripcionSchema = z.object({
 const bannerSchema = z.object({
   imagenOVideo: z.boolean().optional().nullable(),
   imagen: imagenSchema.optional().nullable(),
-  video: imagenSchema.optional().nullable(),
+  video: videoSchema.optional().nullable(),
 });
 
 const coleccionDeMarca = z.object({
