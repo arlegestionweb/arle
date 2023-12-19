@@ -52,6 +52,9 @@ const imagenSchema = z.object({
   alt: z.string(),
   url: z.string(),
 });
+const videoSchema = z.object({
+  url: z.string(),
+});
 
 const contenidoSchema = z.object({
   resena: z.string().optional().nullable(),
@@ -168,7 +171,7 @@ const descripcionSchema = z.object({
 const bannerSchema = z.object({
   imagenOVideo: z.boolean().optional().nullable(),
   imagen: imagenSchema.optional().nullable(),
-  video: imagenSchema.optional().nullable(),
+  video: videoSchema.optional().nullable(),
 });
 
 const coleccionDeMarca = z.object({
@@ -197,7 +200,7 @@ export const perfumeLujoSchema = z.object({
   coleccionDeMarca: coleccionDeMarca.optional().nullable(),
 });
 export const gafasLujoSchema = z.object({
-  banners: z.array(bannerSchema),
+  banners: z.array(bannerSchema).optional().nullable(),
   mostrarCredito: z.boolean().optional().nullable(),
   especificaciones: z.object({
     tipoDeGafa: z.string(),
@@ -265,14 +268,14 @@ export const gafasLujoSchema = z.object({
       imagen: imagenSchema.optional().nullable(),
     }).optional().nullable(),
   
-  }),
+  }).optional().nullable(),
   monturaDetalles: z.object({
     usarDetalles: z.boolean().optional().nullable(),
     contenido: z.object({
       texto: z.string().optional().nullable(),
       imagen: imagenSchema.optional().nullable(),
     }).optional().nullable(),
-  }),
+  }).optional().nullable(),
 });
 
 export const gafasPremiumSchema = z.object({
