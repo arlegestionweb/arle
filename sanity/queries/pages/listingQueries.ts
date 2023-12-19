@@ -3,6 +3,14 @@ import { bannersQuery, imageArrayQuery, imageQuery } from "../objects";
 
 import { z } from "zod";
 
+const commonProductItems = `
+  "marca": marca->titulo,
+  "type": _type,
+  "slug": slug.current,
+  "genero": coalesce(genero, detalles.genero, detallesReloj.genero),
+  _id
+`;
+
 const listingMainString = ` 
 {
   "listingContent": *[_type == "listing"][0]{
@@ -10,8 +18,7 @@ const listingMainString = `
   },
   "perfumes": *[_type == "perfumeLujo" || _type == "perfumePremium"] {
     titulo,
-    "marca": marca->titulo,
-    "type": _type,
+    ${commonProductItems},
     ${imageArrayQuery},
     "variantes": variantes[]{
       precio,
@@ -21,12 +28,10 @@ const listingMainString = `
       codigoDeReferencia,
       registroInvima
     },
-    "slug": slug.current,
   },
   "relojes": *[_type == "relojesLujo" || _type == "relojesPremium"] {
-    "marca": marca->titulo,
+    ${commonProductItems},
     modelo,
-    "type": _type,
     "variantes": variantes[]{
       precio,
       unidadesDisponibles,
@@ -47,11 +52,9 @@ const listingMainString = `
       codigoDeReferencia,
       registroInvima
     },
-    "slug": slug.current,
   },
   "gafas": *[_type == "gafasLujo" || _type == "gafasPremium"] {
-    "marca": marca->titulo,
-    _id,
+    ${commonProductItems},
     "variantes": variantes []{
       precio,
       etiqueta,
@@ -76,8 +79,6 @@ const listingMainString = `
       registroInvima
     },
     modelo,
-    "type": _type,
-    "slug": slug.current
   },
   "colecciones": *[_type == "colecciones"] {
     titulo,
@@ -98,6 +99,13 @@ const zodColorSchema = z.object({
   color: z.string(),
 });
 
+const zodCommonProductItems = z.object({
+  marca: z.string(),
+  type: z.string(),
+  slug: z.string(),
+  genero: z.string(),
+  _id: z.string(),
+});
 export type TColor = z.infer<typeof zodColorSchema>;
 
 const zodVarianteGafa = z.object({
@@ -119,14 +127,12 @@ const zodVarianteGafa = z.object({
 
 export type TVarianteGafa = z.infer<typeof zodVarianteGafa>;
 
-const zodGafaListingQuery = z.object({
-  marca: z.string(),
-  _id: z.string(),
-  variantes: z.array(zodVarianteGafa),
-  modelo: z.string(),
-  type: z.string(),
-  slug: z.string(),
-});
+const zodGafaListingQuery = zodCommonProductItems.merge(
+  z.object({
+    variantes: z.array(zodVarianteGafa),
+    modelo: z.string(),
+  })
+);
 
 const zodBanner = z.object({
   titulo: z.string(),
@@ -153,19 +159,18 @@ const zodVariantePerfume = z.object({
 
 export type TVariantePerfume = z.infer<typeof zodVariantePerfume>;
 
-const zodPerfumeListingQuery = z.object({
-  titulo: z.string(),
-  marca: z.string(),
-  type: z.string(),
-  imagenes: z.array(
-    z.object({
-      url: z.string(),
-      alt: z.string().optional().nullable(),
-    })
-  ),
-  variantes: z.array(zodVariantePerfume),
-  slug: z.string(),
-});
+const zodPerfumeListingQuery = zodCommonProductItems.merge(
+  z.object({
+    titulo: z.string(),
+    imagenes: z.array(
+      z.object({
+        url: z.string(),
+        alt: z.string().optional().nullable(),
+      })
+    ),
+    variantes: z.array(zodVariantePerfume),
+  })
+);
 
 export type TPerfume = z.infer<typeof zodPerfumeListingQuery>;
 
@@ -187,13 +192,12 @@ const zodVarianteReloj = z.object({
 });
 export type TVarianteReloj = z.infer<typeof zodVarianteReloj>;
 
-const zodRelojListingQuery = z.object({
-  marca: z.string(),
-  modelo: z.string(),
-  type: z.string(),
-  variantes: z.array(zodVarianteReloj),
-  slug: z.string(),
-});
+const zodRelojListingQuery = zodCommonProductItems.merge(
+  z.object({
+    modelo: z.string(),
+    variantes: z.array(zodVarianteReloj),
+  })
+);
 
 export type TReloj = z.infer<typeof zodRelojListingQuery>;
 
@@ -262,6 +266,8 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
+
+    // console.log(result.perfumes)
     const parsedResult = zodListPage.safeParse(result);
 
     if (!parsedResult.success) {

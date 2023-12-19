@@ -1,37 +1,40 @@
 "use client";
+import { createUrl, makeNewParams } from "@/app/_lib/utils";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const subMenu = [
   {
     title: "Perfumes",
-    link: "/listing?producto=perfume",
+    param: "perfume"
   },
   {
     title: "Relojes",
-    link: "/listing?producto=relojes",
+    param: "reloj"
   },
   {
     title: "Gafas",
-    link: "/listing?producto=gafas",
+    param: "gafa"
   },
   {
     title: "Destacados",
-    link: "/listing",
+    param: "destacado"
   },
 ];
 
 const SubMenuDesktop = () => {
-  const pathname = usePathname();
-
+  const searchParams = useSearchParams();
+  const newParams = new URLSearchParams(searchParams.toString());
+  const selectedProducto = searchParams.get("type");
+  
   return (
     <section className="flex mt-[60px] h-[52px] px-8 py-2 gap-3 bg-background items-center">
       {subMenu.map(item => (
         <Link
-          href={item.link}
+          href={createUrl("/listing", makeNewParams("type", item.param, newParams))}
           key={item.title}
           className={`px-3 py-1.5 flex justify-center items-center 
-                    ${item.link == pathname ? "border border-black" : ""}`}>
+                    ${selectedProducto?.includes(item.param) ? "border border-black" : ""}`}>
           <p className="text-black font-medium">{item.title}</p>
         </Link>
       ))}
