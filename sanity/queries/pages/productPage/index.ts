@@ -398,7 +398,6 @@ export const getProductById = async (id: string, productType: TProductType) => {
   const fetchResult =
     await sanityClient.fetch(`*[_type == "${productType}" && _id == "${id}"][0]
   ${query}`);
-  console.log(fetchResult.banners)
   const productSchema = schemas[productType];
 
   const product = productSchema.safeParse(fetchResult);
