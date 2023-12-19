@@ -1,4 +1,3 @@
-import { BookIcon } from "@sanity/icons";
 import { type StructureBuilder } from "sanity/desk";
 import { homeSchema } from "../schemas/pages/homeSchema";
 import { listingSchema } from "../schemas/pages/listingSchema";
@@ -6,7 +5,7 @@ import { BsCollection } from "react-icons/bs";
 import { sobreNosotrosSchema } from "../schemas/pages/sobreNosotros";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { preguntasFrecuentesSchema } from "../schemas/pages/preguntasFrecuentesSchema";
-import { FaQuestion } from "react-icons/fa";
+import { FaBookOpen, FaQuestion } from "react-icons/fa";
 
 export default (S: StructureBuilder) => {
   const homePageListItem = S.listItem()
@@ -49,7 +48,7 @@ export default (S: StructureBuilder) => {
     );
   const pages = S.listItem()
     .title("Páginas")
-    .icon(BookIcon)
+    .icon(FaBookOpen)
     .child(
       S.list()
         .title("Páginas")

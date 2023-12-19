@@ -1,11 +1,11 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
-import { CogIcon } from "@sanity/icons";
+import { FaCog } from "react-icons/fa";
 
 export const siteSettings = defineType({
   name: "configuracion",
   title: "Configuración",
   type: "document",
-  icon: CogIcon,
+  icon: FaCog,
   fields: [
     defineField({
       name: "titulo",
