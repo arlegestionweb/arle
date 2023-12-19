@@ -197,7 +197,7 @@ export const perfumeLujoSchema = z.object({
   coleccionDeMarca: coleccionDeMarca.optional().nullable(),
 });
 export const gafasLujoSchema = z.object({
-  banners: z.array(bannerSchema),
+  banners: z.array(bannerSchema).optional().nullable(),
   mostrarCredito: z.boolean().optional().nullable(),
   especificaciones: z.object({
     tipoDeGafa: z.string(),
@@ -265,14 +265,14 @@ export const gafasLujoSchema = z.object({
       imagen: imagenSchema.optional().nullable(),
     }).optional().nullable(),
   
-  }),
+  }).optional().nullable(),
   monturaDetalles: z.object({
     usarDetalles: z.boolean().optional().nullable(),
     contenido: z.object({
       texto: z.string().optional().nullable(),
       imagen: imagenSchema.optional().nullable(),
     }).optional().nullable(),
-  }),
+  }).optional().nullable(),
 });
 
 export const gafasPremiumSchema = z.object({
