@@ -30,7 +30,8 @@ const movimientoQuery = ` "movimiento": movimiento {
   ${contenidoQuery}
 }`;
 
-const bannersQuery = `"banners": bannersDeProducto [] {
+const bannersQuery = `
+"banners": bannersDeProducto [] {
   imagenOVideo,
   "imagen": imagen {
     alt,
@@ -68,7 +69,14 @@ const variantesDeGafaQueryString = `
     }, 
   }
 `;
-export const productQuery: Record<TProductType, string> = {
+
+const garantiaQuery = `  
+  "garantia": garantia { 
+    meses, 
+    descripcion
+}`;
+
+const productQuery: Record<TProductType, string> = {
   relojesLujo: `{
     genero,
     mostrarCredito,
@@ -122,19 +130,17 @@ export const productQuery: Record<TProductType, string> = {
     },
     "inspiracion": ${inspiracionQuery},    
     modelo,
-    "garantia": garantia {
-      meses,
+    ${garantiaQuery},
+    ${movimientoQuery},
+    "caja": caja { 
+      diametro, 
+      "material": material -> nombre, 
+      "cristal": cristal -> titulo
     },
-   ${movimientoQuery},
-  "caja": caja { 
-    diametro, 
-    "material": material -> nombre, 
-    "cristal": cristal -> titulo
-  },
-  coleccionDeMarca,
-  descripcion,
-  ${bannersQuery},
-  "slug": slug.current,
+    coleccionDeMarca,
+    descripcion,
+    ${bannersQuery},
+    "slug": slug.current,
   }
 `,
   relojesPremium: `{
@@ -164,7 +170,7 @@ export const productQuery: Record<TProductType, string> = {
     _id,
     modelo,
     "slug": slug.current,
-    "garantia": garantia { meses, descripcion },
+    ${garantiaQuery},
     _type,
     "marca": marca->titulo,
     "detallesReloj": detallesReloj {
@@ -248,36 +254,15 @@ export const productQuery: Record<TProductType, string> = {
     descripcion
   }`,
   gafasLujo: `{
-    ${bannersQuery},
-    mostrarCredito,
-    "especificaciones": especificaciones {
-      "tipoDeGafa": tipoDeGafa -> titulo,
-      "estiloDeGafa": estiloDeGafa -> titulo,
-      "lente": lente {
-        "tipo": tipo -> titulo,
-        "material": material -> titulo,
-      },
-      queIncluye,
-      "montura": montura {
-        "formaDeLaMontura": formaDeLaMontura -> titulo,
-        "materialMontura": materialMontura -> titulo,
-        "materialVarilla": materialVarilla -> titulo,
-      },
-      "paisDeOrigen": paisDeOrigen -> nombre
-    },
     _id,
-    descripcion,
-    "marca": marca->titulo,
     _type,
-    "garantia": garantia { 
-      meses, 
-      descripcion
-    },
-    "inspiracion": ${inspiracionQuery},    
-    "variantes": ${variantesDeGafaQueryString},
+    "marca": marca->titulo,
     modelo,
-    "slug": slug.current,
+    descripcion,
     genero,
+    mostrarCredito,
+    ${garantiaQuery},
+    "inspiracion": ${inspiracionQuery},    
     "detalles": detalles {
       usarDetalles,
       "contenido": contenido {
@@ -299,8 +284,56 @@ export const productQuery: Record<TProductType, string> = {
           }
         }
       },
-      descripcion,
-    }
+    },
+    ${bannersQuery},
+    "especificaciones": especificaciones {
+      "paisDeOrigen": paisDeOrigen -> nombre,
+      queIncluye,
+      "tipoDeGafa": tipoDeGafa -> titulo,
+      "estiloDeGafa": estiloDeGafa -> titulo,
+      "montura": montura {
+        "formaDeLaMontura": formaDeLaMontura -> titulo,
+        "materialMontura": materialMontura -> titulo,
+        "materialVarilla": materialVarilla -> titulo,
+      },
+      "lente": lente {
+        "material": material -> titulo,
+        "tipo": tipo -> titulo,
+      },
+    },
+    "inspiracion": ${inspiracionQuery},    
+    "variantes": ${variantesDeGafaQueryString},
+    modelo,
+    "variantes": variantes [] {
+      "colorDeLaMontura": colorDeLaMontura -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaVarilla": colorDeLaVarilla -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDelLente": colorDelLente -> {
+        nombre,
+        "color": color.hex
+      },
+      precio,
+      precioConDescuento,
+      etiqueta,
+      codigoDeReferencia,
+      registroInvima,
+      mostrarUnidadesDispobibles,
+      unidadesDisponibles,
+      "imagenes": imagenes[]{
+        alt,
+        "url": asset->url,
+      }, 
+    },
+    coleccionDeMarca,
+    "slug": slug.current,
+   
+   
+    
   }`,
   gafasPremium: `{
     _type,
@@ -324,9 +357,7 @@ export const productQuery: Record<TProductType, string> = {
         "materialVarilla": materialVarilla -> titulo,
       }
     },
-    "garantia": garantia { 
-      meses
-    }
+    ${garantiaQuery}
   }`,
 };
 
