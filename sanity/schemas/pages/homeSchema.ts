@@ -1,14 +1,14 @@
 import { imageArrayMemberSchema } from './../objects/image';
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { HomeIcon } from "@sanity/icons";
 import { PiFlagBannerFill } from 'react-icons/pi';
 import { videoSchema } from '../objects/video';
+import { FaHome } from 'react-icons/fa';
 
 export const homeSchema = defineType({
   name: "homepage",
   title: "Home",
   type: "document",
-  icon: HomeIcon,
+  icon: FaHome,
   fields: [
     defineField({
       name: "banners1",
