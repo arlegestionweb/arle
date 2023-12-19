@@ -61,7 +61,7 @@ const Filters = ({
             <LuSettings2 /> Sort by: {"Recents"}
           </Button>
         </div>
-        <BreadCrumbs filters={filters} searchParams={allParams} />
+        {/* <BreadCrumbs filters={filters} searchParams={allParams} /> */}
       </section>
       <FilterMenu
         areFiltersActive={areFiltersActive}
