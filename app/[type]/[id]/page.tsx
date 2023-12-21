@@ -27,7 +27,6 @@ type TPageProps = {
 const ProductPage = async ({ params }: TPageProps) => {
   const product = await getProductById(params.id, params.type);
 
-  
   return (
     <main className="min-h-screen bg-background pb-10 flex flex-col justify-center items-center">
       {params.type === "gafasLujo" && <GafaLujo product={product} />}
@@ -35,7 +34,7 @@ const ProductPage = async ({ params }: TPageProps) => {
       {params.type === "perfumeLujo" && <PerfumeLujo product={product}/>}
       {params.type === "perfumePremium" && <PerfumePremium product={product}/>}
       {params.type === "relojesPremium" && <RelojPremium product={product}/>}
-      {/* {params.type === "relojesLujo" && <RelojLujo product={product}/>} */}
+      {params.type === "relojesLujo" && <RelojLujo product={product}/>}
     </main>
   );
 };

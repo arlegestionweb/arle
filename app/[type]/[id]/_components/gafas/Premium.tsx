@@ -11,7 +11,6 @@ type TGafaPremiumProps = {
 };
 
 const GafaPremium = ({ product }: TGafaPremiumProps) => {
-  console.log(product.descripcion);
   
   return (
     <PremiumLayout product={product}>

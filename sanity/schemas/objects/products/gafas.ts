@@ -59,7 +59,7 @@ export const lenteSchema = defineField({
   ],
 });
 
-const varianteDeGafaLujo = defineField({
+const varianteDeGafa = defineField({
   name: "variante",
   title: "Variante",
   type: "object",
@@ -99,85 +99,6 @@ const varianteDeGafaLujo = defineField({
       title: "Registro Invima",
       type: "string",
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "mostrarUnidadesDispobibles",
-      title: "Mostrar unidades disponibles",
-      type: "boolean",
-      initialValue: false,
-    }),
-    defineField({
-      name: "unidadesDisponibles",
-      title: "Unidades disponibles",
-      type: "number",
-      validation: (Rule) =>
-        Rule.required()
-          .min(0)
-          .error("Unidades disponibles no pueden ser menos de 0"),
-    }),
-    imageArrayForProducts,
-  ],
-  preview: {
-    select: {
-      title: "colorDeLaMontura.nombre",
-      subtitle: "precio",
-      media: "imagenes",
-    },
-    prepare(selection) {
-      const { title, subtitle, media } = selection;
-      if (!title || !subtitle || !media) {
-        return {
-          title: "Sin título",
-          subtitle: "Sin precio",
-        };
-      }
-      return {
-        title: `Montura ${title}`,
-        subtitle: `$ ${subtitle}`,
-        media: media[0],
-      };
-    },
-  },
-});
-const varianteDeGafaPremium = defineField({
-  name: "variante",
-  title: "Variante",
-  type: "object",
-  fields: [
-    defineField({
-      name: "colorDeLaMontura",
-      title: "Color de la Montura",
-      type: "reference",
-      to: [{ type: "colores" }],
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "colorDelLente",
-      title: "Color del Lente",
-      type: "reference",
-      to: [{ type: "colores" }],
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "colorDeLaVarilla",
-      title: "Color de la Varilla",
-      type: "reference",
-      to: [{ type: "colores" }],
-      validation: (Rule) => Rule.required(),
-    }),
-    precioSchema,
-    precioConDescuentoSchema,
-    etiquetaSchema,
-    defineField({
-      name: "codigoDeReferencia",
-      title: "Código de referencia",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "registroInvima",
-      title: "Registro Invima",
-      type: "string",
     }),
     defineField({
       name: "mostrarUnidadesDispobibles",
@@ -224,7 +145,7 @@ export const variantesDeGafaPremiumSchema = defineField({
   title: "Variantes",
   group: "variantes",
   type: "array",
-  of: [varianteDeGafaPremium],
+  of: [varianteDeGafa],
   validation: (Rule) =>
     Rule.custom((variantes) => {
       if (!variantes) return "Debe haber al menos una variante";
@@ -239,7 +160,7 @@ export const variantesDeGafaLujoSchema = defineField({
   title: "Variantes",
   group: "variantes",
   type: "array",
-  of: [varianteDeGafaLujo],
+  of: [varianteDeGafa],
   validation: (Rule) =>
     Rule.custom((variantes) => {
       if (!variantes) return "Debe haber al menos una variante";

@@ -3,37 +3,39 @@ import RedDot from "./RedDot";
 import { cn } from "../_lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 
-const buttonsVariants = cva(
-  "px-3 py-1.5 border border-black relative",
-  {
-    variants: {
-      labelType: {
-        light: "bg-color-bg-surface-1-default text-black",
-        dark: "bg-black text-[#CFCFCF]",
-      },
+const buttonsVariants = cva("px-3 py-1.5 border border-black relative", {
+  variants: {
+    labelType: {
+      light: "bg-color-bg-surface-1-default text-black",
+      dark: "bg-black text-[#CFCFCF]",
     },
-    defaultVariants: {
-      labelType: "light",
-    },
-  }
-);
+  },
+  defaultVariants: {
+    labelType: "light",
+  },
+});
 
-type ButtonProps = ComponentPropsWithoutRef<"button"> & VariantProps<typeof buttonsVariants> & {
-  children: ReactNode;
-  onClick?: () => void;
-  className?: string;
-  active?: boolean;
-}
+type ButtonProps = ComponentPropsWithoutRef<"button"> &
+  VariantProps<typeof buttonsVariants> & {
+    children: ReactNode;
+    onClick?: () => void;
+    className?: string;
+    active?: boolean;
+  };
 
-const Button = ({children, active, className = "", labelType}: ButtonProps) => {
+const Button = ({
+  children,
+  active,
+  className = "",
+  labelType,
+  ...rest
+}: ButtonProps) => {
   return (
-    <button className={cn(buttonsVariants({labelType}), className)}>
+    <button className={cn(buttonsVariants({ labelType }), className)} {...rest}>
       {children}
-      {active && (
-        <RedDot />
-      )}
+      {active && <RedDot />}
     </button>
   );
-}
+};
 
 export default Button;

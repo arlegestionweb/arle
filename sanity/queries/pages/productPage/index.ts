@@ -1,13 +1,8 @@
 import sanityClient from "@/sanity/sanityClient";
 import { z } from "zod";
-import {
-  gafasLujoSchema,
-  gafasPremiumSchema,
-  perfumeLujoSchema,
-  perfumePremiumSchema,
-  relojLujoSchema,
-  relojPremiumSchema,
-} from "../zodSchemas";
+import { relojLujoSchema, relojPremiumSchema } from "../zodSchemas/reloj";
+import { gafasLujoSchema, gafasPremiumSchema } from "../zodSchemas/gafas";
+import { perfumeLujoSchema, perfumePremiumSchema } from "../zodSchemas/perfume";
 
 type TProductType =
   | "relojesLujo"
@@ -30,11 +25,6 @@ const inspiracionQuery = `inspiracion {
   ${contenidoQuery}
 }`;
 
-const detallesQuery = ` "detalles": detalles {
-  usarDetalles,
-  ${contenidoQuery}
-}`;
-
 const movimientoQuery = ` "movimiento": movimiento {
   usarMovimiento,
   ${contenidoQuery}
@@ -46,20 +36,55 @@ const bannersQuery = `"banners": bannersDeProducto [] {
     alt,
     "url": asset->url,
   },
-  "video": video {
+  "video": video.video {
     "url": asset->url,
-    alt
   }
 }`;
 
-const productQuery: Record<TProductType, string> = {
+const variantesDeGafaQueryString = `
+  variantes [] {
+    mostrarUnidadesDispobibles,
+    "colorDeLaMontura": colorDeLaMontura -> {
+      nombre,
+      "color": color.hex
+    },
+    etiqueta,
+    "colorDeLaVarilla": colorDeLaVarilla -> {
+      nombre,
+      "color": color.hex
+    },
+    codigoDeReferencia,
+    registroInvima,
+    precio,
+    precioConDescuento,
+    unidadesDisponibles,
+    "colorDelLente": colorDelLente -> {
+      nombre,
+      "color": color.hex
+    },
+    "imagenes": imagenes[]{
+      alt,
+      "url": asset->url,
+    }, 
+  }
+`;
+export const productQuery: Record<TProductType, string> = {
   relojesLujo: `{
     genero,
     mostrarCredito,
     "marca": marca->titulo,
     _type,
     _id,
-    ${detallesQuery},
+    "detalles": detalles {
+      usarDetalles,
+      "contenido": contenido {
+        texto,
+        "imagen": imagen {
+          alt,
+          "url": asset->url,
+        }
+      }
+    },
     "especificaciones": especificaciones {
       "tipoDeReloj": tipoDeReloj -> titulo,
       "estiloDeReloj": estiloDeReloj -> titulo,
@@ -249,31 +274,7 @@ const productQuery: Record<TProductType, string> = {
       descripcion
     },
     "inspiracion": ${inspiracionQuery},    
-    "variantes": variantes [] {
-      mostrarUnidadesDispobibles,
-      "colorDeLaMontura": colorDeLaMontura -> {
-        nombre,
-        "color": color.hex
-      },
-      etiqueta,
-      "colorDeLaVarilla": colorDeLaVarilla -> {
-        nombre,
-        "color": color.hex
-      },
-      codigoDeReferencia,
-      registroInvima,
-      precio,
-      precioConDescuento,
-      unidadesDisponibles,
-      "colorDelLente": colorDelLente -> {
-        nombre,
-        "color": color.hex
-      },
-      "imagenes": imagenes[]{
-        alt,
-        "url": asset->url,
-      }, 
-    },
+    "variantes": ${variantesDeGafaQueryString},
     modelo,
     "slug": slug.current,
     genero,
@@ -305,26 +306,7 @@ const productQuery: Record<TProductType, string> = {
     _type,
     "marca": marca->titulo,
     _id,
-    "variantes": variantes[] {
-      "colorDelLente": colorDelLente -> {
-        nombre,
-        "color": color.hex
-      },
-      "colorDeLaMontura": colorDeLaMontura -> {
-        nombre,
-        "color": color.hex
-      },
-      "imagenes": imagenes[] {
-        alt,
-        "url": asset->url,
-      },
-      codigoDeReferencia,
-      registroInvima,
-      unidadesDisponibles,
-      precio,
-      etiqueta,
-      mostrarUnidadesDispobibles
-    },
+    "variantes": ${variantesDeGafaQueryString},
     modelo,
     "slug": slug.current, 
     genero,
