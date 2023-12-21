@@ -65,12 +65,6 @@ FilterMenuProps) => {
     }
   };
 
-  // const quitarFiltros = () => {
-  //   console.log("here")
-  //   resetForm();
-  //   toggleFilter();
-  //   // push("/somewhere");
-  // }
   return (
     <div
       className={`${
