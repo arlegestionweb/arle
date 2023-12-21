@@ -20,7 +20,8 @@ const Listing = async ({
   };
 }) => {
   const pageContent = await getListingInitialLoadContent();
-  const coleccionSeleccionada = null;
+  const lineaSeleccionada = searchParams.linea as string;
+  const coleccionSeleccionada = searchParams.coleccion as string;
   const tipoDeProductoSeleccionado = searchParams.type as string;
   const campoDeBusquedaSeleccionado = searchParams.search as string;
 
@@ -28,24 +29,16 @@ const Listing = async ({
     (coleccion) => !!coleccion.productos
   );
 
-  // const coleccionContent = colecciones?.find(
-  //   (coleccion) => coleccion.titulo === coleccionSeleccionada
-  // );
+  const coleccionContent = colecciones?.find(
+    (coleccion) => coleccion.titulo === coleccionSeleccionada
+  );
 
   if (!pageContent?.relojes && !pageContent?.perfumes && !pageContent?.gafas) {
     return null;
   }
 
-  // const productos= coleccionSeleccionada
-  //   ? coleccionContent?.productos
-  //   : pageContent?.relojes || pageContent.perfumes
-  //   ? [
-  //       ...pageContent.relojes,
-  //       ...pageContent.perfumes,
-  //     ]
-  //   : [];
-
-  const productos =
+  const productos = coleccionSeleccionada
+    && coleccionContent?.productos ? coleccionContent.productos :
     pageContent?.relojes && pageContent.perfumes && pageContent.gafas
       ? [...pageContent.relojes, ...pageContent.perfumes, ...pageContent.gafas]
       : [];
@@ -54,50 +47,41 @@ const Listing = async ({
     !!tipoDeProductoSeleccionado ||
     !!campoDeBusquedaSeleccionado;
 
-  // const filteredProducts = productos?.filter((producto) => {
-  //   let matchesTipoDeProducto = true;
-  //   let matchesCampoDeBusqueda = true;
+  const filteredProducts = productos?.filter((producto) => {
+    let matchesTipoDeProducto = true;
+    let matchesCampoDeBusqueda = true;
 
-  //   if (tipoDeProductoSeleccionado) {
-  //     matchesTipoDeProducto = producto.type.includes(
-  //       tipoDeProductoSeleccionado
-  //     );
-  //   }
+    if (tipoDeProductoSeleccionado) {
+      matchesTipoDeProducto = producto._type?.includes(
+        tipoDeProductoSeleccionado
+      );
+    }
 
-  //   if (campoDeBusquedaSeleccionado) {
-  //     matchesCampoDeBusqueda = Object.entries(producto).some(([key, value]) => {
-  //       // If the value is an object and has a 'titulo' property, use that for comparison
-  //       if (typeof value === "object" && value !== null && "titulo" in value) {
-  //         const tituloValue = (value as { titulo: string }).titulo;
-  //         return tituloValue
-  //           .toLowerCase()
-  //           .includes(campoDeBusquedaSeleccionado.toLowerCase());
-  //       }
-  //       // Otherwise, convert non-string values to string for comparison
-  //       const valueStr = String(value).toLowerCase();
-  //       return valueStr.includes(campoDeBusquedaSeleccionado.toLowerCase());
-  //     });
-  //   }
+    if (campoDeBusquedaSeleccionado) {
+      matchesCampoDeBusqueda = Object.entries(producto).some(([key, value]) => {
+        // If the value is an object and has a 'titulo' property, use that for comparison
+        if (typeof value === "object" && value !== null && "titulo" in value) {
+          const tituloValue = (value as { titulo: string }).titulo;
+          return tituloValue
+            .toLowerCase()
+            .includes(campoDeBusquedaSeleccionado.toLowerCase());
+        }
+        // Otherwise, convert non-string values to string for comparison
+        const valueStr = String(value).toLowerCase();
+        return valueStr.includes(campoDeBusquedaSeleccionado.toLowerCase());
+      });
+    }
 
-  //   return matchesTipoDeProducto && matchesCampoDeBusqueda;
-  // });
+    return matchesTipoDeProducto && matchesCampoDeBusqueda;
+  });
 
   // console.log({ searchParams });
 
+  // console.log({productos})
+  const newFilteredProducts = filteredProducts
 
-  function filterData(data: TProduct[]) {
-    return data.filter((item) =>
-      Object.keys(searchParams).every(
-        (filterName) =>
-          searchParams[filterName] === null ||
-          (item as { [key: string]: any })[filterName]?.includes(
-            searchParams[filterName]
-          )
-      )
-    );
-  }
-  const newFilteredProducts = filterData(productos);
-  const marcas = getAllMarcas(newFilteredProducts);
+  // console.log({filteredProducts})	
+  const marcas = getAllMarcas(filteredProducts);
 
   return (
     <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">

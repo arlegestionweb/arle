@@ -32,7 +32,7 @@ FilterMenuProps) => {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("running");
+    // console.log("running");
     const val = e.target as HTMLFormElement;
 
     const newParams = new URLSearchParams(searchParams.toString());
@@ -83,7 +83,7 @@ FilterMenuProps) => {
               className="cursor-pointer text-3xl"
             />
           </header>
-          <FilterSection
+          {/* <FilterSection
             title="Tipo de Producto"
             active={!!searchParams.get("type")}
           >
@@ -108,7 +108,7 @@ FilterMenuProps) => {
               type="radio"
               value={"perfume"}
             />
-          </FilterSection>
+          </FilterSection> */}
           <FilterSection title="Línea" active={!!searchParams.get("linea")}>
             <InputBox
               name="linea"
@@ -116,7 +116,7 @@ FilterMenuProps) => {
               description="La cima del Lujo, tu poder en cada detalle"
               type="radio"
               defaultChecked={searchParams.get("linea")?.includes("excelencia")}
-              value={"excelencia"}
+              value={"premium"}
             />
             <InputBox
               name="linea"
@@ -124,7 +124,7 @@ FilterMenuProps) => {
               description="Calidad que inspira Liderazgo"
               type="radio"
               defaultChecked={searchParams.get("linea")?.includes("elite")}
-              value={"elite"}
+              value={"lujo"}
             />
           </FilterSection>
           <FilterSection title="Género" active={!!searchParams.get("genero")}>

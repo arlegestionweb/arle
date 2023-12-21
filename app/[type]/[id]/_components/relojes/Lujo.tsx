@@ -5,7 +5,6 @@ type TRelojLujoProps = {
 };
 
 const RelojLujo = ({product}: TRelojLujoProps) => {
-  
   return (
     <div>
       <h1>{product.marca} {product.modelo}</h1>
