@@ -4,9 +4,6 @@ import {
   TColor,
   TGafa,
   TProduct,
-  TVarianteGafa,
-  TVariantePerfume,
-  TVarianteReloj,
   isGafa,
   isPerfume,
   isReloj,
@@ -17,6 +14,9 @@ import ProductSlide from "../../_components/ProductSlide";
 import Link from "next/link";
 import Labels, { LabelTypes } from "../../_components/Labels";
 import { useState } from "react";
+import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
+import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
+import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
   return (
@@ -33,7 +33,7 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
   );
 };
 
-type TVariant = TVariantePerfume | TVarianteGafa | TVarianteReloj;
+type TVariant = TPerfumeVariant | TVarianteGafa | TRelojVariant;
 
 const CardLayout = ({ product }: { product: TProduct }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
@@ -185,7 +185,7 @@ const VariantSelector = <T extends TProduct>({
       <>
         <h4>Color:</h4>
         <ul className="flex gap-2">
-          {product.variantes.map((variante: TVarianteReloj, index) => (
+          {product.variantes.map((variante: TRelojVariant, index) => (
             <li
               key={`${variante.colorCaja.nombre}-${index}`}
               className={

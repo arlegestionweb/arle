@@ -1,5 +1,7 @@
 import { z } from "zod";
-import { gafasLujoSchema, gafasPremiumSchema, perfumeLujoSchema, perfumePremiumSchema, relojLujoSchema, relojPremiumSchema } from "./zodSchemas";
+import { perfumeLujoSchema, perfumePremiumSchema } from "./zodSchemas/perfume";
+import { relojLujoSchema, relojPremiumSchema } from "./zodSchemas/reloj";
+import { gafasLujoSchema, gafasPremiumSchema } from "./zodSchemas/gafas";
 
 export type TPerfumePremium = z.infer<typeof perfumePremiumSchema>;
 export type TPerfumeLujo = z.infer<typeof perfumeLujoSchema>;

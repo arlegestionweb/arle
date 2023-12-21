@@ -1,5 +1,5 @@
 import sanityClient from "@/sanity/sanityClient";
-import { bannersQuery, imageArrayQuery, imageQuery } from "../objects";
+import { bannersQuery, imageQuery } from "../objects";
 
 import { z } from "zod";
 import { productQuery } from "./productPage";
@@ -80,42 +80,14 @@ const zodBanner = z.object({
 
 export type TBanner = z.infer<typeof zodBanner>;
 
-const zodVariantePerfume = z.object({
-  precio: z.string(),
-  unidadesDisponibles: z.number(),
-  tamano: z.number(),
-  etiqueta: z.string().optional().nullable(),
-  registroInvima: z.string(),
-  codigoDeReferencia: z.string(),
-});
 
-export type TVariantePerfume = z.infer<typeof zodVariantePerfume>;
-
-export type TPerfume = z.infer<typeof zodPerfumeListingQuery>;
-
-const zodVarianteReloj = z.object({
-  precio: z.string(),
-  unidadesDisponibles: z.number(),
-  etiqueta: z.string().optional().nullable(),
-  imagenes: z.array(
-    z.object({
-      url: z.string(),
-      alt: z.string().optional().nullable(),
-    })
-  ),
-  colorPulso: zodColorSchema,
-  colorTablero: zodColorSchema,
-  colorCaja: zodColorSchema,
-  registroInvima: z.string(),
-  codigoDeReferencia: z.string(),
-});
 
 export const isPerfume = (product: TProduct): product is TPerfume =>
-  product._type?.includes("perfume");
+product._type?.includes("perfume");
 export const isReloj = (product: TProduct): product is TReloj =>
-  product._type?.includes("reloj");
+product._type?.includes("reloj");
 export const isGafa = (product: TProduct): product is TGafa =>
-  product._type?.includes("gafa");
+product._type?.includes("gafa");
 
 const zodGafaListingQuery = z.discriminatedUnion("_type", [
   gafasPremiumSchema,
@@ -138,10 +110,8 @@ const zodProduct = z.union([
   zodGafaListingQuery,
 ]);
 
-export type TVarianteReloj = z.infer<typeof zodVarianteReloj>;
-
+export type TPerfume = z.infer<typeof zodPerfumeListingQuery>;
 export type TReloj = z.infer<typeof zodRelojListingQuery>;
-
 export type TGafa = z.infer<typeof zodGafaListingQuery>;
 
 export type TProduct = z.infer<typeof zodProduct>;

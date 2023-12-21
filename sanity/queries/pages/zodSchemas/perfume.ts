@@ -20,14 +20,17 @@ const descripcionSchema = z.object({
 });
 
 const perfumeVariantSchema = z.object({
-  codigoDeReferencia: z.string(),
-  unidadesDisponibles: z.number(),
-  registroInvima: z.string(),
-  precioConDescuento: z.string().optional().nullable(),
-  mostrarUnidadesDispobibles: z.boolean().optional().nullable(),
   tamano: z.number(),
   precio: z.string(),
+  precioConDescuento: z.string().optional().nullable(),
+  codigoDeReferencia: z.string(),
+  registroInvima: z.string(),
+  mostrarUnidadesDispobibles: z.boolean().optional().nullable(),
+  unidadesDisponibles: z.number(),
+  etiqueta: z.string().optional().nullable(),
 });
+
+export type TPerfumeVariant = z.infer<typeof perfumeVariantSchema>;
 
 export const perfumePremiumSchema = z.object({
   slug: z.string(),

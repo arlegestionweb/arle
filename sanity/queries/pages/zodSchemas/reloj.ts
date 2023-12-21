@@ -25,6 +25,8 @@ export const relojVariantSchema = z.object({
   colorPulso: zodColorSchema,
 });
 
+export type TRelojVariant = z.infer<typeof relojVariantSchema>;
+
 export const relojLujoSchema = z.object({
   genero: generoSchema,
   mostrarCredito: z.boolean().optional().nullable(),
