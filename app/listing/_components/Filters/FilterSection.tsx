@@ -11,7 +11,7 @@ const FilterSection = ({
   children,
   active = false,
 }: FilterSectionProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(active);
   return (
     <section className="w-full h-fit px-4 py-6 border-b border-stone-300  flex-col justify-center items-start gap-3">
       <div className="flex justify-between items-center w-full ">

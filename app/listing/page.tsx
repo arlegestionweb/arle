@@ -37,50 +37,54 @@ const Listing = async ({
     return null;
   }
 
-  const productos = coleccionSeleccionada
-    && coleccionContent?.productos ? coleccionContent.productos :
-    pageContent?.relojes && pageContent.perfumes && pageContent.gafas
+  const productos =
+    coleccionSeleccionada && coleccionContent?.productos
+      ? coleccionContent.productos
+      : pageContent?.relojes && pageContent.perfumes && pageContent.gafas
       ? [...pageContent.relojes, ...pageContent.perfumes, ...pageContent.gafas]
       : [];
   const areFiltersActive =
     !!coleccionSeleccionada ||
     !!tipoDeProductoSeleccionado ||
-    !!campoDeBusquedaSeleccionado;
+    !!campoDeBusquedaSeleccionado ||
+    !!lineaSeleccionada;
 
-  const filteredProducts = productos?.filter((producto) => {
-    let matchesTipoDeProducto = true;
-    let matchesCampoDeBusqueda = true;
+  const filters = [
+    tipoDeProductoSeleccionado &&
+      ((producto: TProduct) =>
+        producto._type?.includes(tipoDeProductoSeleccionado)),
+    campoDeBusquedaSeleccionado &&
+      ((producto: TProduct) =>
+        Object.entries(producto).some(([key, value]) => {
+          if (
+            typeof value === "object" &&
+            value !== null &&
+            "titulo" in value
+          ) {
+            const tituloValue = (value as { titulo: string }).titulo;
+            return tituloValue
+              .toLowerCase()
+              .includes(campoDeBusquedaSeleccionado.toLowerCase());
+          }
+          const valueStr = String(value).toLowerCase();
+          return valueStr.includes(campoDeBusquedaSeleccionado.toLowerCase());
+        })),
+    lineaSeleccionada &&
+      ((producto: TProduct) =>
+        lineaSeleccionada === "todos"
+          ? true
+          : producto._type.toLowerCase().includes(lineaSeleccionada)),
+  ].filter(Boolean); // Remove any undefined filters
 
-    if (tipoDeProductoSeleccionado) {
-      matchesTipoDeProducto = producto._type?.includes(
-        tipoDeProductoSeleccionado
-      );
-    }
-
-    if (campoDeBusquedaSeleccionado) {
-      matchesCampoDeBusqueda = Object.entries(producto).some(([key, value]) => {
-        // If the value is an object and has a 'titulo' property, use that for comparison
-        if (typeof value === "object" && value !== null && "titulo" in value) {
-          const tituloValue = (value as { titulo: string }).titulo;
-          return tituloValue
-            .toLowerCase()
-            .includes(campoDeBusquedaSeleccionado.toLowerCase());
-        }
-        // Otherwise, convert non-string values to string for comparison
-        const valueStr = String(value).toLowerCase();
-        return valueStr.includes(campoDeBusquedaSeleccionado.toLowerCase());
-      });
-    }
-
-    return matchesTipoDeProducto && matchesCampoDeBusqueda;
-  });
-
+  const filteredProducts = productos?.filter((producto) =>
+    filters.every((filter) => typeof filter === "function" && filter(producto))
+  );
   // console.log({ searchParams });
 
   // console.log({productos})
-  const newFilteredProducts = filteredProducts
+  const newFilteredProducts = filteredProducts;
 
-  // console.log({filteredProducts})	
+  // console.log({filteredProducts})
   const marcas = getAllMarcas(filteredProducts);
 
   return (

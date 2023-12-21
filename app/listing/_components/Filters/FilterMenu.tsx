@@ -54,7 +54,7 @@ FilterMenuProps) => {
       }
     });
 
-    newParams.forEach((value, key) => console.log(key, value))
+    newParams.forEach((value, key) => console.log(key, value));
     push(createUrl("/listing", newParams));
     toggleFilter();
   };
@@ -65,6 +65,12 @@ FilterMenuProps) => {
     }
   };
 
+  // const quitarFiltros = () => {
+  //   console.log("here")
+  //   resetForm();
+  //   toggleFilter();
+  //   // push("/somewhere");
+  // }
   return (
     <div
       className={`${
@@ -112,10 +118,18 @@ FilterMenuProps) => {
           <FilterSection title="Línea" active={!!searchParams.get("linea")}>
             <InputBox
               name="linea"
+              title="Todos"
+              description="Ver todos los productos"
+              type="radio"
+              defaultChecked={searchParams.get("linea")?.includes("todos") || !searchParams.get("linea")}
+              value={"todos"}
+            />
+            <InputBox
+              name="linea"
               title="Excelencia"
               description="La cima del Lujo, tu poder en cada detalle"
               type="radio"
-              defaultChecked={searchParams.get("linea")?.includes("excelencia")}
+              defaultChecked={searchParams.get("linea")?.includes("premium")}
               value={"premium"}
             />
             <InputBox
@@ -123,7 +137,7 @@ FilterMenuProps) => {
               title="Elite"
               description="Calidad que inspira Liderazgo"
               type="radio"
-              defaultChecked={searchParams.get("linea")?.includes("elite")}
+              defaultChecked={searchParams.get("linea")?.includes("lujo")}
               value={"lujo"}
             />
           </FilterSection>
@@ -157,9 +171,7 @@ FilterMenuProps) => {
                 name="marca"
                 title={marca}
                 type="checkbox"
-                defaultChecked={searchParams
-                  .get("marca")
-                  ?.includes(marca)}
+                defaultChecked={searchParams.get("marca")?.includes(marca)}
                 value={marca}
               />
             ))}
@@ -168,7 +180,7 @@ FilterMenuProps) => {
             <Button type="submit">Aplicar Filtros</Button>
             {areFiltersActive && (
               <Link href="/listing" onClick={toggleFilter}>
-                <Button type="submit">Quitar Filtros</Button>
+                <Button>Quitar Filtros</Button>
               </Link>
             )}
           </footer>
