@@ -45,7 +45,7 @@ const Listing = async ({
       : [];
   const areFiltersActive =
     !!coleccionSeleccionada ||
-    !!tipoDeProductoSeleccionado ||
+    // !!tipoDeProductoSeleccionado ||
     !!campoDeBusquedaSeleccionado ||
     !!lineaSeleccionada;
 
