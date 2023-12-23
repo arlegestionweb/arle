@@ -7,6 +7,7 @@ import Colecciones from "../_components/Colecciones";
 // import Banner from "../_components/homepage/Banner";
 import Filters from "./_components/Filters/index";
 import { getAllMarcas } from "../_lib/utils";
+import Banner from "../_components/homepage/Banner";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -26,11 +27,11 @@ const Listing = async ({
   const campoDeBusquedaSeleccionado = searchParams.search as string;
 
   const colecciones = pageContent?.colecciones.filter(
-    (coleccion) => !!coleccion.productos
+    coleccion => !!coleccion.productos
   );
 
   const coleccionContent = colecciones?.find(
-    (coleccion) => coleccion.titulo === coleccionSeleccionada
+    coleccion => coleccion.titulo === coleccionSeleccionada
   );
 
   if (!pageContent?.relojes && !pageContent?.perfumes && !pageContent?.gafas) {
@@ -76,8 +77,8 @@ const Listing = async ({
           : producto._type.toLowerCase().includes(lineaSeleccionada)),
   ].filter(Boolean); // Remove any undefined filters
 
-  const filteredProducts = productos?.filter((producto) =>
-    filters.every((filter) => typeof filter === "function" && filter(producto))
+  const filteredProducts = productos?.filter(producto =>
+    filters.every(filter => typeof filter === "function" && filter(producto))
   );
   // console.log({ searchParams });
 
@@ -88,11 +89,17 @@ const Listing = async ({
   const marcas = getAllMarcas(filteredProducts);
 
   return (
-    <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
-      <Filters areFiltersActive={areFiltersActive} marcas={marcas} />
+    <main className="bg-color-bg-surface-0-default min-h-screen pt-[70px] md:pt-0">
+      <Banner
+        banners={pageContent.listingContent.banners}
+        className="h-[50vh] pt-0"
+      />
 
       {!coleccionSeleccionada ? (
-        <Colecciones colecciones={colecciones ?? []} className="py-6 pl-4" />
+        <Colecciones
+          colecciones={colecciones ?? []}
+          className="py-6 pl-4"
+        />
       ) : (
         <h2 className="text-3xl font-bold capitalize">
           Coleccion {coleccionSeleccionada}
@@ -100,12 +107,15 @@ const Listing = async ({
       )}
       <section className="bg-color-bg-surface-1-default flex flex-col items-center">
         <section className="max-w-[1280px] w-full py-6 px-4 md:px-9 flex">
-          {/* <Filters marcas={marcas} areFiltersActive={areFiltersActive} /> */}
+          <Filters
+            areFiltersActive={areFiltersActive}
+            marcas={marcas}
+          />
         </section>
 
         <section className="max-w-[1280px] w-full py-6 px-4 md:px-9">
-          {newFilteredProducts && newFilteredProducts.length > 0 ? (
-            <Productos productos={newFilteredProducts} />
+          {filteredProducts && filteredProducts.length > 0 ? (
+            <Productos productos={filteredProducts} />
           ) : (
             <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
           )}
