@@ -1,7 +1,7 @@
 import { type ComponentPropsWithoutRef } from "react";
 
 type InputProps = ComponentPropsWithoutRef<"input"> & {
-  title: string;
+  title?: string;
   description?: string;
   // className?: string;
 };
@@ -14,7 +14,7 @@ const InputBox = ({ title, description, ...rest }: InputProps) => {
     >
       <input {...rest} />
       <div>
-        <h4>{title}</h4>
+        {title && <h4>{title}</h4>}
         {description && <p className="text-xs">{description}</p>}
       </div>
     </label>

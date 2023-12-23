@@ -6,6 +6,7 @@ import Button from "@/app/_components/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/app/_lib/utils";
 import { useRef } from "react";
+import PriceRange from "./PriceRange";
 
 type TypeSearchParams = {
   [key: string]: string | string[] | undefined;
@@ -74,7 +75,7 @@ FilterMenuProps) => {
       <aside
         className={`${
           isFilterOpen ? "" : "hidden"
-        } w-[80vw] max-w-[400px] h-screen bg-white flex-col relative`}
+        } w-[80vw] max-w-[400px] h-screen bg-white flex-col relative overflow-scroll`}
       >
         <form onSubmit={onFormSubmit} ref={formRef}>
           <header className="flex justify-end p-4">
@@ -207,6 +208,10 @@ FilterMenuProps) => {
                 }}
               />
             ))}
+          </FilterSection>
+
+          <FilterSection title="Precio">
+              <PriceRange/>
           </FilterSection>
           <footer className="flex justify-evenly py-5">
             <Button type="submit">Aplicar Filtros</Button>
