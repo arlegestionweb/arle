@@ -83,7 +83,7 @@ const garantiaQuery = `
     descripcion
 }`;
 
-const productQuery: Record<TProductType, string> = {
+export const productQuery: Record<TProductType, string> = {
   relojesLujo: `{
     genero,
     mostrarCredito,
