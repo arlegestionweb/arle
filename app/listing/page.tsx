@@ -24,6 +24,12 @@ const Listing = async ({
   const coleccionSeleccionada = searchParams.coleccion as string;
   const tipoDeProductoSeleccionado = searchParams.type as string;
   const campoDeBusquedaSeleccionado = searchParams.search as string;
+  const generoSeleccionado = searchParams.genero as string;
+  const marcasSeleccionadas = searchParams.marca
+  ? (Array.isArray(searchParams.marca)
+    ? searchParams.marca
+    : (searchParams.marca as string).split("&").map(marca => marca.trim()))
+  : [];
 
   const colecciones = pageContent?.colecciones.filter(
     (coleccion) => !!coleccion.productos
@@ -43,16 +49,26 @@ const Listing = async ({
       : pageContent?.relojes && pageContent.perfumes && pageContent.gafas
       ? [...pageContent.relojes, ...pageContent.perfumes, ...pageContent.gafas]
       : [];
+
   const areFiltersActive =
-    !!coleccionSeleccionada ||
-    // !!tipoDeProductoSeleccionado ||
-    !!campoDeBusquedaSeleccionado ||
-    !!lineaSeleccionada;
+    (coleccionSeleccionada !== undefined &&
+      coleccionSeleccionada !== "todos") ||
+    (tipoDeProductoSeleccionado !== undefined &&
+      tipoDeProductoSeleccionado !== "todos") ||
+    (campoDeBusquedaSeleccionado !== undefined &&
+      campoDeBusquedaSeleccionado !== "todos") ||
+    (lineaSeleccionada !== undefined && lineaSeleccionada !== "todos") ||
+    (generoSeleccionado !== undefined && generoSeleccionado !== "todos") ||
+    (marcasSeleccionadas !== undefined &&
+      marcasSeleccionadas.length > 0 &&
+      !marcasSeleccionadas.includes("todas"));
 
   const filters = [
     tipoDeProductoSeleccionado &&
       ((producto: TProduct) =>
-        producto._type?.includes(tipoDeProductoSeleccionado)),
+        tipoDeProductoSeleccionado === "todos"
+          ? true
+          : producto._type?.includes(tipoDeProductoSeleccionado)),
     campoDeBusquedaSeleccionado &&
       ((producto: TProduct) =>
         Object.entries(producto).some(([key, value]) => {
@@ -74,12 +90,24 @@ const Listing = async ({
         lineaSeleccionada === "todos"
           ? true
           : producto._type.toLowerCase().includes(lineaSeleccionada)),
+    generoSeleccionado &&
+      ((producto: TProduct) =>
+        generoSeleccionado === "todos"
+          ? true
+          : producto.genero.toLowerCase().includes(generoSeleccionado)),
+    marcasSeleccionadas.length > 0 &&
+      ((producto: TProduct) =>
+        marcasSeleccionadas.includes("todas")
+          ? true
+          : marcasSeleccionadas.some((marca: string) =>
+          producto.marca.toLowerCase() === marca.toLowerCase()
+            )),
   ].filter(Boolean); // Remove any undefined filters
 
   const filteredProducts = productos?.filter((producto) =>
     filters.every((filter) => typeof filter === "function" && filter(producto))
   );
-  // console.log({ searchParams });
+  console.log({ marcasSeleccionadas });
 
   // console.log({productos})
   const newFilteredProducts = filteredProducts;

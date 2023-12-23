@@ -37,8 +37,8 @@ export const perfumePremiumSchema = z.object({
   detalles: z.object({
     concentracion: z.string(),
     resenaCorta: z.string().nullable().optional(),
-    genero: z.string(),
   }),
+  genero: z.string(),
   titulo: z.string(),
   _type: z.literal("perfumePremium"),
   mostrarCredito: z.boolean().optional().nullable(),

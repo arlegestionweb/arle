@@ -8,7 +8,6 @@ const detallesRelojSchema = z.object({
   estiloDeReloj: z.string(),
   resistenciaAlAgua: z.string(),
   material: z.string(),
-  genero: z.string(),
   tipoDeMovimiento: z.string(),
 });
 
@@ -70,5 +69,6 @@ export const relojPremiumSchema = z.object({
   variantes: z.array(relojVariantSchema),
   garantia: garantiaSchema,
   detallesReloj: detallesRelojSchema,
+  genero: generoSchema,
   slug: z.string(),
 });

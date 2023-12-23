@@ -83,10 +83,17 @@ FilterMenuProps) => {
               className="cursor-pointer text-3xl"
             />
           </header>
-          {/* <FilterSection
+          <FilterSection
             title="Tipo de Producto"
-            active={!!searchParams.get("type")}
-          >
+            active={!!searchParams.get("type") && searchParams.get("type") !== 'todos'}
+            >
+            <InputBox
+              name="type"
+              title="Todos"
+              defaultChecked={searchParams.get("type")?.includes("todos") || !searchParams.get("type")}
+              type="radio"
+              value={"todos"}
+            />
             <InputBox
               name="type"
               title="Gafas"
@@ -108,8 +115,8 @@ FilterMenuProps) => {
               type="radio"
               value={"perfume"}
             />
-          </FilterSection> */}
-          <FilterSection title="Línea" active={!!searchParams.get("linea")}>
+          </FilterSection>
+          <FilterSection title="Línea" active={!!searchParams.get("linea") && searchParams.get("linea") !== 'todos'}>
             <InputBox
               name="linea"
               title="Todos"
@@ -135,7 +142,14 @@ FilterMenuProps) => {
               value={"lujo"}
             />
           </FilterSection>
-          <FilterSection title="Género" active={!!searchParams.get("genero")}>
+          <FilterSection title="Género" active={!!searchParams.get("genero") && searchParams.get("genero") !== 'todos'}>
+            <InputBox
+              name="genero"
+              title="Todos"
+              type="radio"
+              value={"todos"}
+              defaultChecked={searchParams.get("genero")?.includes("todos") || !searchParams.get("genero")}
+            />
             <InputBox
               name="genero"
               title="Unisex"
@@ -159,6 +173,22 @@ FilterMenuProps) => {
             />
           </FilterSection>
           <FilterSection title="Marcas" active={!!searchParams.get("marca")}>
+            <InputBox
+              key={"todas"}
+              name="marca"
+              title={"Todas"}
+              type="checkbox"
+              defaultChecked={searchParams.get("marca")?.includes("todas") || !searchParams.get("marca")}
+              value={"todas"}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  document.querySelectorAll('input[name="marca"]:not([value="todas"])').forEach((checkbox) => {
+                    (checkbox as HTMLInputElement).checked = false;
+                  });
+                }
+              }}
+            />
+
             {marcas?.map((marca) => (
               <InputBox
                 key={marca}
@@ -167,6 +197,14 @@ FilterMenuProps) => {
                 type="checkbox"
                 defaultChecked={searchParams.get("marca")?.includes(marca)}
                 value={marca}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    const todasCheckbox = document.querySelector('input[name="marca"][value="todas"]');
+                    if (todasCheckbox) {
+                      (todasCheckbox as HTMLInputElement).checked = false;
+                    }
+                  }
+                }}
               />
             ))}
           </FilterSection>

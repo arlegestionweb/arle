@@ -172,9 +172,9 @@ export const productQuery: Record<TProductType, string> = {
       "estiloDeReloj": estiloDeReloj -> titulo,
       resistenciaAlAgua,
       "material": material -> nombre,
-      genero,
       "tipoDeMovimiento": tipoDeMovimiento -> titulo
-    }
+    },
+    "genero": detallesReloj.genero,
   }`,
   perfumeLujo: `{
     titulo,
@@ -226,8 +226,8 @@ export const productQuery: Record<TProductType, string> = {
     "detalles": detalles {
       "concentracion": concentracion -> nombre,
       resenaCorta,
-      genero
     },
+    "genero": detalles.genero,
     titulo,
     _type,
     mostrarCredito,
