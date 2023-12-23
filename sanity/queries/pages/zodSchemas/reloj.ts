@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { contenidoSchema, garantiaSchema, generoSchema, imageSchema, zodColorSchema } from "./general";
+import { inspiracionSchema } from "./perfume";
 
 
 
@@ -50,13 +51,12 @@ export const relojLujoSchema = z.object({
     material: z.string(),
   }),
   variantes: z.array(relojVariantSchema),
-  inspiracion: z.object({
-    usarInspiracion: z.boolean().optional().nullable(),
-  }),
+  inspiracion: inspiracionSchema,
   modelo: z.string(),
   garantia: garantiaSchema,
   movimiento: z.object({
     usarMovimiento: z.boolean().optional().nullable(),
+    contenido: contenidoSchema.optional().nullable(),
   }),
   slug: z.string(),
 });
