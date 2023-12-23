@@ -306,6 +306,8 @@ export const productQuery: Record<TProductType, string> = {
     modelo,
     "variantes": variantes [] {
       "colorDeLaMontura": colorDeLaMontura -> {
+    "variantes": variantes [] {
+      "colorDeLaMontura": colorDeLaMontura -> {
         nombre,
         "color": color.hex
       },
@@ -339,7 +341,26 @@ export const productQuery: Record<TProductType, string> = {
     _type,
     "marca": marca->titulo,
     _id,
-    "variantes": ${variantesDeGafaQueryString},
+    "variantes": variantes[] {
+      "colorDelLente": colorDelLente -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaMontura": colorDeLaMontura -> {
+        nombre,
+        "color": color.hex
+      },
+      "imagenes": imagenes[] {
+        alt,
+        "url": asset->url,
+      },
+      codigoDeReferencia,
+      registroInvima,
+      unidadesDisponibles,
+      precio,
+      etiqueta,
+      mostrarUnidadesDispobibles
+    },
     modelo,
     "slug": slug.current, 
     genero,
@@ -359,6 +380,7 @@ export const productQuery: Record<TProductType, string> = {
     },
     ${garantiaQuery}
   }`,
+ 
 };
 
 const schemas: Record<TProductType, z.ZodSchema<any>> = {

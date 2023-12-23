@@ -6,6 +6,7 @@ type TRelojLujoProps = {
 };
 
 const RelojLujo = ({product}: TRelojLujoProps) => {
+
   return (
     <>
       <HeroProduct
