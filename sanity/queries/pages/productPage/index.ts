@@ -306,8 +306,6 @@ export const productQuery: Record<TProductType, string> = {
     modelo,
     "variantes": variantes [] {
       "colorDeLaMontura": colorDeLaMontura -> {
-    "variantes": variantes [] {
-      "colorDeLaMontura": colorDeLaMontura -> {
         nombre,
         "color": color.hex
       },
@@ -333,9 +331,6 @@ export const productQuery: Record<TProductType, string> = {
     },
     coleccionDeMarca,
     "slug": slug.current,
-   
-   
-    
   }`,
   gafasPremium: `{
     _type,
@@ -343,6 +338,10 @@ export const productQuery: Record<TProductType, string> = {
     _id,
     "variantes": variantes[] {
       "colorDelLente": colorDelLente -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaVarilla": colorDeLaVarilla -> {
         nombre,
         "color": color.hex
       },
@@ -380,7 +379,6 @@ export const productQuery: Record<TProductType, string> = {
     },
     ${garantiaQuery}
   }`,
- 
 };
 
 const schemas: Record<TProductType, z.ZodSchema<any>> = {
