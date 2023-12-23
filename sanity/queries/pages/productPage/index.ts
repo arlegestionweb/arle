@@ -353,9 +353,6 @@ export const productQuery: Record<TProductType, string> = {
     },
     coleccionDeMarca,
     "slug": slug.current,
-   
-   
-    
   }`,
   gafasPremium: `{
     _type,
