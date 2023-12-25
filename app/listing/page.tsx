@@ -6,7 +6,7 @@ import Productos from "./_components/Productos";
 import Colecciones from "../_components/Colecciones";
 // import Banner from "../_components/homepage/Banner";
 import Filters from "./_components/Filters/index";
-import { getAllMarcas } from "../_lib/utils";
+import { getAllColeccionesDeMarca, getAllMarcas } from "../_lib/utils";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -32,6 +32,13 @@ const Listing = async ({
     : [];
   const selectedMinPrice = searchParams.minPrice as string;
   const selectedMaxPrice = searchParams.maxPrice as string;
+  const selectedColeccionesDeMarca = searchParams.coleccionesDeMarca
+    ? Array.isArray(searchParams.coleccionesDeMarca)
+      ? searchParams.coleccionesDeMarca
+      : (searchParams.coleccionesDeMarca as string)
+          .split("&")
+          .map((coleccionesDeMarca) => coleccionesDeMarca.trim())
+    : [];
 
   const colecciones = pageContent?.colecciones.filter(
     (coleccion) => !!coleccion.productos
@@ -65,7 +72,10 @@ const Listing = async ({
       marcasSeleccionadas.length > 0 &&
       !marcasSeleccionadas.includes("todas")) ||
     (selectedMinPrice !== undefined && selectedMinPrice !== "") ||
-    (selectedMaxPrice !== undefined && selectedMaxPrice !== "");
+    (selectedMaxPrice !== undefined && selectedMaxPrice !== "") ||
+    (selectedColeccionesDeMarca !== undefined &&
+      selectedColeccionesDeMarca.length > 0 &&
+      !selectedColeccionesDeMarca.includes("todas"));
 
   const filters = [
     tipoDeProductoSeleccionado &&
@@ -108,37 +118,51 @@ const Listing = async ({
                 producto.marca.toLowerCase() === marca.toLowerCase()
             )),
 
-            selectedMinPrice &&
-            ((producto: TProduct) =>
-              producto.variantes.some(
-                (variant) => Number(variant.precio.split('.').join('')) >= Number(selectedMinPrice)
+    selectedMinPrice &&
+      ((producto: TProduct) =>
+        producto.variantes.some(
+          (variant) =>
+            Number(variant.precio.split(".").join("")) >=
+            Number(selectedMinPrice)
+        )),
+
+    selectedMaxPrice &&
+      ((producto: TProduct) =>
+        producto.variantes.some((variant) => {
+          const precio = Number(variant.precio.split(".").join(""));
+          const selectedMaxPrecio = Number(selectedMaxPrice);
+          return precio <= selectedMaxPrecio;
+        })),
+
+        selectedColeccionesDeMarca.length > 0 &&
+        ((producto: TProduct) =>
+          selectedColeccionesDeMarca.includes("todas")
+            ? true
+            : selectedColeccionesDeMarca.some(
+                (coleccionDeMarca: string) =>
+                  producto.coleccionDeMarca?.toLowerCase() === coleccionDeMarca.toLowerCase()
               )),
-          
-          selectedMaxPrice &&
-            ((producto: TProduct) =>
-              producto.variantes.some(
-                (variant) => {
-                  const precio = Number(variant.precio.split('.').join('')) 
-                  const selectedMaxPrecio = Number(selectedMaxPrice)
-                  return precio <= selectedMaxPrecio
-                }
-              )),
+
   ].filter(Boolean);
 
-  
   const filteredProducts = productos?.filter((producto) =>
     filters.every((filter) => typeof filter === "function" && filter(producto))
   );
 
-  // console.log({productos})
+  console.log({ selectedColeccionesDeMarca });
   const newFilteredProducts = filteredProducts;
 
-  // console.log({filteredProducts})
   const marcas = getAllMarcas(filteredProducts);
+
+  const coleccionesDeMarca = getAllColeccionesDeMarca(filteredProducts);
 
   return (
     <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
-      <Filters areFiltersActive={areFiltersActive} marcas={marcas} />
+      <Filters
+        areFiltersActive={areFiltersActive}
+        marcas={marcas}
+        coleccionesDeMarca={coleccionesDeMarca}
+      />
 
       {!coleccionSeleccionada ? (
         <Colecciones colecciones={colecciones ?? []} className="py-6 pl-4" />

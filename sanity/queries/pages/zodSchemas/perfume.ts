@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { bannerSchema, coleccionDeMarca, contenidoSchema, imageSchema } from "./general";
+import { bannerSchema, coleccionDeMarcaSchema, contenidoSchema, imageSchema } from "./general";
 
 const inspiracionSchema = z.object({
   usarInspiracion: z.boolean().optional().nullable(),
@@ -52,6 +52,7 @@ export const perfumePremiumSchema = z.object({
   variantes: z.array(perfumeVariantSchema),
   parteDeUnSet: z.boolean().optional().nullable(),
   descripcion: z.string(),
+  coleccionDeMarca: coleccionDeMarcaSchema,
 });
 
 
@@ -73,5 +74,5 @@ export const perfumeLujoSchema = z.object({
   descripcion: descripcionSchema,
   paisDeOrigen: z.string(),
   banners: z.array(bannerSchema),
-  coleccionDeMarca: coleccionDeMarca.optional().nullable(),
+  coleccionDeMarca: coleccionDeMarcaSchema,
 });

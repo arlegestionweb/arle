@@ -16,12 +16,14 @@ type FilterMenuProps = {
   areFiltersActive: boolean;
   searchParams: TypeSearchParams;
   marcas: string[];
+  coleccionesDeMarca: string[];
 };
 const FilterMenu = ({
   isFilterOpen,
   toggleFilter,
   areFiltersActive,
   marcas,
+  coleccionesDeMarca,
 }: // searchParams,
 FilterMenuProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -53,7 +55,10 @@ FilterMenuProps) => {
         newParams.set(input.name, input.value);
       }
 
-      if ((input.name === "minPrice" || input.name === "maxPrice") && input.value !== "") {
+      if (
+        (input.name === "minPrice" || input.name === "maxPrice") &&
+        input.value !== ""
+      ) {
         newParams.set(input.name, input.value);
       }
     });
@@ -245,7 +250,12 @@ FilterMenuProps) => {
             ))}
           </FilterSection>
 
-          <FilterSection title="Precio" active={!!searchParams.get("minPrice") || !!searchParams.get("maxPrice")}>
+          <FilterSection
+            title="Precio"
+            active={
+              !!searchParams.get("minPrice") || !!searchParams.get("maxPrice")
+            }
+          >
             <div className="flex gap-2 justify-between pt-2">
               <InputBox
                 type="number"
@@ -253,7 +263,11 @@ FilterMenuProps) => {
                 className="w-full px-3 py-1.5 font-inter text-black bg-white rounded border border-stone-300"
                 placeholder="Mínimo"
                 min={0}
-                defaultValue={searchParams.get("minPrice") ? Number(searchParams.get("minPrice")) : undefined} 
+                defaultValue={
+                  searchParams.get("minPrice")
+                    ? Number(searchParams.get("minPrice"))
+                    : undefined
+                }
               />
               <InputBox
                 type="number"
@@ -261,10 +275,65 @@ FilterMenuProps) => {
                 className="w-full px-3 py-1.5 font-inter text-black bg-white rounded border border-stone-300"
                 placeholder="Máximo"
                 min={0}
-                defaultValue={searchParams.get("maxPrice") ? Number(searchParams.get("maxPrice")) : undefined} 
-
+                defaultValue={
+                  searchParams.get("maxPrice")
+                    ? Number(searchParams.get("maxPrice"))
+                    : undefined
+                }
               />
             </div>
+          </FilterSection>
+          <FilterSection
+            title="Colecciones de Marca"
+            active={
+              !!searchParams.get("coleccionesDeMarca") &&
+              !searchParams.get("coleccionesDeMarca")?.includes("todas")
+            }
+          >
+            <InputBox
+              key={"todas"}
+              name="coleccionesDeMarca"
+              title={"Todas"}
+              type="checkbox"
+              defaultChecked={
+                searchParams.get("coleccionesDeMarca")?.includes("todas") ||
+                !searchParams.get("coleccionesDeMarca")
+              }
+              value={"todas"}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  document
+                    .querySelectorAll(
+                      'input[name="coleccionesDeMarca"]:not([value="todas"])'
+                    )
+                    .forEach((checkbox) => {
+                      (checkbox as HTMLInputElement).checked = false;
+                    });
+                }
+              }}
+            />
+            {coleccionesDeMarca?.map((coleccion) => (
+              <InputBox
+                key={coleccion}
+                name="coleccionesDeMarca"
+                title={coleccion}
+                type="checkbox"
+                defaultChecked={searchParams
+                  .get("coleccionesDeMarca")
+                  ?.includes(coleccion)}
+                value={coleccion}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    const todasCheckbox = document.querySelector(
+                      'input[name="coleccionesDeMarca"][value="todas"]'
+                    );
+                    if (todasCheckbox) {
+                      (todasCheckbox as HTMLInputElement).checked = false;
+                    }
+                  }
+                }}
+              />
+            ))}
           </FilterSection>
           <footer className="flex justify-evenly py-5">
             <Button type="submit">Aplicar Filtros</Button>

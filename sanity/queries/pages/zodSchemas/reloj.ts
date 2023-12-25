@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { contenidoSchema, garantiaSchema, generoSchema, imageSchema, zodColorSchema } from "./general";
+import { coleccionDeMarcaSchema, contenidoSchema, garantiaSchema, generoSchema, imageSchema, zodColorSchema } from "./general";
 
 
 
@@ -10,6 +10,8 @@ const detallesRelojSchema = z.object({
   material: z.string(),
   tipoDeMovimiento: z.string(),
 });
+
+  
 
 export const relojVariantSchema = z.object({
   precio: z.string(),
@@ -57,6 +59,7 @@ export const relojLujoSchema = z.object({
   movimiento: z.object({
     usarMovimiento: z.boolean().optional().nullable(),
   }),
+  coleccionDeMarca: coleccionDeMarcaSchema,
   slug: z.string(),
 });
 
@@ -71,4 +74,6 @@ export const relojPremiumSchema = z.object({
   detallesReloj: detallesRelojSchema,
   genero: generoSchema,
   slug: z.string(),
+  coleccionDeMarca: coleccionDeMarcaSchema,
+
 });

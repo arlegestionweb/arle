@@ -175,6 +175,7 @@ export const productQuery: Record<TProductType, string> = {
       "tipoDeMovimiento": tipoDeMovimiento -> titulo
     },
     "genero": detallesReloj.genero,
+    coleccionDeMarca
   }`,
   perfumeLujo: `{
     titulo,
@@ -216,10 +217,7 @@ export const productQuery: Record<TProductType, string> = {
     },
     "paisDeOrigen": paisDeOrigen -> nombre,
    ${bannersQuery},
-    "coleccionDeMarca": coleccionDeMarca -> {
-      nombre,
-      "marca": marca -> titulo
-    }
+   coleccionDeMarca
   }`,
   perfumePremium: `{ 
     "slug": slug.current,
@@ -245,7 +243,8 @@ export const productQuery: Record<TProductType, string> = {
       unidadesDisponibles,
     },
     parteDeUnSet,
-    descripcion
+    descripcion,
+    coleccionDeMarca
   }`,
   gafasLujo: `{
     ${bannersQuery},
@@ -300,7 +299,8 @@ export const productQuery: Record<TProductType, string> = {
         }
       },
       descripcion,
-    }
+    },
+    coleccionDeMarca
   }`,
   gafasPremium: `{
     _type,
@@ -326,7 +326,8 @@ export const productQuery: Record<TProductType, string> = {
     },
     "garantia": garantia { 
       meses
-    }
+    },
+    coleccionDeMarca
   }`,
 };
 

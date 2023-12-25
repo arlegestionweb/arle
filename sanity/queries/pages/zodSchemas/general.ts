@@ -28,12 +28,10 @@ export const bannerSchema = z.object({
   video: videoSchema.optional().nullable(),
 });
 
-export const coleccionDeMarca = z.object({
-  nombre: z.string(),
-  marca: z.string(),
-});
-
 export const zodColorSchema = z.object({
   nombre: z.string(),
   color: z.string(),
 });
+
+export const coleccionDeMarcaSchema = z.string().optional().nullable();
+

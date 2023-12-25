@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   bannerSchema,
+  coleccionDeMarcaSchema,
   contenidoSchema,
   imageSchema,
   zodColorSchema,
@@ -77,6 +78,8 @@ export const gafasLujoSchema = z.object({
       .optional()
       .nullable(),
   }),
+  coleccionDeMarca: coleccionDeMarcaSchema,
+
 });
 
 export const gafasPremiumSchema = z.object({
@@ -104,6 +107,7 @@ export const gafasPremiumSchema = z.object({
   garantia: z.object({
     meses: z.number(),
   }),
+  coleccionDeMarca: coleccionDeMarcaSchema,
 });
 
 export type TVarianteGafa = z.infer<typeof gafaVariantSchema>;

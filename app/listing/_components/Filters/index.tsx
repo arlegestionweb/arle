@@ -15,10 +15,12 @@ type FiltersProps = {
   //   [key: string]: string | string[] | undefined;
   // };
   marcas: string[];
+  coleccionesDeMarca: string[];
 }
 const Filters = ({
   areFiltersActive,
-  marcas
+  marcas,
+  coleccionesDeMarca
 }: FiltersProps
 ) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -40,9 +42,9 @@ const Filters = ({
     setIsFilterOpen(!isFilterOpen);
   };
 
-  const filters = Object.keys(searchParams).map((key) => {
-    return key;
-  });
+  // const filters = Object.keys(searchParams).map((key) => {
+  //   return key;
+  // });
 
   return (
     <>
@@ -69,6 +71,7 @@ const Filters = ({
         toggleFilter={toggleFilter}
         searchParams={allParams}
         marcas={marcas}
+        coleccionesDeMarca={coleccionesDeMarca}
       />
     </>
   );
