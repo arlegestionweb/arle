@@ -4,6 +4,7 @@ import React from "react";
 
 type InfoProps = {
   titulo?: string;
+  subTitulo?: string;
   descripcion?: string;
   alt?: string;
   url?: string;
@@ -25,6 +26,7 @@ const InfoSection = (props: InfoProps) => {
             <h2 className="w-full text-2xl font-semibold font-crimson leading-7">
               {props.titulo}
             </h2>
+            { props.subTitulo && <h3 className="w-full text-xl font-semibold font-crimson leading-[23px]">{props.subTitulo}</h3>}
             <p className="basis-0 opacity-95 text-lg font-normal font-tajawal leading-snug">
               {props.descripcion}
             </p>

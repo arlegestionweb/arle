@@ -56,7 +56,11 @@ export const relojLujoSchema = z.object({
   garantia: garantiaSchema,
   movimiento: z.object({
     usarMovimiento: z.boolean().optional().nullable(),
-    contenido: contenidoSchema.optional().nullable(),
+    contenido: z.object({
+      descripcion: z.string().optional().nullable(),
+      tipo: z.string().optional().nullable(),
+      imagen: imageSchema.optional().nullable(),
+    }),
   }),
   slug: z.string(),
 });
