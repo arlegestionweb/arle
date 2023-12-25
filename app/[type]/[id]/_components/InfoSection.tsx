@@ -22,7 +22,7 @@ const InfoSection = (props: InfoProps) => {
       <section className="px-4 w-full lg:h-full flex flex-col justify-center items-center gap-2 pb-5 flex-1">
         {!props.DesciptionComp ? (
           <>
-            <h2 className="text-2xl font-semibold font-crimson leading-7">
+            <h2 className="w-full text-2xl font-semibold font-crimson leading-7">
               {props.titulo}
             </h2>
             <p className="basis-0 opacity-95 text-lg font-normal font-tajawal leading-snug">
