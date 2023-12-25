@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  bannerSchema,
   coleccionDeMarcaSchema,
   contenidoSchema,
   garantiaSchema,
@@ -77,7 +78,8 @@ export const relojLujoSchema = z.object({
       descripcion: z.string().optional().nullable(),
       imagen: imageSchema.optional().nullable(),
     }).optional().nullable(),
-  }),
+  }).optional(),
+  banners: z.array(bannerSchema).optional().nullable(),
   coleccionDeMarca: coleccionDeMarcaSchema,
   slug: z.string(),
   caja: zodCajaSchema,
