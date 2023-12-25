@@ -37,9 +37,10 @@ const RelojLujo = ({product}: TRelojLujoProps) => {
       <section className="bg-slate-900 w-screen flex justify-center">
         <InfoSection
           titulo="Movimiento"
-          descripcion={product.movimiento.contenido?.resena || ""}
-          alt={product.detalles?.contenido?.imagen?.alt || ""}
-          url={product.detalles?.contenido?.imagen?.url || ""}
+          descripcion={product.movimiento.contenido?.descripcion || ""}
+          subTitulo={product.movimiento.tipoDeMovimiento || ""}
+          alt={product.movimiento?.contenido?.imagen?.alt || ""}
+          url={product.movimiento?.contenido?.imagen?.url || ""}
           className="lg:max-w-[calc(1280px+32px)]"
         />
       </section>
