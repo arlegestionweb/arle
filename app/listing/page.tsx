@@ -26,10 +26,12 @@ const Listing = async ({
   const campoDeBusquedaSeleccionado = searchParams.search as string;
   const generoSeleccionado = searchParams.genero as string;
   const marcasSeleccionadas = searchParams.marca
-  ? (Array.isArray(searchParams.marca)
-    ? searchParams.marca
-    : (searchParams.marca as string).split("&").map(marca => marca.trim()))
-  : [];
+    ? Array.isArray(searchParams.marca)
+      ? searchParams.marca
+      : (searchParams.marca as string).split("&").map((marca) => marca.trim())
+    : [];
+  const selectedMinPrice = searchParams.minPrice as string;
+  const selectedMaxPrice = searchParams.maxPrice as string;
 
   const colecciones = pageContent?.colecciones.filter(
     (coleccion) => !!coleccion.productos
@@ -61,7 +63,9 @@ const Listing = async ({
     (generoSeleccionado !== undefined && generoSeleccionado !== "todos") ||
     (marcasSeleccionadas !== undefined &&
       marcasSeleccionadas.length > 0 &&
-      !marcasSeleccionadas.includes("todas"));
+      !marcasSeleccionadas.includes("todas")) ||
+    (selectedMinPrice !== undefined && selectedMinPrice !== "") ||
+    (selectedMaxPrice !== undefined && selectedMaxPrice !== "");
 
   const filters = [
     tipoDeProductoSeleccionado &&
@@ -99,15 +103,32 @@ const Listing = async ({
       ((producto: TProduct) =>
         marcasSeleccionadas.includes("todas")
           ? true
-          : marcasSeleccionadas.some((marca: string) =>
-          producto.marca.toLowerCase() === marca.toLowerCase()
+          : marcasSeleccionadas.some(
+              (marca: string) =>
+                producto.marca.toLowerCase() === marca.toLowerCase()
             )),
-  ].filter(Boolean); // Remove any undefined filters
 
+            selectedMinPrice &&
+            ((producto: TProduct) =>
+              producto.variantes.some(
+                (variant) => Number(variant.precio.split('.').join('')) >= Number(selectedMinPrice)
+              )),
+          
+          selectedMaxPrice &&
+            ((producto: TProduct) =>
+              producto.variantes.some(
+                (variant) => {
+                  const precio = Number(variant.precio.split('.').join('')) 
+                  const selectedMaxPrecio = Number(selectedMaxPrice)
+                  return precio <= selectedMaxPrecio
+                }
+              )),
+  ].filter(Boolean);
+
+  
   const filteredProducts = productos?.filter((producto) =>
     filters.every((filter) => typeof filter === "function" && filter(producto))
   );
-  console.log({ marcasSeleccionadas });
 
   // console.log({productos})
   const newFilteredProducts = filteredProducts;

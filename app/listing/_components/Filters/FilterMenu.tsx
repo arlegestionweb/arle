@@ -6,7 +6,6 @@ import Button from "@/app/_components/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/app/_lib/utils";
 import { useRef } from "react";
-import PriceRange from "./PriceRange";
 
 type TypeSearchParams = {
   [key: string]: string | string[] | undefined;
@@ -41,7 +40,7 @@ FilterMenuProps) => {
     const checkboxValues: string[] = [];
     val.querySelectorAll("input").forEach((input) => {
       if (input.type === "checkbox" && input.checked) {
-        console.log(input.name, input.value);
+        // console.log(input.name, input.value);
         if (newParams.has(input.name)) {
           checkboxValues.push(input.value);
           newParams.set(input.name, checkboxValues.join("& "));
@@ -51,6 +50,10 @@ FilterMenuProps) => {
       }
       if (input.type === "radio" && input.checked) {
         // console.log(input.dataset)
+        newParams.set(input.name, input.value);
+      }
+
+      if ((input.name === "minPrice" || input.name === "maxPrice") && input.value !== "") {
         newParams.set(input.name, input.value);
       }
     });
@@ -75,7 +78,7 @@ FilterMenuProps) => {
       <aside
         className={`${
           isFilterOpen ? "" : "hidden"
-        } w-[80vw] max-w-[400px] h-screen bg-white flex-col relative overflow-scroll`}
+        } w-[80vw] max-w-[400px] max-h-[calc(100vh-60px)] bg-white flex-col relative overflow-y-scroll`}
       >
         <form onSubmit={onFormSubmit} ref={formRef}>
           <header className="flex justify-end p-4">
@@ -86,12 +89,17 @@ FilterMenuProps) => {
           </header>
           <FilterSection
             title="Tipo de Producto"
-            active={!!searchParams.get("type") && searchParams.get("type") !== 'todos'}
-            >
+            active={
+              !!searchParams.get("type") && searchParams.get("type") !== "todos"
+            }
+          >
             <InputBox
               name="type"
               title="Todos"
-              defaultChecked={searchParams.get("type")?.includes("todos") || !searchParams.get("type")}
+              defaultChecked={
+                searchParams.get("type")?.includes("todos") ||
+                !searchParams.get("type")
+              }
               type="radio"
               value={"todos"}
             />
@@ -117,13 +125,22 @@ FilterMenuProps) => {
               value={"perfume"}
             />
           </FilterSection>
-          <FilterSection title="Línea" active={!!searchParams.get("linea") && searchParams.get("linea") !== 'todos'}>
+          <FilterSection
+            title="Línea"
+            active={
+              !!searchParams.get("linea") &&
+              searchParams.get("linea") !== "todos"
+            }
+          >
             <InputBox
               name="linea"
               title="Todos"
               description="Ver todos los productos"
               type="radio"
-              defaultChecked={searchParams.get("linea")?.includes("todos") || !searchParams.get("linea")}
+              defaultChecked={
+                searchParams.get("linea")?.includes("todos") ||
+                !searchParams.get("linea")
+              }
               value={"todos"}
             />
             <InputBox
@@ -143,13 +160,22 @@ FilterMenuProps) => {
               value={"lujo"}
             />
           </FilterSection>
-          <FilterSection title="Género" active={!!searchParams.get("genero") && searchParams.get("genero") !== 'todos'}>
+          <FilterSection
+            title="Género"
+            active={
+              !!searchParams.get("genero") &&
+              searchParams.get("genero") !== "todos"
+            }
+          >
             <InputBox
               name="genero"
               title="Todos"
               type="radio"
               value={"todos"}
-              defaultChecked={searchParams.get("genero")?.includes("todos") || !searchParams.get("genero")}
+              defaultChecked={
+                searchParams.get("genero")?.includes("todos") ||
+                !searchParams.get("genero")
+              }
             />
             <InputBox
               name="genero"
@@ -179,13 +205,20 @@ FilterMenuProps) => {
               name="marca"
               title={"Todas"}
               type="checkbox"
-              defaultChecked={searchParams.get("marca")?.includes("todas") || !searchParams.get("marca")}
+              defaultChecked={
+                searchParams.get("marca")?.includes("todas") ||
+                !searchParams.get("marca")
+              }
               value={"todas"}
               onChange={(e) => {
                 if (e.target.checked) {
-                  document.querySelectorAll('input[name="marca"]:not([value="todas"])').forEach((checkbox) => {
-                    (checkbox as HTMLInputElement).checked = false;
-                  });
+                  document
+                    .querySelectorAll(
+                      'input[name="marca"]:not([value="todas"])'
+                    )
+                    .forEach((checkbox) => {
+                      (checkbox as HTMLInputElement).checked = false;
+                    });
                 }
               }}
             />
@@ -200,7 +233,9 @@ FilterMenuProps) => {
                 value={marca}
                 onChange={(e) => {
                   if (e.target.checked) {
-                    const todasCheckbox = document.querySelector('input[name="marca"][value="todas"]');
+                    const todasCheckbox = document.querySelector(
+                      'input[name="marca"][value="todas"]'
+                    );
                     if (todasCheckbox) {
                       (todasCheckbox as HTMLInputElement).checked = false;
                     }
@@ -210,8 +245,26 @@ FilterMenuProps) => {
             ))}
           </FilterSection>
 
-          <FilterSection title="Precio">
-              <PriceRange/>
+          <FilterSection title="Precio" active={!!searchParams.get("minPrice") || !!searchParams.get("maxPrice")}>
+            <div className="flex gap-2 justify-between pt-2">
+              <InputBox
+                type="number"
+                name="minPrice"
+                className="w-full px-3 py-1.5 font-inter text-black bg-white rounded border border-stone-300"
+                placeholder="Mínimo"
+                min={0}
+                defaultValue={searchParams.get("minPrice") ? Number(searchParams.get("minPrice")) : undefined} 
+              />
+              <InputBox
+                type="number"
+                name="maxPrice"
+                className="w-full px-3 py-1.5 font-inter text-black bg-white rounded border border-stone-300"
+                placeholder="Máximo"
+                min={0}
+                defaultValue={searchParams.get("maxPrice") ? Number(searchParams.get("maxPrice")) : undefined} 
+
+              />
+            </div>
           </FilterSection>
           <footer className="flex justify-evenly py-5">
             <Button type="submit">Aplicar Filtros</Button>
