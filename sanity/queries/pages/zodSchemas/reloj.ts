@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { contenidoSchema, garantiaSchema, generoSchema, imageSchema, zodColorSchema } from "./general";
+import { bannerSchema, contenidoSchema, garantiaSchema, generoSchema, imageSchema, zodColorSchema } from "./general";
 import { inspiracionSchema } from "./perfume";
 
 
@@ -60,8 +60,9 @@ export const relojLujoSchema = z.object({
       descripcion: z.string().optional().nullable(),
       tipo: z.string().optional().nullable(),
       imagen: imageSchema.optional().nullable(),
-    }),
-  }),
+    }).optional().nullable(),
+  }).optional(),
+  banners: z.array(bannerSchema).optional().nullable(),
   slug: z.string(),
 });
 
