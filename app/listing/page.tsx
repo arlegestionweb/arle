@@ -410,7 +410,7 @@ const Listing = async ({
           : tiposDeMovimientoDeRelojSeleccionados.some(
               (tipoDeMovimiento) =>
                 (producto._type === "relojesLujo" &&
-                  producto.movimiento.tipoDeMovimiento === tipoDeMovimiento) ||
+                  producto.movimiento?.tipoDeMovimiento === tipoDeMovimiento) ||
                 (producto._type === "relojesPremium" &&
                   producto.detallesReloj.tipoDeMovimiento === tipoDeMovimiento)
             )),
@@ -776,7 +776,7 @@ const Listing = async ({
         relojes
           .map((reloj) =>
             reloj._type === "relojesLujo"
-              ? reloj.movimiento.tipoDeMovimiento
+              ? reloj.movimiento?.tipoDeMovimiento
               : reloj._type === "relojesPremium"
               ? reloj.detallesReloj.tipoDeMovimiento
               : null

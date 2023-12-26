@@ -6,7 +6,7 @@ import {
   numberToColombianPriceString,
 } from "@/utils/helpers";
 import Cantidad from "../Cantidad";
-import InfoSection from "../InfoSection";
+import InfoSection from '../InfoSection';
 import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
 import MobileAddToCart from "../MobileAddToCart";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
@@ -19,8 +19,6 @@ type TPerfumeLujoProps = {
 };
 
 const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
-  
-
   return (
     <>
       <HeroProduct
@@ -55,8 +53,15 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
           titulo="Inspiración"
           DesciptionComp={
             <DetallesProducto
-              notasOlfativas={product.notasOlfativas}
-              ingredientes={product.ingredientes}
+              detalles={{
+                notasOlfativas: {
+                  notasDeBase: product.notasOlfativas.notasDeBase,
+                  notasDeSalida: product.notasOlfativas.notasDeSalida,
+                  familiaOlfativa: product.notasOlfativas.familiaOlfativa,
+                  notasDeCorazon: product.notasOlfativas.notasDeCorazon,
+                },
+                ingredientes: product.ingredientes,
+              }}
             />
           }
           ImageComp={

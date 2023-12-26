@@ -50,22 +50,32 @@ const RelojLujo = ({product}: TRelojLujoProps) => {
       <section className="bg-color-bg-surface-1-defaul w-screen flex justify-center">
         <InfoSection
           titulo="Inspiración"
-          DesciptionComp={
-            // <DetallesProducto
-            //   notasOlfativas={product.notasOlfativas}
-            //   ingredientes={product.ingredientes}
-            // />
-            <></>
-          }
+          DesciptionComp={<DetallesProducto detalles={{
+            caja: {
+              cristal: "algo",
+              "Diámetro de la caja": "36mm",
+              "Material de la caja": "Titanio",
+              "Color de la caja": "Azul glaciar"
+            },
+            especificaciones:"bg-color-bg-surface-1-defaul w-screen flex justify-center",
+            garantia: {
+              meses: product.garantia.meses + "",
+              "descripción": product.garantia.descripcion || "" 
+            }
+          }} />}
           ImageComp={
             <ProductSlide
-              imagesProduct={product.banners && product.banners.map(
-                element =>
-                  ({
-                    url: element.imagen?.url,
-                    alt: element.imagen?.alt,
-                  } as ProductImage)
-              ) || [] }
+              imagesProduct={
+                (product.banners &&
+                  product.banners.map(
+                    element =>
+                      ({
+                        url: element.imagen?.url,
+                        alt: element.imagen?.alt,
+                      } as ProductImage)
+                  )) ||
+                []
+              }
               className="max-h-[377px] w-full"
               isLink={false}
             />
@@ -73,7 +83,6 @@ const RelojLujo = ({product}: TRelojLujoProps) => {
           className="w-full text-slate-900 lg:max-w-[calc(1280px+32px)] flex-row-reverse"
         />
       </section>
-
     </>
   );
 };
