@@ -34,7 +34,8 @@ const RelojLujo = ({ product }: TRelojLujoProps) => {
           descripcion={product.detalles?.contenido?.texto || ""}
           alt={product.detalles?.contenido?.imagen?.alt || ""}
           url={product.detalles?.contenido?.imagen?.url || ""}
-          className="text-slate-900 lg:max-w-[calc(1280px+32px)] flex-row-reverse"
+          labelType={"light"}
+          className="lg:max-w-[calc(1280px+32px)] flex-row-reverse"
         />
       </section>
 
@@ -51,8 +52,9 @@ const RelojLujo = ({ product }: TRelojLujoProps) => {
 
       <section className="bg-color-bg-surface-1-defaul w-screen flex justify-center">
         <InfoSection
+          labelType={"light"}
           titulo="Inspiración"
-          DesciptionComp={<DetallesProducto detalles={{
+          DesciptionComp={<DetallesProducto theme="light" detalles={{
             caja: {
               cristal: "algo",
               "Diámetro de la caja": "36mm",
