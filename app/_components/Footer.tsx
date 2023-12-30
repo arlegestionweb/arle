@@ -11,7 +11,7 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 const Footer = () => {
   return (
     <section className="relative lg:pb-[100vh]">
-      <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-10 pt-6 md:pt-20  text-white bg-[#00002E]">
+      <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-10 pt-6 md:pt-20  text-white bg-arle-blue">
         <div className="flex-1 pt-10 pb-20 w-[182px] h-[130px] flex justify-center self-center items-center">
           <Image
             src={"/logo-footer.svg"}
