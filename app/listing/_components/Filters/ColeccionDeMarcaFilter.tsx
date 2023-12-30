@@ -7,7 +7,7 @@ const ColeccionDeMarcaFilter = ({
 }) => {
 
   return (
-    <CheckboxSection name="coleccionesDeMarca" options={coleccionesDeMarca} />
+    <CheckboxSection name="coleccionesDeMarca" options={coleccionesDeMarca} feminine />
   );
 };
 

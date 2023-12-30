@@ -31,15 +31,15 @@ const RelojFilters = ({
         options={relojFilters.estilosDeReloj}
       />
       <CheckboxSection
-        name="coloresDeLaCaja"
+        name="coloresDeLasCajas"
         options={relojFilters.coloresDeLaCaja.map(color => color.nombre)}
       />
       <CheckboxSection
-        name="coloresDelPulso"
+        name="coloresDeLosPulsos"
         options={relojFilters.coloresDelPulso.map(color => color.nombre)}
       />
       <CheckboxSection
-        name="materialDelPulso"
+        name="materialDeLosPulsos"
         options={relojFilters.materialDelPulsoDeReloj}
       />
       <CheckboxSection
@@ -47,11 +47,11 @@ const RelojFilters = ({
         options={relojFilters.cajas.materiales}
       />
       <CheckboxSection
-        name="tiposDeMovimiento"
+        name="tiposDeMovimientos"
         options={relojFilters.tiposDeMovimiento}
       />
       <CheckboxSection
-        name="TamañoDeLaCaja"
+        name="tamañosDeLasCajas"
         options={relojFilters.cajas.diametros}
       />
     </>
