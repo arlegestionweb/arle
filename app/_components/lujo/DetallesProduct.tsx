@@ -11,10 +11,12 @@ type DetallesProductoProps = {
           [key: string]: string | string[];
         };
   };
+  theme?: "dark" | "light"
 };
 
 const DetallesProducto = ({
   detalles,
+  theme = "dark"
 }: DetallesProductoProps) => {
   const [activeSection, setActiveSection] = useState<
     | string
@@ -37,8 +39,8 @@ const DetallesProducto = ({
               <h4
                 onClick={() => handleSectionChange(detalle)}
                 className={cn(
-                  `px-4 py-2 border-b-2  whitespace-nowrap border-zinc-700`,
-                  activeSection === detalle && "border-white"
+                  `px-4 py-2 border-b-2  whitespace-nowrap `, theme == "dark"? "border-zinc-700":"border-zinc-200",
+                  activeSection === detalle && `${theme == "dark"? "border-white" : "border-slate-800"}`
                 )}>
                 {convertirCamelCaseATitulo(detalle)}
               </h4>
@@ -46,14 +48,14 @@ const DetallesProducto = ({
           ))}
       </nav>
 
-      <section className="mt-4">
+      <section className={cn("mt-4 h-[285px] overflow-y-auto overflow-x-hidden no-scrollbar", theme == "light"? "text-zinc-700":"text-zinc-200")}>
         {detalles &&
           Object.keys(detalles).map((detalle, index) => {
             let arrDetalles: JSX.Element[] = [];
 
             if (typeof detalles[detalle] === "string") {
               arrDetalles.push(
-                <p className="w-72 text-zinc-100 text-lg font-normal font-tajawal leading-snug">
+                <p className="w-72 text-lg font-normal font-tajawal leading-snug">
                   {detalles[detalle] as string}
                 </p>
               );
@@ -61,7 +63,7 @@ const DetallesProducto = ({
               // Es de tipo string[]
               arrDetalles.push(
                 <section>
-                  <p className="w-72 text-zinc-100 text-lg font-normal font-tajawal leading-snug">
+                  <p className="w-72 text-lg font-normal font-tajawal leading-snug">
                     {(detalles[detalle] as string[]).join(", ")}
                   </p>
                 </section>
@@ -73,10 +75,10 @@ const DetallesProducto = ({
                   {Object.keys(detalles[detalle]).map(object => (
                     <section key={index+object}>
                       <div className="pb-5">
-                        <h4 className="w-72 text-neutral-200 text-lg font-bold font-tajawal leading-snug">
+                        <h4 className="w-72 text-lg font-bold font-tajawal leading-snug">
                           {convertirCamelCaseATitulo(object)}
                         </h4>
-                        <p className="w-72 text-zinc-100 text-lg font-normal font-tajawal leading-snug">
+                        <p className="w-72 text-lg font-normal font-tajawal leading-snug">
                           {(detalles[detalle] as any)[object]}
                         </p>
                       </div>

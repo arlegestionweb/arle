@@ -1,16 +1,8 @@
 import { TPerfumeLujo } from "@/sanity/queries/pages/types";
-import Image from "next/image";
-import Labels, { LabelTypes } from "../../../../_components/Labels";
-import {
-  colombianPriceStringToNumber,
-  numberToColombianPriceString,
-} from "@/utils/helpers";
-import Cantidad from "../Cantidad";
 import InfoSection from '../InfoSection';
 import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
 import MobileAddToCart from "../MobileAddToCart";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
-import { useState } from "react";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
 import HeroProduct from "@/app/_components/lujo/HeroProduct";
 
@@ -43,6 +35,7 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
             descripcion={product.inspiracion.contenido!.resena || ""}
             alt={product.inspiracion.contenido!.imagen?.alt || ""}
             url={product.inspiracion.contenido!.imagen?.url || ""}
+            labelType="light"
             className="text-slate-900 lg:max-w-[calc(1280px+32px)] flex-row-reverse"
           />
         </div>
