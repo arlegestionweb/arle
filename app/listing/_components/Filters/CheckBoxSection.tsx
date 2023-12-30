@@ -19,7 +19,7 @@ const CheckboxSection = ({
   return (
     <FilterSection
       title={camelToTitleCase(name)}
-      active={!!searchParams.get(name)}
+      active={!!searchParams.get(normalizeName(name))}
     >
       <InputBox
         key={allTitle}
