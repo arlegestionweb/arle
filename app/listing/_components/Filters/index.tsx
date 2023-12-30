@@ -5,9 +5,30 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { FiFilter } from "react-icons/fi";
 import { LuSettings2 } from "react-icons/lu";
-import BreadCrumbs from "./BreadCrumbs";
+
 import FilterMenu from "./FilterMenu";
+import { TCaja } from "@/sanity/queries/pages/zodSchemas/reloj";
 // import { MarcaType } from "@/app/_components/types";
+
+
+type TColor = {
+  nombre: string;
+  color: string;
+};
+
+export type TRelojFilters = {
+  tiposDeReloj: string[];
+  estilosDeReloj: string[];
+  coloresDeLaCaja: TColor[];
+  coloresDelPulso: TColor[];
+  materialDelPulsoDeReloj: string[];
+  cajas: {
+    diametros: number[];
+    materiales: string[];
+    cristales: string[];
+  };
+  tiposDeMovimiento: string[];
+};
 
 type FiltersProps = {
   areFiltersActive: boolean;
@@ -16,11 +37,13 @@ type FiltersProps = {
   // };
   marcas: string[];
   coleccionesDeMarca: string[];
+  relojFilters: TRelojFilters;
 }
 const Filters = ({
   areFiltersActive,
   marcas,
-  coleccionesDeMarca
+  coleccionesDeMarca,
+  relojFilters
 }: FiltersProps
 ) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -46,6 +69,7 @@ const Filters = ({
   //   return key;
   // });
 
+  
   return (
     <>
       <section className="flex flex-col mb-5">
@@ -72,6 +96,7 @@ const Filters = ({
         searchParams={allParams}
         marcas={marcas}
         coleccionesDeMarca={coleccionesDeMarca}
+        relojFilters={relojFilters}
       />
     </>
   );

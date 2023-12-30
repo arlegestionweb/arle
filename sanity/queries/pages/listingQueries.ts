@@ -32,7 +32,7 @@ const listingMainString = `
     ${imageQuery},
     "productos": productos[]->{
       "marca": marca->titulo,
-      "type": _type,
+      _type,
       _type == "perfumeLujo" =>
         ${productQuery.perfumeLujo}
       ,

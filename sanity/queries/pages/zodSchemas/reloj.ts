@@ -1,7 +1,20 @@
 import { z } from "zod";
-import { coleccionDeMarcaSchema, contenidoSchema, garantiaSchema, generoSchema, imageSchema, zodColorSchema } from "./general";
+import {
+  coleccionDeMarcaSchema,
+  contenidoSchema,
+  garantiaSchema,
+  generoSchema,
+  imageSchema,
+  zodColorSchema,
+} from "./general";
 
+const zodCajaSchema = z.object({
+  diametro: z.number(),
+  material: z.string(),
+  cristal: z.string(),
+});
 
+export type TCaja = z.infer<typeof zodCajaSchema>
 
 const detallesRelojSchema = z.object({
   tipoDeReloj: z.string(),
@@ -9,9 +22,8 @@ const detallesRelojSchema = z.object({
   resistenciaAlAgua: z.string(),
   material: z.string(),
   tipoDeMovimiento: z.string(),
+  caja: zodCajaSchema,
 });
-
-  
 
 export const relojVariantSchema = z.object({
   precio: z.string(),
@@ -34,10 +46,13 @@ export const relojLujoSchema = z.object({
   marca: z.string(),
   _type: z.literal("relojesLujo"),
   _id: z.string(),
-  detalles: z.object({
-    usarDetalles: z.boolean().optional().nullable(),
-    contenido: contenidoSchema.optional().nullable(),
-  }).optional().nullable(),
+  detalles: z
+    .object({
+      usarDetalles: z.boolean().optional().nullable(),
+      contenido: contenidoSchema.optional().nullable(),
+    })
+    .optional()
+    .nullable(),
   especificaciones: z.object({
     tipoDeReloj: z.string(),
     estiloDeReloj: z.string(),
@@ -58,9 +73,15 @@ export const relojLujoSchema = z.object({
   garantia: garantiaSchema,
   movimiento: z.object({
     usarMovimiento: z.boolean().optional().nullable(),
+    tipoDeMovimiento: z.string(),
+    contenido: z.object({
+      descripcion: z.string().optional().nullable(),
+      imagen: imageSchema.optional().nullable(),
+    }).optional().nullable(),
   }),
   coleccionDeMarca: coleccionDeMarcaSchema,
   slug: z.string(),
+  caja: zodCajaSchema,
 });
 
 export const relojPremiumSchema = z.object({
@@ -75,5 +96,4 @@ export const relojPremiumSchema = z.object({
   genero: generoSchema,
   slug: z.string(),
   coleccionDeMarca: coleccionDeMarcaSchema,
-
 });

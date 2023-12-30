@@ -7,6 +7,7 @@ import Colecciones from "../_components/Colecciones";
 // import Banner from "../_components/homepage/Banner";
 import Filters from "./_components/Filters/index";
 import { getAllColeccionesDeMarca, getAllMarcas } from "../_lib/utils";
+import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -134,34 +135,129 @@ const Listing = async ({
           return precio <= selectedMaxPrecio;
         })),
 
-        selectedColeccionesDeMarca.length > 0 &&
-        ((producto: TProduct) =>
-          selectedColeccionesDeMarca.includes("todas")
-            ? true
-            : selectedColeccionesDeMarca.some(
-                (coleccionDeMarca: string) =>
-                  producto.coleccionDeMarca?.toLowerCase() === coleccionDeMarca.toLowerCase()
-              )),
-
+    selectedColeccionesDeMarca.length > 0 &&
+      ((producto: TProduct) =>
+        selectedColeccionesDeMarca.includes("todas")
+          ? true
+          : selectedColeccionesDeMarca.some(
+              (coleccionDeMarca: string) =>
+                producto.coleccionDeMarca?.toLowerCase() ===
+                coleccionDeMarca.toLowerCase()
+            )),
   ].filter(Boolean);
 
   const filteredProducts = productos?.filter((producto) =>
     filters.every((filter) => typeof filter === "function" && filter(producto))
   );
 
-  console.log({ selectedColeccionesDeMarca });
   const newFilteredProducts = filteredProducts;
 
   const marcas = getAllMarcas(filteredProducts);
 
-  const coleccionesDeMarca = getAllColeccionesDeMarca(filteredProducts);
+  const relojes = newFilteredProducts.filter(
+    (p) => p._type === "relojesLujo" || p._type === "relojesPremium"
+  );
 
+  const detallesRelojes = newFilteredProducts.map((p) =>
+    p._type === "relojesLujo"
+      ? p.especificaciones
+      : p._type === "relojesPremium"
+      ? p.detallesReloj
+      : null
+  );
+
+  const relojFilters = {
+    tiposDeReloj: Array.from(
+      new Set(detallesRelojes.flatMap((detalle) => detalle?.tipoDeReloj || []))
+    ),
+    estilosDeReloj: Array.from(
+      new Set(
+        detallesRelojes.flatMap((detalle) => detalle?.estiloDeReloj || [])
+      )
+    ),
+    coloresDeLaCaja: Array.from(
+      new Set(
+        relojes.flatMap((reloj) =>
+          reloj.variantes
+            .filter(
+              (variante): variante is TRelojVariant => "colorCaja" in variante
+            )
+            .map((variante) => JSON.stringify(variante.colorCaja))
+        )
+      )
+    ).map((item) => JSON.parse(item)),
+    coloresDelPulso: Array.from(
+      new Set(
+        relojes.flatMap((reloj) =>
+          reloj.variantes
+            .filter(
+              (variante): variante is TRelojVariant => "colorPulso" in variante
+            )
+            .map((variante) => JSON.stringify(variante.colorPulso))
+        )
+      )
+    ).map((item) => JSON.parse(item)),
+    materialDelPulsoDeReloj: Array.from(
+      new Set(detallesRelojes.flatMap((detalle) => detalle?.material || []))
+    ),
+    cajas: {
+      diametros: Array.from(
+        new Set(
+          relojes.flatMap((reloj) =>
+            reloj._type === "relojesLujo"
+              ? [reloj.caja.diametro]
+              : reloj._type === "relojesPremium"
+              ? [reloj.detallesReloj.caja.diametro]
+              : []
+          ).filter(Boolean)
+        )
+      ),
+      materiales: Array.from(
+        new Set(
+          relojes.flatMap((reloj) =>
+            reloj._type === "relojesLujo"
+              ? [reloj.caja.material]
+              : reloj._type === "relojesPremium"
+              ? [reloj.detallesReloj.caja.material]
+              : []
+          ).filter(Boolean)
+        )
+      ),
+      cristales: Array.from(
+        new Set(
+          relojes.flatMap((reloj) =>
+            reloj._type === "relojesLujo"
+              ? [reloj.caja.cristal]
+              : reloj._type === "relojesPremium"
+              ? [reloj.detallesReloj.caja.cristal]
+              : []
+          ).filter(Boolean)
+        )
+      ),
+    },
+    tiposDeMovimiento: Array.from(
+      new Set(
+        relojes.map((reloj) =>
+          reloj._type === "relojesLujo"
+            ? reloj.movimiento.tipoDeMovimiento
+            : reloj._type === "relojesPremium"
+            ? reloj.detallesReloj.tipoDeMovimiento
+            : null
+        ).filter((item): item is string => item !== null)
+      )
+    ) as string[],
+  };
+
+  // console.log({ relojes, relojFilters });
+
+  const coleccionesDeMarca = getAllColeccionesDeMarca(filteredProducts);
   return (
     <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
       <Filters
         areFiltersActive={areFiltersActive}
         marcas={marcas}
         coleccionesDeMarca={coleccionesDeMarca}
+        relojFilters={relojFilters}
       />
 
       {!coleccionSeleccionada ? (

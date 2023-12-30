@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import FilterSection from "./FilterSection";
-import InputBox from "./InputBox";
 import Button from "@/app/_components/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/app/_lib/utils";
 import { useRef } from "react";
 import AllProductFilters from "./AllProductFilters";
 import RelojFilters from "./RelojFilters";
+import type { TRelojFilters } from ".";
 
 type TypeSearchParams = {
   [key: string]: string | string[] | undefined;
@@ -19,6 +18,8 @@ type FilterMenuProps = {
   searchParams: TypeSearchParams;
   marcas: string[];
   coleccionesDeMarca: string[];
+  relojFilters: TRelojFilters;
+
 };
 const FilterMenu = ({
   isFilterOpen,
@@ -26,6 +27,7 @@ const FilterMenu = ({
   areFiltersActive,
   marcas,
   coleccionesDeMarca,
+  relojFilters
 }: // searchParams,
 FilterMenuProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -101,7 +103,13 @@ FilterMenuProps) => {
             />
           )}
 
-          {searchParams.get("type")?.includes("reloj") && <RelojFilters />}
+          {searchParams.get("type")?.includes("reloj") && (
+            <RelojFilters
+              marcas={marcas}
+              coleccionesDeMarca={coleccionesDeMarca}
+              relojFilters={relojFilters}
+            />
+          )}
           {searchParams.get("type")?.includes("gafa") && (
             <div className="">gafas</div>
           )}

@@ -54,3 +54,17 @@ export const getPriceRangeString = function(productPrices: number[]): string {
     ? `$${numberToColombianPriceString(minProductPrice)}`
     : `$${numberToColombianPriceString(minProductPrice)} - $${numberToColombianPriceString(maxProductPrice)}`;
 }
+
+export const camelToTitleCase = function(str: string) {
+  let titleCase = str[0].toUpperCase();
+  
+  for(let i = 1; i < str.length; i++) {
+    if(str[i] === str[i].toUpperCase()) {
+      titleCase += ' ' + str[i];
+    } else {
+      titleCase += str[i];
+    }
+  }
+  
+  return titleCase;
+}

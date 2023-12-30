@@ -27,7 +27,14 @@ const inspiracionQuery = `inspiracion {
 
 const movimientoQuery = ` "movimiento": movimiento {
   usarMovimiento,
-  ${contenidoQuery}
+  "tipoDeMovimiento": tipoDeMovimiento -> titulo,
+  "contenido": contenido {
+    descripcion,
+    "imagen": imagen {
+      alt,
+      "url": asset->url,
+    }
+  }
 }`;
 
 const bannersQuery = `"banners": bannersDeProducto [] {
@@ -118,6 +125,10 @@ export const productQuery: Record<TProductType, string> = {
         nombre,
         "color": color.hex
       },
+      "colorTablero": colorTablero -> {
+        nombre,
+        "color": color.hex
+      },
       _type,
     },
     "inspiracion": ${inspiracionQuery},    
@@ -172,7 +183,12 @@ export const productQuery: Record<TProductType, string> = {
       "estiloDeReloj": estiloDeReloj -> titulo,
       resistenciaAlAgua,
       "material": material -> nombre,
-      "tipoDeMovimiento": tipoDeMovimiento -> titulo
+      "tipoDeMovimiento": tipoDeMovimiento -> titulo,
+      "caja": caja { 
+        diametro, 
+        "material": material -> nombre, 
+        "cristal": cristal -> titulo
+      },
     },
     "genero": detallesReloj.genero,
     coleccionDeMarca
