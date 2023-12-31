@@ -24,7 +24,7 @@ const DetallesProducto = ({
     | {
         [key: string]: string | string[];
       }
-  >("notasOlfativas");
+  >(detalles? Object.keys(detalles)[0] : "");
 
   const handleSectionChange = (section: string) => {
     setActiveSection(section);
