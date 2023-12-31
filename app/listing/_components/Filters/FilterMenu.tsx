@@ -6,7 +6,8 @@ import { createUrl } from "@/app/_lib/utils";
 import { useRef } from "react";
 import AllProductFilters from "./AllProductFilters";
 import RelojFilters from "./RelojFilters";
-import type { TRelojFilters } from ".";
+import type { TPerfumeFilters, TRelojFilters } from ".";
+import PerfumeFilters from "./PerfumeFilters";
 
 type TypeSearchParams = {
   [key: string]: string | string[] | undefined;
@@ -19,7 +20,7 @@ type FilterMenuProps = {
   marcas: string[];
   coleccionesDeMarca: string[];
   relojFilters: TRelojFilters;
-
+  perfumeFilters: TPerfumeFilters;
 };
 const FilterMenu = ({
   isFilterOpen,
@@ -27,7 +28,8 @@ const FilterMenu = ({
   areFiltersActive,
   marcas,
   coleccionesDeMarca,
-  relojFilters
+  relojFilters,
+  perfumeFilters
 }: // searchParams,
 FilterMenuProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -114,7 +116,11 @@ FilterMenuProps) => {
             <div className="">gafas</div>
           )}
           {searchParams.get("type")?.includes("perfume") && (
-            <div className="">perfumes</div>
+            <PerfumeFilters
+              marcas={marcas}
+              coleccionesDeMarca={coleccionesDeMarca}
+              perfumeFilters={perfumeFilters}
+            />
           )}
 
           <footer className="flex justify-evenly py-5">

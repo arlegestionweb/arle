@@ -8,6 +8,7 @@ import Colecciones from "../_components/Colecciones";
 import Filters from "./_components/Filters/index";
 import { getAllColeccionesDeMarca, getAllMarcas } from "../_lib/utils";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
+import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -120,17 +121,61 @@ const Listing = async ({
           .filter((tipo) => tipo !== "")
     : [];
 
-  console.log({
-    tiposDeRelojSeleccionados,
-    estilosDeRelojSeleccionados,
-    coloresDeLasCajasDeRelojSeleccionados,
-    coloresDelPulsoDeRelojSeleccionados,
-    materialesDelPulsoDeRelojSeleccionados,
-    materialesDeLasCajasDeRelojSeleccionados,
-    tiposDeMovimientoDeRelojSeleccionados,
-    tamanosDeLasCajasDeRelojSeleccionados,
-  });
+  // console.log({
+  //   tiposDeRelojSeleccionados,
+  //   estilosDeRelojSeleccionados,
+  //   coloresDeLasCajasDeRelojSeleccionados,
+  //   coloresDelPulsoDeRelojSeleccionados,
+  //   materialesDelPulsoDeRelojSeleccionados,
+  //   materialesDeLasCajasDeRelojSeleccionados,
+  //   tiposDeMovimientoDeRelojSeleccionados,
+  //   tamanosDeLasCajasDeRelojSeleccionados,
+  // });
 
+  // PERFUME PARAMS
+  const tamanosDePerfumeSeleccionados = searchParams.tamanosDePerfume
+    ? Array.isArray(searchParams.tamanosDePerfume)
+      ? searchParams.tamanosDePerfume
+      : (searchParams.tamanosDePerfume as string)
+          .split("&")
+          .map((tamanos) => tamanos.trim())
+          .filter((tamanos) => tamanos !== "")
+    : [];
+
+  const concentracionDePerfumeSeleccionados =
+    searchParams.concentracionDePerfume
+      ? Array.isArray(searchParams.concentracionDePerfume)
+        ? searchParams.concentracionDePerfume
+        : (searchParams.concentracionDePerfume as string)
+            .split("&")
+            .map((concentracion) => concentracion.trim())
+            .filter((concentracion) => concentracion !== "")
+      : [];
+
+  const familiasOlvativasSeleccionados = searchParams.familiasOlvativas
+    ? Array.isArray(searchParams.familiasOlvativas)
+      ? searchParams.familiasOlvativas
+      : (searchParams.familiasOlvativas as string)
+          .split("&")
+          .map((tamanos) => tamanos.trim())
+          .filter((tamanos) => tamanos !== "")
+    : [];
+
+  const parteDeUnSetSeleccionados = searchParams.parteDeUnSet
+    ? Array.isArray(searchParams.parteDeUnSet)
+      ? searchParams.parteDeUnSet
+      : (searchParams.parteDeUnSet as string)
+          .split("&")
+          .map((set) => set.trim())
+          .filter((set) => set !== "")
+    : [];
+
+  // console.log({
+  //   tamanosDePerfumeSeleccionados,
+  //   concentracionDePerfumeSeleccionados,
+  //   familiasOlvativasSeleccionados,
+  //   parteDeUnSetSeleccionados,
+  // });
   const colecciones = pageContent?.colecciones.filter(
     (coleccion) => !!coleccion.productos
   );
@@ -324,28 +369,84 @@ const Listing = async ({
             )),
 
     tamanosDeLasCajasDeRelojSeleccionados.length > 0 &&
-    ((producto: TProduct) =>
-    tamanosDeLasCajasDeRelojSeleccionados.includes("todos")
-      ? true
-      : tamanosDeLasCajasDeRelojSeleccionados.some(
-          (tamanoDeLaCaja) =>
-            (producto._type === "relojesLujo" &&
-              producto.caja.diametro.toString() === tamanoDeLaCaja) ||
-            (producto._type === "relojesPremium" &&
-              producto.detallesReloj.caja.diametro.toString() === tamanoDeLaCaja)
-        )),
+      ((producto: TProduct) =>
+        tamanosDeLasCajasDeRelojSeleccionados.includes("todos")
+          ? true
+          : tamanosDeLasCajasDeRelojSeleccionados.some(
+              (tamanoDeLaCaja) =>
+                (producto._type === "relojesLujo" &&
+                  producto.caja.diametro.toString() === tamanoDeLaCaja) ||
+                (producto._type === "relojesPremium" &&
+                  producto.detallesReloj.caja.diametro.toString() ===
+                    tamanoDeLaCaja)
+            )),
+    tamanosDePerfumeSeleccionados.length > 0 &&
+      ((producto: TProduct) =>
+        tamanosDePerfumeSeleccionados.includes("todos")
+          ? true
+          : tamanosDePerfumeSeleccionados.some(
+              (tamanoDelPerfume) =>
+                (producto._type === "perfumeLujo" &&
+                  producto.variantes.some(
+                    (variant) => variant.tamano === +tamanoDelPerfume
+                  )) ||
+                (producto._type === "perfumePremium" &&
+                  producto.variantes.some(
+                    (variant) => variant.tamano === +tamanoDelPerfume
+                  ))
+            )),
+    concentracionDePerfumeSeleccionados.length > 0 &&
+      ((producto: TProduct) =>
+        concentracionDePerfumeSeleccionados.includes("todas")
+          ? true
+          : concentracionDePerfumeSeleccionados.some(
+              (concentracion) =>
+                (producto._type === "perfumePremium" &&
+                  producto.detalles.concentracion === concentracion) ||
+                (producto._type === "perfumeLujo" &&
+                  producto.concentracion === concentracion)
+            )),
+    familiasOlvativasSeleccionados.length > 0 &&
+      ((producto: TProduct) =>
+        familiasOlvativasSeleccionados.includes("todas")
+          ? true
+          : familiasOlvativasSeleccionados.some(
+              (familia) =>
+                (producto._type === "perfumeLujo" &&
+                  producto.notasOlfativas.familiaOlfativa === familia) ||
+                (producto._type === "perfumePremium" &&
+                  producto.detalles.notasOlfativas.familiaOlfativa === familia)
+            )),
+    parteDeUnSetSeleccionados.length > 0 &&
+      ((producto: TProduct) =>
+        parteDeUnSetSeleccionados.includes("todos")
+          ? true
+          : parteDeUnSetSeleccionados.some(
+              (set) =>
+                (producto._type === "perfumeLujo" &&
+                  (set === "Sí"
+                    ? producto.parteDeUnSet
+                    : !producto.parteDeUnSet)) ||
+                (producto._type === "perfumePremium" &&
+                  (set === "Sí"
+                    ? producto.parteDeUnSet
+                    : !producto.parteDeUnSet))
+            )),
   ].filter(Boolean);
 
   const filteredProducts = productos?.filter((producto) =>
     filters.every((filter) => typeof filter === "function" && filter(producto))
   );
-
+  // console.log({ filteredProducts });
   const newFilteredProducts = filteredProducts;
 
   const marcas = getAllMarcas(filteredProducts);
 
   const relojes = newFilteredProducts.filter(
     (p) => p._type === "relojesLujo" || p._type === "relojesPremium"
+  );
+  const perfumes = newFilteredProducts.filter(
+    (p) => p._type === "perfumeLujo" || p._type === "perfumePremium"
   );
 
   const detallesRelojes = newFilteredProducts.map((p) =>
@@ -356,6 +457,40 @@ const Listing = async ({
       : null
   );
 
+  const perfumeFilters = {
+    tamanos: Array.from(
+      new Set(
+        perfumes
+          .map((p) => (p.variantes as TPerfumeVariant[]).map((v) => v.tamano))
+          .flat()
+      )
+    ).sort((a, b) => a - b),
+    concentraciones: Array.from(
+      new Set(
+        perfumes.map((p) =>
+          p._type === "perfumeLujo"
+            ? p.concentracion
+            : p._type === "perfumePremium"
+            ? p.detalles.concentracion
+            : ""
+        )
+      )
+    ).filter(Boolean),
+    sets: [true, false],
+    familiasOlfativas: Array.from(
+      new Set(
+        perfumes.map((p) =>
+          p._type === "perfumeLujo"
+            ? p.notasOlfativas.familiaOlfativa
+            : p._type === "perfumePremium"
+            ? p.detalles.notasOlfativas.familiaOlfativa
+            : ""
+        )
+      )
+    ).filter(Boolean),
+  };
+
+  console.log({ perfumeFilters });
   const relojFilters = {
     tiposDeReloj: Array.from(
       new Set(detallesRelojes.flatMap((detalle) => detalle?.tipoDeReloj || []))
@@ -403,7 +538,7 @@ const Listing = async ({
             )
             .filter(Boolean)
         )
-      ),
+      ).sort((a, b) => a - b),
       materiales: Array.from(
         new Set(
           relojes
@@ -456,6 +591,7 @@ const Listing = async ({
         marcas={marcas}
         coleccionesDeMarca={coleccionesDeMarca}
         relojFilters={relojFilters}
+        perfumeFilters={perfumeFilters}
       />
 
       {!coleccionSeleccionada ? (

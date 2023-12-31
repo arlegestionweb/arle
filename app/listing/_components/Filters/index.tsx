@@ -30,6 +30,13 @@ export type TRelojFilters = {
   tiposDeMovimiento: string[];
 };
 
+export type TPerfumeFilters = {
+  tamanos: number[];
+  concentraciones: string[];
+  sets: boolean[];
+  familiasOlfativas: string[];
+}
+
 type FiltersProps = {
   areFiltersActive: boolean;
   // searchParams: {
@@ -38,12 +45,14 @@ type FiltersProps = {
   marcas: string[];
   coleccionesDeMarca: string[];
   relojFilters: TRelojFilters;
+  perfumeFilters: TPerfumeFilters;
 }
 const Filters = ({
   areFiltersActive,
   marcas,
   coleccionesDeMarca,
-  relojFilters
+  relojFilters,
+  perfumeFilters
 }: FiltersProps
 ) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -97,6 +106,7 @@ const Filters = ({
         marcas={marcas}
         coleccionesDeMarca={coleccionesDeMarca}
         relojFilters={relojFilters}
+        perfumeFilters={perfumeFilters}
       />
     </>
   );

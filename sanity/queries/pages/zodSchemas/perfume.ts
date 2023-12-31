@@ -7,10 +7,10 @@ const inspiracionSchema = z.object({
 });
 
 const notasSchema = z.object({
-  notasDeBase: z.array(z.string()),
-  notasDeSalida: z.array(z.string()),
+  notasDeBase: z.array(z.string()).optional().nullable(),
+  notasDeSalida: z.array(z.string()).optional().nullable(),
   familiaOlfativa: z.string(),
-  notasDeCorazon: z.array(z.string()),
+  notasDeCorazon: z.array(z.string()).optional().nullable(),
 });
 
 
@@ -37,6 +37,7 @@ export const perfumePremiumSchema = z.object({
   detalles: z.object({
     concentracion: z.string(),
     resenaCorta: z.string().nullable().optional(),
+    notasOlfativas: notasSchema,
   }),
   genero: z.string(),
   titulo: z.string(),

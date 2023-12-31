@@ -240,6 +240,13 @@ export const productQuery: Record<TProductType, string> = {
     "detalles": detalles {
       "concentracion": concentracion -> nombre,
       resenaCorta,
+      "notasOlfativas": notasOlfativas {
+        "notasDeBase": notasDeBase [] -> nombre,
+        "notasDeSalida": notasDeSalida [] -> nombre,
+        "familiaOlfativa": familiaOlfativa -> nombre,
+        "notasDeCorazon": notasDeCorazon [] -> nombre
+      },
+      
     },
     "genero": detalles.genero,
     titulo,

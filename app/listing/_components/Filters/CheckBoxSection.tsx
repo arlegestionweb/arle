@@ -6,11 +6,13 @@ import { camelToTitleCase, normalizeName } from "@/utils/helpers";
 const CheckboxSection = ({
   options,
   name,
-  feminine = false
+  feminine = false,
+  units
 }: {
   options: (string | number)[];
   name: string;
   feminine?: boolean;
+  units? : string;
 }) => {
   const searchParams = useSearchParams();
 
@@ -59,6 +61,7 @@ const CheckboxSection = ({
               }
             }
           }}
+          units={units}
         />
       ))}
     </FilterSection>
