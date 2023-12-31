@@ -1,8 +1,9 @@
 import { coleccionesSchema } from "../schemas/documents/colecciones";
 import { descuentosSchema } from "../schemas/documents/descuentos";
-import { coleccionesDeMarcaSchema, colorSchema, paisDeOrigenSchema } from "../schemas/documents/documentosVarios";
+import { colorSchema, paisDeOrigenSchema } from "../schemas/documents/documentosVarios";
 import { marcasSchema } from "../schemas/documents/marcas";
 import { recomendadosSchema } from "../schemas/documents/recomendados";
+import { coleccionesDeMarcaSchema } from "../schemas/objects/products/generales";
 import { homeSchema } from "../schemas/pages/homeSchema";
 import { listingSchema } from "../schemas/pages/listingSchema";
 import { nuestrasSedesSchema, sedeSchema } from "../schemas/pages/nuestrasSedesSchema";
