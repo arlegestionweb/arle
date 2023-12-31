@@ -29,7 +29,7 @@ type InfoProps = {
   className?: string;
 } & VariantProps<typeof infoVariants>;
 
-const InfoSection = (props: InfoProps) => {
+const  InfoSection = (props: InfoProps) => {
   return (
     <section
       className={cn(
@@ -47,7 +47,7 @@ const InfoSection = (props: InfoProps) => {
                 {props.subTitulo}
               </h3>
             )}
-            <p className="basis-0 opacity-95 text-lg font-normal font-tajawal leading-snug">
+            <p className="basis-0 opacity-95 w-full text-lg font-normal font-tajawal leading-snug">
               {props.descripcion}
             </p>
           </>
