@@ -11,6 +11,8 @@ type TPerfumeLujoProps = {
 };
 
 const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
+  console.log(product.banners);
+  
   return (
     <>
       <HeroProduct
@@ -59,13 +61,7 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
           }
           ImageComp={
             <ProductSlide
-              imagesProduct={product.banners.map(
-                element =>
-                  ({
-                    url: element.imagen?.url,
-                    alt: element.imagen?.alt,
-                  } as ProductImage)
-              )}
+              imageVideoProducts={product.banners}
               className="max-h-[377px] w-full"
               isLink={false}
             />
