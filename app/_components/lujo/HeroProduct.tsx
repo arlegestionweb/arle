@@ -34,7 +34,7 @@ const HeroProduct = ({ product, images }: HeroProductProps) => {
         />
         <header className="px-4 ">
           <h1 className="text-zinc-800 text-[32px] font-normal font-kanit leading-10 w-full">
-            {product.marca}
+            {isPerfumeLujo(product) ? product.titulo: product.modelo}
           </h1>
           <h2>
             {product.marca} | {product.genero}
