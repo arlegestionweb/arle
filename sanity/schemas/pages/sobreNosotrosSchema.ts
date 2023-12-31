@@ -26,6 +26,11 @@ export const sobreNosotrosSchema = defineType({
       type: "content",
     }),
     defineField({
+      name: "ourStory",
+      title: "Nuestra Historia",
+      type: "content",
+    }),
+    defineField({
       name: "marcasAliadas",
       title: "Marcas Aliadas",
       type: "array",
@@ -33,29 +38,8 @@ export const sobreNosotrosSchema = defineType({
         defineArrayMember({
           name: "marca",
           title: "Marca",
-          type: "object",
-          fields: [
-            defineField({
-              name: "titulo",
-              title: "Título",
-              type: "string",
-            }),
-            defineField({
-              name: "logo",
-              title: "Logo",
-              type: "imagenObject",
-            }),
-          ],
-          preview: {
-            select: {
-              title: "titulo",
-              media: "logo",
-            },
-            prepare: ({title, media}) => ({
-              title,
-              media,
-            }),
-          },
+          type: "reference",
+          to: [{ type: "marca" }],
         })
       ],
     }),
