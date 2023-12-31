@@ -9,6 +9,7 @@ import Filters from "./_components/Filters/index";
 import { getAllColeccionesDeMarca, getAllMarcas } from "../_lib/utils";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
+import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -121,15 +122,66 @@ const Listing = async ({
           .filter((tipo) => tipo !== "")
     : [];
 
+  // GAFAS PARAMS
+
+  const tiposDeGafasSeleccionadas = searchParams.tiposDeGafas
+    ? Array.isArray(searchParams.tiposDeGafas)
+      ? searchParams.tiposDeGafas
+      : (searchParams.tiposDeGafas as string)
+          .split("&")
+          .map((tipo) => tipo.trim())
+          .filter((tipo) => tipo !== "")
+    : [];
+
+  const estilosDeGafasSeleccionadas = searchParams.estilosDeGafas
+    ? Array.isArray(searchParams.estilosDeGafas)
+      ? searchParams.estilosDeGafas
+      : (searchParams.estilosDeGafas as string)
+          .split("&")
+          .map((estilo) => estilo.trim())
+          .filter((estilo) => estilo !== "")
+    : [];
+  const materialesDeLasMonturasSeleccionadas =
+    searchParams.materialesDeLasMonturas
+      ? Array.isArray(searchParams.materialesDeLasMonturas)
+        ? searchParams.materialesDeLasMonturas
+        : (searchParams.materialesDeLasMonturas as string)
+            .split("&")
+            .map((material) => material.trim())
+            .filter((material) => material !== "")
+      : [];
+  const formasDeLasMonturasSeleccionadas = searchParams.formasDeLasMonturas
+    ? Array.isArray(searchParams.formasDeLasMonturas)
+      ? searchParams.formasDeLasMonturas
+      : (searchParams.formasDeLasMonturas as string)
+          .split("&")
+          .map((forma) => forma.trim())
+          .filter((forma) => forma !== "")
+    : [];
+  const coloresDeLasMonturasSeleccionados = searchParams.coloresDeLasMonturas
+    ? Array.isArray(searchParams.coloresDeLasMonturas)
+      ? searchParams.coloresDeLasMonturas
+      : (searchParams.coloresDeLasMonturas as string)
+          .split("&")
+          .map((color) => color.trim())
+          .filter((color) => color !== "")
+    : [];
+  const coloresDeLosLentesSeleccionados = searchParams.coloresDeLosLentes
+    ? Array.isArray(searchParams.coloresDeLosLentes)
+      ? searchParams.coloresDeLosLentes
+      : (searchParams.coloresDeLosLentes as string)
+          .split("&")
+          .map((color) => color.trim())
+          .filter((color) => color !== "")
+    : [];
+
   // console.log({
-  //   tiposDeRelojSeleccionados,
-  //   estilosDeRelojSeleccionados,
-  //   coloresDeLasCajasDeRelojSeleccionados,
-  //   coloresDelPulsoDeRelojSeleccionados,
-  //   materialesDelPulsoDeRelojSeleccionados,
-  //   materialesDeLasCajasDeRelojSeleccionados,
-  //   tiposDeMovimientoDeRelojSeleccionados,
-  //   tamanosDeLasCajasDeRelojSeleccionados,
+  //   tiposDeGafasSeleccionadas,
+  //   estilosDeGafasSeleccionadas,
+  //   materialesDeLasMonturasSeleccionadas,
+  //   coloresDeLasMonturasSeleccionados,
+  //   coloresDeLosLentesSeleccionados,
+  //   formasDeLasMonturasSeleccionadas
   // });
 
   // PERFUME PARAMS
@@ -170,12 +222,6 @@ const Listing = async ({
           .filter((set) => set !== "")
     : [];
 
-  // console.log({
-  //   tamanosDePerfumeSeleccionados,
-  //   concentracionDePerfumeSeleccionados,
-  //   familiasOlvativasSeleccionados,
-  //   parteDeUnSetSeleccionados,
-  // });
   const colecciones = pageContent?.colecciones.filter(
     (coleccion) => !!coleccion.productos
   );
@@ -380,6 +426,8 @@ const Listing = async ({
                   producto.detallesReloj.caja.diametro.toString() ===
                     tamanoDeLaCaja)
             )),
+
+    // PERFUME FILTERS
     tamanosDePerfumeSeleccionados.length > 0 &&
       ((producto: TProduct) =>
         tamanosDePerfumeSeleccionados.includes("todos")
@@ -432,6 +480,85 @@ const Listing = async ({
                     ? producto.parteDeUnSet
                     : !producto.parteDeUnSet))
             )),
+
+    // GAFA FILTERS
+
+    tiposDeGafasSeleccionadas.length > 0 &&
+      ((producto: TProduct) =>
+        tiposDeGafasSeleccionadas.includes("todos")
+          ? true
+          : tiposDeGafasSeleccionadas.some(
+              (tipoDeGafa) =>
+                (producto._type === "gafasLujo" &&
+                  tipoDeGafa === producto.especificaciones.tipoDeGafa) ||
+                (producto._type === "gafasPremium" &&
+                  tipoDeGafa === producto.detalles.tipoDeGafa)
+            )),
+    estilosDeGafasSeleccionadas.length > 0 &&
+      ((producto: TProduct) =>
+        estilosDeGafasSeleccionadas.includes("todos")
+          ? true
+          : estilosDeGafasSeleccionadas.some(
+              (estiloDeGafa) =>
+                (producto._type === "gafasLujo" &&
+                  estiloDeGafa === producto.especificaciones.estiloDeGafa) ||
+                (producto._type === "gafasPremium" &&
+                  estiloDeGafa === producto.detalles.estiloDeGafa)
+            )),
+    materialesDeLasMonturasSeleccionadas.length > 0 &&
+      ((producto: TProduct) =>
+        materialesDeLasMonturasSeleccionadas.includes("todos")
+          ? true
+          : materialesDeLasMonturasSeleccionadas.some(
+              (material) =>
+                (producto._type === "gafasLujo" &&
+                  material ===
+                    producto.especificaciones.montura.materialMontura) ||
+                (producto._type === "gafasPremium" &&
+                  material === producto.detalles.montura.materialMontura)
+            )),
+    formasDeLasMonturasSeleccionadas.length > 0 &&
+      ((producto: TProduct) =>
+        formasDeLasMonturasSeleccionadas.includes("todos")
+          ? true
+          : formasDeLasMonturasSeleccionadas.some(
+              (forma) =>
+                (producto._type === "gafasLujo" &&
+                  forma ===
+                    producto.especificaciones.montura.formaDeLaMontura) ||
+                (producto._type === "gafasPremium" &&
+                  forma === producto.detalles.montura.formaDeLaMontura)
+            )),
+    coloresDeLosLentesSeleccionados.length > 0 &&
+      ((producto: TProduct) =>
+        coloresDeLosLentesSeleccionados.includes("todos")
+          ? true
+          : coloresDeLosLentesSeleccionados.some(
+              (color) =>
+                (producto._type === "gafasLujo" &&
+                  producto.variantes.some(
+                    (variant) => variant.colorDelLente.nombre === color
+                  )) ||
+                (producto._type === "gafasPremium" &&
+                  producto.variantes.some(
+                    (variant) => variant.colorDelLente.nombre === color
+                  ))
+            )),
+    coloresDeLasMonturasSeleccionados.length > 0 &&
+      ((producto: TProduct) =>
+        coloresDeLasMonturasSeleccionados.includes("todos")
+          ? true
+          : coloresDeLasMonturasSeleccionados.some(
+              (color) =>
+                (producto._type === "gafasLujo" &&
+                  producto.variantes.some(
+                    (variant) => variant.colorDeLaMontura.nombre === color
+                  )) ||
+                (producto._type === "gafasPremium" &&
+                  producto.variantes.some(
+                    (variant) => variant.colorDeLaMontura.nombre === color
+                  ))
+            )),
   ].filter(Boolean);
 
   const filteredProducts = productos?.filter((producto) =>
@@ -448,6 +575,9 @@ const Listing = async ({
   const perfumes = newFilteredProducts.filter(
     (p) => p._type === "perfumeLujo" || p._type === "perfumePremium"
   );
+  const gafas = newFilteredProducts.filter(
+    (p) => p._type === "gafasLujo" || p._type === "gafasPremium"
+  );
 
   const detallesRelojes = newFilteredProducts.map((p) =>
     p._type === "relojesLujo"
@@ -456,6 +586,81 @@ const Listing = async ({
       ? p.detallesReloj
       : null
   );
+
+  const gafasFilters = {
+    tiposDeGafas: Array.from(
+      new Set(
+        gafas.map((gafa) =>
+          gafa._type === "gafasLujo"
+            ? gafa.especificaciones.tipoDeGafa
+            : gafa._type === "gafasPremium"
+            ? gafa.detalles.tipoDeGafa
+            : ""
+        )
+      )
+    ).filter(Boolean),
+    estilosDeGafas: Array.from(
+      new Set(
+        gafas.map((gafa) =>
+          gafa._type === "gafasLujo"
+            ? gafa.especificaciones.estiloDeGafa
+            : gafa._type === "gafasPremium"
+            ? gafa.detalles.estiloDeGafa
+            : ""
+        )
+      )
+    ).filter(Boolean),
+    coloresDeLasMonturas: Array.from(
+      new Set(
+        gafas.flatMap((gafa) =>
+          gafa.variantes
+            .filter(
+              (variante): variante is TVarianteGafa =>
+                "colorDeLaMontura" in variante
+            )
+            .map((variante) => JSON.stringify(variante.colorDeLaMontura))
+        )
+      )
+    )
+      .map((color) => JSON.parse(color))
+      .filter(Boolean),
+    coloresDeLosLentes: Array.from(
+      new Set(
+        gafas.flatMap((gafa) =>
+          gafa.variantes
+            .filter(
+              (variante): variante is TVarianteGafa =>
+                "colorDelLente" in variante
+            )
+            .map((variante) => JSON.stringify(variante.colorDelLente))
+        )
+      )
+    )
+      .map((color) => JSON.parse(color))
+      .filter(Boolean),
+    formasDeLasMonturas: Array.from(
+      new Set(
+        gafas.map((gafa) =>
+          gafa._type === "gafasLujo"
+            ? gafa.especificaciones.montura.formaDeLaMontura
+            : gafa._type === "gafasPremium"
+            ? gafa.detalles.montura.formaDeLaMontura
+            : ""
+        )
+      )
+    ).filter(Boolean),
+    materialesDeLasMonturas: Array.from(
+      new Set(
+        gafas.map((gafa) =>
+          gafa._type === "gafasLujo"
+            ? gafa.especificaciones.montura.materialMontura
+            : gafa._type === "gafasPremium"
+            ? gafa.detalles.montura.materialMontura
+            : ""
+        )
+      )
+    ).filter(Boolean),
+  };
 
   const perfumeFilters = {
     tamanos: Array.from(
@@ -490,7 +695,6 @@ const Listing = async ({
     ).filter(Boolean),
   };
 
-  console.log({ perfumeFilters });
   const relojFilters = {
     tiposDeReloj: Array.from(
       new Set(detallesRelojes.flatMap((detalle) => detalle?.tipoDeReloj || []))
@@ -592,6 +796,7 @@ const Listing = async ({
         coleccionesDeMarca={coleccionesDeMarca}
         relojFilters={relojFilters}
         perfumeFilters={perfumeFilters}
+        gafaFilters={gafasFilters}
       />
 
       {!coleccionSeleccionada ? (

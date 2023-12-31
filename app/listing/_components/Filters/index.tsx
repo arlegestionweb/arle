@@ -36,6 +36,14 @@ export type TPerfumeFilters = {
   sets: boolean[];
   familiasOlfativas: string[];
 }
+export type TGafaFilters = {
+  tiposDeGafas: string[];
+  estilosDeGafas: string[];
+  coloresDeLasMonturas: TColor[];
+  coloresDeLosLentes: TColor[];
+  formasDeLasMonturas: string[];
+  materialesDeLasMonturas: string[];
+}
 
 type FiltersProps = {
   areFiltersActive: boolean;
@@ -46,13 +54,15 @@ type FiltersProps = {
   coleccionesDeMarca: string[];
   relojFilters: TRelojFilters;
   perfumeFilters: TPerfumeFilters;
+  gafaFilters: TGafaFilters;
 }
 const Filters = ({
   areFiltersActive,
   marcas,
   coleccionesDeMarca,
   relojFilters,
-  perfumeFilters
+  perfumeFilters,
+  gafaFilters
 }: FiltersProps
 ) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -107,6 +117,7 @@ const Filters = ({
         coleccionesDeMarca={coleccionesDeMarca}
         relojFilters={relojFilters}
         perfumeFilters={perfumeFilters}
+        gafaFilters={gafaFilters}
       />
     </>
   );

@@ -20,6 +20,8 @@ const gafaVariantSchema = z.object({
   unidadesDisponibles: z.number(),
   imagenes: z.array(imageSchema),
 });
+export type TVarianteGafa = z.infer<typeof gafaVariantSchema>;
+
 
 export const gafasLujoSchema = z.object({
   banners: z.array(bannerSchema).optional().nullable(),
@@ -110,4 +112,3 @@ export const gafasPremiumSchema = z.object({
   coleccionDeMarca: coleccionDeMarcaSchema,
 });
 
-export type TVarianteGafa = z.infer<typeof gafaVariantSchema>;

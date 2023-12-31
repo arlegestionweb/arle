@@ -6,8 +6,9 @@ import { createUrl } from "@/app/_lib/utils";
 import { useRef } from "react";
 import AllProductFilters from "./AllProductFilters";
 import RelojFilters from "./RelojFilters";
-import type { TPerfumeFilters, TRelojFilters } from ".";
+import type { TGafaFilters, TPerfumeFilters, TRelojFilters } from ".";
 import PerfumeFilters from "./PerfumeFilters";
+import GafaFilters from "./GafaFilters.tsx";
 
 type TypeSearchParams = {
   [key: string]: string | string[] | undefined;
@@ -21,6 +22,7 @@ type FilterMenuProps = {
   coleccionesDeMarca: string[];
   relojFilters: TRelojFilters;
   perfumeFilters: TPerfumeFilters;
+  gafaFilters: TGafaFilters;
 };
 const FilterMenu = ({
   isFilterOpen,
@@ -29,7 +31,8 @@ const FilterMenu = ({
   marcas,
   coleccionesDeMarca,
   relojFilters,
-  perfumeFilters
+  perfumeFilters,
+  gafaFilters,
 }: // searchParams,
 FilterMenuProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -113,7 +116,11 @@ FilterMenuProps) => {
             />
           )}
           {searchParams.get("type")?.includes("gafa") && (
-            <div className="">gafas</div>
+            <GafaFilters
+              coleccionesDeMarca={coleccionesDeMarca}
+              marcas={marcas}
+              gafaFilters={gafaFilters}
+            />
           )}
           {searchParams.get("type")?.includes("perfume") && (
             <PerfumeFilters
