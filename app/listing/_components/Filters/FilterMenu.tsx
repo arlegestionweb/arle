@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import FilterSection from "./FilterSection";
-import InputBox from "./InputBox";
 import Button from "@/app/_components/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/app/_lib/utils";
 import { useRef } from "react";
+import AllProductFilters from "./AllProductFilters";
+import RelojFilters from "./RelojFilters";
+import type { TGafaFilters, TPerfumeFilters, TRelojFilters } from ".";
+import PerfumeFilters from "./PerfumeFilters";
+import GafaFilters from "./GafaFilters.tsx";
 
 type TypeSearchParams = {
   [key: string]: string | string[] | undefined;
@@ -16,12 +19,20 @@ type FilterMenuProps = {
   areFiltersActive: boolean;
   searchParams: TypeSearchParams;
   marcas: string[];
+  coleccionesDeMarca: string[];
+  relojFilters: TRelojFilters;
+  perfumeFilters: TPerfumeFilters;
+  gafaFilters: TGafaFilters;
 };
 const FilterMenu = ({
   isFilterOpen,
   toggleFilter,
   areFiltersActive,
   marcas,
+  coleccionesDeMarca,
+  relojFilters,
+  perfumeFilters,
+  gafaFilters,
 }: // searchParams,
 FilterMenuProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -40,7 +51,7 @@ FilterMenuProps) => {
     const checkboxValues: string[] = [];
     val.querySelectorAll("input").forEach((input) => {
       if (input.type === "checkbox" && input.checked) {
-        console.log(input.name, input.value);
+        // console.log(input.name, input.value);
         if (newParams.has(input.name)) {
           checkboxValues.push(input.value);
           newParams.set(input.name, checkboxValues.join("& "));
@@ -50,6 +61,13 @@ FilterMenuProps) => {
       }
       if (input.type === "radio" && input.checked) {
         // console.log(input.dataset)
+        newParams.set(input.name, input.value);
+      }
+
+      if (
+        (input.name === "minPrice" || input.name === "maxPrice") &&
+        input.value !== ""
+      ) {
         newParams.set(input.name, input.value);
       }
     });
@@ -74,7 +92,7 @@ FilterMenuProps) => {
       <aside
         className={`${
           isFilterOpen ? "" : "hidden"
-        } w-[80vw] max-w-[400px] h-screen bg-white flex-col relative`}
+        } w-[80vw] max-w-[400px] max-h-[calc(100vh-60px)] bg-white flex-col relative overflow-y-scroll`}
       >
         <form onSubmit={onFormSubmit} ref={formRef}>
           <header className="flex justify-end p-4">
@@ -83,93 +101,35 @@ FilterMenuProps) => {
               className="cursor-pointer text-3xl"
             />
           </header>
-          {/* <FilterSection
-            title="Tipo de Producto"
-            active={!!searchParams.get("type")}
-          >
-            <InputBox
-              name="type"
-              title="Gafas"
-              defaultChecked={searchParams.get("type")?.includes("gafa")}
-              type="radio"
-              value={"gafa"}
+          {!searchParams.get("type") && (
+            <AllProductFilters
+              marcas={marcas}
+              coleccionesDeMarca={coleccionesDeMarca}
             />
-            <InputBox
-              name="type"
-              title="Reloj"
-              defaultChecked={searchParams.get("type")?.includes("reloj")}
-              type="radio"
-              value={"reloj"}
+          )}
+
+          {searchParams.get("type")?.includes("reloj") && (
+            <RelojFilters
+              marcas={marcas}
+              coleccionesDeMarca={coleccionesDeMarca}
+              relojFilters={relojFilters}
             />
-            <InputBox
-              name="type"
-              title="Perfume"
-              defaultChecked={searchParams.get("type")?.includes("perfume")}
-              type="radio"
-              value={"perfume"}
+          )}
+          {searchParams.get("type")?.includes("gafa") && (
+            <GafaFilters
+              coleccionesDeMarca={coleccionesDeMarca}
+              marcas={marcas}
+              gafaFilters={gafaFilters}
             />
-          </FilterSection> */}
-          <FilterSection title="Línea" active={!!searchParams.get("linea")}>
-            <InputBox
-              name="linea"
-              title="Todos"
-              description="Ver todos los productos"
-              type="radio"
-              defaultChecked={searchParams.get("linea")?.includes("todos") || !searchParams.get("linea")}
-              value={"todos"}
+          )}
+          {searchParams.get("type")?.includes("perfume") && (
+            <PerfumeFilters
+              marcas={marcas}
+              coleccionesDeMarca={coleccionesDeMarca}
+              perfumeFilters={perfumeFilters}
             />
-            <InputBox
-              name="linea"
-              title="Excelencia"
-              description="La cima del Lujo, tu poder en cada detalle"
-              type="radio"
-              defaultChecked={searchParams.get("linea")?.includes("premium")}
-              value={"premium"}
-            />
-            <InputBox
-              name="linea"
-              title="Elite"
-              description="Calidad que inspira Liderazgo"
-              type="radio"
-              defaultChecked={searchParams.get("linea")?.includes("lujo")}
-              value={"lujo"}
-            />
-          </FilterSection>
-          <FilterSection title="Género" active={!!searchParams.get("genero")}>
-            <InputBox
-              name="genero"
-              title="Unisex"
-              type="radio"
-              value={"unisex"}
-              defaultChecked={searchParams.get("genero")?.includes("unisex")}
-            />
-            <InputBox
-              name="genero"
-              title="Mujer"
-              type="radio"
-              value={"mujer"}
-              defaultChecked={searchParams.get("genero")?.includes("mujer")}
-            />
-            <InputBox
-              name="genero"
-              title="Hombre"
-              type="radio"
-              value={"hombre"}
-              defaultChecked={searchParams.get("genero")?.includes("hombre")}
-            />
-          </FilterSection>
-          <FilterSection title="Marcas" active={!!searchParams.get("marca")}>
-            {marcas?.map((marca) => (
-              <InputBox
-                key={marca}
-                name="marca"
-                title={marca}
-                type="checkbox"
-                defaultChecked={searchParams.get("marca")?.includes(marca)}
-                value={marca}
-              />
-            ))}
-          </FilterSection>
+          )}
+
           <footer className="flex justify-evenly py-5">
             <Button type="submit">Aplicar Filtros</Button>
             {areFiltersActive && (

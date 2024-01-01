@@ -5,9 +5,45 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { FiFilter } from "react-icons/fi";
 import { LuSettings2 } from "react-icons/lu";
-import BreadCrumbs from "./BreadCrumbs";
+
 import FilterMenu from "./FilterMenu";
+import { TCaja } from "@/sanity/queries/pages/zodSchemas/reloj";
 // import { MarcaType } from "@/app/_components/types";
+
+
+type TColor = {
+  nombre: string;
+  color: string;
+};
+
+export type TRelojFilters = {
+  tiposDeReloj: string[];
+  estilosDeReloj: string[];
+  coloresDeLaCaja: TColor[];
+  coloresDelPulso: TColor[];
+  materialDelPulsoDeReloj: string[];
+  cajas: {
+    diametros: number[];
+    materiales: string[];
+    cristales: string[];
+  };
+  tiposDeMovimiento: string[];
+};
+
+export type TPerfumeFilters = {
+  tamanos: number[];
+  concentraciones: string[];
+  sets: boolean[];
+  familiasOlfativas: string[];
+}
+export type TGafaFilters = {
+  tiposDeGafas: string[];
+  estilosDeGafas: string[];
+  coloresDeLasMonturas: TColor[];
+  coloresDeLosLentes: TColor[];
+  formasDeLasMonturas: string[];
+  materialesDeLasMonturas: string[];
+}
 
 type FiltersProps = {
   areFiltersActive: boolean;
@@ -15,10 +51,18 @@ type FiltersProps = {
   //   [key: string]: string | string[] | undefined;
   // };
   marcas: string[];
+  coleccionesDeMarca: string[];
+  relojFilters: TRelojFilters;
+  perfumeFilters: TPerfumeFilters;
+  gafaFilters: TGafaFilters;
 }
 const Filters = ({
   areFiltersActive,
-  marcas
+  marcas,
+  coleccionesDeMarca,
+  relojFilters,
+  perfumeFilters,
+  gafaFilters
 }: FiltersProps
 ) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -40,10 +84,11 @@ const Filters = ({
     setIsFilterOpen(!isFilterOpen);
   };
 
-  const filters = Object.keys(searchParams).map((key) => {
-    return key;
-  });
+  // const filters = Object.keys(searchParams).map((key) => {
+  //   return key;
+  // });
 
+  
   return (
     <>
       <section className="flex flex-col mb-5">
@@ -69,6 +114,10 @@ const Filters = ({
         toggleFilter={toggleFilter}
         searchParams={allParams}
         marcas={marcas}
+        coleccionesDeMarca={coleccionesDeMarca}
+        relojFilters={relojFilters}
+        perfumeFilters={perfumeFilters}
+        gafaFilters={gafaFilters}
       />
     </>
   );

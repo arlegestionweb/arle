@@ -1,4 +1,8 @@
-export const removeSpanishAccents = function(str: string) {
+export const normalizeName = function (name: string) {
+  return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
+
+export const removeSpanishAccents = function (str: string) {
   return str
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -9,23 +13,16 @@ export const removeSpanishAccents = function(str: string) {
     .replace(/[úüûù]/g, "u")
     .replace(/[ñ]/g, "n")
     .replace(/[ç]/g, "c");
-}
-
+};
 
 export const colombianPriceStringToNumber = (price: string) => {
   return Number(
-    price
-      .split("$ ")
-      .join("")
-      .split(".")
-      .join("")
-      .split("'")
-      .join("")
+    price.split("$ ").join("").split(".").join("").split("'").join("")
   );
 };
 
 export const numberToColombianPriceString = (price: number) => {
-  let [integerPart, decimalPart] = price.toString().split('.');
+  let [integerPart, decimalPart] = price.toString().split(".");
   let result = "";
   let count = 0;
 
@@ -39,18 +36,33 @@ export const numberToColombianPriceString = (price: number) => {
   }
 
   if (decimalPart) {
-    result = result + '.' + decimalPart;
+    result = result + "." + decimalPart;
   }
 
   return result;
-}
+};
 
-
-export const getPriceRangeString = function(productPrices: number[]): string {
+export const getPriceRangeString = function (productPrices: number[]): string {
   const minProductPrice = Math.min(...productPrices);
   const maxProductPrice = Math.max(...productPrices);
 
   return minProductPrice === maxProductPrice
     ? `$${numberToColombianPriceString(minProductPrice)}`
-    : `$${numberToColombianPriceString(minProductPrice)} - $${numberToColombianPriceString(maxProductPrice)}`;
-}
+    : `$${numberToColombianPriceString(
+        minProductPrice
+      )} - $${numberToColombianPriceString(maxProductPrice)}`;
+};
+
+export const camelToTitleCase = function (str: string) {
+  let titleCase = str[0].toUpperCase();
+
+  for (let i = 1; i < str.length; i++) {
+    if (str[i] === str[i].toUpperCase()) {
+      titleCase += " " + str[i];
+    } else {
+      titleCase += str[i];
+    }
+  }
+
+  return titleCase;
+};

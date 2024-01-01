@@ -27,7 +27,14 @@ const inspiracionQuery = `inspiracion {
 
 const movimientoQuery = ` "movimiento": movimiento {
   usarMovimiento,
-  ${contenidoQuery}
+  "tipoDeMovimiento": tipoDeMovimiento -> titulo,
+  "contenido": contenido {
+    descripcion,
+    "imagen": imagen {
+      alt,
+      "url": asset->url,
+    }
+  }
 }`;
 
 const bannersQuery = `"banners": bannersDeProducto [] {
@@ -118,6 +125,10 @@ export const productQuery: Record<TProductType, string> = {
         nombre,
         "color": color.hex
       },
+      "colorTablero": colorTablero -> {
+        nombre,
+        "color": color.hex
+      },
       _type,
     },
     "inspiracion": ${inspiracionQuery},    
@@ -172,9 +183,15 @@ export const productQuery: Record<TProductType, string> = {
       "estiloDeReloj": estiloDeReloj -> titulo,
       resistenciaAlAgua,
       "material": material -> nombre,
-      genero,
-      "tipoDeMovimiento": tipoDeMovimiento -> titulo
-    }
+      "tipoDeMovimiento": tipoDeMovimiento -> titulo,
+      "caja": caja { 
+        diametro, 
+        "material": material -> nombre, 
+        "cristal": cristal -> titulo
+      },
+    },
+    "genero": detallesReloj.genero,
+    coleccionDeMarca
   }`,
   perfumeLujo: `{
     titulo,
@@ -216,18 +233,22 @@ export const productQuery: Record<TProductType, string> = {
     },
     "paisDeOrigen": paisDeOrigen -> nombre,
    ${bannersQuery},
-    "coleccionDeMarca": coleccionDeMarca -> {
-      nombre,
-      "marca": marca -> titulo
-    }
+   coleccionDeMarca
   }`,
   perfumePremium: `{ 
     "slug": slug.current,
     "detalles": detalles {
       "concentracion": concentracion -> nombre,
       resenaCorta,
-      genero
+      "notasOlfativas": notasOlfativas {
+        "notasDeBase": notasDeBase [] -> nombre,
+        "notasDeSalida": notasDeSalida [] -> nombre,
+        "familiaOlfativa": familiaOlfativa -> nombre,
+        "notasDeCorazon": notasDeCorazon [] -> nombre
+      },
+      
     },
+    "genero": detalles.genero,
     titulo,
     _type,
     mostrarCredito,
@@ -245,7 +266,8 @@ export const productQuery: Record<TProductType, string> = {
       unidadesDisponibles,
     },
     parteDeUnSet,
-    descripcion
+    descripcion,
+    coleccionDeMarca
   }`,
   gafasLujo: `{
     ${bannersQuery},
@@ -300,7 +322,8 @@ export const productQuery: Record<TProductType, string> = {
         }
       },
       descripcion,
-    }
+    },
+    coleccionDeMarca
   }`,
   gafasPremium: `{
     _type,
@@ -326,7 +349,8 @@ export const productQuery: Record<TProductType, string> = {
     },
     "garantia": garantia { 
       meses
-    }
+    },
+    coleccionDeMarca
   }`,
 };
 

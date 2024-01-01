@@ -49,7 +49,7 @@ const EspecificacionesPerfume = ({ product }: TEspecificacionesProps) => {
       <div className="grid grid-cols-2 gap-2">
         <SeccionEspecificaciones
           title="Género"
-          paragraph={product.detalles.genero}
+          paragraph={product.genero}
         />
         <SeccionEspecificaciones
           title="Marca"

@@ -27,12 +27,14 @@ export const notasOlfativasProdSchema = defineField({
   name: "notasOlfativas",
   title: "Notas olfativas",
   type: "object",
+  validation: Rule => Rule.required(),
   fields: [
     defineField({
       name: "familiaOlfativa",
       title: "Familia olfativa",
       type: "reference",
       to: [{ type: "familiasOlfativas" }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "notasDeSalida",

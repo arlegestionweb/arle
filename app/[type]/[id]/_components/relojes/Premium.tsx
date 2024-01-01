@@ -55,7 +55,7 @@ const EspecificacionesReloj = ({ product }: TEspecificacionesProps) => {
         />
         <SeccionEspecificaciones
           title="Género"
-          paragraph={product.detallesReloj.genero}
+          paragraph={product.genero}
         />
         <SeccionEspecificaciones
           title="Material"

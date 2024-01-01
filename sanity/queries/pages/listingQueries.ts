@@ -32,7 +32,7 @@ const listingMainString = `
     ${imageQuery},
     "productos": productos[]->{
       "marca": marca->titulo,
-      "type": _type,
+      _type,
       _type == "perfumeLujo" =>
         ${productQuery.perfumeLujo}
       ,
@@ -148,8 +148,6 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
-
-    // console.log(result.perfumes)
 
     const parsedResult = zodListPage.safeParse(result);
 

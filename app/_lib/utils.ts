@@ -1,17 +1,23 @@
-import { ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
-import { TProduct } from '@/sanity/queries/pages/listingQueries';
-import { ReadonlyURLSearchParams } from 'next/navigation';
+import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+import { TProduct } from "@/sanity/queries/pages/listingQueries";
+import { ReadonlyURLSearchParams } from "next/navigation";
 
-export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyURLSearchParams) => {
+export const createUrl = (
+  pathname: string,
+  params: URLSearchParams | ReadonlyURLSearchParams
+) => {
   const paramsString = params.toString();
-  const queryString = `${paramsString.length ? '?' : ''}${paramsString}`;
+  const queryString = `${paramsString.length ? "?" : ""}${paramsString}`;
 
   return `${pathname}${queryString}`;
 };
 
-
-export const makeNewParams = (filterName: string, filterValue: string | undefined, oldSearchParams = {}) => {
+export const makeNewParams = (
+  filterName: string,
+  filterValue: string | undefined,
+  oldSearchParams = {}
+) => {
   const newParams = new URLSearchParams(oldSearchParams.toString());
 
   if (filterValue) {
@@ -37,25 +43,38 @@ export const formatNumber = function (number: number | string): string {
     }
   }
   return result;
-}
+};
 
-export const getAllMarcas = (products: TProduct[]) => products.map((product) => product.marca);
+export const getAllMarcas = (products: TProduct[]) =>
+  products.map((product) => product.marca);
 
+  export const getAllColeccionesDeMarca = (products: TProduct[]) => 
+  products
+    .map(product => product.coleccionDeMarca)
+    .filter((coleccionDeMarca): coleccionDeMarca is string => coleccionDeMarca !== undefined && coleccionDeMarca !== null);
+    
 export const spanishToCamelCase = function (input: string) {
   // Split the input string into words
   const words = input.split(/[\s]+/);
 
   // Capitalize the first letter of each word and join them in camelCase
-  const camelCased = words.map(word => {
-    // Remove accents from the word
-    const wordWithoutAccents = word.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    // Capitalize the first letter and use the rest of the letters as is
-    return wordWithoutAccents.charAt(0).toUpperCase() + wordWithoutAccents.slice(1).toLowerCase();
-  }).join('');
+  const camelCased = words
+    .map((word) => {
+      // Remove accents from the word
+      const wordWithoutAccents = word
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+      // Capitalize the first letter and use the rest of the letters as is
+      return (
+        wordWithoutAccents.charAt(0).toUpperCase() +
+        wordWithoutAccents.slice(1).toLowerCase()
+      );
+    })
+    .join("");
 
   return camelCased.charAt(0).toLowerCase() + camelCased.slice(1); // Make the first character lowercase
-}
+};
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }

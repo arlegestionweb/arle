@@ -75,7 +75,10 @@ const varianteDeRelojes = defineField({
       name: "unidadesDisponibles",
       title: "Unidades disponibles",
       type: "number",
-      validation: (Rule) => Rule.required().min(0).error('Unidades disponibles no pueden ser menos de 0'),
+      validation: (Rule) =>
+        Rule.required()
+          .min(0)
+          .error("Unidades disponibles no pueden ser menos de 0"),
     }),
     imageArrayForProducts,
   ],
@@ -102,29 +105,24 @@ const varianteDeRelojes = defineField({
   },
 });
 
-
 export const movimientoObjSchema = defineField({
   name: "movimiento",
   title: "Movimiento",
   type: "object",
   group: "detalles",
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "usarMovimiento",
       title: "Usar movimiento?",
       type: "boolean",
     }),
+    tipoDeMovimientoRefSchema,
     defineField({
       name: "contenido",
       title: "Contenido",
       type: "object",
       fields: [
-        defineField({
-          name: "tipo",
-          title: "Tipo de Movimiento",
-          type: "string",
-          validation: (Rule) => Rule.required(),
-        }),
         defineField({
           name: "descripcion",
           title: "Descripción",
@@ -231,6 +229,7 @@ export const cajaSchema = defineField({
   name: "caja",
   title: "Caja",
   type: "object",
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "cristal",
