@@ -9,7 +9,7 @@ type TRelojLujoProps = {
 };
 
 const RelojLujo = ({ product }: TRelojLujoProps) => {
-  console.log(product);
+  console.log(product.especificaciones.funciones);
 
   return (
     <>
@@ -65,13 +65,17 @@ const RelojLujo = ({ product }: TRelojLujoProps) => {
               theme="light"
               detalles={{
                 caja: {
-                  cristal: "algo",
-                  "Diámetro de la caja": "36mm",
-                  "Material de la caja": "Titanio",
-                  "Color de la caja": "Azul glaciar",
+                  cristal: product.caja.cristal,
+                  "Diámetro de la caja": product.caja.diametro+"mm",
+                  "Material de la caja": product.caja.material,
                 },
-                especificaciones:
-                  "bg-color-bg-surface-1-defaul w-screen flex justify-center",
+                especificaciones:{
+                  "Tipo de reloj":product.especificaciones.tipoDeReloj,
+                  "Estilo de reloj":product.especificaciones.estiloDeReloj,
+                  "Resistencia al agua":product.especificaciones.resistenciaAlAgua,
+                  material: product.especificaciones.material,
+                  funciones: product.especificaciones.funciones.map(funcion => `${funcion.titulo}: ${funcion.descripcion}`)
+                },
                 garantia: {
                   meses: product.garantia.meses + "",
                   descripción: product.garantia.descripcion || "",
