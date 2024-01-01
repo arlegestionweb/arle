@@ -34,9 +34,10 @@ const  InfoSection = (props: InfoProps) => {
     <section
       className={cn(
         infoVariants({ labelType: props.labelType }),
+        "gap-6",
         props.className
       )}>
-      <section className="px-4 w-full lg:h-full flex flex-col justify-center items-center gap-2 pb-5 flex-1">
+      <section className="px-4 lg:p-0 lg:pr-4 w-full lg:h-full flex flex-col justify-center items-center gap-2 pb-5 flex-1">
         {!props.DesciptionComp ? (
           <>
             <h2 className="w-full text-2xl font-semibold font-crimson leading-7">
@@ -56,7 +57,7 @@ const  InfoSection = (props: InfoProps) => {
         )}
       </section>
       {!props.ImageComp ? (
-        <div className="relative w-full h-64 lg:min-h-72 flex-1">
+        <div className="relative w-full  h-64 lg:h-auto lg:aspect-video lg:min-h-72 flex-1">
           <Image
             alt={props.alt || ""}
             src={props.url || ""}

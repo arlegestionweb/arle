@@ -11,12 +11,12 @@ type DetallesProductoProps = {
           [key: string]: string | string[];
         };
   };
-  theme?: "dark" | "light"
+  theme?: "dark" | "light";
 };
 
 const DetallesProducto = ({
   detalles,
-  theme = "dark"
+  theme = "dark",
 }: DetallesProductoProps) => {
   const [activeSection, setActiveSection] = useState<
     | string
@@ -24,7 +24,7 @@ const DetallesProducto = ({
     | {
         [key: string]: string | string[];
       }
-  >(detalles? Object.keys(detalles)[0] : "");
+  >(detalles ? Object.keys(detalles)[0] : "");
 
   const handleSectionChange = (section: string) => {
     setActiveSection(section);
@@ -32,23 +32,28 @@ const DetallesProducto = ({
 
   return (
     <section className="w-full h-full">
-      <nav className="no-scrollbar pt-4 flex md:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2">
+      <nav className="no-scrollbar lg:pt-4 flex md:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full">
         {detalles &&
-          Object.keys(detalles).map(detalle => (
-            <>
-              <h4
-                onClick={() => handleSectionChange(detalle)}
-                className={cn(
-                  `px-4 py-2 border-b-2  whitespace-nowrap `, theme == "dark"? "border-zinc-700":"border-zinc-200",
-                  activeSection === detalle && `${theme == "dark"? "border-white" : "border-slate-800"}`
-                )}>
-                {convertirCamelCaseATitulo(detalle)}
-              </h4>
-            </>
+          Object.keys(detalles).map((detalle, index) => (
+            <h4
+              key={detalle + index+Math.random()}
+              onClick={() => handleSectionChange(detalle)}
+              className={cn(
+                `px-4 py-2 border-b-2  whitespace-nowrap cursor-pointer`,
+                theme == "dark" ? "border-zinc-700" : "border-zinc-200",
+                activeSection === detalle &&
+                  `${theme == "dark" ? "border-white" : "border-slate-800"}`
+              )}>
+              {convertirCamelCaseATitulo(detalle)}
+            </h4>
           ))}
       </nav>
 
-      <section className={cn("mt-4 h-[285px] overflow-y-auto overflow-x-hidden no-scrollbar", theme == "light"? "text-zinc-700":"text-zinc-200")}>
+      <section
+        className={cn(
+          "mt-4 h-[285px] overflow-y-auto overflow-x-hidden no-scrollbar",
+          theme == "light" ? "text-zinc-700" : "text-zinc-200"
+        )}>
         {detalles &&
           Object.keys(detalles).map((detalle, index) => {
             let arrDetalles: JSX.Element[] = [];
@@ -73,7 +78,7 @@ const DetallesProducto = ({
               arrDetalles.push(
                 <>
                   {Object.keys(detalles[detalle]).map(object => (
-                    <section key={index+object}>
+                    <section key={index + object+Math.random()}>
                       <div className="pb-5">
                         <h4 className="w-72 text-lg font-bold font-tajawal leading-snug">
                           {convertirCamelCaseATitulo(object)}
@@ -89,9 +94,9 @@ const DetallesProducto = ({
             }
 
             return (
-              <React.Fragment key={index}>
+              <React.Fragment key={index+"-"+Math.random()}>
                 {arrDetalles.map(elementDetalle => (
-                  <>{detalle == activeSection && elementDetalle}</>
+                  <React.Fragment key={index+"-"+Math.random()}>{detalle == activeSection && elementDetalle}</React.Fragment>
                 ))}
               </React.Fragment>
             );

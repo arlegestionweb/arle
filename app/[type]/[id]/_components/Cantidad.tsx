@@ -17,7 +17,7 @@ const Cantidad = () => {
 
   return (
     <div className="flex flex-col">
-      <h3>Cantidad</h3>
+      <h3 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">Cantidad</h3>
       <div className="flex items-center border rounded border-stone-300 w-fit overflow-hidden">
         <BotonDeCantidad onClick={restarACantidad}>
           <MinusIcon />
