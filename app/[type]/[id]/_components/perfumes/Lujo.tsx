@@ -11,7 +11,6 @@ type TPerfumeLujoProps = {
 };
 
 const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
-  console.log(product.banners);
   
   return (
     <>

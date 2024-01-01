@@ -29,14 +29,13 @@ const DetallesProducto = ({
   const handleSectionChange = (section: string) => {
     setActiveSection(section);
   };
-
   return (
     <section className="w-full h-full">
       <nav className="no-scrollbar lg:pt-4 flex md:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full">
         {detalles &&
           Object.keys(detalles).map((detalle, index) => (
             <h4
-              key={detalle + index+Math.random()}
+              key={detalle + index + Math.random()}
               onClick={() => handleSectionChange(detalle)}
               className={cn(
                 `px-4 py-2 border-b-2  whitespace-nowrap cursor-pointer`,
@@ -58,18 +57,20 @@ const DetallesProducto = ({
           Object.keys(detalles).map((detalle, index) => {
             let arrDetalles: JSX.Element[] = [];
 
+            console.log(detalles[detalle]);
             if (typeof detalles[detalle] === "string") {
               arrDetalles.push(
-                <p className="w-72 text-lg font-normal font-tajawal leading-snug">
+                <p className=" w-full text-lg font-normal font-tajawal leading-snug">
                   {detalles[detalle] as string}
                 </p>
               );
             } else if (Array.isArray(detalles[detalle])) {
               // Es de tipo string[]
+
               arrDetalles.push(
                 <section>
-                  <p className="w-72 text-lg font-normal font-tajawal leading-snug">
-                    {(detalles[detalle] as string[]).join(", ")}
+                  <p className="w-full text-lg font-normal font-tajawal leading-snug">
+                    {detalles[detalle] as string[]}
                   </p>
                 </section>
               );
@@ -78,13 +79,17 @@ const DetallesProducto = ({
               arrDetalles.push(
                 <>
                   {Object.keys(detalles[detalle]).map(object => (
-                    <section key={index + object+Math.random()}>
+                    <section key={index + object + Math.random()}>
                       <div className="pb-5">
-                        <h4 className="w-72 text-lg font-bold font-tajawal leading-snug">
+                        <h4 className="w-full text-lg font-bold font-tajawal leading-snug">
                           {convertirCamelCaseATitulo(object)}
                         </h4>
-                        <p className="w-72 text-lg font-normal font-tajawal leading-snug">
-                          {(detalles[detalle] as any)[object]}
+                        <p className="w-full text-lg font-normal font-tajawal leading-snug">
+                          {Array.isArray((detalles[detalle] as any)[object])
+                            ? (
+                                detalles[detalle] as { [key: string]: string[] }
+                              )[object].map(obj => <p key={obj}>{obj}</p>)
+                            : (detalles[detalle] as any)[object]}
                         </p>
                       </div>
                     </section>
@@ -94,9 +99,11 @@ const DetallesProducto = ({
             }
 
             return (
-              <React.Fragment key={index+"-"+Math.random()}>
+              <React.Fragment key={index + "-" + Math.random()}>
                 {arrDetalles.map(elementDetalle => (
-                  <React.Fragment key={index+"-"+Math.random()}>{detalle == activeSection && elementDetalle}</React.Fragment>
+                  <React.Fragment key={index + "-" + Math.random()}>
+                    {detalle == activeSection && elementDetalle}
+                  </React.Fragment>
                 ))}
               </React.Fragment>
             );
