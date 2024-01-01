@@ -1,7 +1,7 @@
 import { cn } from "../_lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { BsMagic, BsCheck2Circle } from "react-icons/bs";
-import {CiCircleAlert, CiPercent, CiCircleMinus} from 'react-icons/ci'
+import { CiCircleAlert, CiPercent, CiCircleMinus } from "react-icons/ci";
 
 const labelsVariants = cva(
   "absolute top-0 flex p-1 md:p-2 gap-1 items-center border-2 whitespace-nowrap",
@@ -22,35 +22,34 @@ const labelsVariants = cva(
 );
 
 export type LabelTypes =
-  | "nuevo" 
+  | "nuevo"
   | "mas vendido"
   | "ultimas unidades"
   | "agotado"
-  | "super descuento"
+  | "super descuento";
 
 const variants = {
-  "nuevo": {
+  nuevo: {
     icon: <BsMagic />,
-    text: "¡Nuevo!"
+    text: "¡Nuevo!",
   },
   "mas vendido": {
     icon: <BsCheck2Circle />,
-    text: "Más Vendido"
+    text: "Más Vendido",
   },
   "ultimas unidades": {
     icon: <CiCircleAlert />,
-    text: "pocas unidades"
+    text: "pocas unidades",
   },
-  "agotado": {
-    icon: <CiCircleMinus size={19}/>,
-    text: "Agotado"
+  agotado: {
+    icon: <CiCircleMinus size={19} />,
+    text: "Agotado",
   },
   "super descuento": {
     icon: <CiPercent />,
-    text: "Súper Descuento"
+    text: "Súper Descuento",
   },
-}
-
+};
 
 interface LabelsProps extends VariantProps<typeof labelsVariants> {
   label: LabelTypes;
@@ -61,7 +60,8 @@ const Labels = ({ label, className, labelType }: LabelsProps) => {
   return (
     <div className={cn(labelsVariants({ labelType }), className)}>
       {variants[label].icon}
-      <span className="font-tajawal font-medium text-[0.7rem] md:text-base leading-5 capitalize">
+      <span
+        className="font-tajawal font-medium text-[0.7rem] text-base md:text-base leading-tight capitalize">
         {variants[label].text}
       </span>
     </div>

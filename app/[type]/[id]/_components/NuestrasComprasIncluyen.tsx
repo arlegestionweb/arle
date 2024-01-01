@@ -14,10 +14,10 @@ const NuestrasComprasIncluyen = ({
 }) => {
   return (
     <section>
-      <h2 className="text-zinc-800 text-[28px] font-normal font-kanit leading-loose">
+      <h2 className="text-zinc-800 text-[28px] w-full font-semibold font-crimson leading-[2rem] mb-2">
         Nuestras compras online incluyen:
       </h2>
-      <div className="flex flex-col gap-4 lg:grid grid-cols-2 lg:gap-x-3 lg:gap-y-2">
+      <div className="flex flex-col gap-2 lg:grid grid-cols-2 lg:gap-x-3 lg:gap-y-2">
         <ItemComprasIncluyen
           title="Muestras adicionales"
           description="Recibe muestras de otros productos."
