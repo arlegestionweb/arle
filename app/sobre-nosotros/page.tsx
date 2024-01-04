@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 const Page = async () => {
   const pageContent = await getSobreNosotrosContent();
-
+  console.log(pageContent);
   if (!pageContent) {
     return <main>
       LOADING
