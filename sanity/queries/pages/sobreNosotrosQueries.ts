@@ -21,13 +21,12 @@ const sobreNosotrosQuery = `*[_type == "sobreNosotros"] [0] {
   titulo,
   "whyUs": whyUs ${contentSectionQuery},
   "howWeHelpOurClients": howWeHelpOurClients ${contentSectionQuery},
-  "marcasAliadas": marcasAliadas [] {
-      "logo": logo  {
-        alt,
-        "url": asset -> url
-      },
-      titulo,
+  "marcasAliadas": marcasAliadas[] -> {
+    titulo,
+    "logo": logotipo {
+      "url": imagen.asset -> url
     }
+  }
   }`;
 
 const assetSchema = z.object({
@@ -45,7 +44,6 @@ const contentSectionSchema = z.object({
 });
 
 const logoSchema = z.object({
-  alt: z.string(),
   url: z.string(),
 });
 
