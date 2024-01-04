@@ -29,7 +29,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
               <div className="text-black text-base font-medium leading-normal">Home</div>
             </div>
           </Link> 
-          <Link href={'/'} className=" px-2 justify-center items-center gap-2 flex">
+          <Link href={'/sobre-nosotros'} className=" px-2 justify-center items-center gap-2 flex">
             <div className="justify-center items-center gap-2.5 flex">
               <div className="text-black text-base font-medium leading-normal">About</div>
             </div>
