@@ -24,6 +24,7 @@ const config: Config = {
         "color-bg-surface-1-default": "#ffffff",
         "color-bg-surface-0-default": "#f5f5f5",
         beige: "#EDE7DE",
+        "arle-blue": "#101432",
         "guidelines-on-color-beige": "#CBBBA0"
       },
       fontFamily: {
