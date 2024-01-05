@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   FaFacebookF,
@@ -15,7 +16,7 @@ const Footer = () => {
 
   if (pathname.includes("admin")) return;
   return (
-    <section className="relative lg:pb-[100vh]">
+    <section className="relative lg:pb-[100vh] pointer-events-none">
       <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-10 pt-6 md:pt-20  text-white bg-arle-blue">
         <div className="flex-1 pt-10 pb-20 w-[182px] h-[130px] flex justify-center self-center items-center">
           <Image
@@ -42,9 +43,9 @@ const Footer = () => {
               Arlé
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
-              <li>Sobre Nosotros</li>
-              <li>Nuestras Sedes</li>
-              <li>Trabaja con Nosotros</li>
+              <Link href="/sobre-nosotros"><li>Sobre Nosotros</li></Link>
+              <Link href="/nuestras-sedes"><li>Nuestras Sedes</li></Link>
+              <Link href="/trabaja-con-nosotros"><li>Trabaja con Nosotros</li></Link>
             </ul>
           </div>
           <div>
