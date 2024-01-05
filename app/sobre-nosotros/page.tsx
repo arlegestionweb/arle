@@ -19,7 +19,7 @@ const Page = async () => {
         {pageContent?.whyWeDoWhatWeDo?.imagenOVideo ?
           <video src={pageContent?.whyWeDoWhatWeDo?.video?.url}></video>
           :
-          <Image className=" filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.whyWeDoWhatWeDo?.imagen?.alt || ""} src={pageContent?.whyWeDoWhatWeDo?.imagen?.url || ""} />
+          <Image className=" filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.whyWeDoWhatWeDo?.imagen?.alt || ""} src={"https://cdn.sanity.io/images/qhszuxx1/production/a35b6e861900be80c2d11f1dda00c60693c1493e-326x369.png?fm=webp" || ""} />
         }
       </section>
       <section className="p-8 sm:py-11 sm:px-14 md:w-[50vw] md:py-10 md:pl-14 md:pr-14 max-w-3xl">
@@ -38,7 +38,7 @@ const Page = async () => {
         {pageContent?.whyUs?.imagenOVideo ?
           <video src={pageContent?.whyUs?.video?.url}></video>
           :
-          <Image className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.whyUs?.imagen?.alt || ""} src={pageContent?.whyUs?.imagen?.url || ""} />
+          <Image className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.whyUs?.imagen?.alt || ""} src={"https://cdn.sanity.io/images/qhszuxx1/production/a35b6e861900be80c2d11f1dda00c60693c1493e-326x369.png?fm=webp" || ""} />
         }
       </section>
     </section>
@@ -50,7 +50,7 @@ const Page = async () => {
         {pageContent?.howWeHelpOurClients?.imagenOVideo ?
           <video src={pageContent?.howWeHelpOurClients?.video?.url}></video>
           :
-          <Image className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.howWeHelpOurClients?.imagen?.alt || ""} src={pageContent?.howWeHelpOurClients?.imagen?.url || ""} />
+          <Image className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.howWeHelpOurClients?.imagen?.alt || ""} src={"https://cdn.sanity.io/images/qhszuxx1/production/a35b6e861900be80c2d11f1dda00c60693c1493e-326x369.png?fm=webp" || ""} />
         }
       </section>
       <section className="pl-24 md:pl-0 flex w-full max-w-3xl flex-col items-end md:items-start">
@@ -60,7 +60,7 @@ const Page = async () => {
     </section>
   }
   {pageContent?.whyWeDoWhatWeDo?.on &&
-    <section className="md:h-[40vh] xl:h-[50vh] flex flex-col-reverse md:flex-row items-center bg-arle-blue text-color-bg-surface-1-default">
+    <section className="md:h-[40vh] xl:h-[50vh] flex flex-col-reverse md:flex-row items-center justify-end bg-arle-blue text-color-bg-surface-1-default">
       <section className="p-8 sm:py-11 sm:px-14 md:w-[50vw] md:py-10 md:pl-14 md:pr-14 max-w-3xl">
         <h2>{pageContent?.whyWeDoWhatWeDo?.titulo}</h2>
         <p>{pageContent?.whyWeDoWhatWeDo?.descripcion}</p>
@@ -69,7 +69,7 @@ const Page = async () => {
         {pageContent?.whyWeDoWhatWeDo?.imagenOVideo ?
           <video src={pageContent?.whyWeDoWhatWeDo?.video?.url}></video>
           :
-          <Image className=" filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.whyWeDoWhatWeDo?.imagen?.alt || ""} src={pageContent?.whyWeDoWhatWeDo?.imagen?.url || ""} />
+          <Image className=" filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.whyWeDoWhatWeDo?.imagen?.alt || ""} src={"https://cdn.sanity.io/images/qhszuxx1/production/a35b6e861900be80c2d11f1dda00c60693c1493e-326x369.png?fm=webp" || ""} />
         }
       </section>
     </section>
