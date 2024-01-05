@@ -21,6 +21,7 @@ const sobreNosotrosQuery = `*[_type == "sobreNosotros"] [0] {
   titulo,
   "whyUs": whyUs ${contentSectionQuery},
   "howWeHelpOurClients": howWeHelpOurClients ${contentSectionQuery},
+  "ourStory": ourStory ${contentSectionQuery},
   "marcasAliadas": marcasAliadas[] -> {
     titulo,
     "logo": logotipo {
@@ -59,6 +60,7 @@ const sobreNosotrosSchema = z.object({
   titulo: z.string(),
   whyUs: contentSectionSchema.optional().nullable(),
   howWeHelpOurClients: contentSectionSchema.optional().nullable(),
+  ourStory: contentSectionSchema.optional().nullable(),
   marcasAliadas: marcasAliadasSchema.optional().nullable(),
 });
 
