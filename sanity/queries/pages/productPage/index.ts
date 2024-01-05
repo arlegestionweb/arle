@@ -358,7 +358,30 @@ export const productQuery: Record<TProductType, string> = {
     _type,
     "marca": marca->titulo,
     _id,
-    "variantes": ${variantesDeGafaQueryString},
+    "variantes": variantes[] {
+      "colorDelLente": colorDelLente -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaVarilla": colorDeLaVarilla -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaMontura": colorDeLaMontura -> {
+        nombre,
+        "color": color.hex
+      },
+      "imagenes": imagenes[] {
+        alt,
+        "url": asset->url,
+      },
+      codigoDeReferencia,
+      registroInvima,
+      unidadesDisponibles,
+      precio,
+      etiqueta,
+      mostrarUnidadesDispobibles
+    },
     modelo,
     "slug": slug.current, 
     genero,

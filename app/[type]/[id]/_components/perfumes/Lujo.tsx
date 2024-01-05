@@ -4,7 +4,7 @@ import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
 import MobileAddToCart from "../MobileAddToCart";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
-import HeroProduct from "@/app/_components/lujo/HeroProduct";
+import HeroProduct from '@/app/_components/lujo/HeroProduct';
 
 type TPerfumeLujoProps = {
   product: TPerfumeLujo;

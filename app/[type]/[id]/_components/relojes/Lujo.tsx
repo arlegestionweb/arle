@@ -8,7 +8,9 @@ type TRelojLujoProps = {
   product: TRelojLujo;
 };
 
-const RelojLujo = ({product}: TRelojLujoProps) => {
+const RelojLujo = ({ product }: TRelojLujoProps) => {
+  console.log(product.especificaciones.funciones);
+
   return (
     <>
       <HeroProduct
