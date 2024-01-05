@@ -1,5 +1,5 @@
 import { TPerfumeLujo } from "@/sanity/queries/pages/types";
-import InfoSection from '../InfoSection';
+import InfoSection from "../InfoSection";
 import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
 import MobileAddToCart from "../MobileAddToCart";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
@@ -11,7 +11,6 @@ type TPerfumeLujoProps = {
 };
 
 const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
-  
   return (
     <>
       <HeroProduct
@@ -49,10 +48,10 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
             <DetallesProducto
               detalles={{
                 notasOlfativas: {
-                  notasDeBase: product.notasOlfativas.notasDeBase,
-                  notasDeSalida: product.notasOlfativas.notasDeSalida,
-                  familiaOlfativa: product.notasOlfativas.familiaOlfativa,
-                  notasDeCorazon: product.notasOlfativas.notasDeCorazon,
+                  notasDeBase: product.notasOlfativas.notasDeBase || "",
+                  notasDeSalida: product.notasOlfativas.notasDeSalida || "",
+                  familiaOlfativa: product.notasOlfativas.familiaOlfativa || "",
+                  notasDeCorazon: product.notasOlfativas.notasDeCorazon || "",
                 },
                 ingredientes: product.ingredientes,
               }}
@@ -70,10 +69,6 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
       </section>
 
       <section className="px-4 py-6 lg:hidden">
-        <NuestrasComprasIncluyen />
-      </section>
-
-      <section className="px-4 mt-28 py-6 lg:hidden">
         <NuestrasComprasIncluyen />
       </section>
 

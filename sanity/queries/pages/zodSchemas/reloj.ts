@@ -79,11 +79,6 @@ export const relojLujoSchema = z.object({
       imagen: imageSchema.optional().nullable(),
     }).optional().nullable(),
   }).optional(),
-  caja: z.object({
-    diametro: z.number(),
-    material: z.string(),
-    cristal: z.string()
-  }),
   banners: z.array(bannerSchema).optional().nullable(),
   coleccionDeMarca: coleccionDeMarcaSchema,
   slug: z.string(),

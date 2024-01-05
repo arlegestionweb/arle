@@ -142,17 +142,7 @@ export const productQuery: Record<TProductType, string> = {
     "inspiracion": ${inspiracionQuery},    
     modelo,
     ${garantiaQuery},
-    "movimiento": movimiento{
-      usarMovimiento,
-      "contenido": contenido{
-        descripcion,
-        tipo,
-        "imagen": imagen {
-          alt,
-          "url": asset->url,
-        }
-      }
-    },
+    ${movimientoQuery},
     "caja": caja { 
       diametro, 
       "material": material -> nombre, 
