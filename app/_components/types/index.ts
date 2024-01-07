@@ -10,9 +10,9 @@ export type BannerType = {
 };
 
 export type imageType = {
-  alt: string;
   url: string;
-};
+  alt?: string | null | undefined;
+}[];
 
 export type NotaOlftativaType = {
   titulo: string;

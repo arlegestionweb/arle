@@ -76,5 +76,16 @@ export const spanishToCamelCase = function (input: string) {
 };
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
+}
+
+export function convertirCamelCaseATitulo(detalle: string): string {
+  return detalle
+    .replace(/([a-z])([A-Z])/g, "$1 $2") // Insertar espacio antes de las letras mayúsculas
+    .charAt(0)
+    .toUpperCase() +
+    detalle
+      .slice(1)
+      .replace(/([A-Z]+)/g, " $1")
+      .replace(/([A-Z][a-z])/g, " $1");
 }

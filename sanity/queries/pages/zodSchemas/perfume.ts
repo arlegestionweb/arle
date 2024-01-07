@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { bannerSchema, coleccionDeMarcaSchema, contenidoSchema, imageSchema } from "./general";
 
-const inspiracionSchema = z.object({
+export const inspiracionSchema = z.object({
   usarInspiracion: z.boolean().optional().nullable(),
   contenido: contenidoSchema.optional().nullable(),
 });

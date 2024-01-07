@@ -10,9 +10,14 @@ export type TRelojLujo = z.infer<typeof relojLujoSchema>;
 export type TGafaLujo = z.infer<typeof gafasLujoSchema>;
 export type TGafaPremium = z.infer<typeof gafasPremiumSchema>;
 
-const zodProductPremiun = z.union([perfumePremiumSchema, relojPremiumSchema, gafasPremiumSchema]);
-export type TProductPremiun = z.infer<typeof zodProductPremiun>;
+const zodProductPremium = z.union([perfumePremiumSchema, relojPremiumSchema, gafasPremiumSchema]);
+export type TProductPremium = z.infer<typeof zodProductPremium>;
+
+const zodProductLujo = z.union([perfumeLujoSchema, relojLujoSchema, gafasLujoSchema]);
+export type TProductLujo = z.infer<typeof zodProductLujo>;
 
 
 // export const isPerfume = (product: TProduct): product is TPerfume => product.type.includes("perfume"); 
-export const isPerfumePremium = (product: TProductPremiun): product is TPerfumePremium => product._type.includes("perfumePremium"); 
+export const isPerfumePremium = (product: TProductPremium): product is TPerfumePremium => product._type.includes("perfumePremium"); 
+
+export const isPerfumeLujo = (product: TProductLujo): product is TPerfumeLujo => product._type.includes("perfumeLujo"); 

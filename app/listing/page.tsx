@@ -10,6 +10,7 @@ import { getAllColeccionesDeMarca, getAllMarcas } from "../_lib/utils";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
+import Banner from "../_components/homepage/Banner";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -223,11 +224,11 @@ const Listing = async ({
     : [];
 
   const colecciones = pageContent?.colecciones.filter(
-    (coleccion) => !!coleccion.productos
+    coleccion => !!coleccion.productos
   );
 
   const coleccionContent = colecciones?.find(
-    (coleccion) => coleccion.titulo === coleccionSeleccionada
+    coleccion => coleccion.titulo === coleccionSeleccionada
   );
 
   if (!pageContent?.relojes && !pageContent?.perfumes && !pageContent?.gafas) {
@@ -409,7 +410,7 @@ const Listing = async ({
           : tiposDeMovimientoDeRelojSeleccionados.some(
               (tipoDeMovimiento) =>
                 (producto._type === "relojesLujo" &&
-                  producto.movimiento.tipoDeMovimiento === tipoDeMovimiento) ||
+                  producto.movimiento?.tipoDeMovimiento === tipoDeMovimiento) ||
                 (producto._type === "relojesPremium" &&
                   producto.detallesReloj.tipoDeMovimiento === tipoDeMovimiento)
             )),
@@ -561,8 +562,8 @@ const Listing = async ({
             )),
   ].filter(Boolean);
 
-  const filteredProducts = productos?.filter((producto) =>
-    filters.every((filter) => typeof filter === "function" && filter(producto))
+  const filteredProducts = productos?.filter(producto =>
+    filters.every(filter => typeof filter === "function" && filter(producto))
   );
   // console.log({ filteredProducts });
   const newFilteredProducts = filteredProducts;
@@ -775,7 +776,7 @@ const Listing = async ({
         relojes
           .map((reloj) =>
             reloj._type === "relojesLujo"
-              ? reloj.movimiento.tipoDeMovimiento
+              ? reloj.movimiento?.tipoDeMovimiento
               : reloj._type === "relojesPremium"
               ? reloj.detallesReloj.tipoDeMovimiento
               : null
@@ -789,18 +790,17 @@ const Listing = async ({
 
   const coleccionesDeMarca = getAllColeccionesDeMarca(filteredProducts);
   return (
-    <main className="bg-neutral-100 min-h-screen md:px-10 px-5 pt-[70px] md:pt-0">
-      <Filters
-        areFiltersActive={areFiltersActive}
-        marcas={marcas}
-        coleccionesDeMarca={coleccionesDeMarca}
-        relojFilters={relojFilters}
-        perfumeFilters={perfumeFilters}
-        gafaFilters={gafasFilters}
+    <main className="bg-color-bg-surface-0-default min-h-screen pt-[70px] md:pt-0">
+      <Banner
+        banners={pageContent.listingContent.banners}
+        className="h-[50vh] pt-0"
       />
 
       {!coleccionSeleccionada ? (
-        <Colecciones colecciones={colecciones ?? []} className="py-6 pl-4" />
+        <Colecciones
+          colecciones={colecciones ?? []}
+          className="py-6 pl-4"
+        />
       ) : (
         <h2 className="text-3xl font-bold capitalize">
           Coleccion {coleccionSeleccionada}
@@ -808,12 +808,19 @@ const Listing = async ({
       )}
       <section className="bg-color-bg-surface-1-default flex flex-col items-center">
         <section className="max-w-[1280px] w-full py-6 px-4 md:px-9 flex">
-          {/* <Filters marcas={marcas} areFiltersActive={areFiltersActive} /> */}
+        <Filters
+          areFiltersActive={areFiltersActive}
+          marcas={marcas}
+          coleccionesDeMarca={coleccionesDeMarca}
+          relojFilters={relojFilters}
+          perfumeFilters={perfumeFilters}
+          gafaFilters={gafasFilters}
+          />
         </section>
 
         <section className="max-w-[1280px] w-full py-6 px-4 md:px-9">
-          {newFilteredProducts && newFilteredProducts.length > 0 ? (
-            <Productos productos={newFilteredProducts} />
+          {filteredProducts && filteredProducts.length > 0 ? (
+            <Productos productos={filteredProducts} />
           ) : (
             <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
           )}
