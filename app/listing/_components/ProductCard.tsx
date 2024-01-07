@@ -13,10 +13,12 @@ import { LuShoppingCart } from "react-icons/lu";
 import ProductSlide from "../../_components/ProductSlide";
 import Link from "next/link";
 import Labels, { LabelTypes } from "../../_components/Labels";
-import { useState } from "react";
+import { use, useState } from "react";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
+import { useCartStore } from "@/app/_components/cart";
+import { colombianPriceStringToNumber } from "@/utils/helpers";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
   return (
@@ -39,6 +41,17 @@ const CardLayout = ({ product }: { product: TProduct }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
     product.variantes[0]
   );
+
+  const { addItem } = useCartStore();
+  const addToCart = (producto: TProduct, selectedVariant: TVariant) => {
+    addItem({
+      productId: producto._id,
+      variantId: selectedVariant.registroInvima,
+      price: colombianPriceStringToNumber(selectedVariant.precio),
+      quantity: 1,
+      productType: producto._type
+    });
+  }
 
   return (
     <>
@@ -99,7 +112,7 @@ const CardLayout = ({ product }: { product: TProduct }) => {
           ${selectedVariant.precio}
         </p>
       </section>
-      <Button labelType={"dark"} className="flex justify-center items-center gap-2">
+      <Button onClick={() => addToCart(product, selectedVariant)} labelType={"dark"} className="flex justify-center items-center gap-2">
         <LuShoppingCart />
         <span className="font-inter text-base font-medium leading-6">
           Agregar

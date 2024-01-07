@@ -5,6 +5,7 @@ import Burger from "../Burger";
 import { useState } from "react";
 import MenuDrawer from "../menuDrawer";
 import SearchInput from "../SearchInput";
+import { useCartStore } from "../../cart";
 
 type NavDesktopProps = {
   className?: string;
@@ -12,6 +13,7 @@ type NavDesktopProps = {
 
 const DesktopNavBar = ({ className }: NavDesktopProps) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const {isCartOpen, toggleCart} = useCartStore();
 
   return (
     <nav className={className}>
@@ -38,8 +40,8 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
             <div className="w-4 h-4 justify-center items-center gap-1 flex">
               <div className="w-4 h-4 relative"></div>
             </div>
-            <div className="justify-center items-center gap-2.5 flex">
-              <div className="text-neutral-600 text-base font-medium leading-normal">Kart</div>
+            <div className="justify-center items-center gap-2.5 flex" onClick={() => toggleCart()}>
+              <div className="text-neutral-600 text-base font-medium leading-normal">Carrito de compras</div>
             </div>
           </Link>
           <Burger

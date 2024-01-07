@@ -10,6 +10,8 @@ import {
 } from "next/font/google";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/Footer";
+import { headers } from "next/headers";
+import Cart from "./_components/cart";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -50,7 +52,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${lora.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson_Text.variable} overflow-x-hidden`}>
         <Navbar />
-          
+        <Cart />
         {children}
         <Footer />
       </body>

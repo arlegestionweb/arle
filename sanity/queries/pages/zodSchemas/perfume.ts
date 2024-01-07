@@ -34,6 +34,7 @@ export type TPerfumeVariant = z.infer<typeof perfumeVariantSchema>;
 
 export const perfumePremiumSchema = z.object({
   slug: z.string(),
+  _id: z.string(),
   detalles: z.object({
     concentracion: z.string(),
     resenaCorta: z.string().nullable().optional(),

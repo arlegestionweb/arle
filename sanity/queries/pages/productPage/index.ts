@@ -255,6 +255,7 @@ export const productQuery: Record<TProductType, string> = {
       
     },
     "genero": detalles.genero,
+    _id,
     titulo,
     _type,
     mostrarCredito,
