@@ -10,7 +10,7 @@ import { IoMdClose } from "react-icons/io";
 const ProductItem = ({ item }: { item: TCartItem }) => {
   const [product, setProduct] = useState<TProduct | null>(null);
   const { addItem, removeItem, removeAllOfOneItem } = useCartStore();
-  
+
   useEffect(() => {
     const getProduct = async () => {
       const product = await getProductById(item.productId, item.productType);
@@ -18,13 +18,13 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
     };
     getProduct();
   }, []);
-  
+
   const variant = product?.variantes.find(
     (v) => v.registroInvima === item.variantId
-    );
-    
+  );
+
   if (!variant) return null;
-  
+
   const variantIndex = product?.variantes.findIndex(
     (v) => v.registroInvima === item.variantId
   );
@@ -49,28 +49,37 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
 
   return (
     <li key={item.variantId} className="flex relative gap-2">
-      <button type="button" className="absolute top-0 right-5" onClick={() => removeAllOfOneItem(item)}>
+      <button
+        type="button"
+        className="absolute top-0 right-0"
+        onClick={() => removeAllOfOneItem(item)}
+      >
         <IoMdClose className="text-zinc-500 w-4 h-4" />
       </button>
       {image && (
         <Image
           src={image?.url}
           alt={image?.alt}
-          width={100}
+          width={50}
           height={50}
-          className="object-cover"
+          className="object-cover h-20 w-20"
         />
       )}
       <section>
-        <h4>{productTitle}</h4>
-        <h5>{product.marca}</h5>
-        <p>${numberToColombianPriceString(item.price)}</p>
+        <h4 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">
+          {productTitle}
+        </h4>
+        <h5 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">
+          {product.marca}
+        </h5>
+        <p className="text-zinc-500 text-lg font-medium font-tajawal leading-snug">
+          ${numberToColombianPriceString(item.price)}
+        </p>
         <Cantidad
           cantidad={item.quantity}
           anadirACantidad={() => addItem(item)}
           restarACantidad={() => removeItem(item)}
         />
-        <p>{item.quantity}</p>
       </section>
     </li>
   );
