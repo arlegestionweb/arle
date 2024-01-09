@@ -24,6 +24,7 @@ import {
 import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema } from "../schemas/products/relojes";
 import { concentracionSchema, familiasOlfativasSchema, ingredientesSchema, notasOlfativasSchema } from "../schemas/products/perfumes";
 import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDeLaVarillaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "../schemas/products/gafas";
+import { codigoDeDescuentosSchema } from "../schemas/documents/codigosDeDescuento";
 
 export default (S: StructureBuilder) => {
   const siteSettingsListItem = S.listItem()
@@ -78,6 +79,7 @@ export default (S: StructureBuilder) => {
       materialesDelPulsoSchema.name,
       concentracionSchema.name,
       materialDeLaVarillaSchema.name,
+      codigoDeDescuentosSchema.name,
     ].includes(listItem.getId());
   };
 

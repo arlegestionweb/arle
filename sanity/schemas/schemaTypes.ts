@@ -22,6 +22,7 @@ import { relojesLujoSchema } from "./products/relojes/lujo";
 import { relojesPremiumSchema } from "./products/relojes/premium";
 import { siteSettings } from "./siteSettings";
 import { imageObjectSchema } from "./objects/image";
+import { codigoDeDescuentosSchema } from "./documents/codigosDeDescuento";
 
 export const schemaTypes = [
   siteSettings,
@@ -66,6 +67,7 @@ export const schemaTypes = [
   materialesDelPulsoSchema,
   concentracionSchema,
   materialDeLaVarillaSchema,
+  codigoDeDescuentosSchema,
 
 
   // objects
