@@ -1,9 +1,9 @@
 "use client";
-import { useEffect } from "react";
 import { create } from "zustand";
 import ProductItem from "./ProductItem";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import Button from "../Button";
+import { ChevronLeftIcon } from "@sanity/icons";
 
 export type TCartItem = {
   productId: string;
@@ -131,31 +131,24 @@ const Cart = () => {
     (state) => state
   );
 
-  // useEffect(() => {
-  //   if (isCartOpen) {
-  //     document.body.style.overflow = "hidden";
-  //     document.body.style.height = "100dvh";
-      
-  //   } else {
-  //     document.body.style.height = "auto";
-  //     document.body.style.overflow = "auto";
-  //   }
-
-  //   // Cleanup function to reset overflow when component unmounts
-  //   return () => {
-  //     document.body.style.overflow = "auto";
-  //   };
-  // }, [isCartOpen]);
-
   if (!isCartOpen) return null;
 
   return (
     <section className="bg-white z-[60] w-screen min-h-screen fixed top-0 left-0 flex ">
-      <button className="absolute top-10 left-10" onClick={toggleCart}>
-        {"< Regresar"}
+      <button
+        className="absolute top-10 left-8 flex items-center"
+        onClick={toggleCart}
+      >
+        <ChevronLeftIcon className="w-8 h-8" />
+        <span className="text-black text-sm font-medium font-inter leading-[21px]">
+          Regresar
+        </span>
       </button>
-      <section className="bg-red-200 flex-1 pt-16 pl-10">
-        <h2>Carrito de compras</h2>
+      <section className="flex-1 pt-16 px-10">
+        <h2 className="grow shrink basis-0 text-zinc-800 text-[32px] font-semibold font-crimson leading-9">
+          Carrito de compras
+        </h2>
+        <ShippingForm />
       </section>
       <section className="bg-neutral-100 flex-1 px-12 py-[122px] flex flex-col gap-5 max-h-screen overflow-y-scroll">
         {items.length === 0 ? (
@@ -230,3 +223,143 @@ const Cart = () => {
 };
 
 export default Cart;
+
+type TInputComponent =
+  | {
+      name: string;
+      type?: "text" | "number" | "id" | "email";
+      title?: string;
+      placeholder: string;
+      options?: string[];
+    }
+  | {
+      name: string;
+      type?: "select";
+      title?: string;
+      placeholder?: string;
+      options: string[]; // This prop is required when type is "pais"
+    };
+
+const InputComponent = ({
+  name,
+  type = "text",
+  title,
+  placeholder,
+  options,
+}: TInputComponent) => {
+  if (type === "text" || type === "email" || type === "number")
+    return (
+      <label
+        htmlFor={name}
+        className="text-zinc-800 text-lg font-medium font-tajawal leading-snug flex flex-col"
+      >
+        <h4>{title || name}</h4>
+        <input
+          className="w-full h-9 px-3 py-1.5 bg-white rounded border border-stone-300 focus:outline-none focus:border-black"
+          type={type}
+          name={name}
+          id={name}
+          placeholder={placeholder}
+        />
+      </label>
+    );
+
+  if (type === "id")
+    return (
+      <label htmlFor={name}>
+        <h4 className="text-zinc-800 text-lg font-medium font-tajawal leading-snug">
+          {title || name}
+        </h4>
+        <div className="flex">
+          <select name="idType" className="w-[58px] h-9 pl-2 py-[5px] bg-zinc-200 rounded-tl rounded-bl border-l border-t border-b border-stone-300">
+            <option value="cc">CC</option>
+            <option value="ti">TI</option>
+            <option value="ce">CE</option>
+            <option value="pp">Pasaporte</option>
+          </select>
+
+          <input
+            className="w-full h-9 px-3 bg-white rounded-tr rounded-br border border-stone-300"
+            type="number"
+            name={name}
+            id={name}
+            placeholder={placeholder}
+          />
+        </div>
+      </label>
+    );
+  if (type === "select")
+    return (
+      <label
+        htmlFor={name}
+        className="text-zinc-800 text-lg font-medium font-tajawal leading-snug flex flex-col"
+      >
+        <h4>{title || name}</h4>
+        <select
+          className="w-full h-9 px-3 py-1.5 bg-white rounded border border-stone-300 focus:outline-none focus:border-black"
+          name={name}
+          id={name}
+        >
+          {options?.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+      </label>
+    );
+};
+
+const ShippingForm = () => {
+  const availableCountries = ["Colombia"];
+  return (
+    <form className="flex flex-col gap-4">
+      <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
+        Información de envío
+      </h3>
+
+      <InputComponent
+        name="nombre"
+        placeholder="Kamilo Stevan Alomías Correa"
+        title="Nombre completo"
+      />
+
+      <InputComponent
+        name="identificacion"
+        placeholder="123456789"
+        title="Identificación"
+        type="id"
+      />
+
+      <InputComponent
+        name="telefono"
+        placeholder="3001234567"
+        title="Teléfono"
+        type="number"
+      />
+
+      <InputComponent
+        name="email"
+        placeholder="email@ejemplo.com.co"
+        title="Nombre completo"
+        type="email"
+      />
+
+      <InputComponent name="pais" type="select" options={availableCountries} title="País" />
+
+      <div className="flex justify-between gap-2">
+        <InputComponent name="ciudad" placeholder="Cali" title="Ciudad" />
+        <InputComponent
+          name="codigoPostal"
+          placeholder="760002"
+          title="Código Postal"
+        />
+      </div>
+      <InputComponent
+        name="direccion"
+        placeholder="Cra. 98 #16-200"
+        title="Dirección de envío"
+      />
+    </form>
+  );
+};

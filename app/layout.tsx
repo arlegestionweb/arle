@@ -20,19 +20,19 @@ const lora = Lora({ subsets: ["latin"], variable: "--font-lora" });
 const raleway = Raleway({ subsets: ["latin"], variable: "--font-raleway" });
 
 const tajawal = Tajawal({
-  weight: "400",
+  weight: [ "200","400", "700", "900"],
   subsets: ["latin"],
   variable: "--font-tajawal",
 });
 
 const kanit = Kanit({
-  weight: "400",
+  weight: ["200","400", "700", "900"],
   subsets: ["latin"],
   variable: "--font-kanit",
 });
 
 const crimson_Text = Crimson_Text({
-  weight: "400",
+  weight: ["400", "600", "700"],
   subsets: ["latin"],
   variable: "--crimson-text",
 });
