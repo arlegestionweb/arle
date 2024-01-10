@@ -13,7 +13,7 @@ export const codigoDeDescuentosSchema = defineType({
     defineField({
       name: "porcentaje",
       title: "Porcentaje",
-      type: "string",
+      type: "number",
     }),
     defineField({
       name: "duracion",

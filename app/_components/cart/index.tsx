@@ -4,6 +4,11 @@ import ProductItem from "./ProductItem";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import Button from "../Button";
 import { ChevronLeftIcon } from "@sanity/icons";
+import { usePathname } from "next/navigation";
+import { FaCheck } from "react-icons/fa6";
+import { cn } from "@/app/_lib/utils";
+import { useState } from "react";
+import { zodApiResponseSchema } from "@/app/checkout/discount-code/route";
 
 export type TCartItem = {
   productId: string;
@@ -22,6 +27,10 @@ export type TCartItem = {
 type TCartState = {
   isCartOpen: boolean;
   items: TCartItem[];
+  discountCode: {
+    code: string;
+    discount: number;
+  } | null;
 };
 
 type TCartActions = {
@@ -29,13 +38,38 @@ type TCartActions = {
   removeItem: (item: TCartItem) => void;
   removeAllOfOneItem: (item: TCartItem) => void;
   clearCart: () => void;
+  getCartSubtotal: () => number;
   getCartTotal: () => number;
+  getDiscountAmount: () => number;
   toggleCart: () => void;
+  applyDiscountCode: (code: string, discount: number) => void;
 };
 
 type TCartStore = TCartState & TCartActions;
 
 export const useCartStore = create<TCartStore>((set, get) => ({
+  discountCode: null,
+  applyDiscountCode: (code: string, discount: number) =>
+    set((state: TCartState) => {
+      // You might want to add some validation logic here to ensure that the discount code is valid
+
+      return { ...state, discountCode: { code, discount } };
+    }),
+  getDiscountAmount: () => {
+    const items: TCartItem[] = get().items;
+    let total = 0;
+
+    items.forEach((item) => (total += item.price * item.quantity));
+
+    const discountCode = get().discountCode;
+
+    if (discountCode) {
+      const discountAmount = total * (discountCode.discount / 100);
+      return Math.round(discountAmount);
+    }
+
+    return 0;
+  },
   items:
     typeof window !== "undefined" && localStorage.getItem("cart")
       ? JSON.parse(localStorage.getItem("cart")!)
@@ -71,6 +105,20 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       return { items: [] };
     }),
   getCartTotal: () => {
+    const items: TCartItem[] = get().items;
+    let total = 0;
+
+    items.forEach((item) => (total += item.price * item.quantity));
+
+    const discountAmount = get().getDiscountAmount();
+
+    if (discountAmount) {
+      total -= total - discountAmount;
+    }
+
+    return total;
+  },
+  getCartSubtotal: () => {
     const items: TCartItem[] = get().items;
     let total = 0;
 
@@ -127,11 +175,20 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 }));
 
 const Cart = () => {
-  const { items, isCartOpen, toggleCart, clearCart } = useCartStore(
-    (state) => state
-  );
+  const pathname = usePathname();
+  const {
+    items,
+    isCartOpen,
+    toggleCart,
+    clearCart,
+    getCartTotal,
+    getDiscountAmount,
+    getCartSubtotal,
+  } = useCartStore((state) => state);
 
-  if (!isCartOpen) return null;
+  if (pathname.includes("/admin")) return null;
+
+  // if (!isCartOpen) return null;
 
   return (
     <section className="bg-white z-[60] w-screen min-h-screen fixed top-0 left-0 flex ">
@@ -171,22 +228,19 @@ const Cart = () => {
         {/* <h4 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">Código de descuento</h4> */}
 
         <section className="flex flex-col gap-2">
+          <CodigoDeDescuento />
+
           <div className="flex w-full justify-between">
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
               Subtotal
             </h5>
-            <span>
-              $
-              {numberToColombianPriceString(
-                useCartStore.getState().getCartTotal()
-              )}
-            </span>
+            <span>${numberToColombianPriceString(getCartSubtotal())}</span>
           </div>
           <div className="flex w-full justify-between">
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
               Descuento
             </h5>
-            <span>$0</span>
+            <span>${numberToColombianPriceString(getDiscountAmount())}</span>
           </div>
           <div className="flex w-full justify-between">
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
@@ -200,12 +254,7 @@ const Cart = () => {
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
               Total
             </h5>
-            <span>
-              $
-              {numberToColombianPriceString(
-                useCartStore.getState().getCartTotal()
-              )}
-            </span>
+            <span>${numberToColombianPriceString(getCartTotal())}</span>
           </div>
           <Button
             // onClick={() => addToCart(product, selectedVariant)}
@@ -223,6 +272,83 @@ const Cart = () => {
 };
 
 export default Cart;
+
+
+
+
+const CodigoDeDescuento = () => {
+  const [isDiscountVerified, setIsDiscountVerified] = useState(false);
+  const { applyDiscountCode } = useCartStore((state) => state);
+
+  // const [discountCodes, setDiscountCodes] = useState<TDiscountCode[] | undefined>(undefined);
+
+  const handleDiscountCodeChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    // if (value === "DCTO30") {
+    //   setIsDiscountVerified(true);
+    //   applyDiscountCode(value, 30);
+    // } else {
+    //   setIsDiscountVerified(false);
+    // }
+
+    const response = await fetch("checkout/discount-code", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ code: value }),
+    });
+
+    const res = await response.json();
+
+    const parsedResponse = zodApiResponseSchema.safeParse(res);
+
+    if (!parsedResponse.success) {
+      console.error(parsedResponse.error);
+      return;
+    }
+
+    if (parsedResponse.data.status !== 200) return;
+
+    if (parsedResponse.data.status === 200) {
+      setIsDiscountVerified(true);
+      applyDiscountCode(
+        res.body.discountCode.codigo,
+        res.body.discountCode.porcentaje
+      );
+    }
+  };
+  return (
+    <label
+      htmlFor={"discountCode"}
+      className="text-zinc-800 text-lg font-medium font-tajawal leading-snug flex flex-col"
+    >
+      <h4 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">
+        Código de descuento
+      </h4>
+
+      <div className="flex">
+        <input
+          className="w-full h-9 px-3 py-1.5 bg-white rounded-tl rounded-bl  border border-stone-300 focus:outline-none focus:border-black"
+          name={"discountCode"}
+          id={"discountCode"}
+          placeholder={"DCTO30"}
+          onChange={handleDiscountCodeChange}
+        />
+        <div className="w-[46px] h-9 bg-zinc-200 rounded-tr rounded-br border-r border-t border-b border-stone-300 justify-center items-center gap-1 inline-flex">
+          <FaCheck
+            className={cn(
+              "w-3.5 h-3.5",
+              isDiscountVerified ? "text-green-700" : "text-stone-300"
+            )}
+          />
+        </div>
+      </div>
+    </label>
+  );
+};
 
 type TInputComponent =
   | {
@@ -271,7 +397,10 @@ const InputComponent = ({
           {title || name}
         </h4>
         <div className="flex">
-          <select name="idType" className="w-[58px] h-9 pl-2 py-[5px] bg-zinc-200 rounded-tl rounded-bl border-l border-t border-b border-stone-300">
+          <select
+            name="idType"
+            className="w-[58px] h-9 pl-2 py-[5px] bg-zinc-200 rounded-tl rounded-bl border-l border-t border-b border-stone-300"
+          >
             <option value="cc">CC</option>
             <option value="ti">TI</option>
             <option value="ce">CE</option>
@@ -345,7 +474,12 @@ const ShippingForm = () => {
         type="email"
       />
 
-      <InputComponent name="pais" type="select" options={availableCountries} title="País" />
+      <InputComponent
+        name="pais"
+        type="select"
+        options={availableCountries}
+        title="País"
+      />
 
       <div className="flex justify-between gap-2">
         <InputComponent name="ciudad" placeholder="Cali" title="Ciudad" />
