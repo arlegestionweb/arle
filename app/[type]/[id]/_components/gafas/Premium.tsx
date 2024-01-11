@@ -26,7 +26,7 @@ const GafaPremium = ({ product, selectedVariant, setSelectedVariant }: TGafaPrem
         />
         <Cantidad />
       </section>
-      <AddToCart className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block" />
+      <AddToCart product={product} quantity={1} selectedVariant={selectedVariant} className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block" />
 
       {product.descripcion ? (
         <CollapsibleProductSection classNames="mt-2" title="Descripción">
@@ -39,7 +39,7 @@ const GafaPremium = ({ product, selectedVariant, setSelectedVariant }: TGafaPrem
       <EspecificacionesGafa product={product} />
 
       <NuestrasComprasIncluyen garantia={product.garantia} />
-      <AddToCart className="lg:hidden" />
+      <AddToCart className="lg:hidden" product={product} quantity={1} selectedVariant={selectedVariant} />
     </PremiumLayout>
   );
 };

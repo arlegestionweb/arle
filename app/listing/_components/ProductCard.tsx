@@ -51,12 +51,12 @@ const CardLayout = ({
   setSelectedVariant: (variant: TVariant) => void;
 }) => {
   const { addItem } = useCartStore();
-  const addToCart = (producto: TProduct, selectedVariant: TVariant) => {
+  const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
     addItem({
       productId: producto._id,
       variantId: selectedVariant.registroInvima,
       price: colombianPriceStringToNumber(selectedVariant.precio),
-      quantity: 1,
+      quantity,
       productType: producto._type,
     });
   };

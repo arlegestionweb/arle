@@ -91,7 +91,7 @@ const HeroProduct = ({
           <Cantidad />
         </section>
 
-        <AddToCart className="hidden static shadow-none w-full py-6 px-4 gap-6 space-y-2 lg:block" />
+        <AddToCart product={product} quantity={1} selectedVariant={selectedVariant} className="hidden static shadow-none w-full py-6 px-4 gap-6 space-y-2 lg:block" />
 
         <section className="px-4 hidden pb-0 lg:block">
           <NuestrasComprasIncluyen

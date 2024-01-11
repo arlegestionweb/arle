@@ -26,7 +26,7 @@ const RelojPremium = ({ product, selectedVariant, setSelectedVariant }: TRelojPr
             setSelectedVariant={setSelectedVariant}
           />
       </section>
-      <AddToCart className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block" />
+      <AddToCart product={product} quantity={1} selectedVariant={selectedVariant} className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block" />
 
       {product.descripcion ? (
         <CollapsibleProductSection
@@ -39,7 +39,7 @@ const RelojPremium = ({ product, selectedVariant, setSelectedVariant }: TRelojPr
       <EspecificacionesReloj product={product} />
 
       <NuestrasComprasIncluyen garantia={product.garantia} />
-      <AddToCart className="lg:hidden" />
+      <AddToCart product={product} quantity={1} selectedVariant={selectedVariant} className="lg:hidden" />
     </PremiumLayout>
   );
 };
