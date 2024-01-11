@@ -23,7 +23,7 @@ const GafaLujo = ({ product }: TGafaLujoProps) => {
             descripcion={product.inspiracion.contenido?.resena || ""}
             alt={product.inspiracion.contenido?.imagen?.alt}
             url={product.inspiracion.contenido?.imagen?.url}
-            className="lg:w-[calc(1280px+32px)]"
+            className="lg:w-mx"
           />
         </section>
       )}
@@ -36,7 +36,7 @@ const GafaLujo = ({ product }: TGafaLujoProps) => {
             alt={product.detalles?.contenido?.imagen?.alt || ""}
             url={product.detalles?.contenido?.imagen?.url || ""}
             labelType={"light"}
-            className="w-full lg:w-[calc(1280px+32px)] flex-row-reverse"
+            className="w-full lg:w-mx flex-row-reverse"
           />
         </section>
       )}
@@ -48,7 +48,7 @@ const GafaLujo = ({ product }: TGafaLujoProps) => {
             descripcion={product.monturaDetalles.contenido?.texto || ""}
             alt={product.monturaDetalles.contenido?.imagen?.alt}
             url={product.monturaDetalles.contenido?.imagen?.url}
-            className="w-full lg:w-[calc(1280px+32px)]"
+            className="w-full lg:w-mx"
           />
         </section>
       )}
@@ -96,7 +96,7 @@ const GafaLujo = ({ product }: TGafaLujoProps) => {
               isLink={false}
             />
           }
-          className="w-full lg:max-w-[calc(1280px+32px)] flex-row-reverse"
+          className="w-full lg:max-w-mx flex-row-reverse"
         />
       </section>
     </>

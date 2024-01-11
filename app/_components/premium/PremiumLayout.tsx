@@ -22,7 +22,7 @@ const PremiumLayout = ({ product, children }: PremiumLayoutProps) => {
     : [product.modelo];
 
   return (
-    <section className="lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto w-full lg:max-w-[calc(1280px+32px)]">
+    <section className="lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto w-full lg:max-w-mx">
       <ProductViewer
         product={product}
         className="col-start-8 col-span-1"
