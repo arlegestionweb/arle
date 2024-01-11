@@ -188,7 +188,7 @@ const Cart = () => {
 
   if (pathname.includes("/admin")) return null;
 
-  // if (!isCartOpen) return null;
+  if (!isCartOpen) return null;
 
   return (
     <section className="bg-white z-[60] w-screen min-h-screen fixed top-0 left-0 flex ">
