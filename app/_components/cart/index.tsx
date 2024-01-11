@@ -77,6 +77,10 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
   addItem: (item: TCartItem) =>
     set((state: TCartState) => {
+      if (item.quantity <= 0) {
+        return state;
+      }
+
       const existingItemIndex = state.items.findIndex(
         (i) => i.productId === item.productId && i.variantId === item.variantId
       );
@@ -86,7 +90,9 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       if (existingItemIndex >= 0) {
         // Item already exists in the cart, update the quantity
         newItems = state.items.map((i, index) =>
-          index !== existingItemIndex ? i : { ...i, quantity: i.quantity + 1 }
+          index !== existingItemIndex
+            ? i
+            : { ...i, quantity: i.quantity + item.quantity }
         );
       } else {
         // Item is not in the cart, add it
@@ -272,9 +278,6 @@ const Cart = () => {
 };
 
 export default Cart;
-
-
-
 
 const CodigoDeDescuento = () => {
   const [isDiscountVerified, setIsDiscountVerified] = useState(false);

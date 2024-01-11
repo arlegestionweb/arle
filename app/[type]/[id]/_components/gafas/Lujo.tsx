@@ -10,9 +10,11 @@ type TGafaLujoProps = {
   product: TGafaLujo;
   selectedVariant: TVarianteGafa;
   setSelectedVariant: (variant: TVariant) => void;
+  cantidad: number;
+  setCantidad: (cantidad: number) => void;
 };
 
-const GafaLujo = ({ product, selectedVariant, setSelectedVariant }: TGafaLujoProps) => {
+const GafaLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, setCantidad }: TGafaLujoProps) => {
   return (
     <>
       <HeroProduct
@@ -20,6 +22,8 @@ const GafaLujo = ({ product, selectedVariant, setSelectedVariant }: TGafaLujoPro
         images={selectedVariant.imagenes}
         selectedVariant={selectedVariant}
         setSelectedVariant={setSelectedVariant}
+        cantidad={cantidad}
+        setCantidad={setCantidad}
       />
 
       {product.inspiracion.usarInspiracion && (

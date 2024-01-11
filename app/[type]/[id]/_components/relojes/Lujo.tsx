@@ -10,9 +10,11 @@ type TRelojLujoProps = {
   product: TRelojLujo;
   selectedVariant: TRelojVariant;
   setSelectedVariant: (variant: TVariant) => void;
+  setCantidad: (cantidad: number) => void;
+  cantidad: number;
 };
 
-const RelojLujo = ({ product, selectedVariant, setSelectedVariant }: TRelojLujoProps) => {
+const RelojLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, setCantidad }: TRelojLujoProps) => {
 
   return (
     <>
@@ -21,6 +23,8 @@ const RelojLujo = ({ product, selectedVariant, setSelectedVariant }: TRelojLujoP
         images={selectedVariant.imagenes}
         selectedVariant={selectedVariant}
         setSelectedVariant={setSelectedVariant}
+        cantidad={cantidad}
+        setCantidad={setCantidad}
       />
 
       {product.inspiracion.usarInspiracion && (

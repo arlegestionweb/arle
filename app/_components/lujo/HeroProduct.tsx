@@ -22,6 +22,8 @@ type HeroProductProps = {
   images: imageType;
   selectedVariant: TVariant;
   setSelectedVariant: (variant: TVariant) => void;
+  cantidad: number;
+  setCantidad: (cantidad: number) => void;
 };
 
 const HeroProduct = ({
@@ -29,6 +31,8 @@ const HeroProduct = ({
   images,
   selectedVariant,
   setSelectedVariant,
+  cantidad,
+  setCantidad,
 }: HeroProductProps) => {
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 lg:pb-12 min-h-[70vh] row-auto w-full lg:max-w-mx">
@@ -88,10 +92,19 @@ const HeroProduct = ({
             selectedVariant={selectedVariant}
             setSelectedVariant={setSelectedVariant}
           />
-          <Cantidad />
+          <Cantidad
+            cantidad={cantidad}
+            anadirACantidad={() => setCantidad(cantidad + 1)}
+            restarACantidad={() => setCantidad(cantidad - 1)}
+          />
         </section>
 
-        <AddToCart product={product} quantity={1} selectedVariant={selectedVariant} className="hidden static shadow-none w-full py-6 px-4 gap-6 space-y-2 lg:block" />
+        <AddToCart
+          product={product}
+          quantity={cantidad}
+          selectedVariant={selectedVariant}
+          className="hidden static shadow-none w-full py-6 px-4 gap-6 space-y-2 lg:block"
+        />
 
         <section className="px-4 hidden pb-0 lg:block">
           <NuestrasComprasIncluyen

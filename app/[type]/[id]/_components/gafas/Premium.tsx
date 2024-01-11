@@ -13,9 +13,17 @@ type TGafaPremiumProps = {
   product: TGafaPremium;
   selectedVariant: TVarianteGafa;
   setSelectedVariant: (variant: TVariant) => void;
+  cantidad: number;
+  setCantidad: (cantidad: number) => void;
 };
 
-const GafaPremium = ({ product, selectedVariant, setSelectedVariant }: TGafaPremiumProps) => {
+const GafaPremium = ({
+  product,
+  selectedVariant,
+  setSelectedVariant,
+  cantidad,
+  setCantidad
+}: TGafaPremiumProps) => {
   return (
     <PremiumLayout product={product} selectedVariant={selectedVariant}>
       <section className="my-2 flex flex-col gap-5">
@@ -24,9 +32,18 @@ const GafaPremium = ({ product, selectedVariant, setSelectedVariant }: TGafaPrem
           selectedVariant={selectedVariant}
           setSelectedVariant={setSelectedVariant}
         />
-        <Cantidad />
+        <Cantidad
+          cantidad={cantidad}
+          anadirACantidad={() => setCantidad(cantidad + 1)}
+          restarACantidad={() => setCantidad(cantidad - 1)}
+        />
       </section>
-      <AddToCart product={product} quantity={1} selectedVariant={selectedVariant} className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block" />
+      <AddToCart
+        product={product}
+        quantity={cantidad}
+        selectedVariant={selectedVariant}
+        className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block"
+      />
 
       {product.descripcion ? (
         <CollapsibleProductSection classNames="mt-2" title="Descripción">
@@ -39,7 +56,12 @@ const GafaPremium = ({ product, selectedVariant, setSelectedVariant }: TGafaPrem
       <EspecificacionesGafa product={product} />
 
       <NuestrasComprasIncluyen garantia={product.garantia} />
-      <AddToCart className="lg:hidden" product={product} quantity={1} selectedVariant={selectedVariant} />
+      <AddToCart
+        className="lg:hidden"
+        product={product}
+        quantity={cantidad}
+        selectedVariant={selectedVariant}
+      />
     </PremiumLayout>
   );
 };

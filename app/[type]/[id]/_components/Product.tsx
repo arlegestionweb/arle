@@ -25,6 +25,15 @@ const Product = ({
     product.variantes[0]
   );
 
+  const [cantidad, setCantidadState] = useState<number>(1);
+
+  const setCantidad = (newCantidad: number) => {
+    if (newCantidad < 1) {
+      newCantidad = 1;
+    }
+  
+    setCantidadState(newCantidad);
+  };
   return (
     <>
       {params.type === "gafasLujo" && product._type === "gafasLujo" && (
@@ -32,6 +41,8 @@ const Product = ({
           setSelectedVariant={setSelectedVariant}
           product={product}
           selectedVariant={selectedVariant as TVarianteGafa}
+          cantidad={cantidad}
+          setCantidad={setCantidad}
         />
       )}
       {params.type === "gafasPremium" && product._type === "gafasPremium" && (
@@ -39,6 +50,8 @@ const Product = ({
           product={product}
           selectedVariant={selectedVariant as TVarianteGafa}
           setSelectedVariant={setSelectedVariant}
+          cantidad={cantidad}
+          setCantidad={setCantidad}
         />
       )}
       {params.type === "perfumeLujo" && product._type === "perfumeLujo" && (
@@ -46,6 +59,8 @@ const Product = ({
           product={product}
           selectedVariant={selectedVariant as TPerfumeVariant}
           setSelectedVariant={setSelectedVariant}
+          cantidad={cantidad}
+          setCantidad={setCantidad}
         />
       )}
       {params.type === "perfumePremium" &&
@@ -54,6 +69,8 @@ const Product = ({
             product={product}
             selectedVariant={selectedVariant as TPerfumeVariant}
             setSelectedVariant={setSelectedVariant}
+            cantidad={cantidad}
+            setCantidad={setCantidad}
           />
         )}
       {params.type === "relojesPremium" &&
@@ -62,6 +79,8 @@ const Product = ({
             product={product}
             selectedVariant={selectedVariant as TRelojVariant}
             setSelectedVariant={setSelectedVariant}
+            cantidad={cantidad}
+            setCantidad={setCantidad}
           />
         )}
       {params.type === "relojesLujo" && product._type === "relojesLujo" && (
@@ -69,6 +88,8 @@ const Product = ({
           product={product}
           selectedVariant={selectedVariant as TRelojVariant}
           setSelectedVariant={setSelectedVariant}
+          cantidad={cantidad}
+          setCantidad={setCantidad}
         />
       )}
     </>
