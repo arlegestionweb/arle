@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { FaCheck } from "react-icons/fa6";
 import { cn } from "@/app/_lib/utils";
 import { useState } from "react";
-import { zodApiResponseSchema } from "@/app/checkout/discount-code/route";
+import { zodApiResponseSchema } from "@/app/checkout/discount-code/zod";
 
 export type TCartItem = {
   productId: string;
