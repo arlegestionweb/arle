@@ -54,7 +54,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
             <span className="text-neutral-600 text-base font-medium leading-normal">
               Carrito de compras
             </span>
-            {items.length > 0 && <RedDot />}
+            <RedDot active={items.length > 0} />
           </button>
           <Burger
             isNavOpen={isNavOpen}
