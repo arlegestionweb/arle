@@ -78,7 +78,7 @@ const PerfumeLujo = ({ product, selectedVariant, setSelectedVariant }: TPerfumeL
         <NuestrasComprasIncluyen />
       </section>
 
-      <AddToCart className="lg:hidden" />
+      <AddToCart className="lg:hidden" product={product} quantity={1} selectedVariant={selectedVariant} />
     </>
   );
 };
