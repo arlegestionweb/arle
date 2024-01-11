@@ -1,5 +1,5 @@
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
-import MobileAddToCart from "@/app/[type]/[id]/_components/MobileAddToCart";
+import AddToCart from "@/app/[type]/[id]/_components/AddToCart";
 import NuestrasComprasIncluyen from "@/app/[type]/[id]/_components/NuestrasComprasIncluyen";
 import {
   colombianPriceStringToNumber,
@@ -13,15 +13,23 @@ import {
   TRelojLujo,
   isPerfumeLujo,
 } from "@/sanity/queries/pages/types";
-import { isPerfume } from "@/sanity/queries/pages/listingQueries";
 import { imageType } from "../types";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { VariantSelector } from "@/app/listing/_components/ProductCard";
 
 type HeroProductProps = {
   product: TPerfumeLujo | TRelojLujo | TGafaLujo;
   images: imageType;
+  selectedVariant: TVariant;
+  setSelectedVariant: (variant: TVariant) => void;
 };
 
-const HeroProduct = ({ product, images }: HeroProductProps) => {
+const HeroProduct = ({
+  product,
+  images,
+  selectedVariant,
+  setSelectedVariant,
+}: HeroProductProps) => {
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 lg:pb-12 min-h-[70vh] row-auto w-full lg:max-w-mx">
       {/* Product view */}
@@ -50,16 +58,16 @@ const HeroProduct = ({ product, images }: HeroProductProps) => {
             </span>
           </p>
           <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-            CODE:{product.variantes[0].codigoDeReferencia}
+            CODE:{selectedVariant.codigoDeReferencia}
           </span>
           <p className="text-zinc-800 text-[32px] font-normal font-crimson leading-9">
-            ${product.variantes[0].precio}
+            ${selectedVariant.precio}
           </p>
           <div className="text-justify">
             <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
               Págalo a 4 cuotas de $
               {numberToColombianPriceString(
-                colombianPriceStringToNumber(product.variantes[0].precio) / 4
+                colombianPriceStringToNumber(selectedVariant.precio) / 4
               )}{" "}
               sin intereses.
               <br />
@@ -74,17 +82,16 @@ const HeroProduct = ({ product, images }: HeroProductProps) => {
           </div>{" "}
         </header>
 
-        {/* <VariantSelector
-    product={product}
-    selectedVariant={selectedVariant}
-    setSelectedVariant={setSelectedVariant}
-  /> */}
-
-        <section className="px-4 mb-6 lg:my-6 lg:px-8">
+        <section className="px-4 mb-6 lg:my-6 lg:px-8 flex flex-col gap-5">
+          <VariantSelector
+            product={product}
+            selectedVariant={selectedVariant}
+            setSelectedVariant={setSelectedVariant}
+          />
           <Cantidad />
         </section>
 
-        <MobileAddToCart className="hidden static shadow-none w-full py-6 px-4 gap-6 space-y-2 lg:block" />
+        <AddToCart className="hidden static shadow-none w-full py-6 px-4 gap-6 space-y-2 lg:block" />
 
         <section className="px-4 hidden pb-0 lg:block">
           <NuestrasComprasIncluyen

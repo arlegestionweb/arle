@@ -1,24 +1,32 @@
 import PremiumLayout from "@/app/_components/premium/PremiumLayout";
 import { TRelojPremium } from "@/sanity/queries/pages/types";
 import Cantidad from "../Cantidad";
-import MobileAddToCart from "../MobileAddToCart";
+import AddToCart from "../AddToCart";
 import CollapsibleProductSection from "../CollapsibleSection";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import SeccionEspecificaciones from "../SeccionEspecificaciones";
+import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
+import { VariantSelector } from "@/app/listing/_components/ProductCard";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 
 type TRelojPremiumProps = {
   product: TRelojPremium;
+  selectedVariant: TRelojVariant;
+  setSelectedVariant: (variant: TVariant) => void;
 };
 
-const RelojPremium = ({ product }: TRelojPremiumProps) => {
-  console.log(product.descripcion);
-
+const RelojPremium = ({ product, selectedVariant, setSelectedVariant }: TRelojPremiumProps) => {
   return (
-    <PremiumLayout product={product}>
+    <PremiumLayout product={product} selectedVariant={selectedVariant}>
       <section className="mt-2">
         <Cantidad />
+        <VariantSelector
+            product={product}
+            selectedVariant={selectedVariant}
+            setSelectedVariant={setSelectedVariant}
+          />
       </section>
-      <MobileAddToCart className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block" />
+      <AddToCart className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block" />
 
       {product.descripcion ? (
         <CollapsibleProductSection
@@ -31,7 +39,7 @@ const RelojPremium = ({ product }: TRelojPremiumProps) => {
       <EspecificacionesReloj product={product} />
 
       <NuestrasComprasIncluyen garantia={product.garantia} />
-      <MobileAddToCart className="lg:hidden" />
+      <AddToCart className="lg:hidden" />
     </PremiumLayout>
   );
 };

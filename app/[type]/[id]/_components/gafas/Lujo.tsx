@@ -3,17 +3,23 @@ import HeroProduct from "@/app/_components/lujo/HeroProduct";
 import InfoSection from "../InfoSection";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
 import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
+import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 
 type TGafaLujoProps = {
   product: TGafaLujo;
+  selectedVariant: TVarianteGafa;
+  setSelectedVariant: (variant: TVariant) => void;
 };
 
-const GafaLujo = ({ product }: TGafaLujoProps) => {
+const GafaLujo = ({ product, selectedVariant, setSelectedVariant }: TGafaLujoProps) => {
   return (
     <>
       <HeroProduct
         product={product}
-        images={product.variantes[0].imagenes}
+        images={selectedVariant.imagenes}
+        selectedVariant={selectedVariant}
+        setSelectedVariant={setSelectedVariant}
       />
 
       {product.inspiracion.usarInspiracion && (

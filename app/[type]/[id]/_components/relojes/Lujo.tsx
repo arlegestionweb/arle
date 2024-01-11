@@ -3,19 +3,24 @@ import HeroProduct from "@/app/_components/lujo/HeroProduct";
 import InfoSection from "../InfoSection";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
 import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
+import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 
 type TRelojLujoProps = {
   product: TRelojLujo;
+  selectedVariant: TRelojVariant;
+  setSelectedVariant: (variant: TVariant) => void;
 };
 
-const RelojLujo = ({ product }: TRelojLujoProps) => {
-  console.log(product.especificaciones.funciones);
+const RelojLujo = ({ product, selectedVariant, setSelectedVariant }: TRelojLujoProps) => {
 
   return (
     <>
       <HeroProduct
         product={product}
-        images={product.variantes[0].imagenes}
+        images={selectedVariant.imagenes}
+        selectedVariant={selectedVariant}
+        setSelectedVariant={setSelectedVariant}
       />
 
       {product.inspiracion.usarInspiracion && (

@@ -315,8 +315,8 @@ const CodigoDeDescuento = () => {
     if (parsedResponse.data.status === 200) {
       setIsDiscountVerified(true);
       applyDiscountCode(
-        res.body.discountCode.codigo,
-        res.body.discountCode.porcentaje
+        parsedResponse.data.body.discountCode.codigo,
+        parsedResponse.data.body.discountCode.porcentaje
       );
     }
   };
