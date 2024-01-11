@@ -7,6 +7,7 @@ import MenuDrawer from "../menuDrawer";
 import SearchInput from "../SearchInput";
 import { useCartStore } from "../../cart";
 import { FiShoppingCart } from "react-icons/fi";
+import RedDot from "../../RedDot";
 
 type NavDesktopProps = {
   className?: string;
@@ -14,7 +15,7 @@ type NavDesktopProps = {
 
 const DesktopNavBar = ({ className }: NavDesktopProps) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const { isCartOpen, toggleCart } = useCartStore();
+  const { isCartOpen, toggleCart, items } = useCartStore();
 
   return (
     <nav className={className}>
@@ -46,13 +47,14 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
             </div>
           </Link>
           <button
-            className="px-3 py-1.5 bg-color-bg-surface-0-default justify-center items-center gap-2 flex"
+            className="px-3 py-1.5 relative bg-color-bg-surface-0-default justify-center items-center gap-2 flex"
             onClick={() => toggleCart()}
           >
             <FiShoppingCart className="w-4 h-4" />
             <span className="text-neutral-600 text-base font-medium leading-normal">
               Carrito de compras
             </span>
+            {items.length > 0 && <RedDot />}
           </button>
           <Burger
             isNavOpen={isNavOpen}
