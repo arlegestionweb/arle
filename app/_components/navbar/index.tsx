@@ -10,7 +10,8 @@ const Navbar = () => {
   return (
     <>
       <MobileNavBar className="fixed max-w-screen md:hidden"/>
-      <DesktopNavBar className="hidden max-w-screen md:block"/>
+      <DesktopNavBar className="hidden max-w-screen md:block bg-color-bg-surface-0-default"/>
+
     </>
   );
 };

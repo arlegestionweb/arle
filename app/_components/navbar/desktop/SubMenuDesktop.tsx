@@ -28,7 +28,7 @@ const SubMenuDesktop = () => {
   const selectedProducto = searchParams.get("type");
   
   return (
-    <section className="flex mt-[60px] h-[52px] px-8 py-2 gap-3 bg-background items-center">
+    <section className="bg-color-bg-surface-0-default flex mt-[60px] h-[52px] px-8 py-2 gap-3 items-center">
       {subMenu.map(item => (
         <Link
           href={createUrl("/listing", makeNewParams("type", item.param, newParams))}

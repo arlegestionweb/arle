@@ -790,7 +790,7 @@ const Listing = async ({
 
   const coleccionesDeMarca = getAllColeccionesDeMarca(filteredProducts);
   return (
-    <main className="bg-color-bg-surface-0-default min-h-screen pt-[70px] md:pt-0">
+    <main className="relative z-10  lg:mb-[100vh] bg-color-bg-surface-0-default min-h-screen pt-[70px] md:pt-0">
       <Banner
         banners={pageContent.listingContent.banners}
         className="h-[50vh] pt-0"

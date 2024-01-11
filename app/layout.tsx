@@ -50,6 +50,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${lora.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson_Text.variable} overflow-x-hidden`}>
         <Navbar />
+          
         {children}
         <Footer />
       </body>

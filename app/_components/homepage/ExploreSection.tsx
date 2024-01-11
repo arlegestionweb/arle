@@ -17,7 +17,7 @@ function ExploreSection({
   section: { titulo, descripcion, imagen },
 }: ExploreSectionProps) {
   return (
-    <section className="max-w-screen h-[70vh] relative">
+    <section className=" max-w-screen h-[70vh] relative">
       <GradientImage
         src={imagen.url}
         alt={imagen.alt}
