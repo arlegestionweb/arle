@@ -1,38 +1,48 @@
 import { z } from "zod";
 import sanityClient from "@/sanity/sanityClient";
+import { toKebabCase } from "@/utils/helpers";
+
+const jobsQuery = `
+"jobs": jobs [] {
+  modality,
+  aboutJob,
+  "sede": sede -> {
+    schedule,
+    local,
+    "imagenes": imagenes [] {
+      "url": asset -> url,
+    },
+    whatsapp,
+    nombre,
+    findUsIn,
+    text,
+    title,
+    city,
+    map,
+    direccion,
+  },
+  titulo,
+  experience,
+  salary,
+  "skills": skills [],
+}`
+
+const trabajosQuery = `*[_type == "trabajaConNosotros"] [0] {
+  ${jobsQuery}
+}
+  `
 
 const trabajaConNosotrosQuery = `*[_type == "trabajaConNosotros"] [0] {
   email,
   descripcion,
-  "jobs": jobs [] {
-    modality,
-    aboutJob,
-    "sede": sede -> {
-      schedule,
-      local,
-      "imagenes": imagenes [] {
-        "url": asset -> url,
-      },
-      whatsapp,
-      nombre,
-      findUsIn,
-      text,
-      title,
-      city,
-      map,
-      direccion,
-    },
-    titulo,
-    experience,
-    salary,
-    "skills": skills [],
-  },
+  ${jobsQuery},
   titulo,
   "imagen": imagen {
     alt,
     "url": asset -> url
    }
 }`;
+
 
 const imagenSchema = z.object({
   alt: z.string(),
@@ -54,8 +64,8 @@ const sedeSchema = z.object({
 });
 
 const baseBlockSchema = z
-  .object({
-    _type: z.string(),
+.object({
+  _type: z.string(),
     _key: z.string(),
   })
   .passthrough();
@@ -69,6 +79,10 @@ const jobSchema = z.object({
   salary: z.string(),
   skills: z.array(z.string()),
 });
+
+const jobByTitleSchema = z.object({
+  jobs: z.array(jobSchema),
+})
 
 const trabajaConNosotrosSchema = z.object({
   email: z.string(),
@@ -93,3 +107,21 @@ export const getTrabajaConNosotrosContent = async () => {
     return null;
   }
 };
+
+export const getJobByTitle = async (title: string) => {
+  try {
+    const data = await sanityClient.fetch(trabajosQuery);
+    const validatedData = jobByTitleSchema.safeParse(data);
+    
+    if (!validatedData.success) {
+      throw new Error(validatedData.error.message);
+    }
+
+    const job = validatedData.data.jobs.find(j => toKebabCase(j.titulo) === title)
+    
+    return job;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

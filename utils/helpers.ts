@@ -54,3 +54,8 @@ export const getPriceRangeString = function(productPrices: number[]): string {
     ? `$${numberToColombianPriceString(minProductPrice)}`
     : `$${numberToColombianPriceString(minProductPrice)} - $${numberToColombianPriceString(maxProductPrice)}`;
 }
+
+export const toKebabCase = (str: String) => str
+.replace(/([a-z])([A-Z])/g, "$1-$2")
+.replace(/[\s_]+/g, '-')
+.toLowerCase();
