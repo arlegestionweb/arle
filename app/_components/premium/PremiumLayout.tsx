@@ -23,7 +23,7 @@ const PremiumLayout = ({ product, children, selectedVariant }: PremiumLayoutProp
     ? [product.titulo]
     : [product.modelo];
 
-    console.log({product, selectedVariant}, "here")
+    // console.log({product, selectedVariant}, "here")
 
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto w-full lg:max-w-mx">

@@ -168,7 +168,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
         (i) => i.productId !== item.productId || i.variantId !== item.variantId
       );
 
-      console.log({ newItems });
+      // console.log({ newItems });
 
       if (typeof window !== "undefined") {
         localStorage.setItem("cart", JSON.stringify(newItems));
