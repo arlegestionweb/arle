@@ -790,7 +790,7 @@ const Listing = async ({
 
   const coleccionesDeMarca = getAllColeccionesDeMarca(filteredProducts);
   return (
-    <main className="bg-color-bg-surface-0-default min-h-screen pt-[70px] md:pt-0">
+    <main className="relative z-10  lg:mb-[100vh] bg-color-bg-surface-0-default min-h-screen pt-[70px] md:pt-0">
       <Banner
         banners={pageContent.listingContent.banners}
         className="h-[50vh] pt-0"
@@ -807,7 +807,7 @@ const Listing = async ({
         </h2>
       )}
       <section className="bg-color-bg-surface-1-default flex flex-col items-center">
-        <section className="max-w-[1280px] w-full py-6 px-4 md:px-9 flex">
+        <section className="max-w-mx w-full py-6 px-4 md:px-9 flex">
         <Filters
           areFiltersActive={areFiltersActive}
           marcas={marcas}
@@ -818,7 +818,7 @@ const Listing = async ({
           />
         </section>
 
-        <section className="max-w-[1280px] w-full py-6 px-4 md:px-9">
+        <section className="max-w-mx w-full py-6 px-4 md:px-9">
           {filteredProducts && filteredProducts.length > 0 ? (
             <Productos productos={filteredProducts} />
           ) : (

@@ -23,7 +23,7 @@ type HeroProductProps = {
 
 const HeroProduct = ({ product, images }: HeroProductProps) => {
   return (
-    <section className="lg:grid lg:grid-cols-12 gap-8 lg:pb-12 min-h-[70vh] row-auto w-full lg:max-w-[calc(1280px+32px)]">
+    <section className="lg:grid lg:grid-cols-12 gap-8 lg:pb-12 min-h-[70vh] row-auto w-full lg:max-w-mx">
       {/* Product view */}
       <GalleryProduct
         className="col-start-1 col-span-6"

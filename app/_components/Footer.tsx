@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   FaFacebookF,
@@ -11,12 +12,12 @@ import {
 import { HiOutlineLocationMarker } from "react-icons/hi";
 
 const Footer = () => {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   if (pathname.includes("admin")) return;
   return (
-    <section className="relative lg:pb-[100vh]">
-      <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-10 pt-6 md:pt-20  text-white bg-[#00002E]">
+    <section className="md:fixed ">
+      <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-10 pt-6 md:pt-20  text-white bg-[#00002E] pointer-events-auto">
         <div className="flex-1 pt-10 pb-20 w-[182px] h-[130px] flex justify-center self-center items-center">
           <Image
             src={"/logo-footer.svg"}
@@ -31,10 +32,22 @@ const Footer = () => {
               Products
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
-              <li>Perfumes</li>
-              <li>Relojes</li>
-              <li>Gafas</li>
-              <li>Estado de compra</li>
+              <li>
+                <Link
+                  href="/listing?producto=perfumes"
+                  className="cursor-pointer">
+                  Perfumes
+                </Link>
+              </li>
+              <li>
+                <Link href="http://localhost:3000/listing?type=reloj">Relojes</Link>
+              </li>
+              <li>
+                <Link href="http://localhost:3000/listing?type=gafa">Gafas</Link>
+              </li>
+              <li>
+                <Link href="">Estado de compra</Link>
+              </li>
             </ul>
           </div>
           <div>
@@ -42,9 +55,15 @@ const Footer = () => {
               Arlé
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
-              <li>Sobre Nosotros</li>
-              <li>Nuestras Sedes</li>
-              <li>Trabaja con Nosotros</li>
+              <li>
+                <Link href="">Sobre Nosotros</Link>
+              </li>
+              <li>
+                <Link href="">Nuestras Sedes</Link>
+              </li>
+              <li>
+                <Link href="">Trabaja con Nosotros</Link>
+              </li>
             </ul>
           </div>
           <div>
@@ -93,33 +112,34 @@ const Footer = () => {
         <section className="border-b-[1px] pb-3 border-white text-white flex justify-center md:justify-end space-x-5">
           <a
             className="w-9 h-9 flex bg-guidelines-on-color-beige text-black justify-center items-center"
-            target="">
+            target="_blank">
             <FaFacebookF size={18} />
           </a>
           <a
             className="w-9 h-9 flex bg-guidelines-on-color-beige text-black justify-center items-center"
-            target="">
+            target="_blank">
             <FaTwitter size={18} />
           </a>
           <a
             className="w-9 h-9 flex bg-guidelines-on-color-beige text-black justify-center items-center"
-            target="">
+            target="_blank">
             <FaInstagram size={18} />
           </a>
           <a
             className="w-9 h-9 flex bg-guidelines-on-color-beige text-black justify-center items-center"
-            target="">
+            target="_blank">
             <FaLinkedinIn size={18} />
           </a>
           <a
             className="w-9 h-9 flex bg-guidelines-on-color-beige text-black justify-center items-center"
-            target="">
+            target="_blank">
             <FaYoutube size={18} />
           </a>
         </section>
         <section className="pt-3">
           <div className="text-center text-guidelines-on-color-beige text-sm font-normal font-raleway leading-normal">
-            Copyright © 2023 Arlé | Todos los Derechos Reservados | Diseñado por GoJaguar.co
+            Copyright © 2023 Arlé | Todos los Derechos Reservados | Diseñado por
+            GoJaguar.co
           </div>
         </section>
       </footer>

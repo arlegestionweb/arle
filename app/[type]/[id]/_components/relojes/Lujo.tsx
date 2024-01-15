@@ -25,7 +25,7 @@ const RelojLujo = ({ product }: TRelojLujoProps) => {
             descripcion={product.inspiracion.contenido?.resena || ""}
             alt={product.inspiracion.contenido?.imagen?.alt}
             url={product.inspiracion.contenido?.imagen?.url}
-            className="lg:w-[calc(1280px+32px)]"
+            className="lg:w-mx"
           />
         </section>
       )}
@@ -38,7 +38,7 @@ const RelojLujo = ({ product }: TRelojLujoProps) => {
             alt={product.detalles?.contenido?.imagen?.alt || ""}
             url={product.detalles?.contenido?.imagen?.url || ""}
             labelType={"light"}
-            className="w-full lg:w-[calc(1280px+32px)] flex-row-reverse"
+            className="w-full lg:w-mx flex-row-reverse"
           />
         </section>
       )}
@@ -51,7 +51,7 @@ const RelojLujo = ({ product }: TRelojLujoProps) => {
             subTitulo={product.movimiento?.tipoDeMovimiento || ""}
             alt={product.movimiento?.contenido?.imagen?.alt || ""}
             url={product.movimiento?.contenido?.imagen?.url || ""}
-            className="lg:w-[calc(1280px+32px)]"
+            className="lg:w-mx"
           />
         </section>
       )}
@@ -100,7 +100,7 @@ const RelojLujo = ({ product }: TRelojLujoProps) => {
               isLink={false}
             />
           }
-          className="w-full text-slate-900 lg:max-w-[calc(1280px+32px)] flex-row-reverse"
+          className="lg:max-w-mx w-full text-slate-900 flex-row-reverse"
         />
       </section>
     </>

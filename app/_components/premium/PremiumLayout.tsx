@@ -22,13 +22,13 @@ const PremiumLayout = ({ product, children }: PremiumLayoutProps) => {
     : [product.modelo];
 
   return (
-    <section className="lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto w-full lg:max-w-[calc(1280px+32px)]">
+    <section className="lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto w-full lg:max-w-mx">
       <ProductViewer
         product={product}
         className="col-start-8 col-span-1"
       />
 
-      <section className="col-span-6 col-start-1 row-start-1 flex flex-col px-5 md:px-8 w-full relative">
+      <section className="col-span-6 pb-5 col-start-1 row-start-1 flex flex-col px-5 md:px-8 w-full relative">
         <Labels
           className="relative max-w-fit mt-4 mb-2"
           labelType={product.variantes[0].etiqueta as LabelTypes}

@@ -13,6 +13,12 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      maxWidth: {
+        mx: "1280px"
+      },
+      width:{
+        mx: "1280px"  
+      },
       colors: {
         background: 'var(--background)',
         "color-bg-surface-1-default": "#ffffff",

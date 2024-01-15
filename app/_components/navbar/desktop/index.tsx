@@ -23,7 +23,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
 
         <SearchInput />
 
-        <section className="flex gap-5">
+        <section className="flex gap-5 ">
           <Link href={'/'} className=" px-2 justify-center items-center gap-2 flex">
             <div className="justify-center items-center gap-2.5 flex">
               <div className="text-black text-base font-medium leading-normal">Home</div>
@@ -50,7 +50,10 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
           <MenuDrawer isOpen={isNavOpen} animation="right" onClose={()=>setIsNavOpen(!isNavOpen)}/>
         </section>
       </section>
-      <SubMenuDesktop />
+      <section className="relative z-10">
+
+        <SubMenuDesktop />
+      </section>
     </nav>
   );
 };

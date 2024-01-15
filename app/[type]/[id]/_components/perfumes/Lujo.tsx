@@ -24,7 +24,7 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
           descripcion={product.descripcion.texto}
           alt={product.descripcion.imagen.alt}
           url={product.descripcion.imagen.url}
-          className="lg:max-w-[calc(1280px+32px)] pb-5"
+          className="lg:max-w-mx pb-5"
         />
       </div>
 
@@ -36,7 +36,7 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
             alt={product.inspiracion.contenido!.imagen?.alt || ""}
             url={product.inspiracion.contenido!.imagen?.url || ""}
             labelType="light"
-            className="text-slate-900 lg:max-w-[calc(1280px+32px)] flex-row-reverse pb-5"
+            className="text-slate-900 lg:max-w-mx flex-row-reverse pb-5"
           />
         </div>
       )}
@@ -64,7 +64,7 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
               isLink={false}
             />
           }
-          className="w-full  lg:max-w-[calc(1280px+32px)]"
+          className="w-full  lg:max-w-mx"
         />
       </section>
 
