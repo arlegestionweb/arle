@@ -57,6 +57,8 @@ interface LabelsProps extends VariantProps<typeof labelsVariants> {
 }
 
 const Labels = ({ label, className, labelType }: LabelsProps) => {
+  if (!variants[label]) return null;
+  
   return (
     <div className={cn(labelsVariants({ labelType }), className)}>
       {variants[label].icon}

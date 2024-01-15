@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 
 const positions = {
   topLeft: "-top-1 -left-1",
@@ -6,11 +7,17 @@ const positions = {
   centerRight: "top-1/2 -right-4 -translate-y-1/2",
 };
 
-const RedDot = ({position = "topLeft"}: {
+const RedDot = ({
+  position = "topLeft",
+  active = true,
+}: {
   position?: keyof typeof positions;
+  active?: boolean;
 }) => {
   return (
-    <div className={`absolute ${positions[position]}`}>
+    <div
+      className={`absolute ${positions[position]} ${active ? "" : "hidden"}`}
+    >
       <div className="w-2 h-2 relative">
         <div className="w-2 h-2 left-0 top-0 absolute bg-red-700 rounded-full" />
       </div>
@@ -18,4 +25,4 @@ const RedDot = ({position = "topLeft"}: {
   );
 };
 
-export default RedDot;
+export default dynamic(() => Promise.resolve(RedDot), { ssr: false });

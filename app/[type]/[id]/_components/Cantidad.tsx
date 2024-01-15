@@ -3,21 +3,30 @@
 import { useState } from "react";
 import { MinusIcon, PlusIcon } from "./Icons";
 
-const Cantidad = () => {
-  const [cantidad, setCantidad] = useState(1);
+type CantidadProps = {
+  cantidad?: number;
+  anadirACantidad?: () => void;
+  restarACantidad?: () => void;
+};
 
-  const anadirACantidad = () => {
-    setCantidad((cantidad) => cantidad + 1);
+const Cantidad = ({ cantidad: cantidadProp, anadirACantidad: anadirACantidadProp, restarACantidad: restarACantidadProp }: CantidadProps) => {
+  const [cantidadState, setCantidadState] = useState(1);
+
+  const anadirACantidadState = () => {
+    setCantidadState((cantidad) => cantidad + 1);
   };
 
-  const restarACantidad = () => {
-    if (cantidad === 1) return;
-    setCantidad((cantidad) => cantidad - 1);
+  const restarACantidadState = () => {
+    if (cantidadState === 1) return;
+    setCantidadState((cantidad) => cantidad - 1);
   };
 
+  const cantidad = cantidadProp ?? cantidadState;
+  const anadirACantidad = anadirACantidadProp ?? anadirACantidadState;
+  const restarACantidad = restarACantidadProp ?? restarACantidadState;
+  
   return (
     <div className="flex flex-col">
-      <h3 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">Cantidad</h3>
       <div className="flex items-center border rounded border-stone-300 w-fit overflow-hidden">
         <BotonDeCantidad onClick={restarACantidad}>
           <MinusIcon />

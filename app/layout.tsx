@@ -10,6 +10,8 @@ import {
 } from "next/font/google";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/Footer";
+import { headers } from "next/headers";
+import Cart from "./_components/cart";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -18,19 +20,19 @@ const lora = Lora({ subsets: ["latin"], variable: "--font-lora" });
 const raleway = Raleway({ subsets: ["latin"], variable: "--font-raleway" });
 
 const tajawal = Tajawal({
-  weight: "400",
+  weight: [ "200","400", "700", "900"],
   subsets: ["latin"],
   variable: "--font-tajawal",
 });
 
 const kanit = Kanit({
-  weight: "400",
+  weight: ["200","400", "700", "900"],
   subsets: ["latin"],
   variable: "--font-kanit",
 });
 
 const crimson_Text = Crimson_Text({
-  weight: "400",
+  weight: ["400", "600", "700"],
   subsets: ["latin"],
   variable: "--crimson-text",
 });
@@ -50,7 +52,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${lora.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson_Text.variable} overflow-x-hidden`}>
         <Navbar />
-          
+        <Cart />
         {children}
         <Footer />
       </body>

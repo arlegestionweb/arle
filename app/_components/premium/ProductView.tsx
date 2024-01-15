@@ -9,16 +9,20 @@ import { cn } from "@/app/_lib/utils";
 import React from "react";
 import Image from "next/image";
 import { isPerfume } from "@/sanity/queries/pages/listingQueries";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
+import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 
 type ProductViewerProps = {
   product: TGafaPremium | TRelojPremium | TPerfumePremium;
   className?: string;
+  selectedVariant: TVariant;
 };
 
-const ProductViewer = ({ product, className }: ProductViewerProps) => {
+const ProductViewer = ({ product, className, selectedVariant }: ProductViewerProps) => {
   const imagenes = isPerfumePremium(product)
     ? product.imagenes
-    : product.variantes[0].imagenes;
+    : (selectedVariant as TRelojVariant | TVarianteGafa).imagenes;
 
   return (
     <>

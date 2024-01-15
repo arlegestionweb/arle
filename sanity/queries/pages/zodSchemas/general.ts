@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { TVarianteGafa } from "./gafas";
+import { TRelojVariant } from "./reloj";
+import { TPerfumeVariant } from "./perfume";
 
 export const imageSchema = z.object({
   alt: z.string(),
@@ -35,3 +38,4 @@ export const zodColorSchema = z.object({
 
 export const coleccionDeMarcaSchema = z.string().optional().nullable();
 
+export type TVariant = TPerfumeVariant | TRelojVariant | TVarianteGafa;

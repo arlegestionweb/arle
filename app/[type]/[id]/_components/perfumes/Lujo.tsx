@@ -1,21 +1,37 @@
 import { TPerfumeLujo } from "@/sanity/queries/pages/types";
 import InfoSection from "../InfoSection";
-import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
-import MobileAddToCart from "../MobileAddToCart";
+import ProductSlide from "@/app/_components/ProductSlide";
+import AddToCart from "../AddToCart";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
-import HeroProduct from '@/app/_components/lujo/HeroProduct';
+import HeroProduct from "@/app/_components/lujo/HeroProduct";
+import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 
 type TPerfumeLujoProps = {
   product: TPerfumeLujo;
+  selectedVariant: TPerfumeVariant;
+  setSelectedVariant: (variant: TVariant) => void;
+  setCantidad: (cantidad: number) => void;
+  cantidad: number;
 };
 
-const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
+const PerfumeLujo = ({
+  product,
+  selectedVariant,
+  setSelectedVariant,
+  cantidad,
+  setCantidad
+}: TPerfumeLujoProps) => {
   return (
     <>
       <HeroProduct
         product={product}
         images={product.imagenes}
+        selectedVariant={selectedVariant}
+        setSelectedVariant={setSelectedVariant}
+        cantidad={cantidad}
+        setCantidad={setCantidad}
       />
 
       <div className="bg-slate-900 w-screen flex justify-center">
@@ -72,7 +88,12 @@ const PerfumeLujo = ({ product }: TPerfumeLujoProps) => {
         <NuestrasComprasIncluyen />
       </section>
 
-      <MobileAddToCart className="lg:hidden" />
+      <AddToCart
+        className="lg:hidden"
+        product={product}
+        quantity={cantidad}
+        selectedVariant={selectedVariant}
+      />
     </>
   );
 };

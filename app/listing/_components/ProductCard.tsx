@@ -13,32 +13,53 @@ import { LuShoppingCart } from "react-icons/lu";
 import ProductSlide from "../../_components/ProductSlide";
 import Link from "next/link";
 import Labels, { LabelTypes } from "../../_components/Labels";
-import { useState } from "react";
+import { use, useState } from "react";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
+import { useCartStore } from "@/app/_components/cart";
+import { colombianPriceStringToNumber } from "@/utils/helpers";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
+  const [selectedVariant, setSelectedVariant] = useState<TVariant>(
+    producto.variantes[0]
+  );
+
   return (
     <>
-      {producto.variantes[0].etiqueta && (
+      {selectedVariant.etiqueta && (
         <Labels
-          labelType={producto.variantes[0].etiqueta as LabelTypes}
-          label={producto.variantes[0].etiqueta as LabelTypes}
+          labelType={selectedVariant.etiqueta as LabelTypes}
+          label={selectedVariant.etiqueta as LabelTypes}
           className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
         />
       )}
-      <CardLayout product={producto} />
+      <CardLayout product={producto} selectedVariant={selectedVariant} setSelectedVariant={setSelectedVariant} />
     </>
   );
 };
 
 type TVariant = TPerfumeVariant | TVarianteGafa | TRelojVariant;
 
-const CardLayout = ({ product }: { product: TProduct }) => {
-  const [selectedVariant, setSelectedVariant] = useState<TVariant>(
-    product.variantes[0]
-  );
+const CardLayout = ({
+  product,
+  selectedVariant,
+  setSelectedVariant
+}: {
+  product: TProduct;
+  selectedVariant: TVariant;
+  setSelectedVariant: (variant: TVariant) => void;
+}) => {
+  const { addItem } = useCartStore();
+  const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
+    addItem({
+      productId: producto._id,
+      variantId: selectedVariant.registroInvima,
+      price: colombianPriceStringToNumber(selectedVariant.precio),
+      quantity,
+      productType: producto._type,
+    });
+  };
 
   return (
     <>
@@ -99,7 +120,11 @@ const CardLayout = ({ product }: { product: TProduct }) => {
           ${selectedVariant.precio}
         </p>
       </section>
-      <Button labelType={"dark"} className="flex justify-center items-center gap-2">
+      <Button
+        onClick={() => addToCart(product, selectedVariant)}
+        labelType={"dark"}
+        className="flex justify-center items-center gap-2"
+      >
         <LuShoppingCart />
         <span className="font-inter text-base font-medium leading-6">
           Agregar

@@ -5,36 +5,33 @@ import PerfumeLujo from "./_components/perfumes/Lujo";
 import PerfumePremium from "./_components/perfumes/Premium";
 import RelojLujo from "./_components/relojes/Lujo";
 import RelojPremium from "./_components/relojes/Premium";
+import Product from "./_components/Product";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-type TPageProps = {
-  params: {
-    type:
-      | "perfumeLujo"
-      | "perfumePremium"
-      | "relojesPremium"
-      | "relojesLujo"
-      | "gafasLujo"
-      | "gafasPremium";
-    brand: string;
-    model: string;
-    id: string;
-  };
+export type TParams = {
+  type:
+    | "perfumeLujo"
+    | "perfumePremium"
+    | "relojesPremium"
+    | "relojesLujo"
+    | "gafasLujo"
+    | "gafasPremium";
+  brand: string;
+  model: string;
+  id: string;
 };
 
+type TPageProps = {
+  params: TParams;
+};
 
 const ProductPage = async ({ params }: TPageProps) => {
   const product = await getProductById(params.id, params.type);
 
   return (
     <main className="relative z-10 lg:mb-[100vh] min-h-screen bg-background flex flex-col justify-center items-center">
-      {params.type === "gafasLujo" && <GafaLujo product={product} />}
-      {params.type === "gafasPremium" && <GafaPremium product={product} />}
-      {params.type === "perfumeLujo" && <PerfumeLujo product={product}/>}
-      {params.type === "perfumePremium" && <PerfumePremium product={product}/>}
-      {params.type === "relojesPremium" && <RelojPremium product={product}/>}
-      {params.type === "relojesLujo" && <RelojLujo product={product}/>}
+      <Product params={params} product={product} />
     </main>
   );
 };
