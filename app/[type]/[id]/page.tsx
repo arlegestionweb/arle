@@ -30,7 +30,7 @@ const ProductPage = async ({ params }: TPageProps) => {
   const product = await getProductById(params.id, params.type);
 
   return (
-    <main className="min-h-screen bg-background flex flex-col justify-center items-center">
+    <main className="relative z-10 lg:mb-[100vh] min-h-screen bg-background flex flex-col justify-center items-center">
       <Product params={params} product={product} />
     </main>
   );
