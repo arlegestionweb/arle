@@ -24,7 +24,7 @@ import { siteSettings } from "./siteSettings";
 import { codigoDeDescuentosSchema } from "./documents/codigosDeDescuento";
 import { imageObjectSchema, videoObjectSchema } from "./objects/image";
 import { contentSchema } from "./objects/contentSchema";
-import { nuestrasSedesSchema, sedeSchema } from "./pages/nuestrasSedesSchema";
+import { citySchema, nuestrasSedesSchema, sedeSchema } from "./pages/nuestrasSedesSchema";
 import { trabajaConNosotrosSchema } from "./pages/trabajaConNosotrosSchema";
 
 export const schemaTypes = [
@@ -74,6 +74,7 @@ export const schemaTypes = [
   materialDeLaVarillaSchema,
   codigoDeDescuentosSchema,
   sedeSchema,
+  citySchema,
 
 
   // objects

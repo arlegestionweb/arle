@@ -6,7 +6,7 @@ const sedeQuery = `{
   whatsapp,
   direccion,
   text,
-  city,
+  "ciudad": ciudad -> titulo,
   map,
   schedule,
   local,
@@ -24,6 +24,10 @@ const nuestrasSedesQuery = `*[_type == "nuestrasSedes"] [0] {
 }`;
 
 
+const citySchema = z.object({
+  titulo: z.string()
+})
+
 const imagenSchema = z.object({
   url: z.string(),
 });
@@ -32,9 +36,9 @@ const sedeSchema = z.object({
   nombre: z.string(),
   whatsapp: z.string(),
   direccion: z.string(),
-  title: z.string(),
-  text: z.string(),
-  city: z.string(),
+  title: z.string().optional().nullable(),
+  text: z.string().optional().nullable(),
+  ciudad: z.string(),
   map: z.string(),
   schedule: z.string(),
   local: z.string(),
