@@ -16,7 +16,7 @@ const Page = async ({params}: { params: { job: string }}) => {
     <main className="px-8 sm:px-14 relative pt-[70px] md:pt-0 bg-white min-h-screen overflow-hidden flex justify-center">
       <section className="relative py-5 gap-5 md:gap-8 w-full flex flex-col max-w-screen-lg">
         <Link href="/trabaja-con-nosotros">{`< Volver`}</Link>
-        <Image className="-right-[70px] w-[250px] md:w-[350px] top-[80px] absolute md:top-0 md:-right-[50px]" width={400} height={380} alt="isoLogo de Arle" src="/isoLogo.svg"/>
+        <Image className="-right-[70px] md:-right-[120px] w-[250px] md:w-[350px] top-[20px] absolute md:top-0" width={400} height={380} alt="isoLogo de Arle" src="/isoLogo.svg"/>
         <h1>{trabajo.titulo}</h1>
         <section>
           <p>{`Sede: ${trabajo.sede.nombre} - ${trabajo.sede.city}`}</p>

@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { IoLocationSharp } from "react-icons/io5";
 
 export const nuestrasSedesSchema = defineType({
   name: "nuestrasSedes",
@@ -26,6 +27,21 @@ export const nuestrasSedesSchema = defineType({
   ],
 });
 
+export const citySchema = defineType({
+  name: "ciudad",
+  title: "Ciudad",
+  type: "document",
+  icon: IoLocationSharp,
+  fields: [
+    defineField({
+      name: "titulo",
+      title: "Título",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+});
+
 export const sedeSchema = defineType({
   name: "sede",
   title: "Sede",
@@ -35,36 +51,44 @@ export const sedeSchema = defineType({
       name: "nombre",
       title: "Nombre",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "city",
+      name: "ciudad",
       title: "Ciudad",
-      type: "string",
+      type: "reference",
+      to: [{ type: "ciudad" }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "direccion",
       title: "Dirección",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "local",
       title: "Local u Oficina",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "findUsIn",
       title: "Encuentrános en:",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "whatsapp",
       title: "Número de Whatsapp",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "imagenes",
       title: "Imágenes",
       type: "array",
+      validation: (Rule) => Rule.required(),
       of: [
         defineArrayMember({
           name: "image",
@@ -92,11 +116,13 @@ export const sedeSchema = defineType({
       name: "schedule",
       title: "Horario",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "map",
       title: "Ubicación en el mapa",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {
