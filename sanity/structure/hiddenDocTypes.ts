@@ -3,10 +3,11 @@ import { descuentosSchema } from "../schemas/documents/descuentos";
 import { colorSchema, paisDeOrigenSchema } from "../schemas/documents/documentosVarios";
 import { marcasSchema } from "../schemas/documents/marcas";
 import { recomendadosSchema } from "../schemas/documents/recomendados";
+import { ventaSchema } from "../schemas/documents/venta";
 import { coleccionesDeMarcaSchema } from "../schemas/objects/products/generales";
 import { homeSchema } from "../schemas/pages/homeSchema";
 import { listingSchema } from "../schemas/pages/listingSchema";
-import { nuestrasSedesSchema, sedeSchema } from "../schemas/pages/nuestrasSedesSchema";
+import { citySchema, nuestrasSedesSchema, sedeSchema } from "../schemas/pages/nuestrasSedesSchema";
 import { preguntasFrecuentesSchema } from "../schemas/pages/preguntasFrecuentesSchema";
 import { sobreNosotrosSchema } from "../schemas/pages/sobreNosotrosSchema";
 import { trabajaConNosotrosSchema } from "../schemas/pages/trabajaConNosotrosSchema";
@@ -23,6 +24,8 @@ import { siteSettings } from "../schemas/siteSettings";
 
 export const hiddenDocTypes = (listItem: any) => {
   return ![
+    citySchema.name,
+    ventaSchema.name,
     siteSettings.name,
     homeSchema.name,
     perfumePremiumSchema.name,

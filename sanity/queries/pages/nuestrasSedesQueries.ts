@@ -1,4 +1,5 @@
 import sanityClient from "@/sanity/sanityClient";
+import { toKebabCase } from "@/utils/helpers";
 import { z } from 'zod';
 
 const sedeQuery = `{
@@ -23,11 +24,6 @@ const nuestrasSedesQuery = `*[_type == "nuestrasSedes"] [0] {
   "sedes": sedes [] -> ${sedeQuery}
 }`;
 
-
-const citySchema = z.object({
-  titulo: z.string()
-})
-
 const imagenSchema = z.object({
   url: z.string(),
 });
@@ -45,6 +41,10 @@ const sedeSchema = z.object({
   imagenes: z.array(imagenSchema),
   findUsIn: z.string(),
 });
+
+const sedeByTitleSchema = z.object({
+  sedes: z.array(sedeSchema),
+})
 
 const nuestrasSedesSchema = z.object({
   titulo: z.string(),
@@ -66,4 +66,23 @@ export const getNuestrasSedesContent = async () => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const getSedeByTitle = async (title: string) => {
+  try {
+    const data = await sanityClient.fetch(sedeQuery);
+    const validatedData = sedeByTitleSchema.safeParse(data);
+
+    if (!validatedData.success) {
+      throw new Error(validatedData.error.message);
+    }
+
+    const sede = validatedData.data.sedes.find(s => toKebabCase(s.nombre) === title)
+
+    return sede;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+  
 };
