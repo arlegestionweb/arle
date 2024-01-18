@@ -4,13 +4,20 @@ import { numberToColombianPriceString } from "@/utils/helpers";
 import Button from "../Button";
 import { ChevronLeftIcon } from "@sanity/icons";
 import { usePathname } from "next/navigation";
+
+import AddedToCartModal from "./AddedToCartModal";
+import { useHideBodyOverflow } from "@/app/_lib/hooks";
+
+import { useEffect, useState } from "react";
 import { useCartStore } from "./store";
 import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
-
-import AddedToCartModal from "./AddedToCartModal";
-import { useEffect } from "react";
-import { useHideBodyOverflow } from "@/app/_lib/hooks";
+import { IoMdClose } from "react-icons/io";
+import Image from "next/image";
+import { TProduct } from "@/sanity/queries/pages/listingQueries";
+import { getProductById } from "@/sanity/queries/pages/productPage";
+import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
+import { FiTrash2 } from "react-icons/fi";
 
 const Cart = ({
   showDiscountCode = false,
