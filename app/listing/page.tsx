@@ -31,14 +31,17 @@ const Listing = async ({
   const tipoDeProductoSeleccionado = searchParams.type as string;
   const campoDeBusquedaSeleccionado = searchParams.search as string;
   const generoSeleccionado = searchParams.genero as string;
-  const marcasSeleccionadas = searchParams.marca
-    ? Array.isArray(searchParams.marca)
-      ? searchParams.marca
-      : (searchParams.marca as string)
+  
+  const marcasSeleccionadas = searchParams.marcas
+    ? Array.isArray(searchParams.marcas)
+      ? searchParams.marcas
+      : (searchParams.marcas as string)
           .split("&")
           .map((marca) => marca.trim())
           .filter((marca) => marca !== "")
     : [];
+
+    console.log({marcasSeleccionadas})
   const selectedMinPrice = searchParams.minPrice as string;
   const selectedMaxPrice = searchParams.maxPrice as string;
   const selectedColeccionesDeMarca = searchParams.coleccionesDeMarca
