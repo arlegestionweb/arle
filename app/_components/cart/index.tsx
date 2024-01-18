@@ -134,10 +134,10 @@ const AddedToCartModal = () => {
     itemAddedToCart?.quantity || 1
   );
 
-  if (!itemAddedToCart) return null;
-
   useEffect(() => {
     const getProduct = async () => {
+      if (!itemAddedToCart) return;
+      
       const product = await getProductById(
         itemAddedToCart.productId,
         itemAddedToCart.productType
@@ -147,6 +147,7 @@ const AddedToCartModal = () => {
     getProduct();
   }, []);
 
+  if (!itemAddedToCart) return null;
   const variant = product?.variantes.find(
     (v) => v.registroInvima === itemAddedToCart.variantId
   );
