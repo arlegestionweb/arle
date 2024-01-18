@@ -17,8 +17,8 @@ import { use, useState } from "react";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
-import { useCartStore } from "@/app/_components/cart";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
+import { useCartStore } from "@/app/_components/cart/store";
 
 const ProductoCard = ({ producto }: { producto: TProduct }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(

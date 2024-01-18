@@ -5,9 +5,9 @@ import Burger from "../Burger";
 import { useState } from "react";
 import MenuDrawer from "../menuDrawer";
 import SearchInput from "../SearchInput";
-import { useCartStore } from "../../cart";
 import { FiShoppingCart } from "react-icons/fi";
 import RedDot from "../../RedDot";
+import { useCartStore } from "../../cart/store";
 
 type NavDesktopProps = {
   className?: string;

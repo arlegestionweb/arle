@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { TCartItem, useCartStore } from ".";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import { getProductById } from "@/sanity/queries/pages/productPage";
 import Image from "next/image";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { IoMdClose } from "react-icons/io";
+import { TCartItem, useCartStore } from "./store";
 
 const ProductItem = ({ item }: { item: TCartItem }) => {
   const [product, setProduct] = useState<TProduct | null>(null);

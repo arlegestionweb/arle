@@ -1,184 +1,19 @@
 "use client";
-import { create } from "zustand";
 import ProductItem from "./ProductItem";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import Button from "../Button";
 import { ChevronLeftIcon } from "@sanity/icons";
 import { usePathname } from "next/navigation";
-import { FaCheck } from "react-icons/fa6";
-import { cn } from "@/app/_lib/utils";
-import { useState } from "react";
-import { zodApiResponseSchema } from "@/app/checkout/discount-code/zod";
-
-export type TCartItem = {
-  productId: string;
-  variantId: string;
-  price: number;
-  quantity: number;
-  productType:
-    | "perfumePremium"
-    | "perfumeLujo"
-    | "relojesPremium"
-    | "relojesLujo"
-    | "gafasPremium"
-    | "gafasLujo";
-};
-
-type TCartState = {
-  isCartOpen: boolean;
-  items: TCartItem[];
-  discountCode: {
-    code: string;
-    discount: number;
-  } | null;
-};
-
-type TCartActions = {
-  addItem: (item: TCartItem) => void;
-  removeItem: (item: TCartItem) => void;
-  removeAllOfOneItem: (item: TCartItem) => void;
-  clearCart: () => void;
-  getCartSubtotal: () => number;
-  getCartTotal: () => number;
-  getDiscountAmount: () => number;
-  toggleCart: () => void;
-  applyDiscountCode: (code: string, discount: number) => void;
-};
-
-type TCartStore = TCartState & TCartActions;
-
-export const useCartStore = create<TCartStore>((set, get) => ({
-  discountCode: null,
-  applyDiscountCode: (code: string, discount: number) =>
-    set((state: TCartState) => {
-      // You might want to add some validation logic here to ensure that the discount code is valid
-
-      return { ...state, discountCode: { code, discount } };
-    }),
-  getDiscountAmount: () => {
-    const items: TCartItem[] = get().items;
-    let total = 0;
-
-    items.forEach((item) => (total += item.price * item.quantity));
-
-    const discountCode = get().discountCode;
-
-    if (discountCode) {
-      const discountAmount = total * (discountCode.discount / 100);
-      return Math.round(discountAmount);
-    }
-
-    return 0;
-  },
-  items:
-    typeof window !== "undefined" && localStorage.getItem("cart")
-      ? JSON.parse(localStorage.getItem("cart")!)
-      : [],
-
-  addItem: (item: TCartItem) =>
-    set((state: TCartState) => {
-      if (item.quantity <= 0) {
-        return state;
-      }
-
-      const existingItemIndex = state.items.findIndex(
-        (i) => i.productId === item.productId && i.variantId === item.variantId
-      );
-
-      let newItems: TCartItem[];
-
-      if (existingItemIndex >= 0) {
-        // Item already exists in the cart, update the quantity
-        newItems = state.items.map((i, index) =>
-          index !== existingItemIndex
-            ? i
-            : { ...i, quantity: i.quantity + item.quantity }
-        );
-      } else {
-        // Item is not in the cart, add it
-        newItems = [...state.items, item];
-      }
-
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
-      }
-
-      return { items: newItems };
-    }),
-  clearCart: () =>
-    set(() => {
-      localStorage.removeItem("cart");
-      return { items: [] };
-    }),
-  getCartTotal: () => {
-    const items: TCartItem[] = get().items;
-    let total = 0;
-
-    items.forEach((item) => (total += item.price * item.quantity));
-
-    const discountAmount = get().getDiscountAmount();
-
-    if (discountAmount) {
-      total -= total - discountAmount;
-    }
-
-    return total;
-  },
-  getCartSubtotal: () => {
-    const items: TCartItem[] = get().items;
-    let total = 0;
-
-    items.forEach((item) => (total += item.price * item.quantity));
-
-    return total;
-  },
-  removeItem: (item: TCartItem) =>
-    set((state: TCartState) => {
-      const existingItemIndex = state.items.findIndex(
-        (i) => i.productId === item.productId && i.variantId === item.variantId
-      );
-
-      let newItems: TCartItem[];
-
-      if (
-        existingItemIndex >= 0 &&
-        state.items[existingItemIndex].quantity > 1
-      ) {
-        // Item exists in the cart and quantity is more than one, decrement the quantity
-        newItems = state.items.map((i, index) =>
-          index !== existingItemIndex ? i : { ...i, quantity: i.quantity - 1 }
-        );
-      } else {
-        // Item quantity is one or item does not exist, remove it
-        newItems = state.items.filter(
-          (i) =>
-            i.productId !== item.productId || i.variantId !== item.variantId
-        );
-      }
-
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
-      }
-
-      return { items: newItems };
-    }),
-  removeAllOfOneItem: (item: TCartItem) =>
-    set((state: TCartState) => {
-      const newItems = state.items.filter(
-        (i) => i.productId !== item.productId || i.variantId !== item.variantId
-      );
-
-      // console.log({ newItems });
-
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
-      }
-
-      return { items: newItems };
-    }),
-  isCartOpen: false,
-  toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen })),
-}));
+import { useEffect, useState } from "react";
+import { useCartStore } from "./store";
+import ShippingForm from "./ShippingForm";
+import CodigoDeDescuento from "./CodigoDeDescuento";
+import { IoMdClose } from "react-icons/io";
+import Image from "next/image";
+import { TProduct } from "@/sanity/queries/pages/listingQueries";
+import { getProductById } from "@/sanity/queries/pages/productPage";
+import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
+import { FiTrash2 } from "react-icons/fi";
 
 const Cart = () => {
   const pathname = usePathname();
@@ -190,11 +25,16 @@ const Cart = () => {
     getCartTotal,
     getDiscountAmount,
     getCartSubtotal,
+    isAddedToCartModalOpen,
   } = useCartStore((state) => state);
 
   if (pathname.includes("/admin")) return null;
 
+  if (isAddedToCartModalOpen) return <AddedToCartModal />;
+
   if (!isCartOpen) return null;
+
+  // Rest of your code...
 
   return (
     <section className="bg-white z-[60] w-screen min-h-screen fixed top-0 left-0 flex ">
@@ -279,224 +119,168 @@ const Cart = () => {
 
 export default Cart;
 
-const CodigoDeDescuento = () => {
-  const [isDiscountVerified, setIsDiscountVerified] = useState(false);
-  const { applyDiscountCode } = useCartStore((state) => state);
-
-  // const [discountCodes, setDiscountCodes] = useState<TDiscountCode[] | undefined>(undefined);
-
-  const handleDiscountCodeChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-    // if (value === "DCTO30") {
-    //   setIsDiscountVerified(true);
-    //   applyDiscountCode(value, 30);
-    // } else {
-    //   setIsDiscountVerified(false);
-    // }
-
-    const response = await fetch("checkout/discount-code", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ code: value }),
-    });
-
-    const res = await response.json();
-
-    const parsedResponse = zodApiResponseSchema.safeParse(res);
-
-    if (!parsedResponse.success) {
-      console.error(parsedResponse.error);
-      return;
-    }
-
-    if (parsedResponse.data.status !== 200) return;
-
-    if (parsedResponse.data.status === 200) {
-      setIsDiscountVerified(true);
-      applyDiscountCode(
-        parsedResponse.data.body.discountCode.codigo,
-        parsedResponse.data.body.discountCode.porcentaje
-      );
-    }
-  };
-  return (
-    <label
-      htmlFor={"discountCode"}
-      className="text-zinc-800 text-lg font-medium font-tajawal leading-snug flex flex-col"
-    >
-      <h4 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">
-        Código de descuento
-      </h4>
-
-      <div className="flex">
-        <input
-          className="w-full h-9 px-3 py-1.5 bg-white rounded-tl rounded-bl  border border-stone-300 focus:outline-none focus:border-black"
-          name={"discountCode"}
-          id={"discountCode"}
-          placeholder={"DCTO30"}
-          onChange={handleDiscountCodeChange}
-        />
-        <div className="w-[46px] h-9 bg-zinc-200 rounded-tr rounded-br border-r border-t border-b border-stone-300 justify-center items-center gap-1 inline-flex">
-          <FaCheck
-            className={cn(
-              "w-3.5 h-3.5",
-              isDiscountVerified ? "text-green-700" : "text-stone-300"
-            )}
-          />
-        </div>
-      </div>
-    </label>
+const AddedToCartModal = () => {
+  const [product, setProduct] = useState<TProduct | null>(null);
+  const {
+    itemAddedToCart,
+    isAddedToCartModalOpen,
+    setItemAddedToCart,
+    toggleAddedToCartModal,
+    addItem,
+    removeItem,
+    toggleCart,
+  } = useCartStore((state) => state);
+  const [itemQuantity, setItemQuantity] = useState(
+    itemAddedToCart?.quantity || 1
   );
-};
 
-type TInputComponent =
-  | {
-      name: string;
-      type?: "text" | "number" | "id" | "email";
-      title?: string;
-      placeholder: string;
-      options?: string[];
-    }
-  | {
-      name: string;
-      type?: "select";
-      title?: string;
-      placeholder?: string;
-      options: string[]; // This prop is required when type is "pais"
+  if (!itemAddedToCart) return null;
+
+  useEffect(() => {
+    const getProduct = async () => {
+      const product = await getProductById(
+        itemAddedToCart.productId,
+        itemAddedToCart.productType
+      );
+      setProduct(product);
     };
+    getProduct();
+  }, []);
 
-const InputComponent = ({
-  name,
-  type = "text",
-  title,
-  placeholder,
-  options,
-}: TInputComponent) => {
-  if (type === "text" || type === "email" || type === "number")
-    return (
-      <label
-        htmlFor={name}
-        className="text-zinc-800 text-lg font-medium font-tajawal leading-snug flex flex-col"
-      >
-        <h4>{title || name}</h4>
-        <input
-          className="w-full h-9 px-3 py-1.5 bg-white rounded border border-stone-300 focus:outline-none focus:border-black"
-          type={type}
-          name={name}
-          id={name}
-          placeholder={placeholder}
-        />
-      </label>
-    );
+  const variant = product?.variantes.find(
+    (v) => v.registroInvima === itemAddedToCart.variantId
+  );
 
-  if (type === "id")
-    return (
-      <label htmlFor={name}>
-        <h4 className="text-zinc-800 text-lg font-medium font-tajawal leading-snug">
-          {title || name}
-        </h4>
-        <div className="flex">
-          <select
-            name="idType"
-            className="w-[58px] h-9 pl-2 py-[5px] bg-zinc-200 rounded-tl rounded-bl border-l border-t border-b border-stone-300"
-          >
-            <option value="cc">CC</option>
-            <option value="ti">TI</option>
-            <option value="ce">CE</option>
-            <option value="pp">Pasaporte</option>
-          </select>
+  if (!variant) return null;
 
-          <input
-            className="w-full h-9 px-3 bg-white rounded-tr rounded-br border border-stone-300"
-            type="number"
-            name={name}
-            id={name}
-            placeholder={placeholder}
-          />
-        </div>
-      </label>
-    );
-  if (type === "select")
-    return (
-      <label
-        htmlFor={name}
-        className="text-zinc-800 text-lg font-medium font-tajawal leading-snug flex flex-col"
-      >
-        <h4>{title || name}</h4>
-        <select
-          className="w-full h-9 px-3 py-1.5 bg-white rounded border border-stone-300 focus:outline-none focus:border-black"
-          name={name}
-          id={name}
-        >
-          {options?.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
-      </label>
-    );
-};
+  const variantIndex = product?.variantes.findIndex(
+    (v) => v.registroInvima === itemAddedToCart.variantId
+  );
 
-const ShippingForm = () => {
-  const availableCountries = ["Colombia"];
+  if (!product || variantIndex === undefined) return null;
+
+  const image =
+    product._type === "relojesLujo" ||
+    product._type === "relojesPremium" ||
+    product._type === "gafasLujo" ||
+    product._type === "gafasPremium"
+      ? product.variantes[variantIndex].imagenes[0]
+      : product.imagenes[0];
+
+  const productTitle =
+    product._type === "relojesLujo" ||
+    product._type === "relojesPremium" ||
+    product._type === "gafasLujo" ||
+    product._type === "gafasPremium"
+      ? product.modelo
+      : product.titulo;
+
+  // itemAddedToCart.
   return (
-    <form className="flex flex-col gap-4">
-      <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
-        Información de envío
-      </h3>
+    <>
+      <section
+        onClick={() => {
+          toggleAddedToCartModal();
+        }}
+        className="bg-black w-screen h-screen fixed top-0 left-0 z-[100] grid place-content-center opacity-80"
+      ></section>
+      <section className="w-screen pointer-events-none h-screen fixed top-0 left-0 z-[101] grid place-content-center ">
+        <div className="w-[598px] z-[102] h-[354px] pointer-events-auto px-8 py-5 bg-white shadow flex-col justify-start items-start gap-2.5 inline-flex relative">
+          <header className="flex w-full items-center justify-between">
+            <Image src="/arleMini.png" width={50} height={50} alt="logo" />
+            <h1 className="mx-auto text-zinc-800 text-2xl font-semibold font-crimson leading-7">
+              Agregado al Carrito con éxito!
+            </h1>{" "}
+            <IoMdClose
+              className="w-3 h-3 cursor-pointer"
+              onClick={() => toggleAddedToCartModal()}
+            />
+          </header>
+          <section className="flex w-full gap-5 justify-between">
+            {image && (
+              <Image
+                src={image?.url}
+                alt={image?.alt}
+                width={50}
+                height={50}
+                className="object-cover w-[180px] h-[171px]"
+              />
+            )}
+            <section className="w-full flex flex-col justify-between">
+              <div>
+                <h4 className="text-zinc-800 text-2xl font-semibold font-crimson leading-7">
+                  {productTitle}
+                </h4>
+                <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
+                  {product.marca}
+                </h5>
+              </div>
+              <section>
+                <section className="h-[9px] justify-start items-center gap-3 inline-flex">
+                  <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
+                    PARFUMS de MARLY
+                  </span>
+                  <div className="w-px self-stretch justify-start items-start gap-2.5 flex">
+                    <div className="w-px self-stretch bg-stone-300" />
+                  </div>
+                  <span className="capitalize text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
+                    {product.genero}
+                  </span>
+                </section>
+                <div className=" text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
+                  CODE: OO9242-0752
+                </div>
+              </section>
+              <div className="flex items-end w-full justify-between">
+                <p className="text-zinc-800 text-xl font-semibold font-crimson leading-[23px]">
+                  ${numberToColombianPriceString(itemAddedToCart.price)}
+                </p>
+                <div>
+                  <h6 className="text-zinc-800 text-base font-medium font-tajawal leading-tight">
+                    Cantidad
+                  </h6>
 
-      <InputComponent
-        name="nombre"
-        placeholder="Kamilo Stevan Alomías Correa"
-        title="Nombre completo"
-      />
-
-      <InputComponent
-        name="identificacion"
-        placeholder="123456789"
-        title="Identificación"
-        type="id"
-      />
-
-      <InputComponent
-        name="telefono"
-        placeholder="3001234567"
-        title="Teléfono"
-        type="number"
-      />
-
-      <InputComponent
-        name="email"
-        placeholder="email@ejemplo.com.co"
-        title="Nombre completo"
-        type="email"
-      />
-
-      <InputComponent
-        name="pais"
-        type="select"
-        options={availableCountries}
-        title="País"
-      />
-
-      <div className="flex justify-between gap-2">
-        <InputComponent name="ciudad" placeholder="Cali" title="Ciudad" />
-        <InputComponent
-          name="codigoPostal"
-          placeholder="760002"
-          title="Código Postal"
-        />
-      </div>
-      <InputComponent
-        name="direccion"
-        placeholder="Cra. 98 #16-200"
-        title="Dirección de envío"
-      />
-    </form>
+                  <Cantidad
+                    cantidad={itemQuantity}
+                    anadirACantidad={() => {
+                      setItemQuantity(itemQuantity + 1);
+                      addItem(itemAddedToCart);
+                    }}
+                    restarACantidad={() => {
+                      if (itemQuantity === 1) return;
+                      setItemQuantity(itemQuantity - 1);
+                      removeItem(itemAddedToCart);
+                    }}
+                  />
+                </div>
+                <div className="w-9 h-9 p-2.5 bg-neutral-100 justify-center items-center gap-2 inline-flex">
+                  <FiTrash2 className="self-end" />
+                </div>
+              </div>
+            </section>
+          </section>
+          <footer className=" w-full flex justify-between">
+            <Button
+              onClick={() => {
+                setItemAddedToCart();
+                toggleAddedToCartModal();
+              }}
+            >
+              seguir comprando
+            </Button>
+            <Button
+              onClick={() => {
+                setItemAddedToCart();
+                toggleAddedToCartModal();
+                toggleCart();
+              }}
+            >
+              Ver el carrito
+            </Button>
+            <Button>Ir a Pagar</Button>
+          </footer>
+        </div>
+      </section>
+    </>
   );
 };

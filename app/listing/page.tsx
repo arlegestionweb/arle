@@ -41,7 +41,6 @@ const Listing = async ({
           .filter((marca) => marca !== "")
     : [];
 
-    console.log({marcasSeleccionadas})
   const selectedMinPrice = searchParams.minPrice as string;
   const selectedMaxPrice = searchParams.maxPrice as string;
   const selectedColeccionesDeMarca = searchParams.coleccionesDeMarca
