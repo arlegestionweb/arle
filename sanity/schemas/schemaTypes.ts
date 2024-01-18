@@ -23,9 +23,11 @@ import { relojesPremiumSchema } from "./products/relojes/premium";
 import { siteSettings } from "./siteSettings";
 import { imageObjectSchema } from "./objects/image";
 import { codigoDeDescuentosSchema } from "./documents/codigosDeDescuento";
+import { footerSchema } from "./footer";
 
 export const schemaTypes = [
   siteSettings,
+  footerSchema,
 
   // pages
   homeSchema,

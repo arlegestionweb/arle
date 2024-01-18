@@ -25,6 +25,7 @@ import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDe
 import { concentracionSchema, familiasOlfativasSchema, ingredientesSchema, notasOlfativasSchema } from "../schemas/products/perfumes";
 import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDeLaVarillaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "../schemas/products/gafas";
 import { codigoDeDescuentosSchema } from "../schemas/documents/codigosDeDescuento";
+import { footerSchema } from "../schemas/footer";
 
 export default (S: StructureBuilder) => {
   const siteSettingsListItem = S.listItem()
@@ -42,9 +43,20 @@ export default (S: StructureBuilder) => {
     .icon(MdPointOfSale)
     .child(S.list().title("Admin Ventas").items([]));
 
+    const footer = S.listItem()
+    .title(footerSchema.title || "")
+    .icon(footerSchema.icon)
+    .child(
+      S.editor()
+        .id(footerSchema.name)
+        .schemaType(footerSchema.name)
+        .documentId(footerSchema.name)
+    );
+
   const hiddenDocTypes = (listItem: any) => {
     return ![
       siteSettings.name,
+      footerSchema.name,
       homeSchema.name,
       perfumePremiumSchema.name,
       perfumeLujoSchema.name,
@@ -93,6 +105,8 @@ export default (S: StructureBuilder) => {
       siteSettingsListItem,
       S.divider(),
       adminVentas,
+      S.divider(),
+      footer,
       S.divider(),
       ...S.documentTypeListItems().filter(hiddenDocTypes),
     ]);
