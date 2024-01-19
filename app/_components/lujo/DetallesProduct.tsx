@@ -88,7 +88,7 @@ const DetallesProducto = ({
                           {Array.isArray((detalles[detalle] as any)[object])
                             ? (
                                 detalles[detalle] as { [key: string]: string[] }
-                              )[object].map(obj => <p key={obj}>{obj}</p>)
+                              )[object].map(obj => <span key={obj}>{obj}</span>)
                             : (detalles[detalle] as any)[object]}
                         </p>
                       </div>
