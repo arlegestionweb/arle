@@ -60,7 +60,7 @@ type FiltersProps = {
 
 type TSortingOption = {
   label: string;
-  value: "recients" | "precio_mayor_menor" | "price_menor_mayor" | "name_a_z" | "name_z_a";
+  value: "recientes" | "precio_mayor_menor" | "price_menor_mayor" | "name_a_z" | "name_z_a";
 }
 
 const Filters = ({
@@ -98,7 +98,7 @@ const Filters = ({
 
 
   const sortingOptions: TSortingOption[] = [
-    { label: "Recients", value: "recients" },
+    { label: "Recients", value: "recientes" },
     { label: "Precio: Mayor a Menor", value: "precio_mayor_menor" },
     { label: "Precio: Menor to Mayor", value: "price_menor_mayor" },
   ];
@@ -116,7 +116,7 @@ const Filters = ({
             Filtros
           </Button>
           <Button className="flex items-center gap-2 relative" type="button" onClick={() => setIsSortingOpen(!isSortingOpen)} >
-            <LuSettings2 /> Sort by: {"Recents"}
+            <LuSettings2 /> Sort by: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recients"}
             <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
           </Button>
         </section>
@@ -155,9 +155,9 @@ const Dropdown = ({ options, isOpen, onClose }: {
       }
       onClose();
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
-  
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -167,12 +167,14 @@ const Dropdown = ({ options, isOpen, onClose }: {
   if (!isOpen) return null;
 
   return (
-    <ul ref={dropdownRef} className="absolute top-full translate-y-1 left-0 w-fit text-left flex flex-col z-30 bg-white border border-black">
+    <ul ref={dropdownRef} className="absolute top-full translate-y-1 left-0 min-w-full w-fit text-left flex flex-col z-30 bg-white border border-black">
       {options.map((option) => {
         return (
-          <li key={option.value} className="hover:bg-slate-100 px-2">
-            <Link href={createUrl("/listing", makeNewParams("sort", option.value, searchParams))} scroll={false} className="whitespace-nowrap">
-              {option.label}
+          <li key={option.value} className="hover:bg-slate-100 px-2 w-fit min-w-full">
+            <Link href={createUrl("/listing", makeNewParams("sort", option.value, searchParams))} scroll={false}>
+              <p className="whitespace-nowrap">
+                {option.label}
+              </p>
             </Link>
           </li>
         )
