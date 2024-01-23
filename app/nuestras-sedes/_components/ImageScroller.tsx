@@ -27,10 +27,11 @@ const ImageScroller = ({images}: Props) => {
         }
     }
     useLayoutEffect(() => {
-            handleScroll();
-        carouselRef.current?.addEventListener('scroll', handleScroll);
+        const carRef = carouselRef.current
+        handleScroll();
+        carRef?.addEventListener('scroll', handleScroll);
         return() => {
-            carouselRef.current?.removeEventListener('scroll', handleScroll);
+            carRef?.removeEventListener('scroll', handleScroll);
         }
     },[]);
 
