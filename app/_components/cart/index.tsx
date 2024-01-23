@@ -202,8 +202,8 @@ const AddedToCartModal = () => {
               <Image
                 src={image?.url}
                 alt={image?.alt}
-                width={50}
-                height={50}
+                width={180}
+                height={180}
                 className="object-cover w-[180px] h-[171px]"
               />
             )}
