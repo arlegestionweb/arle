@@ -28,7 +28,7 @@ const Home = async function () {
         />
       ))}
       <section className="bg-color-bg-surface-0-default">
-        <Colecciones colecciones={pageContent.colecciones}/>
+        <Colecciones colecciones={pageContent.colecciones} className="py-6 md:py-12" />
       </section>
       <AboutArle sobre={pageContent.sobre} />
       <section className="bg-beige px-4 py-6 md:py-12 flex flex-col justify-center items-center gap-5 md:gap-6">
