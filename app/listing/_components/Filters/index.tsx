@@ -2,12 +2,13 @@
 
 import Button from "@/app/_components/Button";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiFilter } from "react-icons/fi";
 import { LuSettings2 } from "react-icons/lu";
 
 import FilterMenu from "./FilterMenu";
-import { TCaja } from "@/sanity/queries/pages/zodSchemas/reloj";
+import Link from "next/link";
+import { createUrl, makeNewParams } from "@/app/_lib/utils";
 // import { MarcaType } from "@/app/_components/types";
 
 
@@ -56,6 +57,12 @@ type FiltersProps = {
   perfumeFilters: TPerfumeFilters;
   gafaFilters: TGafaFilters;
 }
+
+type TSortingOption = {
+  label: string;
+  value: "recients" | "precio_mayor_menor" | "price_menor_mayor" | "name_a_z" | "name_z_a";
+}
+
 const Filters = ({
   areFiltersActive,
   marcas,
@@ -66,6 +73,7 @@ const Filters = ({
 }: FiltersProps
 ) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSortingOpen, setIsSortingOpen] = useState(false);
   const searchParams = useSearchParams();
   const allParams: { [key: string]: any } = {};
 
@@ -88,24 +96,30 @@ const Filters = ({
   //   return key;
   // });
 
-  
+
+  const sortingOptions: TSortingOption[] = [
+    { label: "Recients", value: "recients" },
+    { label: "Precio: Mayor a Menor", value: "precio_mayor_menor" },
+    { label: "Precio: Menor to Mayor", value: "price_menor_mayor" },
+  ];
   return (
     <>
       <section className="flex flex-col mb-5">
-        <div className="flex gap-3">
-          <div onClick={toggleFilter}>
-            <Button
-              className="flex items-center gap-2"
-              active={areFiltersActive}
-            >
-              <FiFilter />
-              Filtros
-            </Button>
-          </div>
-          <Button className="flex items-center gap-2">
-            <LuSettings2 /> Sort by: {"Recents"}
+        <section className="flex gap-3">
+          <Button
+            className="flex items-center gap-2"
+            active={areFiltersActive}
+            onClick={toggleFilter}
+            type="button"
+          >
+            <FiFilter />
+            Filtros
           </Button>
-        </div>
+          <Button className="flex items-center gap-2 relative" type="button" onClick={() => setIsSortingOpen(!isSortingOpen)} >
+            <LuSettings2 /> Sort by: {"Recents"}
+            <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
+          </Button>
+        </section>
         {/* <BreadCrumbs filters={filters} searchParams={allParams} /> */}
       </section>
       <FilterMenu
@@ -124,3 +138,45 @@ const Filters = ({
 };
 
 export default Filters;
+
+
+const Dropdown = ({ options, isOpen, onClose }: {
+  options: TSortingOption[];
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  const searchParams = useSearchParams();
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && event.target instanceof Node && dropdownRef.current.contains(event.target)) {
+        return;
+      }
+      onClose();
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+  
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
+
+  if (!isOpen) return null;
+
+  return (
+    <ul ref={dropdownRef} className="absolute top-full translate-y-1 left-0 w-fit text-left flex flex-col z-30 bg-white border border-black">
+      {options.map((option) => {
+        return (
+          <li key={option.value} className="hover:bg-slate-100 px-2">
+            <Link href={createUrl("/listing", makeNewParams("sort", option.value, searchParams))} scroll={false} className="whitespace-nowrap">
+              {option.label}
+            </Link>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
