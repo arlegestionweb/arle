@@ -113,13 +113,13 @@ function MenuDrawer({ isOpen, onClose, animation = "right" }: DrawerProps) {
           callback && callback();
         }}
         animation={animation}>
-        <section className=" grow flex flex-col gap-3">
-          <header className="p-4 h-16 flex items-center border-b border-stone-300">
+        <section className="pl-4 md:px-0 grow flex flex-col gap-3 ">
+          <header className="p-6 h-16 flex items-center border-b border-stone-300">
             <h4 className="text-zinc-800 text-xl font-bold font-inter leading-normal">
               Menú
             </h4>
           </header>
-          <section className="px-4 flex flex-col gap-3">
+          <section className="px-6 flex flex-col gap-3">
             <div className="w-full ">
               <SearchInput className="w-full" />
             </div>

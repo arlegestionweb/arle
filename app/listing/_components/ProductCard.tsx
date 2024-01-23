@@ -76,7 +76,7 @@ const CardLayout = ({
                 ? selectedVariant.imagenes
                 : []
             }
-            className=" h-[180px] lg:h-[288px]"
+            className=" h-[180px] sm:h-[250px] lg:h-[288px]"
           />
         ) : (
           <Link href={product.slug}>
@@ -97,7 +97,7 @@ const CardLayout = ({
               }
               width={288}
               height={288}
-              className="object-cover h-[180px] w-full lg:h-[288px]"
+              className="object-cover h-[180px] sm:h-[250px] w-full lg:h-[288px]"
             />
           </Link>
         )}
@@ -158,7 +158,7 @@ export const VariantSelector = <T extends TProduct>({
               return (
                 <button
                   onClick={() => setSelectedVariant(variante)}
-                  className={`w-[27px] h-[26px] px-5 py-3 rounded border flex-col justify-center items-center gap-2.5 inline-flex ${
+                  className={`w-[27px] h-[26px] px-5 py-3 rounded-[5px] overflow-hidden border flex-col justify-center items-center gap-2.5 inline-flex ${
                     isVariantSelected
                       ? "bg-neutral-100 border-black"
                       : "bg-neutral-200 border-neutral-300"
@@ -188,7 +188,7 @@ export const VariantSelector = <T extends TProduct>({
                 "codigoDeReferencia" in selectedVariant &&
                 variante.codigoDeReferencia ===
                   selectedVariant.codigoDeReferencia
-                  ? `border-2 border-black p-[1px]`
+                  ? `border-2 border-black p-[1px] rounded-[6px]`
                   : ""
               }
             >
@@ -217,7 +217,7 @@ export const VariantSelector = <T extends TProduct>({
                 "codigoDeReferencia" in selectedVariant &&
                 selectedVariant.codigoDeReferencia ===
                   variante.codigoDeReferencia
-                  ? `border-2 border-black p-[1px]`
+                  ? `border-2 border-black rounded-[6px] p-[1px]`
                   : ""
               }
             >
@@ -249,7 +249,7 @@ const ColorSelector = ({
   return (
     <button
       onClick={onClick}
-      className={`w-[27px] h-[26px] rounded border flex ${
+      className={`w-[27px] h-[26px] rounded-[5px] border flex overflow-hidden ${
         // variante.colorDeLaMontura.color === selectedVariant.colorDeLaMontura.color
         //   ? "bg-neutral-100 border-black"
         //   : "bg-neutral-200 border-neutral-300"
@@ -264,11 +264,11 @@ const ColorSelector = ({
 };
 const ColorBar = ({ color }: { color: TColor }) => (
   <div
-    className={`w-1/3 h-full relative group`}
+    className={`w-[33.4%] h-full relative group`}
     style={{ backgroundColor: color.color }}
   >
-    <div className="absolute -left-2/3 -top-5 opacity-0 group-hover:opacity-100 w-fit whitespace-nowrap">
+    {/* <div className="absolute -left-2/3 -top-5 opacity-0 group-hover:opacity-100 w-fit whitespace-nowrap">
       {color.nombre}
-    </div>
+    </div> */}
   </div>
 );
