@@ -7,13 +7,13 @@ type ProductVideoProps = {
 };
 
 const ProductVideo = ({ url }: ProductVideoProps) => {
-  console.log(url);
+  // console.log(url);
 
   const [pauseVideo, setPauseVideo] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const playButtonHandler = () => {
-    console.log("ho");
+    // console.log("ho");
     if (videoRef.current) {
       if (!pauseVideo) {
         videoRef.current.play();

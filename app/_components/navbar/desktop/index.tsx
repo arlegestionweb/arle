@@ -5,9 +5,9 @@ import Burger from "../Burger";
 import { useState } from "react";
 import MenuDrawer from "../menuDrawer";
 import SearchInput from "../SearchInput";
-import { useCartStore } from "../../cart";
 import { FiShoppingCart } from "react-icons/fi";
 import RedDot from "../../RedDot";
+import { useCartStore } from "../../cart/store";
 
 type NavDesktopProps = {
   className?: string;
@@ -47,6 +47,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
             </div>
           </Link>
           <button
+            type="button"
             className="px-3 py-1.5 relative bg-color-bg-surface-0-default justify-center items-center gap-2 flex"
             onClick={() => toggleCart()}
           >

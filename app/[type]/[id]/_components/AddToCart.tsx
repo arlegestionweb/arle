@@ -1,10 +1,10 @@
 import Button from "@/app/_components/Button";
 import { FastShoppingCartIcon, ShoppingCartIcon } from "./Icons";
 import { cn } from "@/app/_lib/utils";
-import { useCartStore } from "@/app/_components/cart";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
+import { useCartStore } from "@/app/_components/cart/store";
 
 type PropsAddToCart = {
   className?:string;
