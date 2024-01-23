@@ -48,7 +48,6 @@ const Listing = async ({
     throw new Error(`Invalid sort option: ${sortSeleccionado}`);
   }
   
-  console.log({sortSeleccionado})
   const lineaSeleccionada = searchParams.linea as string;
   const coleccionSeleccionada = searchParams.coleccion as string;
   const tipoDeProductoSeleccionado = searchParams.type as string;

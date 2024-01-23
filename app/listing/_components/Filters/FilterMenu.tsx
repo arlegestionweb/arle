@@ -72,7 +72,7 @@ FilterMenuProps) => {
       }
     });
 
-    newParams.forEach((value, key) => console.log(key, value));
+    // newParams.forEach((value, key) => console.log(key, value));
     push(createUrl("/listing", newParams));
     toggleFilter();
   };
