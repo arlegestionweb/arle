@@ -35,8 +35,8 @@ const Page = async () => {
             <section className="gap-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full" key={i}>
               {pageContent.sedes.filter((sede) => sede.ciudad === city).map((item, i) => (
                 <article className="w-full bg-white border border-[#E6E1E6] flex md:flex-col" key={i}>
-                  <Image className="w-[100px] h-full md:w-full md:h-[250px] object-cover" height={200} width={200} src={item.imagenes[0].url} alt={`imagen de Sede de Arle ${item.nombre} - ${item.ciudad}`} />
-                  <section className="flex flex-col gap-2 p-5">
+                  <Image className="w-[40%] sm:w-[35%] h-full md:w-full md:h-[250px] object-cover" height={200} width={200} src={item.imagenes[0].url} alt={`imagen de Sede de Arle ${item.nombre} - ${item.ciudad}`} />
+                  <section className="flex flex-col gap-2 p-5 w-full">
                   <p>{item.nombre}</p>
                   <p>{item.direccion}</p>
                   <p>{item.local}</p>
