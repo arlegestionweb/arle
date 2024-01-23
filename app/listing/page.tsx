@@ -5,16 +5,31 @@ import {
 import Productos from "./_components/Productos";
 import Colecciones from "../_components/Colecciones";
 // import Banner from "../_components/homepage/Banner";
-import Filters from "./_components/Filters/index";
+import Filters, { TSortingOption } from "./_components/Filters/index";
 import { getAllColeccionesDeMarca, getAllMarcas } from "../_lib/utils";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import Banner from "../_components/homepage/Banner";
+import { colombianPriceStringToNumber } from "@/utils/helpers";
 
 // export const revalidate = 10; // revalidate at most every hour
 
 export const dynamic = "force-dynamic";
+
+const sortingFunctions: Record<TSortingOption['value'], (a: TProduct, b: TProduct) => number> = {
+  recientes: (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  precio_mayor_menor: (a, b) => {
+    const highestPriceA = Math.max(...a.variantes.map(variant => colombianPriceStringToNumber(variant.precio)));
+    const highestPriceB = Math.max(...b.variantes.map(variant => colombianPriceStringToNumber(variant.precio)));
+    return highestPriceB - highestPriceA;
+  },
+  price_menor_mayor: (a, b) => {
+    const lowestPriceA = Math.min(...a.variantes.map(variant => colombianPriceStringToNumber(variant.precio)));
+    const lowestPriceB = Math.min(...b.variantes.map(variant => colombianPriceStringToNumber(variant.precio)));
+    return lowestPriceA - lowestPriceB;
+  }
+};
 
 const Listing = async ({
   searchParams,
@@ -26,6 +41,13 @@ const Listing = async ({
   const pageContent = await getListingInitialLoadContent();
 
   // GENERAL PARAMS
+
+  const sortSeleccionado = (searchParams.sort as string) || "recientes";
+
+  if (!(sortSeleccionado in sortingFunctions)) {
+    throw new Error(`Invalid sort option: ${sortSeleccionado}`);
+  }
+  
   const lineaSeleccionada = searchParams.linea as string;
   const coleccionSeleccionada = searchParams.coleccion as string;
   const tipoDeProductoSeleccionado = searchParams.type as string;
@@ -791,6 +813,11 @@ const Listing = async ({
   // console.log({ relojes, relojFilters });
 
   const coleccionesDeMarca = getAllColeccionesDeMarca(filteredProducts);
+
+
+
+  const sortedProducts = [...filteredProducts]?.sort(sortingFunctions[sortSeleccionado as TSortingOption['value']]);
+
   return (
     <main className="relative z-10  lg:mb-[100vh] bg-color-bg-surface-0-default min-h-screen pt-[60px] md:pt-0">
       <Banner
@@ -822,7 +849,7 @@ const Listing = async ({
 
         <section className="max-w-screen-xl w-full py-6 px-4 md:px-9">
           {filteredProducts && filteredProducts.length > 0 ? (
-            <Productos productos={filteredProducts} />
+            <Productos productos={sortedProducts} />
           ) : (
             <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
           )}

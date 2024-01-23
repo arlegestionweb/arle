@@ -33,6 +33,7 @@ const perfumeVariantSchema = z.object({
 export type TPerfumeVariant = z.infer<typeof perfumeVariantSchema>;
 
 export const perfumePremiumSchema = z.object({
+  date: z.string(),
   slug: z.string(),
   _id: z.string(),
   detalles: z.object({
@@ -59,6 +60,7 @@ export const perfumePremiumSchema = z.object({
 
 
 export const perfumeLujoSchema = z.object({
+  date: z.string(),
   titulo: z.string(),
   inspiracion: inspiracionSchema,
   variantes: z.array(perfumeVariantSchema),

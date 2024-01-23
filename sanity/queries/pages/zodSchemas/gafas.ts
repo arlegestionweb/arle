@@ -24,6 +24,7 @@ export type TVarianteGafa = z.infer<typeof gafaVariantSchema>;
 
 
 export const gafasLujoSchema = z.object({
+  date: z.string(),
   banners: z.array(bannerSchema).optional().nullable(),
   mostrarCredito: z.boolean().optional().nullable(),
   especificaciones: z.object({
@@ -85,6 +86,7 @@ export const gafasLujoSchema = z.object({
 });
 
 export const gafasPremiumSchema = z.object({
+  date: z.string(),
   _type: z.literal("gafasPremium"),
   marca: z.string(),
   _id: z.string(),
