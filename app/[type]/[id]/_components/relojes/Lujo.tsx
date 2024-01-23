@@ -5,6 +5,8 @@ import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
 import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
+import AddToCart from "../AddToCart";
 
 type TRelojLujoProps = {
   product: TRelojLujo;
@@ -34,7 +36,7 @@ const RelojLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, set
             descripcion={product.inspiracion.contenido?.resena || ""}
             alt={product.inspiracion.contenido?.imagen?.alt}
             url={product.inspiracion.contenido?.imagen?.url}
-            className="lg:w-mx"
+            className="w-full lg:w-mx"
           />
         </section>
       )}
@@ -60,7 +62,7 @@ const RelojLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, set
             subTitulo={product.movimiento?.tipoDeMovimiento || ""}
             alt={product.movimiento?.contenido?.imagen?.alt || ""}
             url={product.movimiento?.contenido?.imagen?.url || ""}
-            className="lg:w-mx"
+            className="w-full lg:w-mx"
           />
         </section>
       )}
@@ -112,6 +114,16 @@ const RelojLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, set
           className="lg:max-w-mx w-full text-slate-900 flex-row-reverse"
         />
       </section>
+      <section className="px-4 py-6 lg:hidden">
+        <NuestrasComprasIncluyen />
+      </section>
+
+      <AddToCart
+        className="lg:hidden"
+        product={product}
+        quantity={cantidad}
+        selectedVariant={selectedVariant}
+      />
     </>
   );
 };

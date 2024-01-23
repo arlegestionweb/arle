@@ -6,10 +6,21 @@ export const siteSettings = defineType({
   title: "Configuración",
   type: "document",
   icon: CogIcon,
+    groups: [
+    {
+      name: "general",
+      title: "General",
+    },
+    {
+      name: "legal",
+      title: "Legal",
+    },
+  ],
   fields: [
     defineField({
       name: "titulo",
       title: "Título del sitio",
+      group: "general",
       type: "string",
     }),
     defineField({
@@ -58,6 +69,36 @@ export const siteSettings = defineType({
           ],
         }),
       ],
+    }),
+    defineField({
+      name: "terminosCondiciones",
+      title: "Términos y condiciones",
+      type: "url",
+      group: "legal",
+    }),
+    defineField({
+      name: "politicasPrivacidad",
+      title: "Políticas y Privacidad",
+      type: "url",
+      group: "legal",
+    }),
+    defineField({
+      name: "garantiasCambiosDevoluciones",
+      title: "Garantias, Cambios y Devoluciones",
+      type: "url",
+      group: "legal",
+    }),
+    defineField({
+      name: "politicasEnvio",
+      title: "Políticas de envío",
+      type: "url",
+      group: "legal",
+    }),
+    defineField({
+      name: "politicasCookies",
+      title: "Políticas Cookies",
+      type: "url",
+      group: "legal",
     }),
   ],
 });
