@@ -23,7 +23,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
         className={`w-full flex fixed z-30 top-0 h-[60px] px-8 py-3 justify-between bg-background border-b border-zinc-200`}
       >
         <Link href={"/"} className="h-fit self-center">
-          <Image src={"/arlé-logo.png"} width={76} height={22} alt="logo" />
+          <Image src={"/ArleBasicLogo.svg"} width={80} height={30} alt="logo" />
         </Link>
 
         <SearchInput />
@@ -52,7 +52,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
           >
             <FiShoppingCart className="w-4 h-4" />
             <span className="text-neutral-600 text-base font-medium leading-normal">
-              Carrito de compras
+              Carrito
             </span>
             <RedDot active={items.length > 0} />
           </button>

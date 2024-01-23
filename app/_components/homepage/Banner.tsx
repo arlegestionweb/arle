@@ -36,7 +36,7 @@ const Banner = ({ banners, className }: BannerProps) => {
   return (
     <section
       className={cn(
-        "max-w-screen h-[70vh] pt-[70px] md:pt-0 overflow-hidden relative group",
+        "max-w-screen h-[70vh] pt-[60px] md:pt-0 overflow-hidden relative group",
         className
       )}>
       <section
