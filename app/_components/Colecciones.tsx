@@ -17,7 +17,7 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
             key={coleccion.titulo}
             className="w-[159px] h-[197px] mr-4 md:m-0 md:w-72 md:h-[326px] snap-always snap-center"
           >
-            <Link href={`?coleccion=${coleccion.titulo}`}>
+            <Link href={`/listing?coleccion=${coleccion.titulo}`}>
               {coleccion.imagen && (
                 <div className="relative w-[159px] h-[159px] md:w-72 md:h-72">
                   <Image
