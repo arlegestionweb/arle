@@ -54,7 +54,7 @@ const ImageScroller = ({images}: Props) => {
         <section ref={carouselRef} className={`w-full h-[calc(0.4*100vw)] flex items-center overflow-x-auto snap-mandatory snap-x`}>
                 <span className="px-[calc(100vw/4)]"/>
                 {images.map((item, i) => (
-                    <Image className={`h-full w-[calc(0.4*100vw)] snap-center object-cover opacity-0 transition-all ${selectedImage == i ? 'opacity-100' : ''}`} key={i} width={500} height={500} src={item.url} alt={`imagen de sede Arle`} />
+                    <Image className={`h-full w-[calc(0.4*100vw)] snap-center object-cover scale-75 transition-all ${selectedImage == i ? 'scale-95' : ''}`} key={i} width={500} height={500} src={item.url} alt={`imagen de sede Arle`} />
                 ))}
                 <span className="px-[calc(100vw/4)]"/>
         </section>
