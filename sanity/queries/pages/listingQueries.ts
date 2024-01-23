@@ -32,6 +32,7 @@ const listingMainString = `
     ${imageQuery},
     "productos": productos[]->{
       "marca": marca->titulo,
+      "date": createdAt, 
       _type,
       _type == "perfumeLujo" =>
         ${productQuery.perfumeLujo}

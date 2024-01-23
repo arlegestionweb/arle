@@ -58,9 +58,9 @@ type FiltersProps = {
   gafaFilters: TGafaFilters;
 }
 
-type TSortingOption = {
+export type TSortingOption = {
   label: string;
-  value: "recientes" | "precio_mayor_menor" | "price_menor_mayor" | "name_a_z" | "name_z_a";
+  value: "recientes" | "precio_mayor_menor" | "price_menor_mayor"
 }
 
 const Filters = ({
@@ -98,7 +98,7 @@ const Filters = ({
 
 
   const sortingOptions: TSortingOption[] = [
-    { label: "Recients", value: "recientes" },
+    { label: "Recientes", value: "recientes" },
     { label: "Precio: Mayor a Menor", value: "precio_mayor_menor" },
     { label: "Precio: Menor to Mayor", value: "price_menor_mayor" },
   ];
@@ -116,7 +116,7 @@ const Filters = ({
             Filtros
           </Button>
           <Button className="flex items-center gap-2 relative" type="button" onClick={() => setIsSortingOpen(!isSortingOpen)} >
-            <LuSettings2 /> Sort by: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recients"}
+            <LuSettings2 /> Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recients"}
             <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
           </Button>
         </section>

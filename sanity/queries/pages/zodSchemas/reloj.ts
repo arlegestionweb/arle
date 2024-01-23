@@ -43,6 +43,7 @@ export const relojVariantSchema = z.object({
 export type TRelojVariant = z.infer<typeof relojVariantSchema>;
 
 export const relojLujoSchema = z.object({
+  date: z.string(),
   genero: generoSchema,
   mostrarCredito: z.boolean().optional().nullable(),
   marca: z.string(),
@@ -86,6 +87,7 @@ export const relojLujoSchema = z.object({
 });
 
 export const relojPremiumSchema = z.object({
+  date: z.string(),
   _type: z.literal("relojesPremium"),
   _id: z.string(),
   marca: z.string(),
