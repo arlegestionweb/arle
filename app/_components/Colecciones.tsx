@@ -11,9 +11,13 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
       <h2 className="lg:max-w-mx lg:px-9 w-full text-zinc-800 text-[28px] font-semibold font-lora leading-loose text-center">
         Colecciones
       </h2>
-      <ul className="max-w-full no-scrollbar pb-2 flex gap-6 max-w-screen overflow-x-auto">
-        {colecciones.map((coleccion, i) => (
-            <Link key={i} href={`?coleccion=${coleccion.titulo}`}>
+      <ul className="no-scrollbar pb-10 flex justify-start md:gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
+        {colecciones.map((coleccion) => (
+          <li
+            key={coleccion.titulo}
+            className="w-[159px] h-[197px] mr-4 md:m-0 md:w-72 md:h-[326px] snap-always snap-center"
+          >
+            <Link href={`/listing?coleccion=${coleccion.titulo}`}>
               {coleccion.imagen && (
                 <div className="relative w-[150px] h-[150px] md:w-[200px] md:h-[200px] flex items-center justify-center">
                   <Image fill src="ArleCircle.svg" alt="circulo Arle"/>
@@ -31,6 +35,7 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
               {coleccion.titulo.toUpperCase()}
             </p>
             </Link>
+            </li>
         ))}
       </ul>
     </section>
