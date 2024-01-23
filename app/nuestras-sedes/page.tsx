@@ -30,9 +30,9 @@ const Page = async () => {
           </section>
           <Image className="absolute z-0 h-[110vw] -top-[40%] object-cover" width={2000} height={2000} alt="Escudo de Arle" src="/escudoInverso.svg"/>
           {uniqueCitiesArray && uniqueCitiesArray.map((city, i) => (
-            <section className="w-full max-w-screen-xl px-8 sm:px-14 md:px-20 pt-8 flex flex-col gap-3 z-10 items-center">
+            <section className="w-full max-w-screen-xl px-8 sm:px-14 md:px-20 pt-8 flex flex-col gap-3 z-10 items-center"key={i}>
             <h2>{city}</h2>
-            <section className="gap-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full" key={i}>
+            <section className="gap-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full" >
               {pageContent.sedes.filter((sede) => sede.ciudad === city).map((item, i) => (
                 <article className="w-full bg-white border border-[#E6E1E6] flex md:flex-col" key={i}>
                   <Image className="w-[40%] sm:w-[35%] h-full md:w-full md:h-[250px] object-cover" height={200} width={200} src={item.imagenes[0].url} alt={`imagen de Sede de Arle ${item.nombre} - ${item.ciudad}`} />
