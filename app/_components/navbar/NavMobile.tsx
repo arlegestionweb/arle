@@ -7,6 +7,7 @@ import RedDot from "../RedDot";
 import Link from "next/link";
 import MenuDrawer from "./menuDrawer";
 import { LuShoppingCart } from "react-icons/lu";
+import { useCartStore } from "../cart/store";
 
 type MobileNavBarProps = {
   className?: string;
@@ -32,8 +33,8 @@ const MobileNavBar = ({ className }: MobileNavBarProps) => {
           barColor="bg-[#5D5A88]"
           onClickHandler={() => setIsNavOpen(!isNavOpen)}
         />
-        
-        <MenuDrawer isOpen={isNavOpen}/>
+
+        <MenuDrawer isOpen={isNavOpen} />
       </div>
     </nav>
   );
@@ -42,8 +43,9 @@ const MobileNavBar = ({ className }: MobileNavBarProps) => {
 export default MobileNavBar;
 
 const Kart = () => {
+  const {toggleCart} = useCartStore();
   return (
-    <div className="w-fit h-9 justify-start items-center gap-4 inline-flex cursor-pointer">
+    <div className="w-fit h-9 justify-start items-center gap-4 inline-flex cursor-pointer" onClick={() => toggleCart()}>
       <div className="p-2 bg-color-bg-surface-0-default justify-center items-center flex relative">
         <div className="w-5 h-5 justify-center items-center gap-1 flex">
             <LuShoppingCart className="w-[18px] h-[18px]" />
