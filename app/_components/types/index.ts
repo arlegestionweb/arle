@@ -106,6 +106,9 @@ export type NotaOlftativaType = {
 
 
 export interface MenuItem {
+  title?: string;
   label: string;
   subMenu?: MenuItem[] | MenuItem;
+  href?: string;
+  param?: string;
 }

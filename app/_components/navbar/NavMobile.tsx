@@ -8,6 +8,7 @@ import Link from "next/link";
 import MenuDrawer from "./menuDrawer";
 import { LuShoppingCart } from "react-icons/lu";
 import { useCartStore } from "../cart/store";
+import Menu from "./menu";
 
 type MobileNavBarProps = {
   className?: string;
@@ -31,10 +32,12 @@ const MobileNavBar = ({ className }: MobileNavBarProps) => {
         <Burger
           isNavOpen={isNavOpen}
           barColor="bg-[#5D5A88]"
-          onClickHandler={() => setIsNavOpen(!isNavOpen)}
+          openNav={() => setIsNavOpen(true)}
+          closeNav={() => setIsNavOpen(false)}
         />
 
-        <MenuDrawer isOpen={isNavOpen} />
+        {/* <MenuDrawer isOpen={isNavOpen} /> */}
+        <Menu isMenuOpen={isNavOpen} setIsMenu={setIsNavOpen} />
       </div>
     </nav>
   );
