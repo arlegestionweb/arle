@@ -40,13 +40,25 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="http://localhost:3000/listing?type=reloj">Relojes</Link>
+                <Link
+                  className="cursor-pointer"
+                  href="/listing?type=reloj">
+                  Relojes
+                </Link>
               </li>
               <li>
-                <Link href="http://localhost:3000/listing?type=gafa">Gafas</Link>
+                <Link
+                  className="cursor-pointer"
+                  href="/listing?type=gafa">
+                  Gafas
+                </Link>
               </li>
               <li>
-                <Link href="">Estado de compra</Link>
+                <Link
+                  className="cursor-pointer"
+                  href="">
+                  Estado de compra
+                </Link>
               </li>
             </ul>
           </div>
@@ -56,13 +68,25 @@ const Footer = () => {
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
               <li>
-                <Link href="">Sobre Nosotros</Link>
+                <Link
+                  className="cursor-pointer"
+                  href="/sobre-nosotros">
+                  Sobre Nosotros
+                </Link>
               </li>
               <li>
-                <Link href="">Nuestras Sedes</Link>
+                <Link
+                  className="cursor-pointer"
+                  href="/nuestras-sedes">
+                  Nuestras Sedes
+                </Link>
               </li>
               <li>
-                <Link href="">Trabaja con Nosotros</Link>
+                <Link
+                  className="cursor-pointer"
+                  href="/trabaja-con-nosotros">
+                  Trabaja con Nosotros
+                </Link>
               </li>
             </ul>
           </div>
@@ -100,12 +124,48 @@ const Footer = () => {
               Legal
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
-              <li>Términos y condiciones</li>
-              <li>Política de privacidad</li>
-              <li>Garantías, cambios y devoluciones</li>
-              <li>Políticas de Envio.</li>
-              <li>Políticas de Cookies</li>
-              <li>Preguntas Frecuentes</li>
+              <li>
+                <Link
+                  className="cursor-pointer"
+                  href="">
+                  Términos y condiciones
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="cursor-pointer"
+                  href="">
+                  Política de privacidad
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="cursor-pointer"
+                  href="">
+                  Garantías, cambios y devoluciones
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="cursor-pointer"
+                  href="">
+                  Políticas de Envio.
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="cursor-pointer"
+                  href="">
+                  Políticas de Cookies
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="cursor-pointer"
+                  href="">
+                  Preguntas Frecuentes
+                </Link>
+              </li>
             </ul>
           </div>
         </section>
