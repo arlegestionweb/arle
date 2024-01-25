@@ -33,21 +33,20 @@ const SearchInput = ({ className, onSearch }: SearchInputProps) => {
     );
   };
   return (
-    <div className={cn("flex items-center justify-between h-9 w-2/5 rounded-lg border bg-background px-3 pl-3 gap-2 py-[6px]", className)}>
-      <form onSubmit={onSubmit} className="flex items-center gap-2">
-        <FiSearch />
+    <div className={cn("flex items-center justify-between h-9 w-2/5 rounded border pl-3 py-[6px]", className)}>
+      <form onSubmit={onSubmit} className="flex w-full h-full items-center">
         <input
           // onKeyDown={handleKeyDown}
-          className="w-full focus-visible:outline-none placeholder:text-[#79767A] "
-          placeholder="Buscar"
+          className="w-full focus-visible:outline-none placeholder:text-[#a19ca3] "
+          placeholder="Busca productos, marcas y más..."
           name="search"
           type="text"
           defaultValue={value || ""}
           onChange={handleKeyDown}
         />
       </form>
-      <Link href={`/listing?search=${value}`} onClick={() => onSearch && onSearch()}>
-        <AiOutlineEnter />
+      <Link href={`/listing?search=${value}`} onClick={() => onSearch && onSearch()} className="border-l pl-2 pr-3 h-full">
+        <FiSearch className="w-[18px] h-[18px] mt-[2px]"/> 
       </Link>
     </div>
   );

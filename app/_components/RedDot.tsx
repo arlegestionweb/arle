@@ -8,7 +8,7 @@ const positions = {
 };
 
 const RedDot = ({
-  position = "topLeft",
+  position = "topRight",
   active = true,
 }: {
   position?: keyof typeof positions;

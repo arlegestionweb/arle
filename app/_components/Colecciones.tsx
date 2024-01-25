@@ -7,32 +7,30 @@ type ColeccionesProps = { colecciones: TColecciones, className?: string }
 
 const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
   return (
-    <section className={cn("bg-color-bg-surface-0-default pl-8 lg:px-8 lg:flex lg:flex-col lg:items-center", className)}>
-      <h2 className="lg:max-w-mx lg:px-9 w-full text-zinc-800 text-[28px] font-semibold font-lora leading-loose">
+    <section className={cn("bg-color-bg-surface-0-default pt-2 pl-8 lg:px-8 flex flex-col items-center", className)}>
+      <h2 className="lg:max-w-mx lg:px-9 w-full text-zinc-800 text-[28px] font-semibold font-lora leading-loose text-center">
         Colecciones
       </h2>
-      <ul className="no-scrollbar pb-10 flex justify-start md:gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
-        {colecciones.map((coleccion) => (
-          <li
-            key={coleccion.titulo}
-            className="w-[159px] h-[197px] mr-4 md:m-0 md:w-72 md:h-[326px] snap-always snap-center"
-          >
-            <Link href={`/listing?coleccion=${coleccion.titulo}`}>
+      <ul className="max-w-full no-scrollbar pb-2 flex gap-6 max-w-screen overflow-x-auto">
+        {colecciones.map((coleccion, i) => (
+            <Link key={i} href={`?coleccion=${coleccion.titulo}`}>
               {coleccion.imagen && (
-                <div className="relative w-[159px] h-[159px] md:w-72 md:h-72">
+                <div className="relative w-[150px] h-[150px] md:w-[200px] md:h-[200px] flex items-center justify-center">
+                  <Image fill src="ArleCircle.svg" alt="circulo Arle"/>
                   <Image
                     src={coleccion.imagen.url}
                     alt={coleccion.imagen.alt || ""}
-                    fill
-                    className="object-cover"
-                  />
+                    height={137}
+                    width={137}
+                    className="md:h-[182px] md:w-[182px] object-cover rounded-full "
+                    />
+                    
                 </div>
               )}
-            </Link>
-            <p className="pt-4 text-neutral-600 text-xl font-bold font-raleway leading-snug">
+            <p className="w-full text-center pt-2 text-neutral-600 text-xl font-bold font-raleway leading-snug truncate">
               {coleccion.titulo.toUpperCase()}
             </p>
-          </li>
+            </Link>
         ))}
       </ul>
     </section>

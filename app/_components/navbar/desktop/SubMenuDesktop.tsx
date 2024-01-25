@@ -28,16 +28,18 @@ const SubMenuDesktop = () => {
   const selectedProducto = searchParams.get("type");
   
   return (
-    <section className="bg-color-bg-surface-0-default flex mt-[60px] h-[42px] px-8 py-2 gap-3 items-center">
+    <section className="bg-color-bg-surface-0-default flex mt-[60px] h-[42px] px-8 items-center justify-center">
+      <section className="py-2 gap-2 -ml-5 w-full h-full flex items-center max-w-screen-xl">
       {subMenu.map(item => (
         <Link
-          href={createUrl("/listing", makeNewParams("type", item.param, newParams))}
-          key={item.title}
-          className={`px-3 py-1.5 flex justify-center items-center 
-                    ${selectedProducto?.includes(item.param) ? "border border-black" : ""}`}>
+        href={createUrl("/listing", makeNewParams("type", item.param, newParams))}
+        key={item.title}
+        className={`px-3 py-0.5 flex justify-center items-center 
+        ${selectedProducto?.includes(item.param) ? "border border-black" : ""}`}>
           <p className="text-black font-medium">{item.title}</p>
         </Link>
       ))}
+      </section>
     </section>
   );
 };
