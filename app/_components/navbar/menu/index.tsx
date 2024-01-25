@@ -94,7 +94,8 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
             title="Menú"
             subtitle="Productos"
             setSelectedItems={selectItems}
-          />
+            selectedItems={selectedItems}
+            />
         </div>
         <div style={{ transform: `translateX(-${currentScreen * 100}%)`, transition: 'transform 0.3s ease-out' }}>
           <ModalContent
@@ -106,7 +107,8 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
             subtitle={selectedItems[0]?.name}
             setSelectedItems={selectItems}
             withBackButton
-          />
+            selectedItems={selectedItems}
+            />
         </div>
         <div style={{ transform: `translateX(-${currentScreen * 100}%)`, transition: 'transform 0.3s ease-out' }}>
           <ModalContent
@@ -118,6 +120,7 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
             withBackButton
             subtitle={selectedItems[1]?.name}
             setSelectedItems={selectItems}
+            selectedItems={selectedItems}
           />
         </div>
       </div>

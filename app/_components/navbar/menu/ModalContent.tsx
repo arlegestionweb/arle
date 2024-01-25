@@ -3,6 +3,7 @@ import SearchInput from "../SearchInput";
 import Link from "next/link";
 import { GoArrowUpRight, GoChevronLeft } from "react-icons/go";
 import Button from "../../Button";
+import { useRouter } from "next/navigation";
 
 type ModalContentProps = {
   setIsMenu: (arg0: boolean) => void;
@@ -11,6 +12,7 @@ type ModalContentProps = {
   subtitle: string;
   items: { name: string }[];
   setSelectedItems: (arg0: any) => void;
+  selectedItems: { name: string }[];
   currentScreen: number;
 } & (
     | { withBackButton: true; onBackButtonClick: () => void }
@@ -18,10 +20,10 @@ type ModalContentProps = {
   );
 
 
-const ModalContent = ({ currentScreen, setIsMenu, isMenuOpen, title, items, setSelectedItems, subtitle, withBackButton, onBackButtonClick }: ModalContentProps) => {
+const ModalContent = ({ selectedItems, currentScreen, setIsMenu, isMenuOpen, title, items, setSelectedItems, subtitle, withBackButton, onBackButtonClick }: ModalContentProps) => {
 
+  const { push } = useRouter()
   const linkToAll = currentScreen === 0 ? '/listing' : `/listing?type=${subtitle === "perfumes" ? "perfume" : subtitle?.toLowerCase()}`
-  console.log({ linkToAll })
   return (
     <aside
       className={`${isMenuOpen ? "" : "hidden"
@@ -48,7 +50,17 @@ const ModalContent = ({ currentScreen, setIsMenu, isMenuOpen, title, items, setS
 
           <ul className="flex flex-col gap-[12px] ">
             {items.map((item) => (
-              <li className="cursor-pointer" onClick={() => setSelectedItems((prev: { name: string }[]) => [...prev, item])}>
+              <li className="cursor-pointer"
+                onClick={() => {
+                  if (currentScreen === 2) {
+                    const [productType, gender] = selectedItems.map(item => item.name);
+                    setIsMenu(false)
+                    push(`/listing?type=${productType}&genero=${gender}&marcas=${item.name}`)
+                  } else {
+                    setSelectedItems((prev: { name: string }[]) => [...prev, item])
+                  }
+                }}
+              >
                 <h3 className="capitalize text-zinc-800 text-base font-normal font-tajawal leading-tight">
                   {item.name === "perfume" ? "perfumes" : item.name}
                 </h3>
