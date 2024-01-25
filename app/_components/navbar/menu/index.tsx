@@ -1,16 +1,32 @@
 import MenuModal from "../../MenuModal";
 import { IoCloseSharp } from "react-icons/io5";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useClickOutside } from "@/app/_lib/hooks";
 import SearchInput from "../SearchInput";
 import Link from "next/link";
 import { GoArrowUpRight } from "react-icons/go";
 import Button from "../../Button";
 import ModalContent from "./ModalContent";
+import { getBrandsByProductTypeAndGender } from "@/sanity/queries/menu";
+import { TGender, TProductType } from "../menuDrawer";
 
 type Item = {
   name: string;
 }
+
+const firstScreenItems: Item[] = [
+  { name: "perfumes" },
+  { name: "relojes" },
+  { name: "gafas" },
+]
+
+const secondScreenItems: Item[] = [
+  { name: "mujer" },
+  { name: "hombre" },
+  { name: "unisex" },
+  { name: "todos" }
+]
+
 const Menu = ({ isMenuOpen, setIsMenu }: {
   isMenuOpen: boolean;
   setIsMenu: (arg0: boolean) => void;
@@ -18,26 +34,30 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
 
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
   const [currentScreen, setCurrentScreen] = useState(0);
+  const [thirdScreenItems, setThirdScreenItems] = useState<Item[]>([]);
 
-  const firstScreenItems: Item[] = [
-    { name: "perfumes" },
-    { name: "relojes" },
-    { name: "gafas" },
-  ]
+  // const thirdScreenItems: Item[] = [
+  //   { name: "brand 1" },
+  //   { name: "brand 2" },
+  //   { name: "brand 3" },
+  //   { name: "brand 4" }
+  // ]
 
-  const secondScreenItems: Item[] = [
-    { name: "mujer" },
-    { name: "hombre" },
-    { name: "unisex" },
-    { name: "todos" }
-  ]
+  useEffect(() => {
+    if (selectedItems.length <= 1) return;
 
-  const thirdScreenItems: Item[] = [
-    { name: "brand 1" },
-    { name: "brand 2" },
-    { name: "brand 3" },
-    { name: "brand 4" }
-  ]
+
+    const [productType, gender] = selectedItems.map(item => item.name);
+
+    // console.log({ productType, gender })
+    const fetchBrands = async () => {
+      const brands = await getBrandsByProductTypeAndGender(productType as TProductType, gender as TGender)
+      setThirdScreenItems(brands?.map(brand => ({ name: brand })) || [])
+
+    }
+    fetchBrands()
+
+  }, [selectedItems])
 
   const menuRef = useRef(null);
 
@@ -55,7 +75,13 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
     setCurrentScreen(currentScreen => currentScreen + 1); // Increment current screen
   };
 
-  const goBack = () => setCurrentScreen(currentScreen => currentScreen - 1); // Decrement current screen
+  const goBack = () => {
+    setSelectedItems(selectedItems.slice(0, -1)); // Remove the last item
+
+
+    setCurrentScreen(currentScreen => currentScreen - 1);
+
+  }
 
   return (
     <MenuModal isMenuOpen={isMenuOpen} closeMenu={closeMenu} side="right" >
