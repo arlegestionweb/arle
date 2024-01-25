@@ -22,7 +22,7 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
                     alt={coleccion.imagen.alt || ""}
                     height={137}
                     width={137}
-                    className="object-cover rounded-full "
+                    className="md:h-[182px] md:w-[182px] object-cover rounded-full "
                     />
                     
                 </div>
