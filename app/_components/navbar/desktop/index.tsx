@@ -3,11 +3,11 @@ import Link from "next/link";
 import SubMenuDesktop from "./SubMenuDesktop";
 import Burger from "../Burger";
 import { useState } from "react";
-import MenuDrawer from "../menuDrawer";
 import SearchInput from "../SearchInput";
 import { FiShoppingCart } from "react-icons/fi";
 import RedDot from "../../RedDot";
 import { useCartStore } from "../../cart/store";
+import Menu from "../menu";
 
 type NavDesktopProps = {
   className?: string;
@@ -60,13 +60,16 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
           <Burger
             isNavOpen={isNavOpen}
             barColor="bg-[#5D5A88]"
-            onClickHandler={() => setIsNavOpen(!isNavOpen)}
+            openNav={() => setIsNavOpen(true)}
+            closeNav={() => setIsNavOpen(false)}
           />
-          <MenuDrawer
+          <Menu isMenuOpen={isNavOpen} setIsMenu={setIsNavOpen} />
+
+          {/* <MenuDrawer
             isOpen={isNavOpen}
             animation="right"
             onClose={() => setIsNavOpen(!isNavOpen)}
-          />
+          /> */}
         </section>
       </section>
       <section className="relative z-10">

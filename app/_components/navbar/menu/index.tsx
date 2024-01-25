@@ -8,14 +8,18 @@ import { GoArrowUpRight } from "react-icons/go";
 import Button from "../../Button";
 import ModalContent from "./ModalContent";
 import { getBrandsByProductTypeAndGender } from "@/sanity/queries/menu";
-import { TGender, TProductType } from "../menuDrawer";
+
+
+export type TProductType = "perfume" | "reloj" | "gafa";
+
+export type TGender = "hombre" | "mujer" | "unisex";
 
 type Item = {
   name: string;
 }
 
 const firstScreenItems: Item[] = [
-  { name: "perfumes" },
+  { name: "perfume" },
   { name: "relojes" },
   { name: "gafas" },
 ]
@@ -24,7 +28,6 @@ const secondScreenItems: Item[] = [
   { name: "mujer" },
   { name: "hombre" },
   { name: "unisex" },
-  { name: "todos" }
 ]
 
 const Menu = ({ isMenuOpen, setIsMenu }: {
@@ -36,13 +39,6 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
   const [currentScreen, setCurrentScreen] = useState(0);
   const [thirdScreenItems, setThirdScreenItems] = useState<Item[]>([]);
 
-  // const thirdScreenItems: Item[] = [
-  //   { name: "brand 1" },
-  //   { name: "brand 2" },
-  //   { name: "brand 3" },
-  //   { name: "brand 4" }
-  // ]
-
   useEffect(() => {
     if (selectedItems.length <= 1) return;
 
@@ -53,7 +49,7 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
     const fetchBrands = async () => {
       const brands = await getBrandsByProductTypeAndGender(productType as TProductType, gender as TGender)
       setThirdScreenItems(brands?.map(brand => ({ name: brand })) || [])
-
+      console.log({brands})
     }
     fetchBrands()
 
@@ -85,24 +81,43 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
 
   return (
     <MenuModal isMenuOpen={isMenuOpen} closeMenu={closeMenu} side="right" >
-      <div className={`flex overflow-x-hidden w-[80vw] max-w-[400px]`} ref={menuRef}
-      // style={{ transform: `translateX(-${currentScreen * 100}%)`, transition: 'transform 0.3s ease-out' }}
-
+      <div className={`flex overflow-x-hidden w-[80vw] max-w-[400px]`}
+        ref={menuRef}
       >
 
         <div style={{ transform: `translateX(-${currentScreen * 100}%)`, transition: 'transform 0.3s ease-out' }}>
-          <ModalContent isMenuOpen={isMenuOpen} items={firstScreenItems} setIsMenu={setIsMenu}
-            title="Menú" subtitle="Productos" setSelectedItems={selectItems}
+          <ModalContent
+            currentScreen={currentScreen}
+            isMenuOpen={isMenuOpen}
+            items={firstScreenItems}
+            setIsMenu={setIsMenu}
+            title="Menú"
+            subtitle="Productos"
+            setSelectedItems={selectItems}
           />
         </div>
         <div style={{ transform: `translateX(-${currentScreen * 100}%)`, transition: 'transform 0.3s ease-out' }}>
-          <ModalContent onBackButtonClick={goBack} isMenuOpen={isMenuOpen} items={secondScreenItems} setIsMenu={setIsMenu}
-            title="Menú" subtitle={selectedItems[0]?.name || "menu"} setSelectedItems={selectItems} withBackButton
+          <ModalContent
+            currentScreen={currentScreen}
+            onBackButtonClick={goBack}
+            isMenuOpen={isMenuOpen}
+            items={secondScreenItems}
+            setIsMenu={setIsMenu}
+            subtitle={selectedItems[0]?.name}
+            setSelectedItems={selectItems}
+            withBackButton
           />
         </div>
         <div style={{ transform: `translateX(-${currentScreen * 100}%)`, transition: 'transform 0.3s ease-out' }}>
-          <ModalContent onBackButtonClick={goBack} isMenuOpen={isMenuOpen} items={thirdScreenItems} setIsMenu={setIsMenu} withBackButton
-            title="Menú" subtitle={selectedItems[1]?.name || "menu"} setSelectedItems={selectItems}
+          <ModalContent
+            currentScreen={currentScreen}
+            onBackButtonClick={goBack}
+            isMenuOpen={isMenuOpen}
+            items={thirdScreenItems}
+            setIsMenu={setIsMenu}
+            withBackButton
+            subtitle={selectedItems[1]?.name}
+            setSelectedItems={selectItems}
           />
         </div>
       </div>

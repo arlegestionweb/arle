@@ -5,7 +5,6 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import RedDot from "../RedDot";
 import Link from "next/link";
-import MenuDrawer from "./menuDrawer";
 import { LuShoppingCart } from "react-icons/lu";
 import { useCartStore } from "../cart/store";
 import Menu from "./menu";
@@ -36,7 +35,6 @@ const MobileNavBar = ({ className }: MobileNavBarProps) => {
           closeNav={() => setIsNavOpen(false)}
         />
 
-        {/* <MenuDrawer isOpen={isNavOpen} /> */}
         <Menu isMenuOpen={isNavOpen} setIsMenu={setIsNavOpen} />
       </div>
     </nav>

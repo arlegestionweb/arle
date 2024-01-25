@@ -11,14 +11,17 @@ type ModalContentProps = {
   subtitle: string;
   items: { name: string }[];
   setSelectedItems: (arg0: any) => void;
+  currentScreen: number;
 } & (
-  | { withBackButton: true; onBackButtonClick: () => void }
-  | { withBackButton?: false; onBackButtonClick?: never }
-);
+    | { withBackButton: true; onBackButtonClick: () => void }
+    | { withBackButton?: false; onBackButtonClick?: never }
+  );
 
 
-const ModalContent = ({ setIsMenu, isMenuOpen, title, items, setSelectedItems, subtitle, withBackButton, onBackButtonClick }: ModalContentProps) => {
+const ModalContent = ({ currentScreen, setIsMenu, isMenuOpen, title, items, setSelectedItems, subtitle, withBackButton, onBackButtonClick }: ModalContentProps) => {
 
+  const linkToAll = currentScreen === 0 ? '/listing' : `/listing?type=${subtitle === "perfumes" ? "perfume" : subtitle?.toLowerCase()}`
+  console.log({ linkToAll })
   return (
     <aside
       className={`${isMenuOpen ? "" : "hidden"
@@ -40,17 +43,29 @@ const ModalContent = ({ setIsMenu, isMenuOpen, title, items, setSelectedItems, s
       </header>
       <section className="py-[18px] px-4 flex flex-col gap-[12px]">
         <SearchInput className="w-full" onSearch={() => setIsMenu(false)} />
-        <h2 className="text-zinc-800 text-lg  font-semibold font-tajawal leading-snug capitalize">{subtitle}</h2>
-        <ul className="flex flex-col gap-[12px] ">
-          {items.map((item) => (
-            <li className="cursor-pointer" onClick={() => setSelectedItems((prev: { name: string }[]) => [...prev, item])}>
-              <h3 className="capitalize text-zinc-800 text-base font-normal font-tajawal leading-tight">
-                {item.name}
-              </h3>
-            </li>
-          ))}
+        <h2 className="text-zinc-800 text-lg  font-semibold font-tajawal leading-snug capitalize">{subtitle === "perfume" ? "perfumes" : subtitle}</h2>
+        {items.length > 0 ? (
 
-        </ul>
+          <ul className="flex flex-col gap-[12px] ">
+            {items.map((item) => (
+              <li className="cursor-pointer" onClick={() => setSelectedItems((prev: { name: string }[]) => [...prev, item])}>
+                <h3 className="capitalize text-zinc-800 text-base font-normal font-tajawal leading-tight">
+                  {item.name === "perfume" ? "perfumes" : item.name}
+                </h3>
+              </li>
+            ))}
+            <li className="">
+              <Link href={linkToAll} className="flex items-center gap-2" onClick={() => setIsMenu(false)} >
+                <h3 className="capitalize text-zinc-800 text-base font-normal font-tajawal leading-tight">
+                  todos
+                </h3>
+              </Link>
+            </li>
+
+          </ul>
+        ) : (
+          <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight">No hay resultados</p>
+        )}
       </section>
       <footer className="p-4 flex flex-col gap-6">
         <Link href={'/about'} className="flex items-center gap-2">

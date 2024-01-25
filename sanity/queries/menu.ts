@@ -1,4 +1,4 @@
-import { TGender, TProductType } from "@/app/_components/navbar/menuDrawer";
+import { TGender, TProductType } from "@/app/_components/navbar/menu";
 import sanityClient from "../sanityClient";
 import { z } from "zod";
 
@@ -36,6 +36,8 @@ export const getBrandsByProductTypeAndGender = async (
         detalles
       }
     `);
+
+    console.log({result, productType, gender})
 
     const parsedResult = zodRawQuery.safeParse(result);
 
