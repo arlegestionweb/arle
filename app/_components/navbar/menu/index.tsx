@@ -14,10 +14,6 @@ export type TProductType = "perfume" | "reloj" | "gafa";
 
 export type TGender = "hombre" | "mujer" | "unisex";
 
-type Item = {
-  name: string;
-}
-
 const firstScreenItems: Item[] = [
   { name: "perfume" },
   { name: "relojes" },
@@ -30,6 +26,9 @@ const secondScreenItems: Item[] = [
   { name: "unisex" },
 ]
 
+type Item = {
+  name: string;
+}
 const Menu = ({ isMenuOpen, setIsMenu }: {
   isMenuOpen: boolean;
   setIsMenu: (arg0: boolean) => void;
