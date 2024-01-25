@@ -8,6 +8,7 @@ import RedDot from "../../RedDot";
 import { useCartStore } from "../../cart/store";
 import Menu from "../menu";
 import { LuShoppingCart } from "react-icons/lu";
+import Menu from "../menu";
 
 type NavDesktopProps = {
   className?: string;
