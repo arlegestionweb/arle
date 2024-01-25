@@ -51,6 +51,7 @@ const ModalContent = ({ selectedItems, currentScreen, setIsMenu, isMenuOpen, tit
           <ul className="flex flex-col gap-[12px] ">
             {items.map((item) => (
               <li className="cursor-pointer"
+                key={item.name}
                 onClick={() => {
                   if (currentScreen === 2) {
                     const [productType, gender] = selectedItems.map(item => item.name);
