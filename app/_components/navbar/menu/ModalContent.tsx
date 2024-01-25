@@ -21,9 +21,12 @@ type ModalContentProps = {
 
 
 const ModalContent = ({ selectedItems, currentScreen, setIsMenu, isMenuOpen, title, items, setSelectedItems, subtitle, withBackButton, onBackButtonClick }: ModalContentProps) => {
+  const [productType, gender] = selectedItems.map(item => item.name);
 
   const { push } = useRouter()
-  const linkToAll = currentScreen === 0 ? '/listing' : `/listing?type=${subtitle === "perfumes" ? "perfume" : subtitle?.toLowerCase()}`
+  const linkToAll = currentScreen === 0 ? '/listing' :
+      currentScreen === 2 ? `/listing?type=${productType}&genero=${gender}` :
+      `/listing?type=${subtitle === "perfumes" ? "perfume" : subtitle?.toLowerCase()}`
   return (
     <aside
       className={`${isMenuOpen ? "" : "hidden"
@@ -54,9 +57,8 @@ const ModalContent = ({ selectedItems, currentScreen, setIsMenu, isMenuOpen, tit
                 key={item.name}
                 onClick={() => {
                   if (currentScreen === 2) {
-                    const [productType, gender] = selectedItems.map(item => item.name);
                     setIsMenu(false)
-                    push(`/listing?type=${productType}&genero=${gender}&marcas=${item.name}`)
+                    push(`/listing?type=${productType}&genero=${gender}&marcas=${item.name}`, {scroll: false})
                   } else {
                     setSelectedItems((prev: { name: string }[]) => [...prev, item])
                   }
