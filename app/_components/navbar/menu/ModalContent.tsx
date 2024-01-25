@@ -25,7 +25,7 @@ const ModalContent = ({ selectedItems, currentScreen, setIsMenu, isMenuOpen, tit
 
   const { push } = useRouter()
   const linkToAll = currentScreen === 0 ? '/listing' :
-      currentScreen === 2 ? `/listing?type=${productType}&genero=${gender}` :
+    currentScreen === 2 ? `/listing?type=${productType}&genero=${gender}` :
       `/listing?type=${subtitle === "perfumes" ? "perfume" : subtitle?.toLowerCase()}`
   return (
     <aside
@@ -47,7 +47,9 @@ const ModalContent = ({ selectedItems, currentScreen, setIsMenu, isMenuOpen, tit
         <IoCloseSharp className="cursor-pointer w-5 h-5" onClick={() => setIsMenu(false)} />
       </header>
       <section className="py-[18px] px-4 flex flex-col gap-[12px]">
-        <SearchInput className="w-full" onSearch={() => setIsMenu(false)} />
+        <div className="md:hidden">
+          <SearchInput className="w-full" onSearch={() => setIsMenu(false)} />
+        </div>
         <h2 className="text-zinc-800 text-lg  font-semibold font-tajawal leading-snug capitalize">{subtitle === "perfume" ? "perfumes" : subtitle}</h2>
         {items.length > 0 ? (
 
@@ -58,7 +60,7 @@ const ModalContent = ({ selectedItems, currentScreen, setIsMenu, isMenuOpen, tit
                 onClick={() => {
                   if (currentScreen === 2) {
                     setIsMenu(false)
-                    push(`/listing?type=${productType}&genero=${gender}&marcas=${item.name}`, {scroll: false})
+                    push(`/listing?type=${productType}&genero=${gender}&marcas=${item.name}`, { scroll: false })
                   } else {
                     setSelectedItems((prev: { name: string }[]) => [...prev, item])
                   }
