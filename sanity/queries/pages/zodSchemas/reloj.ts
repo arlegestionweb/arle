@@ -65,7 +65,7 @@ export const relojLujoSchema = z.object({
         titulo: z.string(),
         descripcion: z.string().optional().nullable(),
       })
-    ),
+    ).optional().nullable(),
     material: z.string(),
   }),
   variantes: z.array(relojVariantSchema),

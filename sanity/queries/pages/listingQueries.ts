@@ -149,6 +149,7 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
+    console.log({relojes: result.relojes[0].detalles.contenido})
 
     const parsedResult = zodListPage.safeParse(result);
 
