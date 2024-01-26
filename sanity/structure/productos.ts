@@ -72,6 +72,7 @@ export default ({
     .title(gafasLujoSchema.title || "")
     .icon(PiSunglassesBold)
     .child(documentTypeList(gafasLujoSchema.name).title("Gafas de Lujo"));
+    
   const gafasListItem = listItem()
     .title("Gafas")
     .icon(PiSunglassesFill)

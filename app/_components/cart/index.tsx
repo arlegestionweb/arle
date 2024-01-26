@@ -10,6 +10,7 @@ import CodigoDeDescuento from "./CodigoDeDescuento";
 
 import AddedToCartModal from "./AddedToCartModal";
 import { useEffect } from "react";
+import { useHideBodyOverflow } from "@/app/_lib/hooks";
 
 const Cart = () => {
   const pathname = usePathname();
@@ -23,14 +24,7 @@ const Cart = () => {
     isAddedToCartModalOpen,
   } = useCartStore((state) => state);
 
-  useEffect(() => {
-    if (isCartOpen) {
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  },[isCartOpen])
+  useHideBodyOverflow(isCartOpen);
 
   if (pathname.includes("/admin")) return null;
 

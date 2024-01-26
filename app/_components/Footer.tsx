@@ -34,7 +34,7 @@ const Footer = () => {
             <ul className="flex flex-col gap-4 text-lg">
               <li>
                 <Link
-                  href="/listing?producto=perfumes"
+                  href="/listing?type=perfume"
                   className="cursor-pointer">
                   Perfumes
                 </Link>

@@ -1,14 +1,21 @@
 import { MouseEventHandler } from "react";
 
 interface BurgerProps {
-  onClickHandler?: MouseEventHandler<HTMLDivElement>;
+  openNav?: () => void;
+  closeNav?: () => void;
   isNavOpen: boolean;
   barColor?: string;
 }
 
-const Burger = ({ onClickHandler, isNavOpen, barColor }: BurgerProps) => {
+const Burger = ({ openNav, closeNav, isNavOpen, barColor }: BurgerProps) => {
   return (
-    <div className="flex justify-center items-center" onClick={onClickHandler}>
+    <div className="flex justify-center items-center" onClick={() => {
+      if (isNavOpen) {
+        closeNav && closeNav();
+      } else {
+        openNav && openNav();
+      }
+    }}>
       <div className="relative grid place-content-center z-50 gap-2  cursor-pointer ">
         <Bar
           rotateZ={!isNavOpen ? "rotate-0" : "rotate-45 translate-y-3"}

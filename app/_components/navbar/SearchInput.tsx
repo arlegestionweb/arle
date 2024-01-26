@@ -8,9 +8,10 @@ import { cn, createUrl, makeNewParams } from "@/app/_lib/utils";
 
 type SearchInputProps = {
   className?: string;
+  onSearch?: () => void;
 }
 
-const SearchInput = ({className}: SearchInputProps) => {
+const SearchInput = ({ className, onSearch }: SearchInputProps) => {
 
   const searchParams = useSearchParams();
   const value = searchParams.get("search");
@@ -25,8 +26,9 @@ const SearchInput = ({className}: SearchInputProps) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const search = form.search as HTMLInputElement;
+    onSearch && onSearch();
     redirect(
-      createUrl("/listing", makeNewParams("search", search.value, searchParams)), 
+      createUrl("/listing", makeNewParams("search", search.value, searchParams)),
       { scroll: false }
     );
   };
@@ -44,7 +46,7 @@ const SearchInput = ({className}: SearchInputProps) => {
           onChange={handleKeyDown}
         />
       </form>
-      <Link href={`/listing?search=${value}`}>
+      <Link href={`/listing?search=${value}`} onClick={() => onSearch && onSearch()}>
         <AiOutlineEnter />
       </Link>
     </div>
