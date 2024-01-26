@@ -13,6 +13,7 @@ export const imageObjectSchema = defineField({
       title: "Texto Alternativo",
       description: "Para buscadores de internet (SEO)",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
   ],
 })
