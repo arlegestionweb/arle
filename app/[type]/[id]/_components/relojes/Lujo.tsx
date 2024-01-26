@@ -85,7 +85,7 @@ const RelojLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, set
                   "Estilo de reloj":product.especificaciones.estiloDeReloj,
                   "Resistencia al agua":product.especificaciones.resistenciaAlAgua,
                   material: product.especificaciones.material,
-                  funciones: product.especificaciones.funciones.map(funcion => `${funcion.titulo}: ${funcion.descripcion}`)
+                  funciones: (product.especificaciones.funciones || []).map(funcion => `${funcion.titulo}: ${funcion.descripcion}`)
                 },
                 garantia: {
                   meses: product.garantia.meses + "",
