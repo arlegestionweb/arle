@@ -439,18 +439,21 @@ export const getProductById = async (id: string, productType: TProductType) => {
   
   const discounts = await sanityClient.fetch(discountQuery, params);
   
+  
   const product = productSchema.safeParse(fetchResult);
 
   const parsedDiscounts = zodTimedDiscountsSchema.safeParse(discounts);
   //
 
+  
   if (!parsedDiscounts.success) {
     throw new Error(parsedDiscounts.error.message);
   }
-
+  
   if (!product.success) {
     throw new Error(product.error.message);
   }
-
+  parsedDiscounts?.data?.sort((a, b) => new Date(a.duracion.fin).getTime() - new Date(b.duracion.fin).getTime());
+  
   return {product: product.data, discount: parsedDiscounts.data && parsedDiscounts.data[0]}
 };
