@@ -4,8 +4,11 @@ import ExploreSection from "./_components/homepage/ExploreSection";
 import Colecciones from "./_components/Colecciones";
 import AboutArle from "./_components/homepage/AboutArle";
 import Button from "./_components/Button";
+import { unstable_noStore as noStore } from 'next/cache';
+
 
 const Home = async function () {
+  noStore();
   const pageContent = await getHomepageContent();
   // console.log(pageContent);
 
