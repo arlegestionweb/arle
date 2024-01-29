@@ -12,21 +12,22 @@ import {
 } from "@/utils/helpers";
 import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import Precio from "../Precio";
+import { TPricing } from "@/app/[type]/[id]/_components/Product";
 
 type PremiumLayoutProps = {
   product: TGafaPremium | TRelojPremium | TPerfumePremium;
   children: JSX.Element[] | JSX.Element;
   selectedVariant: TVariant;
-  discount?: TTimedDiscount;
+  pricing: TPricing;
 };
 
-const PremiumLayout = ({ product, discount, children, selectedVariant }: PremiumLayoutProps) => {
+const PremiumLayout = ({ product, pricing, children, selectedVariant }: PremiumLayoutProps) => {
   const [modelo] = isPerfumePremium(product)
     ? [product.titulo]
     : [product.modelo];
 
   // console.log({product, selectedVariant}, "here")
-  const price = discount ? Math.floor((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)) : Math.floor(colombianPriceStringToNumber(selectedVariant.precio)); console.log({ discount })
+  // const price = discount ? Math.floor((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)) : Math.floor(colombianPriceStringToNumber(selectedVariant.precio)); console.log({ discount })
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto w-full lg:max-w-mx">
       <ProductViewer
@@ -49,7 +50,10 @@ const PremiumLayout = ({ product, discount, children, selectedVariant }: Premium
           <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
             CODE: {selectedVariant.codigoDeReferencia}
           </span>
-          <Precio price={price} selectedVariant={selectedVariant} discount={discount} />
+          <Precio
+            fullPrice={pricing.precioSinDescuento}
+            discountedPrice={pricing.timedDiscountPrice || pricing.precioConDescuento}
+          />
         </header>
 
         {children}

@@ -7,6 +7,7 @@ import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
+import { TPricing } from "../Product";
 
 type TRelojLujoProps = {
   product: TRelojLujo;
@@ -14,10 +15,10 @@ type TRelojLujoProps = {
   setSelectedVariant: (variant: TVariant) => void;
   setCantidad: (cantidad: number) => void;
   cantidad: number;
-  discount?: TTimedDiscount;
+  pricing: TPricing;
 };
 
-const RelojLujo = ({ discount, product, selectedVariant, setSelectedVariant, cantidad, setCantidad }: TRelojLujoProps) => {
+const RelojLujo = ({ pricing, product, selectedVariant, setSelectedVariant, cantidad, setCantidad }: TRelojLujoProps) => {
 
   return (
     <>
@@ -28,7 +29,8 @@ const RelojLujo = ({ discount, product, selectedVariant, setSelectedVariant, can
         setSelectedVariant={setSelectedVariant}
         cantidad={cantidad}
         setCantidad={setCantidad}
-        discount={discount}
+        // discount={discount}
+        pricing={pricing}
       />
 
       {product.inspiracion.usarInspiracion && (
@@ -131,6 +133,7 @@ const RelojLujo = ({ discount, product, selectedVariant, setSelectedVariant, can
         product={product}
         quantity={cantidad}
         selectedVariant={selectedVariant}
+        pricing={pricing}
       />
     </>
   );

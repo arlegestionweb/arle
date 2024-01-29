@@ -8,6 +8,7 @@ import SeccionEspecificaciones from "../SeccionEspecificaciones";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
+import { TPricing } from "../Product";
 
 type TPerfumePremiumProps = {
   product: TPerfumePremium;
@@ -15,7 +16,7 @@ type TPerfumePremiumProps = {
   setSelectedVariant: (variant: TVariant) => void;
   cantidad: number;
   setCantidad: (cantidad: number) => void;
-  discount?: TTimedDiscount;
+  pricing: TPricing;
 };
 
 const PerfumePremium = ({
@@ -24,11 +25,11 @@ const PerfumePremium = ({
   setSelectedVariant,
   cantidad,
   setCantidad,
-  discount
+  pricing
 }: TPerfumePremiumProps) => {
   // console.log({product});
   return (
-    <PremiumLayout product={product} selectedVariant={selectedVariant} discount={discount}>
+    <PremiumLayout product={product} selectedVariant={selectedVariant} pricing={pricing}>
       <section className="mt-2">
         <Cantidad
           cantidad={cantidad}
@@ -42,6 +43,7 @@ const PerfumePremium = ({
         />
       </section>
       <AddToCart
+        pricing={pricing}
         product={product}
         quantity={cantidad}
         selectedVariant={selectedVariant}
@@ -58,6 +60,7 @@ const PerfumePremium = ({
 
       <NuestrasComprasIncluyen />
       <AddToCart
+        pricing={pricing}
         className="lg:hidden"
         product={product}
         quantity={cantidad}

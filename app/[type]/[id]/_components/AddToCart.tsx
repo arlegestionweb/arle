@@ -5,20 +5,23 @@ import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { useCartStore } from "@/app/_components/cart/store";
+import { TPricing } from "./Product";
 
 type PropsAddToCart = {
   className?:string;
   product: TProduct;
   selectedVariant: TVariant;
   quantity: number;
-  discount?: TTimedDiscount;
+  pricing: TPricing;
 }
 
-const AddToCart = ({className, discount, product, quantity, selectedVariant}:PropsAddToCart) => {
+const AddToCart = ({className, pricing, product, quantity, selectedVariant}:PropsAddToCart) => {
   
   const {addItem} = useCartStore();
 
-  const price = discount ? Math.floor((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)) : Math.floor(colombianPriceStringToNumber(selectedVariant.precio)); 
+  console.log({pricing})
+  
+  const price = pricing.finalPrice;
 
   const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
     console.log({price})

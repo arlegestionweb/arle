@@ -27,9 +27,6 @@ const ProductPage = async ({ params }: TPageProps) => {
 
   return (
     <main className="relative pt-[60px] md:pt-0 z-10 lg:mb-[100vh] min-h-screen bg-background flex flex-col justify-center items-center">
-      {discount && (
-        <TimedDiscount discount={discount} />
-      )}
       <Product params={params} product={product} discount={discount} />
     </main>
   );

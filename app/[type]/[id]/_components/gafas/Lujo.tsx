@@ -7,6 +7,7 @@ import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
+import { TPricing } from "../Product";
 
 type TGafaLujoProps = {
   product: TGafaLujo;
@@ -14,7 +15,7 @@ type TGafaLujoProps = {
   setSelectedVariant: (variant: TVariant) => void;
   cantidad: number;
   setCantidad: (cantidad: number) => void;
-  discount?: TTimedDiscount;
+  pricing: TPricing;
 };
 
 const GafaLujo = ({
@@ -23,7 +24,7 @@ const GafaLujo = ({
   setSelectedVariant,
   cantidad,
   setCantidad,
-  discount,
+  pricing,
 }: TGafaLujoProps) => {
   return (
     <>
@@ -34,6 +35,7 @@ const GafaLujo = ({
         setSelectedVariant={setSelectedVariant}
         cantidad={cantidad}
         setCantidad={setCantidad}
+        pricing={pricing}
       />
 
       {product.inspiracion.usarInspiracion && (
@@ -131,7 +133,7 @@ const GafaLujo = ({
         product={product}
         quantity={cantidad}
         selectedVariant={selectedVariant}
-        discount={discount}
+        pricing={pricing}
       />
     </>
   );
