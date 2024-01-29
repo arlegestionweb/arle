@@ -4,7 +4,7 @@ import InfoSection from "../InfoSection";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
 import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
-import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
 
@@ -14,6 +14,7 @@ type TGafaLujoProps = {
   setSelectedVariant: (variant: TVariant) => void;
   cantidad: number;
   setCantidad: (cantidad: number) => void;
+  discount?: TTimedDiscount;
 };
 
 const GafaLujo = ({
@@ -22,6 +23,7 @@ const GafaLujo = ({
   setSelectedVariant,
   cantidad,
   setCantidad,
+  discount,
 }: TGafaLujoProps) => {
   return (
     <>
@@ -129,6 +131,7 @@ const GafaLujo = ({
         product={product}
         quantity={cantidad}
         selectedVariant={selectedVariant}
+        discount={discount}
       />
     </>
   );

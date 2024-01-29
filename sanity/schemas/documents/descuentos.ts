@@ -20,7 +20,8 @@ export const descuentosSchema = defineType({
     defineField({
       name: "porcentaje",
       title: "Porcentaje",
-      type: "string",
+      description: "Porcentaje de descuento en numeros enteros (ej: 10)",
+      type: "number",
       validation: (Rule) => Rule.required(),
     }),
     defineField({

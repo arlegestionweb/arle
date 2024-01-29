@@ -6,7 +6,7 @@ import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
 import HeroProduct from "@/app/_components/lujo/HeroProduct";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
-import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 
 type TPerfumeLujoProps = {
   product: TPerfumeLujo;
@@ -14,6 +14,7 @@ type TPerfumeLujoProps = {
   setSelectedVariant: (variant: TVariant) => void;
   setCantidad: (cantidad: number) => void;
   cantidad: number;
+  discount?: TTimedDiscount;
 };
 
 const PerfumeLujo = ({
@@ -21,7 +22,8 @@ const PerfumeLujo = ({
   selectedVariant,
   setSelectedVariant,
   cantidad,
-  setCantidad
+  setCantidad,
+  discount
 }: TPerfumeLujoProps) => {
   return (
     <>
@@ -32,6 +34,7 @@ const PerfumeLujo = ({
         setSelectedVariant={setSelectedVariant}
         cantidad={cantidad}
         setCantidad={setCantidad}
+        discount={discount}
       />
 
       <div className="bg-slate-900 w-screen flex justify-center">

@@ -2,7 +2,7 @@ import Button from "@/app/_components/Button";
 import { FastShoppingCartIcon, ShoppingCartIcon } from "./Icons";
 import { cn } from "@/app/_lib/utils";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
-import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { useCartStore } from "@/app/_components/cart/store";
 
@@ -11,17 +11,21 @@ type PropsAddToCart = {
   product: TProduct;
   selectedVariant: TVariant;
   quantity: number;
+  discount?: TTimedDiscount;
 }
 
-const AddToCart = ({className, product, quantity, selectedVariant}:PropsAddToCart) => {
+const AddToCart = ({className, discount, product, quantity, selectedVariant}:PropsAddToCart) => {
   
   const {addItem} = useCartStore();
 
+  const price = discount ? Math.floor((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)) : Math.floor(colombianPriceStringToNumber(selectedVariant.precio)); 
+
   const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
+    console.log({price})
     addItem({
       productId: producto._id,
       variantId: selectedVariant.registroInvima,
-      price: colombianPriceStringToNumber(selectedVariant.precio),
+      price: price,
       quantity,
       productType: producto._type,
     });

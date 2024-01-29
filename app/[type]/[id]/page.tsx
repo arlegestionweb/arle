@@ -26,11 +26,11 @@ const ProductPage = async ({ params }: TPageProps) => {
   const { product, discount } = await getProductById(params.id, params.type);
 
   return (
-    <main className="relative pt-[60px] z-10 lg:mb-[100vh] min-h-screen bg-background flex flex-col justify-center items-center">
+    <main className="relative pt-[60px] md:pt-0 z-10 lg:mb-[100vh] min-h-screen bg-background flex flex-col justify-center items-center">
       {discount && (
         <TimedDiscount discount={discount} />
       )}
-      <Product params={params} product={product} />
+      <Product params={params} product={product} discount={discount} />
     </main>
   );
 };

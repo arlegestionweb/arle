@@ -7,7 +7,7 @@ import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import SeccionEspecificaciones from "../SeccionEspecificaciones";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
-import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 
 type TRelojPremiumProps = {
   product: TRelojPremium;
@@ -15,6 +15,7 @@ type TRelojPremiumProps = {
   setSelectedVariant: (variant: TVariant) => void;
   cantidad: number;
   setCantidad: (cantidad: number) => void;
+  discount?: TTimedDiscount;
 };
 
 const RelojPremium = ({
@@ -22,10 +23,11 @@ const RelojPremium = ({
   selectedVariant,
   setSelectedVariant,
   cantidad,
-  setCantidad
+  setCantidad,
+  discount
 }: TRelojPremiumProps) => {
   return (
-    <PremiumLayout product={product} selectedVariant={selectedVariant}>
+    <PremiumLayout product={product} selectedVariant={selectedVariant} discount={discount}>
       <section className="mt-2">
         <Cantidad
           cantidad={cantidad}
@@ -43,6 +45,7 @@ const RelojPremium = ({
         quantity={cantidad}
         selectedVariant={selectedVariant}
         className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block"
+        discount={discount}
       />
 
       {product.descripcion ? (

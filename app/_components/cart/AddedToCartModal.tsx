@@ -29,7 +29,7 @@ const AddedToCartModal = () => {
     const getProduct = async () => {
       if (!itemAddedToCart) return;
       
-      const product = await getProductById(
+      const {product} = await getProductById(
         itemAddedToCart.productId,
         itemAddedToCart.productType
       );

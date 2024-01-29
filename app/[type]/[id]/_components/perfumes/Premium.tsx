@@ -6,7 +6,7 @@ import CollapsibleProductSection from "../CollapsibleSection";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import SeccionEspecificaciones from "../SeccionEspecificaciones";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
-import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
 
 type TPerfumePremiumProps = {
@@ -15,6 +15,7 @@ type TPerfumePremiumProps = {
   setSelectedVariant: (variant: TVariant) => void;
   cantidad: number;
   setCantidad: (cantidad: number) => void;
+  discount?: TTimedDiscount;
 };
 
 const PerfumePremium = ({
@@ -23,10 +24,11 @@ const PerfumePremium = ({
   setSelectedVariant,
   cantidad,
   setCantidad,
+  discount
 }: TPerfumePremiumProps) => {
   // console.log({product});
   return (
-    <PremiumLayout product={product} selectedVariant={selectedVariant}>
+    <PremiumLayout product={product} selectedVariant={selectedVariant} discount={discount}>
       <section className="mt-2">
         <Cantidad
           cantidad={cantidad}

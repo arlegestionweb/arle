@@ -453,7 +453,10 @@ export const getProductById = async (id: string, productType: TProductType) => {
   if (!product.success) {
     throw new Error(product.error.message);
   }
-  parsedDiscounts?.data?.sort((a, b) => new Date(a.duracion.fin).getTime() - new Date(b.duracion.fin).getTime());
-  
-  return {product: product.data, discount: parsedDiscounts.data && parsedDiscounts.data[0]}
+  parsedDiscounts.data?.sort((a, b) => new Date(a.duracion.fin).getTime() - new Date(b.duracion.fin).getTime());
+  const now = new Date().getTime();
+
+  const activeDiscounts = parsedDiscounts.data?.filter(discount => new Date(discount.duracion.fin).getTime() > now);
+
+  return {product: product.data, discount: activeDiscounts && activeDiscounts[0]}
 };
