@@ -6,6 +6,7 @@ import { numberToColombianPriceString } from "@/utils/helpers";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { IoMdClose } from "react-icons/io";
 import { TCartItem, useCartStore } from "./store";
+import Precio from "../Precio";
 
 const ProductItem = ({ item }: { item: TCartItem }) => {
   const [product, setProduct] = useState<TProduct | null>(null);
@@ -13,7 +14,7 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
 
   useEffect(() => {
     const getProduct = async () => {
-      const product = await getProductById(item.productId, item.productType);
+      const { product } = await getProductById(item.productId, item.productType);
       setProduct(product);
     };
     getProduct();
@@ -33,20 +34,21 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
 
   const image =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.variantes[variantIndex].imagenes[0]
       : product.imagenes[0];
 
   const productTitle =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.modelo
       : product.titulo;
 
+      console.log(item.originalPrice, item.price < item.originalPrice )
   return (
     <li key={item.variantId} className="flex relative gap-2">
       <button
@@ -72,9 +74,12 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
         <h5 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">
           {product.marca}
         </h5>
-        <p className="text-zinc-500 text-lg font-medium font-tajawal leading-snug">
-          ${numberToColombianPriceString(item.price)}
-        </p>
+
+        <Precio
+          fullPrice={item.originalPrice}
+          discountedPrice={item.price < item.originalPrice ? item.price : undefined}
+          dontDisplayPaymentOptions
+        />
         <Cantidad
           cantidad={item.quantity}
           anadirACantidad={() => addItem(item)}

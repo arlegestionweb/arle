@@ -2,8 +2,7 @@ import Button from "@/app/_components/Button";
 import { FastShoppingCartIcon, ShoppingCartIcon } from "./Icons";
 import { cn } from "@/app/_lib/utils";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
-import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
-import { colombianPriceStringToNumber } from "@/utils/helpers";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { useCartStore } from "@/app/_components/cart/store";
 import { TPricing } from "./Product";
 
@@ -20,7 +19,7 @@ const AddToCart = ({className, pricing, product, quantity, selectedVariant}:Prop
   const {addItem} = useCartStore();
 
   console.log({pricing})
-  
+
   const price = pricing.finalPrice;
 
   const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
@@ -31,6 +30,8 @@ const AddToCart = ({className, pricing, product, quantity, selectedVariant}:Prop
       price: price,
       quantity,
       productType: producto._type,
+      discountType: pricing.discountTypeUsed,
+      originalPrice: pricing.precioSinDescuento,
     });
   };
   return (

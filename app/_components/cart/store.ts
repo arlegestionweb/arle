@@ -12,6 +12,8 @@ export type TCartItem = {
     | "relojesLujo"
     | "gafasPremium"
     | "gafasLujo";
+    discountType: "none" | "timedDiscount" | "discountedPrice";
+    originalPrice: number;
 };
 
 type TCartState = {
@@ -57,18 +59,25 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     }),
   getDiscountAmount: () => {
     const items: TCartItem[] = get().items;
-    let total = 0;
+    // let total = 0;
 
-    items.forEach((item) => (total += item.price * item.quantity));
+    let totalDiscount = 0;
 
-    const discountCode = get().discountCode;
-
-    if (discountCode) {
-      const discountAmount = total * (discountCode.discount / 100);
-      return Math.round(discountAmount);
+    for (const item of items) {
+      const discountAmountPerItem = item.originalPrice - item.price;
+      const totalDiscountForItem = discountAmountPerItem * item.quantity;
+      console.log({totalDiscountForItem})
+      totalDiscount += totalDiscountForItem;
     }
+  
+    return totalDiscount;    // const discountCode = get().discountCode;
 
-    return 0;
+    // if (discountCode) {
+    //   const discountAmount = total * (discountCode.discount / 100);
+    //   return Math.round(discountAmount);
+    // }
+
+    // return 0;
   },
   items:
     typeof window !== "undefined" && localStorage.getItem("cart")
@@ -103,7 +112,9 @@ export const useCartStore = create<TCartStore>((set, get) => ({
         localStorage.setItem("cart", JSON.stringify(newItems));
       }
 
-      return { items: newItems, isAddedToCartModalOpen: true, itemAddedToCart: item };
+      const inCart = get().isCartOpen;
+
+      return { items: newItems, isAddedToCartModalOpen: inCart ? false : true, itemAddedToCart: item };
     }),
   clearCart: () =>
     set(() => {

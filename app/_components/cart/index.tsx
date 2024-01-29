@@ -12,7 +12,11 @@ import AddedToCartModal from "./AddedToCartModal";
 import { useEffect } from "react";
 import { useHideBodyOverflow } from "@/app/_lib/hooks";
 
-const Cart = () => {
+const Cart = ({
+  showDiscountCode = false,
+}: {
+  showDiscountCode: boolean;
+}) => {
   const pathname = usePathname();
   const {
     items,
@@ -70,7 +74,9 @@ const Cart = () => {
         {/* <h4 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">Código de descuento</h4> */}
 
         <section className="flex flex-col gap-2">
-          <CodigoDeDescuento />
+          {showDiscountCode && (
+            <CodigoDeDescuento />
+          )}
 
           <div className="flex w-full justify-between">
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
@@ -81,8 +87,9 @@ const Cart = () => {
           <div className="flex w-full justify-between">
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
               Descuento
+              
             </h5>
-            <span>${numberToColombianPriceString(getDiscountAmount())}</span>
+            <span>${numberToColombianPriceString(getDiscountAmount()) || 0}</span>
           </div>
           <div className="flex w-full justify-between">
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">

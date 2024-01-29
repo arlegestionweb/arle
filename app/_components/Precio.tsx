@@ -1,9 +1,10 @@
 import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { colombianPriceStringToNumber, numberToColombianPriceString } from "@/utils/helpers";
 
-const Precio = ({ discountedPrice, fullPrice }: {
+const Precio = ({ discountedPrice, fullPrice, dontDisplayPaymentOptions = false }: {
   fullPrice: number;
   discountedPrice?: number;
+  dontDisplayPaymentOptions?: boolean;
 }) => {
   return (
     <>
@@ -32,23 +33,25 @@ const Precio = ({ discountedPrice, fullPrice }: {
           </p>
         )}
       </section>
-      <div className="text-justify">
-        <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-          Págalo a 4 cuotas de $
-          {numberToColombianPriceString(
-            (discountedPrice ? discountedPrice : fullPrice) / 4
-          )}{" "}
-          sin intereses.
-          <br />
-          [provider]
-        </span>
-        <span className="text-neutral-600 text-sm font-normal font-tajawal leading-[16.80px]">
-          .{" "}
-        </span>
-        <span className="text-zinc-800 text-sm font-normal font-tajawal leading-[16.80px]">
-          Learn More
-        </span>
-      </div>
+      {!dontDisplayPaymentOptions && (
+        <div className="text-justify">
+          <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
+            Págalo a 4 cuotas de $
+            {numberToColombianPriceString(
+              (discountedPrice ? discountedPrice : fullPrice) / 4
+            )}{" "}
+            sin intereses.
+            <br />
+            [provider]
+          </span>
+          <span className="text-neutral-600 text-sm font-normal font-tajawal leading-[16.80px]">
+            .{" "}
+          </span>
+          <span className="text-zinc-800 text-sm font-normal font-tajawal leading-[16.80px]">
+            Learn More
+          </span>
+        </div>
+      )}
     </>
   );
 }
