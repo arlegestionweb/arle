@@ -12,10 +12,10 @@ import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import Banner from "../_components/homepage/Banner";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
+import { unstable_noStore as noStore } from 'next/cache';
 
 // export const revalidate = 10; // revalidate at most every hour
 
-export const dynamic = "force-dynamic";
 
 const sortingFunctions: Record<TSortingOption['value'], (a: TProduct, b: TProduct) => number> = {
   recientes: (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
@@ -38,6 +38,7 @@ const Listing = async ({
     [key: string]: string | string[] | undefined;
   };
 }) => {
+  noStore();
   const pageContent = await getListingInitialLoadContent();
 
   // GENERAL PARAMS

@@ -6,8 +6,8 @@ import PerfumePremium from "./_components/perfumes/Premium";
 import RelojLujo from "./_components/relojes/Lujo";
 import RelojPremium from "./_components/relojes/Premium";
 import Product from "./_components/Product";
+import { unstable_noStore as noStore } from 'next/cache';
 
-export const dynamic = "force-dynamic";
 
 export type TParams = {
   type:
@@ -27,6 +27,7 @@ type TPageProps = {
 };
 
 const ProductPage = async ({ params }: TPageProps) => {
+  noStore();
   const product = await getProductById(params.id, params.type);
 
   return (
