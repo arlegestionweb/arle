@@ -25,7 +25,7 @@ import { TPricing } from "@/app/[type]/[id]/_components/Product";
 import { TTimedDiscount } from "@/sanity/queries/pages/zodSchemas/general";
 
 const ProductoCard = ({ producto, discount }: {
-  producto: TProduct, 
+  producto: TProduct,
   discount?: TTimedDiscount;
 }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
@@ -52,7 +52,7 @@ const ProductoCard = ({ producto, discount }: {
 
   useEffect(() => {
     const fetchTimedDiscounts = async () => {
-      const {discount} = await getTimedDiscountByProductId(producto._id);
+      const { discount } = await getTimedDiscountByProductId(producto._id);
       console.log({ discount });
 
       if (discount) {
@@ -63,7 +63,7 @@ const ProductoCard = ({ producto, discount }: {
     fetchTimedDiscounts();
   }, [])
 
-  console.log({pricing})
+  console.log({ pricing })
   return (
     <>
       {selectedVariant.etiqueta && (
@@ -159,13 +159,11 @@ const CardLayout = ({
           selectedVariant={selectedVariant}
           setSelectedVariant={setSelectedVariant}
         />
-        <p className="text-[18px] font-medium leading-5 text-[#4f4f4f]">
-          <Precio
-            fullPrice={pricing.precioSinDescuento}
-            discountedPrice={pricing.timedDiscountPrice || pricing.precioConDescuento}
-            dontDisplayPaymentOptions
-          />
-        </p>
+        <Precio
+          fullPrice={pricing.precioSinDescuento}
+          discountedPrice={pricing.timedDiscountPrice || pricing.precioConDescuento}
+          dontDisplayPaymentOptions
+        />
       </section>
       <Button
         onClick={() => addToCart(product, selectedVariant)}
@@ -206,8 +204,8 @@ export const VariantSelector = <T extends TProduct>({
                 <button
                   onClick={() => setSelectedVariant(variante)}
                   className={`w-[27px] h-[26px] px-5 py-3 rounded-[5px] overflow-hidden border flex-col justify-center items-center gap-2.5 inline-flex ${isVariantSelected
-                      ? "bg-neutral-100 border-black"
-                      : "bg-neutral-200 border-neutral-300"
+                    ? "bg-neutral-100 border-black"
+                    : "bg-neutral-200 border-neutral-300"
                     }`}
                   key={`${variante.tamano}-${variante.precio}-${index}`}
                 >

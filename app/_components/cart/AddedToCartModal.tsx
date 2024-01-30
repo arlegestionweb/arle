@@ -104,14 +104,11 @@ const AddedToCartModal = () => {
                 <h4 className="text-zinc-800 text-2xl font-semibold font-crimson leading-7">
                   {productTitle}
                 </h4>
-                <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
-                  {product.marca}
-                </h5>
               </div>
               <section>
                 <section className="h-[9px] justify-start items-center gap-3 inline-flex">
                   <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-                    PARFUMS de MARLY
+                    {product.marca}
                   </span>
                   <div className="w-px self-stretch justify-start items-start gap-2.5 flex">
                     <div className="w-px self-stretch bg-stone-300" />
@@ -124,15 +121,15 @@ const AddedToCartModal = () => {
                   CODE: {itemAddedToCart.productId}
                 </div>
               </section>
-              <section className="flex w-full justify-between">
-                <Precio fullPrice={itemAddedToCart.originalPrice}
+              <section className="flex w-full gap-2 items-end">
+
+                <Precio
+                  fullPrice={itemAddedToCart.originalPrice}
                   dontDisplayPaymentOptions
                   discountedPrice={itemAddedToCart.price < itemAddedToCart.originalPrice ? itemAddedToCart.price : undefined}
+                  fontSizes={{ lineThroughPrice: "sm", payingPrice: "md" }}
                 />
-                <p className="text-zinc-800 text-xl font-semibold font-crimson leading-[23px]">
-                  ${numberToColombianPriceString(itemAddedToCart.price)}
-                </p>
-                <div>
+                <section className="">
                   <h6 className="text-zinc-800 text-base font-medium font-tajawal leading-tight">
                     Cantidad
                   </h6>
@@ -149,7 +146,7 @@ const AddedToCartModal = () => {
                       removeItem(itemAddedToCart);
                     }}
                   />
-                </div>
+                </section>
                 <div className="w-9 h-9 p-2.5 bg-neutral-100 justify-center items-center gap-2 inline-flex">
                   <FiTrash2 className="self-end" />
                 </div>
