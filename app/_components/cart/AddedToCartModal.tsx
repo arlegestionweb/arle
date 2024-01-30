@@ -118,7 +118,7 @@ const AddedToCartModal = () => {
                   </span>
                 </section>
                 <div className=" text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-                  CODE: {itemAddedToCart.productId}
+                  CODE: {itemAddedToCart.variantId}
                 </div>
               </section>
               <section className="flex w-full gap-2 items-end">

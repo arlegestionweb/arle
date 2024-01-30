@@ -95,7 +95,7 @@ const CardLayout = ({
   const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
     addItem({
       productId: producto._id,
-      variantId: selectedVariant.registroInvima,
+      variantId: selectedVariant.codigoDeReferencia,
       price: pricing.finalPrice,
       quantity,
       productType: producto._type,
