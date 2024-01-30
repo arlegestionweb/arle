@@ -1,5 +1,8 @@
 import { create } from "zustand";
 
+
+const TAX = 0.19;
+
 export type TCartItem = {
   productId: string;
   variantId: string;
@@ -39,6 +42,8 @@ type TCartActions = {
   applyDiscountCode: (code: string, discount: number) => void;
   toggleAddedToCartModal: () => void;
   setItemAddedToCart: (item?: TCartItem) => void;
+  getCartTotalWithoutDiscountsOrTax: () => number;
+  getCartTax: () => number;
 };
 
 type TCartStore = TCartState & TCartActions;
@@ -66,7 +71,6 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     for (const item of items) {
       const discountAmountPerItem = item.originalPrice - item.price;
       const totalDiscountForItem = discountAmountPerItem * item.quantity;
-      console.log({totalDiscountForItem})
       totalDiscount += totalDiscountForItem;
     }
   
@@ -121,28 +125,8 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       localStorage.removeItem("cart");
       return { items: [] };
     }),
-  getCartTotal: () => {
-    const items: TCartItem[] = get().items;
-    let total = 0;
+ 
 
-    items.forEach((item) => (total += item.price * item.quantity));
-
-    const discountAmount = get().getDiscountAmount();
-
-    if (discountAmount) {
-      total -= total - discountAmount;
-    }
-
-    return total;
-  },
-  getCartSubtotal: () => {
-    const items: TCartItem[] = get().items;
-    let total = 0;
-
-    items.forEach((item) => (total += item.price * item.quantity));
-
-    return total;
-  },
   removeItem: (item: TCartItem) =>
     set((state: TCartState) => {
       const existingItemIndex = state.items.findIndex(
@@ -179,7 +163,6 @@ export const useCartStore = create<TCartStore>((set, get) => ({
         (i) => i.productId !== item.productId || i.variantId !== item.variantId
       );
 
-      // console.log({ newItems });
 
       if (typeof window !== "undefined") {
         localStorage.setItem("cart", JSON.stringify(newItems));
@@ -189,4 +172,46 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     }),
   isCartOpen: false,
   toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen })),
+  getCartTax: () => {
+    const items: TCartItem[] = get().items;
+    let total = 0;
+
+    items.forEach((item) => (total += item.price * item.quantity));
+    const tax = +(total * TAX).toFixed(0);
+
+    return tax;
+  },
+  getCartTotalWithoutDiscountsOrTax: () => {
+    const items: TCartItem[] = get().items;
+  let total = 0;
+
+  items.forEach((item) => (total += item.originalPrice * item.quantity));
+
+  const tax = get().getCartTax();
+  const totalWithoutTax = +(total - tax).toFixed(0);
+
+  return totalWithoutTax;
+
+  },
+  getCartSubtotal: () => {
+    const items: TCartItem[] = get().items;
+    let total = 0;
+
+    items.forEach((item) => (total += item.originalPrice * item.quantity));
+
+    return total;
+  },
+  
+  getCartTotal: () => {
+    const items: TCartItem[] = get().items;
+    let total = 0;
+
+    items.forEach((item) => (total += item.price * item.quantity));
+
+
+    return total;
+  },
+  
+  
+  
 }));

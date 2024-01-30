@@ -41,13 +41,13 @@ const AddedToCartModal = () => {
 
   if (!itemAddedToCart) return null;
   const variant = product?.variantes.find(
-    (v) => v.registroInvima === itemAddedToCart.variantId
+    (v) => v.codigoDeReferencia === itemAddedToCart.variantId
   );
 
   if (!variant) return null;
 
   const variantIndex = product?.variantes.findIndex(
-    (v) => v.registroInvima === itemAddedToCart.variantId
+    (v) => v.codigoDeReferencia === itemAddedToCart.variantId
   );
 
   if (!product || variantIndex === undefined) return null;
@@ -67,8 +67,6 @@ const AddedToCartModal = () => {
       product._type === "gafasPremium"
       ? product.modelo
       : product.titulo;
-  console.log({ itemAddedToCart })
-  // itemAddedToCart.
   return (
     <>
       <section

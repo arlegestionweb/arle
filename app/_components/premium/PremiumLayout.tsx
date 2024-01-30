@@ -25,9 +25,6 @@ const PremiumLayout = ({ product, pricing, children, selectedVariant }: PremiumL
   const [modelo] = isPerfumePremium(product)
     ? [product.titulo]
     : [product.modelo];
-
-  // console.log({product, selectedVariant}, "here")
-  // const price = discount ? Math.floor((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)) : Math.floor(colombianPriceStringToNumber(selectedVariant.precio)); console.log({ discount })
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto w-full lg:max-w-mx">
       <ProductViewer

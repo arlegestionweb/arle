@@ -53,7 +53,6 @@ const ProductoCard = ({ producto, discount }: {
   useEffect(() => {
     const fetchTimedDiscounts = async () => {
       const { discount } = await getTimedDiscountByProductId(producto._id);
-      console.log({ discount });
 
       if (discount) {
         pricing.timedDiscountPrice = parseFloat(((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)).toFixed(0));
@@ -63,7 +62,6 @@ const ProductoCard = ({ producto, discount }: {
     fetchTimedDiscounts();
   }, [])
 
-  console.log({ pricing })
   return (
     <>
       {selectedVariant.etiqueta && (

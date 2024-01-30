@@ -11,7 +11,6 @@ import Precio from "../Precio";
 const ProductItem = ({ item }: { item: TCartItem }) => {
   const [product, setProduct] = useState<TProduct | null>(null);
   const { addItem, removeItem, removeAllOfOneItem } = useCartStore();
-
   useEffect(() => {
     const getProduct = async () => {
       const { product } = await getProductById(item.productId, item.productType);
@@ -21,13 +20,13 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
   }, []);
 
   const variant = product?.variantes.find(
-    (v) => v.registroInvima === item.variantId
+    (v) => v.codigoDeReferencia === item.variantId
   );
 
   if (!variant) return null;
 
   const variantIndex = product?.variantes.findIndex(
-    (v) => v.registroInvima === item.variantId
+    (v) => v.codigoDeReferencia === item.variantId
   );
 
   if (!product || variantIndex === undefined) return null;
@@ -48,7 +47,6 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
       ? product.modelo
       : product.titulo;
 
-      console.log(item.originalPrice, item.price < item.originalPrice )
   return (
     <li key={item.variantId} className="flex relative gap-2">
       <button

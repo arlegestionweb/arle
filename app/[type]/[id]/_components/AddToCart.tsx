@@ -18,12 +18,9 @@ const AddToCart = ({className, pricing, product, quantity, selectedVariant}:Prop
   
   const {addItem} = useCartStore();
 
-  console.log({pricing})
-
   const price = pricing.finalPrice;
 
   const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
-    console.log({price})
     addItem({
       productId: producto._id,
       variantId: selectedVariant.registroInvima,

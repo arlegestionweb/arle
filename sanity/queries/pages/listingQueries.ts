@@ -146,7 +146,6 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
-    console.log({ relojes: result.relojes[0].detalles.contenido });
 
     const parsedResult = zodListPage.safeParse(result);
 
@@ -166,7 +165,6 @@ export const getTimedDiscountByProductId = async (productId: string) => {
   const discounts = await sanityClient.fetch(timedDiscountQuery, params);
 
   const parsedDiscounts = zodTimedDiscountsSchema.safeParse(discounts);
-  console.log({discounts, parsedDiscounts})
 
   if (!parsedDiscounts.success) {
     throw new Error(parsedDiscounts.error.message);

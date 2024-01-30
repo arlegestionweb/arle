@@ -66,7 +66,6 @@ const Product = ({
     pricing.discountTypeUsed = "none";
   }
 
-  console.log("in product.tsx",{ pricing })
   return (
     <>
       {discount && pricing.discountTypeUsed === "timedDiscount" && (

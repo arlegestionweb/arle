@@ -49,7 +49,6 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
     const fetchBrands = async () => {
       const brands = await getBrandsByProductTypeAndGender(productType as TProductType, gender as TGender)
       setThirdScreenItems(brands?.map(brand => ({ name: brand })) || [])
-      console.log({brands})
     }
     fetchBrands()
 
