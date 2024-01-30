@@ -170,7 +170,6 @@ export const homeSchema = defineType({
           type: "array",
           of: [
             imageArrayMemberSchema
-
           ]
         }),
       ]

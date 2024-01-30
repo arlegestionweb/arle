@@ -13,11 +13,12 @@ type AboutArleProps = {
 };
 
 const AboutArle = ({ sobre }: AboutArleProps) => {
+  console.log(sobre)
   return (
     <section className="relative max-w-screen min-h-[500px] h-[500px] bg-[#00002E] flex flex-col md:justify-center md:items-center md:px-10 md:flex-row md:py-12">
       <section className="md:w-1/2 px-4 py-6 md:self-stretch">
         <h3 className="text-white text-center md:text-start text-2xl md:text-[28px] font-lora font-semibold leading-loose">
-          {sobre.titulo}
+    {sobre.titulo}
         </h3>
         <p className=" text-zinc-100 text-base font-normal font-raleway leading-tight md:max-w-3xl">
           {sobre.descripcion}

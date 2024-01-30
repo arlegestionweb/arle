@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { FiSearch } from "react-icons/fi";
 import { useRouter, useSearchParams } from "next/navigation";
-import { AiOutlineEnter } from "react-icons/ai";
 import { cn, createUrl, makeNewParams } from "@/app/_lib/utils";
 
 type SearchInputProps = {
@@ -45,7 +44,7 @@ const SearchInput = ({ className, onSearch }: SearchInputProps) => {
           onChange={handleKeyDown}
         />
       </form>
-      <Link href={`/listing?search=${value}`} onClick={() => onSearch && onSearch()} className="border-l pl-2 pr-3 h-full">
+      <Link href={`/listing?search=${value}`} className="border-l pl-2 pr-3 h-full">
         <FiSearch className="w-[18px] h-[18px] mt-[2px]"/> 
       </Link>
     </div>

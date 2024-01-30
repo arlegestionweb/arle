@@ -823,13 +823,12 @@ const Listing = async ({
     <main className="relative z-10  lg:mb-[100vh] bg-color-bg-surface-0-default min-h-screen pt-[60px] md:pt-0">
       <Banner
         banners={pageContent.listingContent.banners}
-        className="h-[50vh] pt-0"
+        className="h-[32vh] pt-0"
       />
 
       {!coleccionSeleccionada ? (
         <Colecciones
           colecciones={colecciones ?? []}
-          className="py-6 pl-4"
         />
       ) : (
         <h2 className="text-3xl font-bold capitalize">
@@ -837,7 +836,7 @@ const Listing = async ({
         </h2>
       )}
       <section className="bg-color-bg-surface-1-default flex flex-col items-center">
-        <section className="max-w-mx w-full py-6 px-4 md:px-9 flex">
+        <section className="max-w-mx w-full py-4 px-4 md:px-9 flex">
         <Filters
           areFiltersActive={areFiltersActive}
           marcas={marcas}
@@ -848,7 +847,7 @@ const Listing = async ({
           />
         </section>
 
-        <section className="max-w-screen-xl w-full py-6 px-4 md:px-9">
+        <section className="max-w-screen-xl w-full pb-6 px-4 md:px-9">
           {filteredProducts && filteredProducts.length > 0 ? (
             <Productos productos={sortedProducts} />
           ) : (
