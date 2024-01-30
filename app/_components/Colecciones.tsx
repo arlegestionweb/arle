@@ -11,11 +11,11 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
       <h2 className="lg:max-w-mx w-full text-zinc-800 text-[28px] font-semibold font-lora leading-loose text-center">
         Colecciones
       </h2>
-      <ul className="no-scrollbar pb-10 flex justify-start md:gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
+      <ul className="no-scrollbar pb-2 flex justify-start md:gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
         {colecciones.map((coleccion) => (
           <li
             key={coleccion.titulo}
-            className="w-[159px] h-[197px] mr-4 md:m-0 md:w-72 md:h-[326px] snap-always snap-center"
+            className="w-[159px] snap-always snap-center"
           >
             <Link href={`/listing?coleccion=${coleccion.titulo}`}>
               {coleccion.imagen && (
