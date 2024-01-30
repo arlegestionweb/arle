@@ -46,7 +46,6 @@ const Product = ({
 
     setCantidadState(newCantidad);
   };
-  console.log({ selectedVariant, discount, variantes: product.variantes })
 
   const pricing: TPricing = {
     precioConDescuento: selectedVariant.precioConDescuento ? colombianPriceStringToNumber(selectedVariant.precioConDescuento) : undefined,
@@ -67,7 +66,7 @@ const Product = ({
     pricing.discountTypeUsed = "none";
   }
 
-  console.log("in product.tsx", { pricing })
+  console.log("in product.tsx",{ pricing })
   return (
     <>
       {discount && pricing.discountTypeUsed === "timedDiscount" && (

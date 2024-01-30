@@ -9,16 +9,16 @@ const Precio = ({ discountedPrice, fullPrice, dontDisplayPaymentOptions = false 
   return (
     <>
 
-      <section className="flex gap-4 items-center">
+      <section className="@container flex gap-4 items-center flex-wrap">
         {discountedPrice ? (
           <>
-            <p className="text-zinc-800 text-[32px] font-normal font-kanit leading-9">
+            <p className="@[20ch]:text-[2rem]  text-zinc-800 text-[32px] whitespace-nowrap font-normal font-kanit leading-9">
               $ {numberToColombianPriceString(
                 discountedPrice
               )}
             </p>
             {discountedPrice && (
-              <p className="text-neutral-600 text-base font-medium font-raleway line-through leading-tight">
+              <p className="@[20ch]:text-[1rem]  text-neutral-600 text-base whitespace-nowrap font-medium font-raleway line-through leading-tight">
                 $ {numberToColombianPriceString(
                   fullPrice
                 )}
@@ -26,7 +26,7 @@ const Precio = ({ discountedPrice, fullPrice, dontDisplayPaymentOptions = false 
             )}
           </>
         ) : (
-          <p className="text-zinc-800 text-[32px] font-normal font-kanit leading-9">
+          <p className="text-zinc-800 text-[32px] whitespace-nowrap font-normal font-kanit leading-9">
             $ {numberToColombianPriceString(
               fullPrice
             )}

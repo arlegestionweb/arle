@@ -420,6 +420,15 @@ const schemas: Record<TProductType, z.ZodSchema<any>> = {
   perfumePremium: perfumePremiumSchema,
 };
 
+export const timedDiscountQuery = `*[_type == "descuentos" && $productId in productos[]._ref]{
+  "productos": productos[] -> _id,
+  porcentaje,
+  titulo,
+  texto,
+  duracion
+}`;
+
+
 export const getProductById = async (id: string, productType: TProductType) => {
   const query = productQuery[productType];
 
@@ -428,16 +437,9 @@ export const getProductById = async (id: string, productType: TProductType) => {
   ${query}`);
   const productSchema = schemas[productType];
 
-  const discountQuery = `*[_type == "descuentos" && $productId in productos[]._ref]{
-    "productos": productos[] -> _id,
-    porcentaje,
-    titulo,
-    texto,
-    duracion
-  }`;
   const params = { productId: id };
   
-  const discounts = await sanityClient.fetch(discountQuery, params);
+  const discounts = await sanityClient.fetch(timedDiscountQuery, params);
   
   
   const product = productSchema.safeParse(fetchResult);

@@ -9,6 +9,7 @@ import { numberToColombianPriceString } from "@/utils/helpers";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { FiTrash2 } from "react-icons/fi";
 import Button from "../Button";
+import Precio from "../Precio";
 
 const AddedToCartModal = () => {
   const [product, setProduct] = useState<TProduct | null>(null);
@@ -28,8 +29,8 @@ const AddedToCartModal = () => {
   useEffect(() => {
     const getProduct = async () => {
       if (!itemAddedToCart) return;
-      
-      const {product} = await getProductById(
+
+      const { product } = await getProductById(
         itemAddedToCart.productId,
         itemAddedToCart.productType
       );
@@ -53,20 +54,20 @@ const AddedToCartModal = () => {
 
   const image =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.variantes[variantIndex].imagenes[0]
       : product.imagenes[0];
 
   const productTitle =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.modelo
       : product.titulo;
-
+  console.log({ itemAddedToCart })
   // itemAddedToCart.
   return (
     <>
@@ -120,10 +121,14 @@ const AddedToCartModal = () => {
                   </span>
                 </section>
                 <div className=" text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-                  CODE: OO9242-0752
+                  CODE: {itemAddedToCart.productId}
                 </div>
               </section>
-              <div className="flex items-end w-full justify-between">
+              <section className="flex w-full justify-between">
+                <Precio fullPrice={itemAddedToCart.originalPrice}
+                  dontDisplayPaymentOptions
+                  discountedPrice={itemAddedToCart.price < itemAddedToCart.originalPrice ? itemAddedToCart.price : undefined}
+                />
                 <p className="text-zinc-800 text-xl font-semibold font-crimson leading-[23px]">
                   ${numberToColombianPriceString(itemAddedToCart.price)}
                 </p>
@@ -148,7 +153,7 @@ const AddedToCartModal = () => {
                 <div className="w-9 h-9 p-2.5 bg-neutral-100 justify-center items-center gap-2 inline-flex">
                   <FiTrash2 className="self-end" />
                 </div>
-              </div>
+              </section>
             </section>
           </section>
           <footer className=" w-full flex justify-between">

@@ -4,6 +4,7 @@ import {
   TColor,
   TGafa,
   TProduct,
+  getTimedDiscountByProductId,
   isGafa,
   isPerfume,
   isReloj,
@@ -13,18 +14,56 @@ import { LuShoppingCart } from "react-icons/lu";
 import ProductSlide from "../../_components/ProductSlide";
 import Link from "next/link";
 import Labels, { LabelTypes } from "../../_components/Labels";
-import { use, useState } from "react";
+import { useEffect, useState } from "react";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { useCartStore } from "@/app/_components/cart/store";
+import Precio from "@/app/_components/Precio";
+import { TPricing } from "@/app/[type]/[id]/_components/Product";
+import { TTimedDiscount } from "@/sanity/queries/pages/zodSchemas/general";
 
-const ProductoCard = ({ producto }: { producto: TProduct }) => {
+const ProductoCard = ({ producto, discount }: {
+  producto: TProduct, 
+  discount?: TTimedDiscount;
+}) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
     producto.variantes[0]
   );
+  const pricing: TPricing = {
+    precioConDescuento: selectedVariant.precioConDescuento ? colombianPriceStringToNumber(selectedVariant.precioConDescuento) : undefined,
+    precioSinDescuento: colombianPriceStringToNumber(selectedVariant.precio),
+    timedDiscountPrice: discount ? parseFloat(((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)).toFixed(0)) : undefined,
+    finalPrice: 0,
+    discountTypeUsed: "none"
+  }
 
+  if (pricing.timedDiscountPrice) {
+    pricing.finalPrice = pricing.timedDiscountPrice;
+    pricing.discountTypeUsed = "timedDiscount";
+  } else if (pricing.precioConDescuento) {
+    pricing.finalPrice = pricing.precioConDescuento;
+    pricing.discountTypeUsed = "discountedPrice";
+  } else {
+    pricing.finalPrice = pricing.precioSinDescuento;
+    pricing.discountTypeUsed = "none";
+  }
+
+  useEffect(() => {
+    const fetchTimedDiscounts = async () => {
+      const {discount} = await getTimedDiscountByProductId(producto._id);
+      console.log({ discount });
+
+      if (discount) {
+        pricing.timedDiscountPrice = parseFloat(((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)).toFixed(0));
+      }
+    }
+
+    fetchTimedDiscounts();
+  }, [])
+
+  console.log({pricing})
   return (
     <>
       {selectedVariant.etiqueta && (
@@ -34,7 +73,7 @@ const ProductoCard = ({ producto }: { producto: TProduct }) => {
           className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
         />
       )}
-      <CardLayout product={producto} selectedVariant={selectedVariant} setSelectedVariant={setSelectedVariant} />
+      <CardLayout pricing={pricing} product={producto} selectedVariant={selectedVariant} setSelectedVariant={setSelectedVariant} />
     </>
   );
 };
@@ -44,20 +83,24 @@ type TVariant = TPerfumeVariant | TVarianteGafa | TRelojVariant;
 const CardLayout = ({
   product,
   selectedVariant,
-  setSelectedVariant
+  setSelectedVariant,
+  pricing
 }: {
   product: TProduct;
   selectedVariant: TVariant;
   setSelectedVariant: (variant: TVariant) => void;
+  pricing: TPricing;
 }) => {
   const { addItem } = useCartStore();
   const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
     addItem({
       productId: producto._id,
       variantId: selectedVariant.registroInvima,
-      price: colombianPriceStringToNumber(selectedVariant.precio),
+      price: pricing.finalPrice,
       quantity,
       productType: producto._type,
+      discountType: "none",
+      originalPrice: pricing.precioSinDescuento,
     });
   };
 
@@ -65,16 +108,16 @@ const CardLayout = ({
     <>
       <section className="w-full  overflow-hidden">
         {(isPerfume(product) && product.imagenes.length > 1) ||
-        (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
-        (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
+          (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
+          (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
           <ProductSlide
             slug={product.slug}
             imagesProduct={
               isPerfume(product)
                 ? product.imagenes
                 : "imagenes" in selectedVariant
-                ? selectedVariant.imagenes
-                : []
+                  ? selectedVariant.imagenes
+                  : []
             }
             className=" h-[180px] sm:h-[250px] lg:h-[288px]"
           />
@@ -85,15 +128,15 @@ const CardLayout = ({
                 isPerfume(product)
                   ? product.imagenes[0].url
                   : "imagenes" in selectedVariant
-                  ? selectedVariant.imagenes[0].url
-                  : ""
+                    ? selectedVariant.imagenes[0].url
+                    : ""
               }
               alt={
                 isPerfume(product)
                   ? product.imagenes[0].url
                   : isReloj(product)
-                  ? product.variantes[0].imagenes[0].alt!
-                  : (product as TGafa).variantes[0].imagenes[0].alt!
+                    ? product.variantes[0].imagenes[0].alt!
+                    : (product as TGafa).variantes[0].imagenes[0].alt!
               }
               width={288}
               height={288}
@@ -108,8 +151,8 @@ const CardLayout = ({
           {isPerfume(product)
             ? product.titulo
             : isReloj(product)
-            ? product.modelo
-            : ([] as any)}
+              ? product.modelo
+              : ([] as any)}
         </h3>
         <VariantSelector
           product={product}
@@ -117,7 +160,11 @@ const CardLayout = ({
           setSelectedVariant={setSelectedVariant}
         />
         <p className="text-[18px] font-medium leading-5 text-[#4f4f4f]">
-          ${selectedVariant.precio}
+          <Precio
+            fullPrice={pricing.precioSinDescuento}
+            discountedPrice={pricing.timedDiscountPrice || pricing.precioConDescuento}
+            dontDisplayPaymentOptions
+          />
         </p>
       </section>
       <Button
@@ -158,11 +205,10 @@ export const VariantSelector = <T extends TProduct>({
               return (
                 <button
                   onClick={() => setSelectedVariant(variante)}
-                  className={`w-[27px] h-[26px] px-5 py-3 rounded-[5px] overflow-hidden border flex-col justify-center items-center gap-2.5 inline-flex ${
-                    isVariantSelected
+                  className={`w-[27px] h-[26px] px-5 py-3 rounded-[5px] overflow-hidden border flex-col justify-center items-center gap-2.5 inline-flex ${isVariantSelected
                       ? "bg-neutral-100 border-black"
                       : "bg-neutral-200 border-neutral-300"
-                  }`}
+                    }`}
                   key={`${variante.tamano}-${variante.precio}-${index}`}
                 >
                   {variante.tamano}
@@ -186,7 +232,7 @@ export const VariantSelector = <T extends TProduct>({
               key={`${variante.colorDeLaMontura.nombre}-${index}`}
               className={
                 "codigoDeReferencia" in selectedVariant &&
-                variante.codigoDeReferencia ===
+                  variante.codigoDeReferencia ===
                   selectedVariant.codigoDeReferencia
                   ? `border-2 border-black p-[1px] rounded-[6px]`
                   : ""
@@ -215,7 +261,7 @@ export const VariantSelector = <T extends TProduct>({
               key={`${variante.colorCaja.nombre}-${index}`}
               className={
                 "codigoDeReferencia" in selectedVariant &&
-                selectedVariant.codigoDeReferencia ===
+                  selectedVariant.codigoDeReferencia ===
                   variante.codigoDeReferencia
                   ? `border-2 border-black rounded-[6px] p-[1px]`
                   : ""
@@ -254,7 +300,7 @@ const ColorSelector = ({
         //   ? "bg-neutral-100 border-black"
         //   : "bg-neutral-200 border-neutral-300"
         "border-neutral-300"
-      }`}
+        }`}
     >
       <ColorBar color={color1} />
       <ColorBar color={color2} />
