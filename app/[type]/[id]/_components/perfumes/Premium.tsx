@@ -7,8 +7,9 @@ import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import SeccionEspecificaciones from "../SeccionEspecificaciones";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
-import { VariantSelector } from "@/app/listing/_components/ProductCard";
 import { TPricing } from "../Product";
+import { VariantSelector } from "@/app/listing/_components/ProductCard";
+import { ProductCardSlide } from "../ProductCardSlide";
 
 type TPerfumePremiumProps = {
   product: TPerfumePremium;
@@ -29,44 +30,54 @@ const PerfumePremium = ({
 }: TPerfumePremiumProps) => {
   // console.log({product});
   return (
-    <PremiumLayout product={product} selectedVariant={selectedVariant} pricing={pricing}>
-      <section className="mt-2">
-        <Cantidad
-          cantidad={cantidad}
-          anadirACantidad={() => setCantidad(cantidad + 1)}
-          restarACantidad={() => setCantidad(cantidad - 1)}
-        />
-        <VariantSelector
+    <>
+      <PremiumLayout
+        product={product}
+        selectedVariant={selectedVariant} pricing={pricing}>
+        <section className="mt-2">
+          <Cantidad
+            cantidad={cantidad}
+            anadirACantidad={() => setCantidad(cantidad + 1)}
+            restarACantidad={() => setCantidad(cantidad - 1)}
+          />
+          <VariantSelector
+            product={product}
+            selectedVariant={selectedVariant}
+            setSelectedVariant={setSelectedVariant}
+          />
+        </section>
+        <AddToCart
+          pricing={pricing}
           product={product}
+          quantity={cantidad}
           selectedVariant={selectedVariant}
-          setSelectedVariant={setSelectedVariant}
+          className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block"
         />
-      </section>
-      <AddToCart
-        pricing={pricing}
-        product={product}
-        quantity={cantidad}
-        selectedVariant={selectedVariant}
-        className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block"
-      />
-      {product.descripcion ? (
-        <CollapsibleProductSection classNames="mt-2" title="Descripción">
-          <p>{product.descripcion}</p>
-        </CollapsibleProductSection>
-      ) : (
-        <></>
-      )}
-      <EspecificacionesPerfume product={product} />
+        {product.descripcion ? (
+          <CollapsibleProductSection
+            classNames="mt-2"
+            title="Descripción">
+            <p>{product.descripcion}</p>
+          </CollapsibleProductSection>
+        ) : (
+          <></>
+        )}
+        <EspecificacionesPerfume product={product} />
 
-      <NuestrasComprasIncluyen />
-      <AddToCart
-        pricing={pricing}
-        className="lg:hidden"
-        product={product}
-        quantity={cantidad}
-        selectedVariant={selectedVariant}
-      />
-    </PremiumLayout>
+        <NuestrasComprasIncluyen />
+        <AddToCart
+          pricing={pricing}
+          className="lg:hidden"
+          product={product}
+          quantity={cantidad}
+          selectedVariant={selectedVariant}
+        />
+      </PremiumLayout>
+
+      <section className="max-w-mx w-full py-4 pl-8 lg:px-8 lg:flex lg:flex-col">
+        <ProductCardSlide />
+      </section>
+    </>
   );
 };
 
@@ -81,11 +92,16 @@ const EspecificacionesPerfume = ({ product }: TEspecificacionesProps) => {
     <CollapsibleProductSection
       classNames="mt-2"
       title="Especificaciones"
-      titleActive
-    >
+      titleActive>
       <div className="grid grid-cols-2 gap-2">
-        <SeccionEspecificaciones title="Género" paragraph={product.genero} />
-        <SeccionEspecificaciones title="Marca" paragraph={product.marca} />
+        <SeccionEspecificaciones
+          title="Género"
+          paragraph={product.genero}
+        />
+        <SeccionEspecificaciones
+          title="Marca"
+          paragraph={product.marca}
+        />
       </div>
     </CollapsibleProductSection>
   );

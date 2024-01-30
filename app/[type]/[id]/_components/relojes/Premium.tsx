@@ -7,8 +7,9 @@ import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import SeccionEspecificaciones from "../SeccionEspecificaciones";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
-import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
+import { ProductCardSlide } from "../ProductCardSlide";
 
 type TRelojPremiumProps = {
   product: TRelojPremium;
@@ -25,49 +26,59 @@ const RelojPremium = ({
   setSelectedVariant,
   cantidad,
   setCantidad,
-  pricing
+  pricing,
 }: TRelojPremiumProps) => {
   return (
-    <PremiumLayout product={product} selectedVariant={selectedVariant} pricing={pricing}>
-      <section className="mt-2">
-        <Cantidad
-          cantidad={cantidad}
-          anadirACantidad={() => setCantidad(cantidad + 1)}
-          restarACantidad={() => setCantidad(cantidad - 1)}
-        />
-        <VariantSelector
+    <>
+      <PremiumLayout
+        product={product}
+        selectedVariant={selectedVariant}
+        pricing={pricing}>
+        <section className="mt-2">
+          <Cantidad
+            cantidad={cantidad}
+            anadirACantidad={() => setCantidad(cantidad + 1)}
+            restarACantidad={() => setCantidad(cantidad - 1)}
+          />
+          <VariantSelector
+            product={product}
+            selectedVariant={selectedVariant}
+            setSelectedVariant={setSelectedVariant}
+          />
+        </section>
+        <AddToCart
+          pricing={pricing}
           product={product}
+          quantity={cantidad}
           selectedVariant={selectedVariant}
-          setSelectedVariant={setSelectedVariant}
+          className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block"
         />
+
+        {product.descripcion ? (
+          <CollapsibleProductSection
+            classNames="mt-2"
+            title="Descripción">
+            <p>{product.descripcion}</p>
+          </CollapsibleProductSection>
+        ) : (
+          <></>
+        )}
+
+        <EspecificacionesReloj product={product} />
+
+        <NuestrasComprasIncluyen garantia={product.garantia} />
+        <AddToCart
+          pricing={pricing}
+          product={product}
+          quantity={cantidad}
+          selectedVariant={selectedVariant}
+          className="lg:hidden"
+        />
+      </PremiumLayout>
+      <section className="max-w-mx w-full py-4 pl-8 lg:px-8 lg:flex lg:flex-col">
+        <ProductCardSlide />
       </section>
-      <AddToCart
-        product={product}
-        quantity={cantidad}
-        selectedVariant={selectedVariant}
-        className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block"
-        pricing={pricing}
-      />
-
-      {product.descripcion ? (
-        <CollapsibleProductSection classNames="mt-2" title="Descripción">
-          <p>{product.descripcion}</p>
-        </CollapsibleProductSection>
-      ) : (
-        <></>
-      )}
-
-      <EspecificacionesReloj product={product} />
-
-      <NuestrasComprasIncluyen garantia={product.garantia} />
-      <AddToCart
-        product={product}
-        quantity={cantidad}
-        selectedVariant={selectedVariant}
-        className="lg:hidden"
-        pricing={pricing}
-      />
-    </PremiumLayout>
+    </>
   );
 };
 
@@ -82,16 +93,24 @@ const EspecificacionesReloj = ({ product }: TEspecificacionesProps) => {
     <CollapsibleProductSection
       classNames="mt-2"
       title="Especificaciones"
-      titleActive
-    >
+      titleActive>
       <div className="grid grid-cols-2 gap-2">
-        <SeccionEspecificaciones title="Modelo" paragraph={product.modelo} />
-        <SeccionEspecificaciones title="Género" paragraph={product.genero} />
+        <SeccionEspecificaciones
+          title="Modelo"
+          paragraph={product.modelo}
+        />
+        <SeccionEspecificaciones
+          title="Género"
+          paragraph={product.genero}
+        />
         <SeccionEspecificaciones
           title="Material"
           paragraph={product.detallesReloj.material}
         />
-        <SeccionEspecificaciones title="Marca" paragraph={product.marca} />
+        <SeccionEspecificaciones
+          title="Marca"
+          paragraph={product.marca}
+        />
         <SeccionEspecificaciones
           title="Resistencia al Agua"
           paragraph={product.detallesReloj.resistenciaAlAgua}
