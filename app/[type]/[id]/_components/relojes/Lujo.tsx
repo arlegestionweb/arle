@@ -136,8 +136,9 @@ const RelojLujo = ({ pricing, product, selectedVariant, setSelectedVariant, cant
         selectedVariant={selectedVariant}
         pricing={pricing}
       />
-      <section className="max-w-mx w-full py-4 pl-8 lg:px-8 lg:flex lg:flex-col">
-        <ProductCardSlide />
+      <section className="flex flex-col gap-6">
+        <ProductCardSlide nameSection="Vistos recientemente" />
+        <ProductCardSlide nameSection="Otras personas también vieron" />
       </section>
     </>
   );
