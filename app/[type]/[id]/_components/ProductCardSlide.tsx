@@ -2,12 +2,17 @@ import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import React from "react";
 import SuggestionProductCard from "./SuggestionProductCard";
 
-export const ProductCardSlide = () => {
+type ProductCardSlideProps = {
+  nameSection: string,
+  products?: TProduct[] // for test
+}
+
+export const ProductCardSlide = ({nameSection}:ProductCardSlideProps) => {
   return (
-    <>
+    <section className="max-w-mx w-screen py-0 md:py-4 pl-8 lg:px-0 lg:flex lg:flex-col">
       {" "}
-      <h3 className="">Vistos recientemente</h3>
-      <ul className="pt-11 h-auto no-scrollbar flex justify-start md:gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
+      <h3 className="text-zinc-800 text-[28px] font-semibold font-crimson leading-loose">{nameSection}</h3>
+      <ul className="pt-4 md:pt-7 pb-3 h-auto w-full no-scrollbar flex justify-start md:gap-4 max-w-mx overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
         {products.map(product => (
           <li
             key={product._id}
@@ -18,7 +23,7 @@ export const ProductCardSlide = () => {
           </li>
         ))}
       </ul>
-    </>
+    </section>
   );
 };
 
@@ -242,5 +247,118 @@ const products: TProduct[] = [
       },
     ],
     coleccionDeMarca: "bonita",
+  },
+  {
+    date: "2023-10-18T13:03:29Z",
+    slug: "/perfumePremium/11c45a88-31d6-4582-be96-99192f9a7096",
+    _id: "11c45a88-31d6-4582-be96-99192f9a7096",
+    detalles: {
+      concentracion: "Eau de Toilette",
+      resenaCorta:
+        "Perfume INSPIRADO en un DIOS GRIEGO La PERFECCIÓN y la PASIÓN fusionadas en un frasco. Un homenaje a Eros, el dios del AMOR.",
+      notasOlfativas: {
+        notasDeBase: null,
+        notasDeSalida: null,
+        familiaOlfativa: "Cítrico",
+        notasDeCorazon: null,
+      },
+    },
+    genero: "hombre",
+    titulo: "EROS",
+    _type: "perfumePremium",
+    mostrarCredito: true,
+    imagenes: [
+      {
+        alt: "perfume versace pour homme con fondo de esencias",
+        url: "https://cdn.sanity.io/images/qhszuxx1/production/6c07c669c7bc51ad1d8b22b39f57d751f4014ea5-364x351.png",
+      },
+    ],
+    marca: "Versace",
+    variantes: [
+      {
+        tamano: 100,
+        precio: "1.200.000",
+        codigoDeReferencia: "1246548465",
+        registroInvima: "123123123123123",
+        unidadesDisponibles: 10,
+        etiqueta: "nuevo",
+      },
+      {
+        tamano: 200,
+        precio: "1.200.000",
+        codigoDeReferencia: "ljk12n3lj1n23",
+        registroInvima: "kjwnedfdkjnwefkjnwefoljnwefpoimi",
+        unidadesDisponibles: 3,
+        etiqueta: null,
+      },
+      {
+        tamano: 250,
+        precio: "2.400.000",
+        codigoDeReferencia: "ljk12n3lj1n23",
+        registroInvima: "lkanciywbfopidm",
+        unidadesDisponibles: 3,
+        etiqueta: null,
+      },
+    ],
+    parteDeUnSet: false,
+    descripcion:
+      "Perfume con una nota principal envuelta en un delicioso aroma de Ámbar amaderada con notas aromáticas, cítricas y avainilladas.",
+    coleccionDeMarca: null,
+  },
+  {
+    date: "2023-10-18T13:06:35Z",
+    slug: "/perfumePremium/ff2cfa02-3708-4bdf-9211-c329b7b0fad5",
+    _id: "ff2cfa02-3708-4bdf-9211-c329b7b0fad5",
+    detalles: {
+      concentracion: "Eau de Toilette",
+      resenaCorta: null,
+      notasOlfativas: {
+        notasDeBase: null,
+        notasDeSalida: null,
+        familiaOlfativa: "Cítrico",
+        notasDeCorazon: null,
+      },
+    },
+    genero: "mujer",
+    titulo: "Good Girl Supreme EDP",
+    _type: "perfumePremium",
+    mostrarCredito: false,
+    imagenes: [
+      {
+        alt: "perfume good girl supreme en un fondo dorado",
+        url: "https://cdn.sanity.io/images/qhszuxx1/production/4176f8b35dbc2e40fb93ae1f8629fd9dfb573046-522x524.png",
+      },
+    ],
+    marca: "Carolina Herrera",
+    variantes: [
+      {
+        tamano: 80,
+        precio: "560.000",
+        codigoDeReferencia: "1321516486",
+        registroInvima: "onedfiodub2fij3",
+        unidadesDisponibles: 15,
+        etiqueta: "mas vendido",
+      },
+      {
+        tamano: 150,
+        precio: "1.500.000",
+        codigoDeReferencia: "qweqwecqwecq",
+        registroInvima: "lokmsdckvbhvop2okfop2ienf",
+        unidadesDisponibles: 4,
+        etiqueta: "nuevo",
+      },
+      {
+        tamano: 200,
+        precio: "200.000",
+        codigoDeReferencia: "09u1e497yhfojnef",
+        registroInvima: "klmjcuh2fin2f",
+        unidadesDisponibles: 3,
+        etiqueta: "mas vendido",
+      },
+    ],
+    parteDeUnSet: false,
+    descripcion:
+      "Intensamente seductora, Good Girl Eau de Parfum Suprême es una reinvención de la icónica fragancia Good Girl, con una fórmula nueva y atrevida. Redefine el emblemático contraste entre luces y sombras y nos anima a conectar con nuestro lado rebelde, para que aceptemos plenamente todas las facetas de nuestra personalidad. En palabras de Carolina A. Herrera, directora creativa de Belleza: “It's so good to be bad!”.",
+    coleccionDeMarca: null,
   },
 ];
