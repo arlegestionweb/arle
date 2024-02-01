@@ -148,8 +148,8 @@ const CardLayout = ({
           {isPerfume(product)
             ? product.titulo
             : isReloj(product)
-              ? product.modelo
-              : ([] as any)}
+            ? product.modelo
+            : product.modelo}
         </h3>
         <VariantSelector
           product={product}
