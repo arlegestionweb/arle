@@ -10,7 +10,7 @@ export const sanityAdminConfig = {
   projectId: process.env.SANITY_PROJECT_ID || "",
   dataset: "production",
   useCdn: process.env.NODE_ENV === "production",
-  title: "Arle CMS",
+  title: "Arlé Contenidos",
   apiVersion: "2021-10-21",
   basePath: "/admin",
   plugins: [

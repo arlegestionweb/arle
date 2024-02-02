@@ -291,7 +291,7 @@ const ColorSelector = ({
   return (
     <button
       onClick={onClick}
-      className={`w-[27px] h-[26px] rounded-[5px] border flex overflow-hidden ${
+      className={`w-[26px] h-[26px] rounded-[5px] border flex overflow-hidden ${
         // variante.colorDeLaMontura.color === selectedVariant.colorDeLaMontura.color
         //   ? "bg-neutral-100 border-black"
         //   : "bg-neutral-200 border-neutral-300"
@@ -306,7 +306,7 @@ const ColorSelector = ({
 };
 const ColorBar = ({ color }: { color: TColor }) => (
   <div
-    className={`w-[33.4%] h-full relative group`}
+    className={`w-full h-full relative group`}
     style={{ backgroundColor: color.color }}
   >
     {/* <div className="absolute -left-2/3 -top-5 opacity-0 group-hover:opacity-100 w-fit whitespace-nowrap">

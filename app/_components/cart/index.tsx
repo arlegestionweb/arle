@@ -4,13 +4,15 @@ import { numberToColombianPriceString } from "@/utils/helpers";
 import Button from "../Button";
 import { ChevronLeftIcon } from "@sanity/icons";
 import { usePathname } from "next/navigation";
+
+import AddedToCartModal from "./AddedToCartModal";
+import { useHideBodyOverflow } from "@/app/_lib/hooks";
+
+import { useEffect, useState } from "react";
 import { useCartStore } from "./store";
 import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
 
-import AddedToCartModal from "./AddedToCartModal";
-import { useEffect } from "react";
-import { useHideBodyOverflow } from "@/app/_lib/hooks";
 
 const Cart = ({
   showDiscountCode = false,
@@ -37,7 +39,6 @@ const Cart = ({
   if (isAddedToCartModalOpen) return <AddedToCartModal />;
 
   if (!isCartOpen) return null;
-
 
   return (
     <section className="bg-white z-[60] overflow-y-scroll w-screen h-screen fixed top-0 left-0 flex flex-col md:flex-row ">

@@ -3,12 +3,14 @@ import { bannersQuery, imageQuery } from "../objects";
 
 // TODO debe ser objeto 
 const homepageQueryString = `*[_type == "homepage"]{
-  "banners": banners1[] {
+  "hero": hero{
     titulo,
-    descripcion,
-    "imagen": imagen{
-      alt,
-      "url": asset->url
+    subtitulo,
+    "banners": banners1[] {
+      "imagen": imagen{
+        alt,
+        "url": asset->url
+      },
     },
   },
   "perfumes": perfumes{
@@ -42,17 +44,21 @@ const homepageQueryString = `*[_type == "homepage"]{
       "url": asset->url
     },
   },
-  "testimonios": testimonios{
+  "asesoria": asesoria{
     titulo,
-    descripcion,
-    "lista": lista[] {
-      titulo,
-      nombre,
-      cargo,
-      descripcion,
-      ${imageQuery},
-    },
-  }
+    "beneficios": beneficios[],
+    usarImagen,
+    "imagenAsesoria": imagenAsesoria{
+      imagenOVideo,
+      "imagen": imagen {
+        alt,
+        "url": asset->url,
+      },
+      "video": video.video {
+        "url": asset->url,
+      },
+    }
+  },
 }`;
 
 export const getHomepageContent = async () => {

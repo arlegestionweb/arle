@@ -11,61 +11,68 @@ export const homeSchema = defineType({
   icon: HomeIcon,
   fields: [
     defineField({
-      name: "banners1",
-      title: "Banners",
-      type: "array",
-      of: [
-        defineArrayMember({
-          name: "banner",
-          title: "Banner",
-          type: "object",
-          icon: PiFlagBannerFill,
-          fields: [
-            defineField({
-              name: "titulo",
-              title: "Titulo",
-              type: "string",
-            }),
-            defineField({
-              name: "descripcion",
-              title: "Descripción",
-              type: "text",
-            }),
-            defineField({
-              name: "imagenOVideo",
-              title: "Imagen o Video",
-              type: "boolean",
-              initialValue: true,
-            }),
-            defineField({
-              name: "imagen",
-              title: "Imagen",
-              type: "imagenObject",
-              hidden: ({ parent }) => !parent?.imagenOVideo,
-            }),
-            defineField({
-              name: "video",
-              title: "Video",
+      name: "hero",
+      title: "Sección Principal",
+      type: "object",
+      fields: [
+        defineField({
+          name: "titulo",
+          title: "Titulo",
+          type: "string",
+        }),
+        defineField({
+          name: "subtitulo",
+          title: "Subtítulo",
+          type: "string",
+        }),
+        defineField({
+          name: "banners1",
+          title: "Banners",
+          type: "array",
+          of: [
+            defineArrayMember({
+              name: "banner",
+              title: "Banner",
               type: "object",
-              hidden: ({ parent }) => parent?.imagenOVideo,
-              fields: [videoSchema],
+              icon: PiFlagBannerFill,
+              fields: [
+                defineField({
+                  name: "imagenOVideo",
+                  title: "Imagen o Video",
+                  type: "boolean",
+                  initialValue: true,
+                }),
+                defineField({
+                  name: "imagen",
+                  title: "Imagen",
+                  type: "imagenObject",
+                  hidden: ({ parent }) => !parent?.imagenOVideo,
+                }),
+                defineField({
+                  name: "video",
+                  title: "Video",
+                  type: "object",
+                  hidden: ({ parent }) => parent?.imagenOVideo,
+                  fields: [videoSchema],
+                }),
+              ],
+              preview: {
+                select: {
+                  title: "alt",
+                  media: "imagen",
+                },
+                prepare(selection) {
+                  const { title, media } = selection;
+                  if (!title) return { title: "Sin título", media };
+                  if (!media) return { title };
+                  return {
+                    title,
+                    media,
+                  };
+                },
+              },
             }),
           ],
-          preview: {
-            select: {
-              title: "titulo",
-              media: "imagen",
-            },
-            prepare(selection) {
-              const { title, media } = selection;
-              if (!title) return { title: "Sin título" };
-              if (!media) return { title };
-              return {
-                title,
-                media,
-              };
-            },
-          },
         }),
       ],
     }),
@@ -81,8 +88,8 @@ export const homeSchema = defineType({
         }),
         defineField({
           name: "descripcion",
-          title: "Descripción",
-          type: "text",
+          title: "Subtítulo",
+          type: "string",
         }),
         defineField({
           name: "imagen",
@@ -103,8 +110,8 @@ export const homeSchema = defineType({
         }),
         defineField({
           name: "descripcion",
-          title: "Descripción",
-          type: "text",
+          title: "Subtítulo",
+          type: "string",
         }),
         defineField({
           name: "imagen",
@@ -125,8 +132,8 @@ export const homeSchema = defineType({
         }),
         defineField({
           name: "descripcion",
-          title: "Descripción",
-          type: "text",
+          title: "Subtítulo",
+          type: "string",
         }),
         defineField({
           name: "imagen",
@@ -170,10 +177,66 @@ export const homeSchema = defineType({
           type: "array",
           of: [
             imageArrayMemberSchema
-
           ]
         }),
       ]
     }),
+    defineField({
+      name: "asesoria",
+      title: "Asesorías",
+      type: "object",
+      fields: [
+        defineField({
+          name: "titulo",
+          title: "Título",
+          type: "string",
+        }),
+        defineField({
+          name: "beneficios",
+          title: "Beneficios",
+          type: "array",
+          of: [
+            defineField({
+              name: "beneficio",
+              title: "Beneficio",
+              type: "string",
+            })
+          ]
+        }),
+        defineField({
+          name: "usarImagen",
+          title: "Usar Imagen",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "imagenAsesoria",
+          title: "Imagen o Video",
+          type: "object",
+          hidden: ({ parent }) => !parent?.usarImagen,
+          fields: [
+            defineField({
+              name: "imagenOVideo",
+              title: "Imagen o Video",
+              type: "boolean",
+              initialValue: true,
+            }),
+            defineField({
+              name: "imagen",
+              title: "Imagen",
+              type: "imagenObject",
+              hidden: ({ parent }) => !parent?.imagenOVideo,
+            }),
+            defineField({
+              name: "video",
+              title: "Video",
+              type: "object",
+              hidden: ({ parent }) => parent?.imagenOVideo,
+              fields: [videoSchema],
+            }),
+          ],
+        }),
+      ]
+    })
   ],
 });

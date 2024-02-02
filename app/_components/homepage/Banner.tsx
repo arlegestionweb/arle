@@ -44,7 +44,7 @@ const Banner = ({ banners, className }: BannerProps) => {
         onScroll={handleScroll}
         ref={bannerRef}>
         {banners.map((banner, index) => (
-          <React.Fragment key={index + banner.titulo}>
+          <React.Fragment key={index + banner?.titulo}>
             {banner.imagen && (
               <GradientImage
                 src={banner.imagen.url}
@@ -56,7 +56,7 @@ const Banner = ({ banners, className }: BannerProps) => {
                 } min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`}>
                 <div className="sticky z-10 self-stretch h-[114px] flex-col justify-center items-center gap-2.5 flex">
                   <div className="self-stretch text-center text-white text-[32px] font-semibold font-lora uppercase leading-[38.40px]">
-                    {banner.titulo}
+                    {banner?.titulo}
                   </div>
                 </div>
               </GradientImage>
