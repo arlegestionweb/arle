@@ -55,9 +55,9 @@ const Footer = () => {
               Arlé
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
-              <Link href="/sobre-nosotros"><li>Sobre Nosotros</li></Link>
-              <Link href="/nuestras-sedes"><li>Nuestras Sedes</li></Link>
-              <Link href="/trabaja-con-nosotros"><li>Trabaja con Nosotros</li></Link>
+              <li><Link href="/sobre-nosotros">Sobre Nosotros</Link></li>
+              <li><Link href="/nuestras-sedes">Nuestras Sedes</Link></li>
+              <li><Link href="/trabaja-con-nosotros">Trabaja con Nosotros</Link></li>
             </ul>
           </div>
           <div>
