@@ -7,11 +7,11 @@ type ColeccionesProps = { colecciones: TColecciones, className?: string }
 
 const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
   return (
-    <section className={cn("bg-color-bg-surface-0-default pb-2 pl-8 lg:px-8 flex flex-col items-center", className)}>
+    <section className={cn("bg-color-bg-surface-0-default flex flex-col items-center", className)}>
       <h2 className="lg:max-w-mx w-full text-zinc-800 text-[28px] font-semibold font-lora leading-loose text-center">
         Colecciones
       </h2>
-      <ul className="no-scrollbar pb-2 flex justify-start md:gap-4 max-w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
+      <ul className="no-scrollbar pb-2 flex justify-start gap-4 px-8 max-w-full overflow-x-scroll overflow-y-hidden">
         {colecciones.map((coleccion) => (
           <li
             key={coleccion.titulo}
