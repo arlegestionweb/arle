@@ -15,7 +15,7 @@ const Page = async () => {
   {pageContent?.whyWeDoWhatWeDo?.on &&
     <section className="md:h-[40vh] xl:h-[50vh] flex flex-col md:flex-row items-center bg-white">
       <section className="h-[350px] flex relative w-full md:h-full md:w-[50vw] md:max-w-[50%]">
-        <Image className="w-[45%] max-w-[260px] drop-shadow-[0_0_8px_rgba(0,0,0,100)] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10" width={400} height={400} alt="Arle-logo-Complete" src="/logo-footer.svg" />
+        <Image className="w-[45%] max-w-[260px] drop-shadow-[0_0_8px_rgba(0,0,0,100)] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 object-cover" width={400} height={400} alt="Arle-logo-Complete" src="/logo-footer.svg" />
         {pageContent?.whyWeDoWhatWeDo?.imagenOVideo ?
           <video src={pageContent?.whyWeDoWhatWeDo?.video?.url}></video>
           :
@@ -45,7 +45,7 @@ const Page = async () => {
   }
   {pageContent?.howWeHelpOurClients?.on &&
     <section className="relative  p-8 gap-8 md:py-10 sm:px-14 md:h-[40vh] xl:h-[50vh] flex flex-col-reverse md:flex-row items-center justify-center overflow-hidden bg-white">
-      <Image className="absolute -top-[115px] -left-[130px] md:left-auto md:-right-[135px]" height={300} width={300} alt="Escudo Logo Arle" src="/escudoArle.svg" />
+      <Image className="absolute object-cover -top-[115px] -left-[130px] md:left-auto md:-right-[135px]" height={300} width={300} alt="Escudo Logo Arle" src="/escudoArle.svg" />
       <section className="flex relative justify-start h-[350px] md:h-full w-full max-w-3xl">
         {pageContent?.howWeHelpOurClients?.imagenOVideo ?
           <video src={pageContent?.howWeHelpOurClients?.video?.url}></video>
@@ -80,7 +80,7 @@ const Page = async () => {
       <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(4,minmax(128px,288px))] place-items-center gap-y-6 gap-x-4 items-center justify-center">
         {pageContent?.marcasAliadas?.map((item,i)=>(
           <article key={i} className="w-40">
-            <Image width={200} height={200} alt={`marca ${item?.titulo} logo`} src={item?.logo?.url} />
+            <Image className="object-cover" width={200} height={200} alt={`marca ${item?.titulo} logo`} src={item?.logo?.url} />
           </article>
         ))}
       </section>
