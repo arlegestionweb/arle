@@ -22,11 +22,13 @@ export const siteSettings = defineType({
       title: "Título del sitio",
       group: "general",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "descripcion",
       title: "Descripción del sitio",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "marcaPromocionada",
@@ -100,5 +102,12 @@ export const siteSettings = defineType({
       type: "url",
       group: "legal",
     }),
+    defineField({
+      name: "mostrarCodigoDeDescuento",
+      title: "Mostrar código de descuento",
+      type: "boolean",
+      initialValue: false,
+      group: "general",
+    })
   ],
 });

@@ -6,44 +6,44 @@ import { numberToColombianPriceString } from "@/utils/helpers";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { IoMdClose } from "react-icons/io";
 import { TCartItem, useCartStore } from "./store";
+import Precio from "../Precio";
 
 const ProductItem = ({ item }: { item: TCartItem }) => {
   const [product, setProduct] = useState<TProduct | null>(null);
   const { addItem, removeItem, removeAllOfOneItem } = useCartStore();
-
   useEffect(() => {
     const getProduct = async () => {
-      const product = await getProductById(item.productId, item.productType);
+      const { product } = await getProductById(item.productId, item.productType);
       setProduct(product);
     };
     getProduct();
   }, []);
 
   const variant = product?.variantes.find(
-    (v) => v.registroInvima === item.variantId
+    (v) => v.codigoDeReferencia === item.variantId
   );
 
   if (!variant) return null;
 
   const variantIndex = product?.variantes.findIndex(
-    (v) => v.registroInvima === item.variantId
+    (v) => v.codigoDeReferencia === item.variantId
   );
 
   if (!product || variantIndex === undefined) return null;
 
   const image =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.variantes[variantIndex].imagenes[0]
       : product.imagenes[0];
 
   const productTitle =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.modelo
       : product.titulo;
 
@@ -72,9 +72,12 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
         <h5 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">
           {product.marca}
         </h5>
-        <p className="text-zinc-500 text-lg font-medium font-tajawal leading-snug">
-          ${numberToColombianPriceString(item.price)}
-        </p>
+
+        <Precio
+          fullPrice={item.originalPrice}
+          discountedPrice={item.price < item.originalPrice ? item.price : undefined}
+          dontDisplayPaymentOptions
+        />
         <Cantidad
           cantidad={item.quantity}
           anadirACantidad={() => addItem(item)}

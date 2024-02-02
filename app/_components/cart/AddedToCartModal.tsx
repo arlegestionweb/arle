@@ -9,6 +9,7 @@ import { numberToColombianPriceString } from "@/utils/helpers";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { FiTrash2 } from "react-icons/fi";
 import Button from "../Button";
+import Precio from "../Precio";
 
 const AddedToCartModal = () => {
   const [product, setProduct] = useState<TProduct | null>(null);
@@ -28,8 +29,8 @@ const AddedToCartModal = () => {
   useEffect(() => {
     const getProduct = async () => {
       if (!itemAddedToCart) return;
-      
-      const product = await getProductById(
+
+      const { product } = await getProductById(
         itemAddedToCart.productId,
         itemAddedToCart.productType
       );
@@ -40,34 +41,32 @@ const AddedToCartModal = () => {
 
   if (!itemAddedToCart) return null;
   const variant = product?.variantes.find(
-    (v) => v.registroInvima === itemAddedToCart.variantId
+    (v) => v.codigoDeReferencia === itemAddedToCart.variantId
   );
 
   if (!variant) return null;
 
   const variantIndex = product?.variantes.findIndex(
-    (v) => v.registroInvima === itemAddedToCart.variantId
+    (v) => v.codigoDeReferencia === itemAddedToCart.variantId
   );
 
   if (!product || variantIndex === undefined) return null;
 
   const image =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.variantes[variantIndex].imagenes[0]
       : product.imagenes[0];
 
   const productTitle =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.modelo
       : product.titulo;
-
-  // itemAddedToCart.
   return (
     <>
       <section
@@ -103,14 +102,11 @@ const AddedToCartModal = () => {
                 <h4 className="text-zinc-800 text-2xl font-semibold font-crimson leading-7">
                   {productTitle}
                 </h4>
-                <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
-                  {product.marca}
-                </h5>
               </div>
               <section>
                 <section className="h-[9px] justify-start items-center gap-3 inline-flex">
                   <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-                    PARFUMS de MARLY
+                    {product.marca}
                   </span>
                   <div className="w-px self-stretch justify-start items-start gap-2.5 flex">
                     <div className="w-px self-stretch bg-stone-300" />
@@ -120,14 +116,18 @@ const AddedToCartModal = () => {
                   </span>
                 </section>
                 <div className=" text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-                  CODE: OO9242-0752
+                  CODE: {itemAddedToCart.variantId}
                 </div>
               </section>
-              <div className="flex items-end w-full justify-between">
-                <p className="text-zinc-800 text-xl font-semibold font-crimson leading-[23px]">
-                  ${numberToColombianPriceString(itemAddedToCart.price)}
-                </p>
-                <div>
+              <section className="flex w-full gap-2 items-end">
+
+                <Precio
+                  fullPrice={itemAddedToCart.originalPrice}
+                  dontDisplayPaymentOptions
+                  discountedPrice={itemAddedToCart.price < itemAddedToCart.originalPrice ? itemAddedToCart.price : undefined}
+                  fontSizes={{ lineThroughPrice: "sm", payingPrice: "md" }}
+                />
+                <section className="">
                   <h6 className="text-zinc-800 text-base font-medium font-tajawal leading-tight">
                     Cantidad
                   </h6>
@@ -144,11 +144,11 @@ const AddedToCartModal = () => {
                       removeItem(itemAddedToCart);
                     }}
                   />
-                </div>
+                </section>
                 <div className="w-9 h-9 p-2.5 bg-neutral-100 justify-center items-center gap-2 inline-flex">
                   <FiTrash2 className="self-end" />
                 </div>
-              </div>
+              </section>
             </section>
           </section>
           <footer className=" w-full flex justify-between">

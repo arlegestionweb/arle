@@ -39,3 +39,21 @@ export const zodColorSchema = z.object({
 export const coleccionDeMarcaSchema = z.string().optional().nullable();
 
 export type TVariant = TPerfumeVariant | TRelojVariant | TVarianteGafa;
+
+const zodTimedDiscount = z.object({
+  texto: z.string(),
+  productos: z.array(z.string()),
+  porcentaje: z.string(),
+  duracion: z.object({
+    inicio: z.string(),
+    fin: z.string(),
+  }),
+  titulo: z.string(),
+});
+
+export type TTimedDiscount = z.infer<typeof zodTimedDiscount>;
+
+export const zodTimedDiscountsSchema = z
+  .array(zodTimedDiscount)
+  .optional()
+  .nullable();

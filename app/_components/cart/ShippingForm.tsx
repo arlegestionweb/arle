@@ -8,7 +8,7 @@ const ShippingForm = () => {
 
       <InputComponent
         name="nombre"
-        placeholder="Kamilo Stevan Alomías Correa"
+        placeholder="Daniel Guillermo Bustidas"
         title="Nombre completo"
       />
 

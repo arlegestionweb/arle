@@ -79,7 +79,7 @@ const ProductSlide = ({
         {imagesProduct &&
           imagesProduct.map((image, index) => (
             <div
-              key={"alt" in image ? image.alt : image.url}
+              key={"alt" in image ? `${image.alt}-${index}` : image.url}
               className={cn(
                 `relative h-full w-full`,
                 `snap-center snap-always ${

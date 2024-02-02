@@ -1,5 +1,8 @@
 import { create } from "zustand";
 
+
+const TAX = 0.19;
+
 export type TCartItem = {
   productId: string;
   variantId: string;
@@ -12,6 +15,8 @@ export type TCartItem = {
     | "relojesLujo"
     | "gafasPremium"
     | "gafasLujo";
+    discountType: "none" | "timedDiscount" | "discountedPrice";
+    originalPrice: number;
 };
 
 type TCartState = {
@@ -37,6 +42,8 @@ type TCartActions = {
   applyDiscountCode: (code: string, discount: number) => void;
   toggleAddedToCartModal: () => void;
   setItemAddedToCart: (item?: TCartItem) => void;
+  getCartTotalWithoutDiscountsOrTax: () => number;
+  getCartTax: () => number;
 };
 
 type TCartStore = TCartState & TCartActions;
@@ -57,18 +64,24 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     }),
   getDiscountAmount: () => {
     const items: TCartItem[] = get().items;
-    let total = 0;
+    // let total = 0;
 
-    items.forEach((item) => (total += item.price * item.quantity));
+    let totalDiscount = 0;
 
-    const discountCode = get().discountCode;
-
-    if (discountCode) {
-      const discountAmount = total * (discountCode.discount / 100);
-      return Math.round(discountAmount);
+    for (const item of items) {
+      const discountAmountPerItem = item.originalPrice - item.price;
+      const totalDiscountForItem = discountAmountPerItem * item.quantity;
+      totalDiscount += totalDiscountForItem;
     }
+  
+    return totalDiscount;    // const discountCode = get().discountCode;
 
-    return 0;
+    // if (discountCode) {
+    //   const discountAmount = total * (discountCode.discount / 100);
+    //   return Math.round(discountAmount);
+    // }
+
+    // return 0;
   },
   items:
     typeof window !== "undefined" && localStorage.getItem("cart")
@@ -103,35 +116,17 @@ export const useCartStore = create<TCartStore>((set, get) => ({
         localStorage.setItem("cart", JSON.stringify(newItems));
       }
 
-      return { items: newItems, isAddedToCartModalOpen: true, itemAddedToCart: item };
+      const inCart = get().isCartOpen;
+
+      return { items: newItems, isAddedToCartModalOpen: inCart ? false : true, itemAddedToCart: item };
     }),
   clearCart: () =>
     set(() => {
       localStorage.removeItem("cart");
       return { items: [] };
     }),
-  getCartTotal: () => {
-    const items: TCartItem[] = get().items;
-    let total = 0;
+ 
 
-    items.forEach((item) => (total += item.price * item.quantity));
-
-    const discountAmount = get().getDiscountAmount();
-
-    if (discountAmount) {
-      total -= total - discountAmount;
-    }
-
-    return total;
-  },
-  getCartSubtotal: () => {
-    const items: TCartItem[] = get().items;
-    let total = 0;
-
-    items.forEach((item) => (total += item.price * item.quantity));
-
-    return total;
-  },
   removeItem: (item: TCartItem) =>
     set((state: TCartState) => {
       const existingItemIndex = state.items.findIndex(
@@ -168,7 +163,6 @@ export const useCartStore = create<TCartStore>((set, get) => ({
         (i) => i.productId !== item.productId || i.variantId !== item.variantId
       );
 
-      // console.log({ newItems });
 
       if (typeof window !== "undefined") {
         localStorage.setItem("cart", JSON.stringify(newItems));
@@ -178,4 +172,46 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     }),
   isCartOpen: false,
   toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen })),
+  getCartTax: () => {
+    const items: TCartItem[] = get().items;
+    let total = 0;
+
+    items.forEach((item) => (total += item.price * item.quantity));
+    const tax = +(total * TAX).toFixed(0);
+
+    return tax;
+  },
+  getCartTotalWithoutDiscountsOrTax: () => {
+    const items: TCartItem[] = get().items;
+  let total = 0;
+
+  items.forEach((item) => (total += item.originalPrice * item.quantity));
+
+  const tax = get().getCartTax();
+  const totalWithoutTax = +(total - tax).toFixed(0);
+
+  return totalWithoutTax;
+
+  },
+  getCartSubtotal: () => {
+    const items: TCartItem[] = get().items;
+    let total = 0;
+
+    items.forEach((item) => (total += item.originalPrice * item.quantity));
+
+    return total;
+  },
+  
+  getCartTotal: () => {
+    const items: TCartItem[] = get().items;
+    let total = 0;
+
+    items.forEach((item) => (total += item.price * item.quantity));
+
+
+    return total;
+  },
+  
+  
+  
 }));

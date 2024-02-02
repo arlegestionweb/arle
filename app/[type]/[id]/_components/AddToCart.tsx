@@ -3,27 +3,32 @@ import { FastShoppingCartIcon, ShoppingCartIcon } from "./Icons";
 import { cn } from "@/app/_lib/utils";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
-import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { useCartStore } from "@/app/_components/cart/store";
+import { TPricing } from "./Product";
 
 type PropsAddToCart = {
   className?:string;
   product: TProduct;
   selectedVariant: TVariant;
   quantity: number;
+  pricing: TPricing;
 }
 
-const AddToCart = ({className, product, quantity, selectedVariant}:PropsAddToCart) => {
+const AddToCart = ({className, pricing, product, quantity, selectedVariant}:PropsAddToCart) => {
   
   const {addItem} = useCartStore();
+
+  const price = pricing.finalPrice;
 
   const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
     addItem({
       productId: producto._id,
       variantId: selectedVariant.registroInvima,
-      price: colombianPriceStringToNumber(selectedVariant.precio),
+      price: price,
       quantity,
       productType: producto._type,
+      discountType: pricing.discountTypeUsed,
+      originalPrice: pricing.precioSinDescuento,
     });
   };
   return (

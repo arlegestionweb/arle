@@ -6,8 +6,9 @@ import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
 import PremiumLayout from "@/app/_components/premium/PremiumLayout";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
-import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
+import { TPricing } from "../Product";
 
 type TGafaPremiumProps = {
   product: TGafaPremium;
@@ -15,6 +16,7 @@ type TGafaPremiumProps = {
   setSelectedVariant: (variant: TVariant) => void;
   cantidad: number;
   setCantidad: (cantidad: number) => void;
+  pricing: TPricing;
 };
 
 const GafaPremium = ({
@@ -22,10 +24,12 @@ const GafaPremium = ({
   selectedVariant,
   setSelectedVariant,
   cantidad,
-  setCantidad
+  setCantidad,
+  pricing
+
 }: TGafaPremiumProps) => {
   return (
-    <PremiumLayout product={product} selectedVariant={selectedVariant}>
+    <PremiumLayout product={product} selectedVariant={selectedVariant} pricing={pricing}>
       <section className="my-2 flex flex-col gap-5">
         <VariantSelector
           product={product}
@@ -39,6 +43,7 @@ const GafaPremium = ({
         />
       </section>
       <AddToCart
+        pricing={pricing}
         product={product}
         quantity={cantidad}
         selectedVariant={selectedVariant}
@@ -57,6 +62,7 @@ const GafaPremium = ({
 
       <NuestrasComprasIncluyen garantia={product.garantia} />
       <AddToCart
+        pricing={pricing}
         className="lg:hidden"
         product={product}
         quantity={cantidad}

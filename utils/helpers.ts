@@ -22,6 +22,7 @@ export const colombianPriceStringToNumber = (price: string) => {
 };
 
 export const numberToColombianPriceString = (price: number) => {
+  if (!price) return "";
   let [integerPart, decimalPart] = price.toString().split(".");
   let result = "";
   let count = 0;

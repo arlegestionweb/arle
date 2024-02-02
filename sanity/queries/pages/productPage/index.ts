@@ -3,6 +3,7 @@ import { z } from "zod";
 import { relojLujoSchema, relojPremiumSchema } from "../zodSchemas/reloj";
 import { gafasLujoSchema, gafasPremiumSchema } from "../zodSchemas/gafas";
 import { perfumeLujoSchema, perfumePremiumSchema } from "../zodSchemas/perfume";
+import { zodTimedDiscountsSchema } from "../zodSchemas/general";
 
 type TProductType =
   | "relojesLujo"
@@ -419,6 +420,15 @@ const schemas: Record<TProductType, z.ZodSchema<any>> = {
   perfumePremium: perfumePremiumSchema,
 };
 
+export const timedDiscountQuery = `*[_type == "descuentos" && $productId in productos[]._ref]{
+  "productos": productos[] -> _id,
+  porcentaje,
+  titulo,
+  texto,
+  duracion
+}`;
+
+
 export const getProductById = async (id: string, productType: TProductType) => {
   const query = productQuery[productType];
 
@@ -427,11 +437,28 @@ export const getProductById = async (id: string, productType: TProductType) => {
   ${query}`);
   const productSchema = schemas[productType];
 
+  const params = { productId: id };
+  
+  const discounts = await sanityClient.fetch(timedDiscountQuery, params);
+  
+  
   const product = productSchema.safeParse(fetchResult);
+
+  const parsedDiscounts = zodTimedDiscountsSchema.safeParse(discounts);
   //
+
+  
+  if (!parsedDiscounts.success) {
+    throw new Error(parsedDiscounts.error.message);
+  }
+  
   if (!product.success) {
     throw new Error(product.error.message);
   }
+  parsedDiscounts.data?.sort((a, b) => new Date(a.duracion.fin).getTime() - new Date(b.duracion.fin).getTime());
+  const now = new Date().getTime();
 
-  return product.data;
+  const activeDiscounts = parsedDiscounts.data?.filter(discount => new Date(discount.duracion.fin).getTime() > now);
+
+  return {product: product.data, discount: activeDiscounts && activeDiscounts[0]}
 };

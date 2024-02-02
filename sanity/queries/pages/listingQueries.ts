@@ -2,11 +2,11 @@ import sanityClient from "@/sanity/sanityClient";
 import { bannersQuery, imageQuery } from "../objects";
 
 import { z } from "zod";
-import { productQuery } from "./productPage";
+import { productQuery, timedDiscountQuery } from "./productPage";
 import { gafasLujoSchema, gafasPremiumSchema } from "./zodSchemas/gafas";
 import { perfumeLujoSchema, perfumePremiumSchema } from "./zodSchemas/perfume";
 import { relojLujoSchema, relojPremiumSchema } from "./zodSchemas/reloj";
-import { zodColorSchema } from "./zodSchemas/general";
+import { zodColorSchema, zodTimedDiscountsSchema } from "./zodSchemas/general";
 
 const listingMainString = ` 
 {
@@ -81,14 +81,12 @@ const zodBanner = z.object({
 
 export type TBanner = z.infer<typeof zodBanner>;
 
-
-
 export const isPerfume = (product: TProduct): product is TPerfume =>
-product._type?.includes("perfume");
+  product._type?.includes("perfume");
 export const isReloj = (product: TProduct): product is TReloj =>
-product._type?.includes("reloj");
+  product._type?.includes("reloj");
 export const isGafa = (product: TProduct): product is TGafa =>
-product._type?.includes("gafa");
+  product._type?.includes("gafa");
 
 const zodGafaListingQuery = z.discriminatedUnion("_type", [
   gafasPremiumSchema,
@@ -116,7 +114,6 @@ export type TReloj = z.infer<typeof zodRelojListingQuery>;
 export type TGafa = z.infer<typeof zodGafaListingQuery>;
 
 export type TProduct = z.infer<typeof zodProduct>;
-
 
 const zodCollectiones = z.array(
   z.object({
@@ -149,7 +146,6 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
-    console.log({relojes: result.relojes[0].detalles.contenido})
 
     const parsedResult = zodListPage.safeParse(result);
 
@@ -161,4 +157,27 @@ export const getListingInitialLoadContent = async () => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const getTimedDiscountByProductId = async (productId: string) => {
+  const params = { productId };
+
+  const discounts = await sanityClient.fetch(timedDiscountQuery, params);
+
+  const parsedDiscounts = zodTimedDiscountsSchema.safeParse(discounts);
+
+  if (!parsedDiscounts.success) {
+    throw new Error(parsedDiscounts.error.message);
+  }
+
+  parsedDiscounts.data?.sort(
+    (a, b) =>
+      new Date(a.duracion.fin).getTime() - new Date(b.duracion.fin).getTime()
+  );
+  const now = new Date().getTime();
+  const activeDiscounts = parsedDiscounts.data?.filter(
+    (discount) => new Date(discount.duracion.fin).getTime() > now
+  );
+
+  return { discount: activeDiscounts?.[0]};
 };

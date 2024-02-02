@@ -12,7 +12,11 @@ import AddedToCartModal from "./AddedToCartModal";
 import { useEffect } from "react";
 import { useHideBodyOverflow } from "@/app/_lib/hooks";
 
-const Cart = () => {
+const Cart = ({
+  showDiscountCode = false,
+}: {
+  showDiscountCode: boolean;
+}) => {
   const pathname = usePathname();
   const {
     items,
@@ -21,7 +25,9 @@ const Cart = () => {
     getCartTotal,
     getDiscountAmount,
     getCartSubtotal,
+    getCartTotalWithoutDiscountsOrTax,
     isAddedToCartModalOpen,
+    getCartTax
   } = useCartStore((state) => state);
 
   useHideBodyOverflow(isCartOpen);
@@ -31,6 +37,7 @@ const Cart = () => {
   if (isAddedToCartModalOpen) return <AddedToCartModal />;
 
   if (!isCartOpen) return null;
+
 
   return (
     <section className="bg-white z-[60] overflow-y-scroll w-screen h-screen fixed top-0 left-0 flex flex-col md:flex-row ">
@@ -59,7 +66,6 @@ const Cart = () => {
             <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
               Resúmen de la compra
             </h3>
-
             <ul className="flex flex-col  gap-4">
               {items.map((item) => {
                 return <ProductItem key={item.variantId} item={item} />;
@@ -70,19 +76,29 @@ const Cart = () => {
         {/* <h4 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">Código de descuento</h4> */}
 
         <section className="flex flex-col gap-2">
-          <CodigoDeDescuento />
+          {showDiscountCode && (
+            <CodigoDeDescuento />
+          )}
 
           <div className="flex w-full justify-between">
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
               Subtotal
             </h5>
-            <span>${numberToColombianPriceString(getCartSubtotal())}</span>
+            <span>${numberToColombianPriceString(getCartTotalWithoutDiscountsOrTax())}</span>
           </div>
           <div className="flex w-full justify-between">
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
               Descuento
+
             </h5>
-            <span>${numberToColombianPriceString(getDiscountAmount())}</span>
+            <span>${numberToColombianPriceString(getDiscountAmount()) || 0}</span>
+          </div>
+          <div className="flex w-full justify-between">
+            <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
+              IVA
+
+            </h5>
+            <span>${numberToColombianPriceString(getCartTax()) || 0}</span>
           </div>
           <div className="flex w-full justify-between">
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">

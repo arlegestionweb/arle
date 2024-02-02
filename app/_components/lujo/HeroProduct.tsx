@@ -14,8 +14,10 @@ import {
   isPerfumeLujo,
 } from "@/sanity/queries/pages/types";
 import { imageType } from "../types";
-import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
+import Precio from "../Precio";
+import { TPricing } from "@/app/[type]/[id]/_components/Product";
 
 type HeroProductProps = {
   product: TPerfumeLujo | TRelojLujo | TGafaLujo;
@@ -24,6 +26,7 @@ type HeroProductProps = {
   setSelectedVariant: (variant: TVariant) => void;
   cantidad: number;
   setCantidad: (cantidad: number) => void;
+  pricing: TPricing;
 };
 
 const HeroProduct = ({
@@ -33,9 +36,11 @@ const HeroProduct = ({
   setSelectedVariant,
   cantidad,
   setCantidad,
+  pricing
 }: HeroProductProps) => {
+
   return (
-    <section className="lg:grid lg:grid-cols-12 gap-8 lg:pb-12 min-h-[70vh] row-auto w-full lg:max-w-mx">
+    <section className="lg:grid lg:grid-cols-12 gap-8 mt-1 lg:pb-12 min-h-[70vh] row-auto w-full lg:max-w-mx">
       {/* Product view */}
       <GalleryProduct
         className="col-start-1 col-span-6"
@@ -64,26 +69,10 @@ const HeroProduct = ({
           <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
             CODE:{selectedVariant.codigoDeReferencia}
           </span>
-          <p className="text-zinc-800 text-[32px] font-normal font-crimson leading-9">
-            ${selectedVariant.precio}
-          </p>
-          <div className="text-justify">
-            <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-              Págalo a 4 cuotas de $
-              {numberToColombianPriceString(
-                colombianPriceStringToNumber(selectedVariant.precio) / 4
-              )}{" "}
-              sin intereses.
-              <br />
-              [provider]
-            </span>
-            <span className="text-neutral-600 text-sm font-normal font-tajawal leading-[16.80px]">
-              .{" "}
-            </span>
-            <span className="text-zinc-800 text-sm font-normal font-tajawal leading-[16.80px]">
-              Learn More
-            </span>
-          </div>{" "}
+          <Precio
+            fullPrice={pricing.precioSinDescuento}
+            discountedPrice={pricing.timedDiscountPrice || pricing.precioConDescuento}
+          />
         </header>
 
         <section className="px-4 mb-6 lg:my-6 lg:px-8 flex flex-col gap-5">
@@ -103,6 +92,7 @@ const HeroProduct = ({
           product={product}
           quantity={cantidad}
           selectedVariant={selectedVariant}
+          pricing={pricing}
           className="hidden static shadow-none w-full py-6 px-4 gap-6 space-y-2 lg:block"
         />
 

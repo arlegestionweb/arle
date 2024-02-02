@@ -4,9 +4,10 @@ import InfoSection from "../InfoSection";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
 import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
-import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
+import { TPricing } from "../Product";
 
 type TRelojLujoProps = {
   product: TRelojLujo;
@@ -14,9 +15,10 @@ type TRelojLujoProps = {
   setSelectedVariant: (variant: TVariant) => void;
   setCantidad: (cantidad: number) => void;
   cantidad: number;
+  pricing: TPricing;
 };
 
-const RelojLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, setCantidad }: TRelojLujoProps) => {
+const RelojLujo = ({ pricing, product, selectedVariant, setSelectedVariant, cantidad, setCantidad }: TRelojLujoProps) => {
 
   return (
     <>
@@ -27,6 +29,8 @@ const RelojLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, set
         setSelectedVariant={setSelectedVariant}
         cantidad={cantidad}
         setCantidad={setCantidad}
+        // discount={discount}
+        pricing={pricing}
       />
 
       {product.inspiracion.usarInspiracion && (
@@ -77,21 +81,22 @@ const RelojLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, set
               detalles={{
                 caja: {
                   cristal: product.caja.cristal,
-                  "Diámetro de la caja": product.caja.diametro+"mm",
+                  "Diámetro de la caja": product.caja.diametro + "mm",
                   "Material de la caja": product.caja.material,
                 },
-                especificaciones:{
-                  "Tipo de reloj":product.especificaciones.tipoDeReloj,
-                  "Estilo de reloj":product.especificaciones.estiloDeReloj,
-                  "Resistencia al agua":product.especificaciones.resistenciaAlAgua,
+                especificaciones: {
+                  "Tipo de reloj": product.especificaciones.tipoDeReloj,
+                  "Estilo de reloj": product.especificaciones.estiloDeReloj,
+                  "Resistencia al agua": product.especificaciones.resistenciaAlAgua,
                   material: product.especificaciones.material,
                   ...(product.especificaciones.funciones
                     ? {
-                        funciones: product.especificaciones.funciones.map(
-                          (funcion) => `${funcion.titulo}: ${funcion.descripcion}`
-                        ),
-                      }
-                    : {}),                },
+                      funciones: product.especificaciones.funciones.map(
+                        (funcion) => `${funcion.titulo}: ${funcion.descripcion}`
+                      ),
+                    }
+                    : {}),
+                },
                 garantia: {
                   meses: product.garantia.meses + "",
                   descripción: product.garantia.descripcion || "",
@@ -105,10 +110,10 @@ const RelojLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, set
                 (product.banners &&
                   product.banners.map(
                     element =>
-                      ({
-                        url: element.imagen?.url,
-                        alt: element.imagen?.alt,
-                      } as ProductImage)
+                    ({
+                      url: element.imagen?.url,
+                      alt: element.imagen?.alt,
+                    } as ProductImage)
                   )) ||
                 []
               }
@@ -128,6 +133,7 @@ const RelojLujo = ({ product, selectedVariant, setSelectedVariant, cantidad, set
         product={product}
         quantity={cantidad}
         selectedVariant={selectedVariant}
+        pricing={pricing}
       />
     </>
   );

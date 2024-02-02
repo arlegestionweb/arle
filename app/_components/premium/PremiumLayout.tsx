@@ -10,21 +10,21 @@ import {
   colombianPriceStringToNumber,
   numberToColombianPriceString,
 } from "@/utils/helpers";
-import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import Precio from "../Precio";
+import { TPricing } from "@/app/[type]/[id]/_components/Product";
 
 type PremiumLayoutProps = {
   product: TGafaPremium | TRelojPremium | TPerfumePremium;
   children: JSX.Element[] | JSX.Element;
   selectedVariant: TVariant;
+  pricing: TPricing;
 };
 
-const PremiumLayout = ({ product, children, selectedVariant }: PremiumLayoutProps) => {
+const PremiumLayout = ({ product, pricing, children, selectedVariant }: PremiumLayoutProps) => {
   const [modelo] = isPerfumePremium(product)
     ? [product.titulo]
     : [product.modelo];
-
-    // console.log({product, selectedVariant}, "here")
-
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto w-full lg:max-w-mx">
       <ProductViewer
@@ -47,26 +47,10 @@ const PremiumLayout = ({ product, children, selectedVariant }: PremiumLayoutProp
           <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
             CODE: {selectedVariant.codigoDeReferencia}
           </span>
-          <p className="text-zinc-800 text-[32px] font-normal font-kanit leading-9">
-            ${selectedVariant.precio}
-          </p>
-          <div className="text-justify">
-            <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-              Págalo a 4 cuotas de $
-              {numberToColombianPriceString(
-                colombianPriceStringToNumber(selectedVariant.precio) / 4
-              )}{" "}
-              sin intereses.
-              <br />
-              [provider]
-            </span>
-            <span className="text-neutral-600 text-sm font-normal font-tajawal leading-[16.80px]">
-              .{" "}
-            </span>
-            <span className="text-zinc-800 text-sm font-normal font-tajawal leading-[16.80px]">
-              Learn More
-            </span>
-          </div>{" "}
+          <Precio
+            fullPrice={pricing.precioSinDescuento}
+            discountedPrice={pricing.timedDiscountPrice || pricing.precioConDescuento}
+          />
         </header>
 
         {children}
