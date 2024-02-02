@@ -6,7 +6,6 @@ import { useState } from "react";
 import SearchInput from "../SearchInput";
 import RedDot from "../../RedDot";
 import { useCartStore } from "../../cart/store";
-import Menu from "../menu";
 import { LuShoppingCart } from "react-icons/lu";
 import Menu from "../menu";
 
