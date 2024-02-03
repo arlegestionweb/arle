@@ -11,13 +11,13 @@ type ProductCardSlideProps = {
 
 export const ProductCardSlide = ({ nameSection }: ProductCardSlideProps) => {
   return (
-    <section className="max-w-mx w-screen py-0 md:py-4 pl-8 lg:px-0 lg:flex lg:flex-col">
+    <section className="max-w-mx px-0 min-[1024px]:px-10 min-[1280px]:px-0 w-screen py-0 md:py-4 pl-8 lg:px-0 lg:flex lg:flex-col">
       {" "}
       <h3 className="text-zinc-800 text-[28px] font-semibold font-crimson leading-loose">
         {nameSection}
       </h3>
-      {/* <SlideMobile products={products} /> */}
-      <SlideDesktop products={products} />
+      <SlideMobile products={products} className="flex lg:hidden"/>
+      <SlideDesktop products={products} className="hidden lg:grid"/>
     </section>
   );
 };
@@ -57,7 +57,7 @@ const SlideDesktop = ({
 
 
   return (
-    <section className="relative min-h-[380px] ">
+    <section className={cn("relative min-h-[380px]",className)}>
       <button
         onClick={prevProduct}
         className="absolute z-20 -left-[20px] top-1/3 transform -translate-y-1/2 w-10 h-10 p-[7px] border border-spacing-1 border-neutral-900 opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
