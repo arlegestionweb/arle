@@ -24,13 +24,14 @@ const SuggestionProductCard = ({ producto }: { producto: TProduct }) => {
     producto.variantes[0]
   );
 
+
   return (
     <>
       {selectedVariant.etiqueta && (
         <Labels
           labelType={selectedVariant.etiqueta as LabelTypes}
           label={selectedVariant.etiqueta as LabelTypes}
-          className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+          className=" left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
         />
       )}
       <CardLayout

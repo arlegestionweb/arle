@@ -1,5 +1,5 @@
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SuggestionProductCard from "./SuggestionProductCard";
 import { cn } from "@/app/_lib/utils";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -30,26 +30,36 @@ const SlideDesktop = ({
   className?: string;
 }) => {
   const [startIndex, setStartIndex] = useState(0);
+  const [productosVisibles, setProductosVisibles] = useState<TProduct[]>([]);
 
-  const nextImages = () => {
+  const nextProduct = () => {
+    
+    setProductosVisibles([])
     setStartIndex(prevIndex => (prevIndex + 1) % products.length);
   };
 
-  const prevImages = () => {
+  const prevProduct = () => {
+    
+    setProductosVisibles([])
     setStartIndex(prevIndex =>
       prevIndex === 0 ? products.length - 4 : prevIndex - 1
     );
   };
 
-  const visibleImages = Array.from({ length: 4 }, (_, idx) => {
-    const arrayIndex = (startIndex + idx) % products.length;
-    return products[arrayIndex];
-  });
+  useEffect(() => {
+    setProductosVisibles(
+      Array.from({ length: 4 }, (_, idx) => {
+        const arrayIndex = (startIndex + idx) % products.length;
+        return products[arrayIndex];
+      })
+    );
+  }, [startIndex]);
+
 
   return (
-    <section className="relative">
+    <section className="relative min-h-[380px] ">
       <button
-        onClick={prevImages}
+        onClick={prevProduct}
         className="absolute z-20 -left-[20px] top-1/3 transform -translate-y-1/2 w-10 h-10 p-[7px] border border-spacing-1 border-neutral-900 opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
         <IoIosArrowBack />
       </button>
@@ -58,17 +68,17 @@ const SlideDesktop = ({
         className={cn(
           "pt-4 md:pt-7 pb-3 h-auto w-full max-w-mx  grid grid-cols-[repeat(4,minmax(200px,1fr))] place-content-center gap-4"
         )}>
-        {visibleImages.map((img, idx) => (
+        {productosVisibles.map((product, idx) => (
           <li
             key={`${idx}`}
             className="relative bg-white md:m-0 w-full">
-            <SuggestionProductCard producto={img} />
+            <SuggestionProductCard producto={product} />
           </li>
         ))}
       </ul>
 
       <button
-        onClick={nextImages}
+        onClick={nextProduct}
         className="absolute -right-[20px] top-1/3 transform -translate-y-1/2 w-10 h-10 p-[7px] opacity-80 border border-spacing-1 border-neutral-900 bg-neutral-100 shadow justify-center items-center inline-flex">
         <IoIosArrowForward />
       </button>
