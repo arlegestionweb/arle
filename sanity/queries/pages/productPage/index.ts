@@ -237,6 +237,7 @@ export const productQuery: Record<TProductType, string> = {
     "descripcion": descripcion {
       texto,
       "imagen": imagen {
+        ...,
         alt,
         "url": asset->url,
       }
@@ -428,7 +429,6 @@ export const timedDiscountQuery = `*[_type == "descuentos" && $productId in prod
   duracion
 }`;
 
-
 export const getProductById = async (id: string, productType: TProductType) => {
   const query = productQuery[productType];
 
@@ -438,27 +438,33 @@ export const getProductById = async (id: string, productType: TProductType) => {
   const productSchema = schemas[productType];
 
   const params = { productId: id };
-  
+
   const discounts = await sanityClient.fetch(timedDiscountQuery, params);
-  
-  
+
   const product = productSchema.safeParse(fetchResult);
 
   const parsedDiscounts = zodTimedDiscountsSchema.safeParse(discounts);
   //
 
-  
   if (!parsedDiscounts.success) {
     throw new Error(parsedDiscounts.error.message);
   }
-  
+
   if (!product.success) {
     throw new Error(product.error.message);
   }
-  parsedDiscounts.data?.sort((a, b) => new Date(a.duracion.fin).getTime() - new Date(b.duracion.fin).getTime());
+  parsedDiscounts.data?.sort(
+    (a, b) =>
+      new Date(a.duracion.fin).getTime() - new Date(b.duracion.fin).getTime()
+  );
   const now = new Date().getTime();
 
-  const activeDiscounts = parsedDiscounts.data?.filter(discount => new Date(discount.duracion.fin).getTime() > now);
+  const activeDiscounts = parsedDiscounts.data?.filter(
+    (discount) => new Date(discount.duracion.fin).getTime() > now
+  );
 
-  return {product: product.data, discount: activeDiscounts && activeDiscounts[0]}
+  return {
+    product: product.data,
+    discount: activeDiscounts && activeDiscounts[0],
+  };
 };

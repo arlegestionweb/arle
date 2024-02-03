@@ -1,6 +1,7 @@
 import { getSedeByTitle } from "@/sanity/queries/pages/nuestrasSedesQueries";
 import Image from "next/image";
 import ImageScroller from "../_components/ImageScroller";
+import Main from "@/app/_components/Main";
 
 export const dynamic = "force-dynamic";
 
@@ -8,11 +9,10 @@ const Page = async ({params}: { params: { sede: string }}) => {
 
 	const sede = await getSedeByTitle(params?.sede);
 	
-	console.log(sede);
 	if(!sede) return null;
 
 	return(
-		<main className="w-full pt-[70px] md:pt-0 bg-white flex flex-col items-center">
+		<Main extraClasses="bg-white flex flex-col items-center">
 			<ImageScroller images={sede.imagenes}/>
 			<section className="flex flex-col md:flex-row w-full max-w-screen-xl md:h-[400px]">
 				<article className="w-full md:w-[50%] flex flex-col p-12 gap-5 justify-center">
@@ -40,7 +40,7 @@ const Page = async ({params}: { params: { sede: string }}) => {
 					</article>
 				</section>
 			</section>
-		</main>
+		</Main>
 	)
 }
 

@@ -49,10 +49,26 @@ export const getPriceRangeString = function (productPrices: number[]): string {
 
   return minProductPrice === maxProductPrice
     ? `$${numberToColombianPriceString(minProductPrice)}`
-    : `$${numberToColombianPriceString(minProductPrice)} - $${numberToColombianPriceString(maxProductPrice)}`;
-}
+    : `$${numberToColombianPriceString(
+        minProductPrice
+      )} - $${numberToColombianPriceString(maxProductPrice)}`;
+};
 
-export const toKebabCase = (str: String) => str
-.replace(/([a-z])([A-Z])/g, "$1-$2")
-.replace(/[\s_]+/g, '-')
-.toLowerCase();
+export const toKebabCase = (str: String) =>
+  str
+    .replace(/([a-z])([A-Z])/g, "$1-$2")
+    .replace(/[\s_]+/g, "-")
+    .toLowerCase();
+
+export const camelToTitleCase = function (str: string): string {
+  let result = str[0].toUpperCase();
+
+  for (let i = 1; i < str.length; i++) {
+    if (str[i] === str[i].toUpperCase()) {
+      result += " ";
+    }
+    result += str[i];
+  }
+
+  return result;
+};

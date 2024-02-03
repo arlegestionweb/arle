@@ -37,7 +37,7 @@ export const getBrandsByProductTypeAndGender = async (
       }
     `);
 
-    console.log({result, productType, gender})
+    // console.log({result, productType, gender})
 
     const parsedResult = zodRawQuery.safeParse(result);
 

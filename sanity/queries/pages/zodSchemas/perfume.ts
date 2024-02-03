@@ -62,7 +62,7 @@ export const perfumePremiumSchema = z.object({
 export const perfumeLujoSchema = z.object({
   date: z.string(),
   titulo: z.string(),
-  inspiracion: inspiracionSchema,
+  inspiracion: inspiracionSchema.optional().nullable(),
   variantes: z.array(perfumeVariantSchema),
   genero: z.string(),
   _type: z.literal("perfumeLujo"),
@@ -72,11 +72,11 @@ export const perfumeLujoSchema = z.object({
   concentracion: z.string(),
   imagenes: z.array(imageSchema),
   notasOlfativas: notasSchema,
-  ingredientes: z.array(z.string()),
+  ingredientes: z.array(z.string()).optional().nullable(),
   mostrarCredito: z.boolean().optional().nullable(),
   marca: z.string(),
   descripcion: descripcionSchema,
-  paisDeOrigen: z.string(),
-  banners: z.array(bannerSchema),
+  paisDeOrigen: z.string().optional().nullable(),
+  banners: z.array(bannerSchema).optional().nullable(),
   coleccionDeMarca: coleccionDeMarcaSchema,
 });

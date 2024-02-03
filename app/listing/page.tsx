@@ -13,6 +13,7 @@ import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import Banner from "../_components/homepage/Banner";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { unstable_noStore as noStore } from 'next/cache';
+import Main from "../_components/Main";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -820,7 +821,7 @@ const Listing = async ({
   const sortedProducts = [...filteredProducts]?.sort(sortingFunctions[sortSeleccionado as TSortingOption['value']]);
 
   return (
-    <main className="relative z-10  lg:mb-[100vh] bg-color-bg-surface-0-default min-h-screen pt-[60px] md:pt-0">
+    <Main extraClasses=" lg:mb-[100vh] bg-color-bg-surface-0-default min-h-screen pt-[60px]">
       <Banner
         banners={pageContent.listingContent.banners}
         className="h-[32vh] pt-0"
@@ -855,7 +856,7 @@ const Listing = async ({
           )}
         </section>
       </section>
-    </main>
+    </Main>
   );
 };
 
