@@ -1,29 +1,104 @@
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
-import React from "react";
+import React, { useState } from "react";
 import SuggestionProductCard from "./SuggestionProductCard";
+import { cn } from "@/app/_lib/utils";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 type ProductCardSlideProps = {
-  nameSection: string,
-  products?: TProduct[] // for test
-}
+  nameSection: string;
+  products?: TProduct[]; // for test
+};
 
-export const ProductCardSlide = ({nameSection}:ProductCardSlideProps) => {
+export const ProductCardSlide = ({ nameSection }: ProductCardSlideProps) => {
   return (
     <section className="max-w-mx w-screen py-0 md:py-4 pl-8 lg:px-0 lg:flex lg:flex-col">
       {" "}
-      <h3 className="text-zinc-800 text-[28px] font-semibold font-crimson leading-loose">{nameSection}</h3>
-      <ul className="pt-4 md:pt-7 pb-3 h-auto w-full no-scrollbar flex justify-start md:gap-4 max-w-mx overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
-        {products.map(product => (
+      <h3 className="text-zinc-800 text-[28px] font-semibold font-crimson leading-loose">
+        {nameSection}
+      </h3>
+      {/* <SlideMobile products={products} /> */}
+      <SlideDesktop products={products} />
+    </section>
+  );
+};
+
+const SlideDesktop = ({
+  products,
+  className,
+}: {
+  products: TProduct[];
+  className?: string;
+}) => {
+  const [startIndex, setStartIndex] = useState(0);
+
+  const nextImages = () => {
+    setStartIndex(prevIndex => (prevIndex + 1) % products.length);
+  };
+
+  const prevImages = () => {
+    setStartIndex(prevIndex =>
+      prevIndex === 0 ? products.length - 4 : prevIndex - 1
+    );
+  };
+
+  const visibleImages = Array.from({ length: 4 }, (_, idx) => {
+    const arrayIndex = (startIndex + idx) % products.length;
+    return products[arrayIndex];
+  });
+
+  return (
+    <section className="relative">
+      <button
+        onClick={prevImages}
+        className="absolute z-20 -left-[20px] top-1/3 transform -translate-y-1/2 w-10 h-10 p-[7px] border border-spacing-1 border-neutral-900 opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
+        <IoIosArrowBack />
+      </button>
+
+      <ul
+        className={cn(
+          "pt-4 md:pt-7 pb-3 h-auto w-full max-w-mx  grid grid-cols-[repeat(4,minmax(200px,1fr))] place-content-center gap-4"
+        )}>
+        {visibleImages.map((img, idx) => (
           <li
-            key={product._id}
-            className=" w-[159px] mr-4 md:m-0 md:w-72 snap-always snap-center">
-            <div className="relative w-[159px] h-auto md:w-[288px]">
-              <SuggestionProductCard producto={product} />
-            </div>
+            key={`${idx}`}
+            className="relative bg-white md:m-0 w-full">
+            <SuggestionProductCard producto={img} />
           </li>
         ))}
       </ul>
+
+      <button
+        onClick={nextImages}
+        className="absolute -right-[20px] top-1/3 transform -translate-y-1/2 w-10 h-10 p-[7px] opacity-80 border border-spacing-1 border-neutral-900 bg-neutral-100 shadow justify-center items-center inline-flex">
+        <IoIosArrowForward />
+      </button>
     </section>
+  );
+};
+
+const SlideMobile = ({
+  products,
+  className,
+}: {
+  products: TProduct[];
+  className?: string;
+}) => {
+  return (
+    <ul
+      className={cn(
+        "pt-4 md:pt-7 pb-3 h-auto w-full no-scrollbar flex justify-start md:gap-4 max-w-mx overflow-x-auto overflow-y-hidden snap-x snap-mandatory",
+        className
+      )}>
+      {products.map(product => (
+        <li
+          key={product._id}
+          className=" w-[159px] mr-4 md:m-0 md:w-72 snap-always snap-center">
+          <div className="relative w-[159px] h-auto md:w-[288px]">
+            <SuggestionProductCard producto={product} />
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 };
 

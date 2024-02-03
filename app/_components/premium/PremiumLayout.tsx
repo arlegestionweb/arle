@@ -33,7 +33,7 @@ const PremiumLayout = ({ product, pricing, children, selectedVariant }: PremiumL
         selectedVariant={selectedVariant}
       />
 
-      <section className="col-span-6 pb-5 col-start-1 row-start-1 flex flex-col px-5 md:px-8 w-full relative">
+      <section className="col-span-6 pb-5 col-start-1 row-start-1 flex flex-col px-5 md:px-0 w-full relative">
         <Labels
           className="relative max-w-fit mt-4 mb-2"
           labelType={selectedVariant.etiqueta as LabelTypes}
