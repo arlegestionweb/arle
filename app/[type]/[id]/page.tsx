@@ -2,6 +2,7 @@ import { getProductById } from "@/sanity/queries/pages/productPage";
 import Product from "./_components/Product";
 import { unstable_noStore as noStore } from 'next/cache';
 import TimedDiscount from "./_components/TimedDiscount";
+import Main from "@/app/_components/Main";
 
 
 export type TParams = {
@@ -26,9 +27,9 @@ const ProductPage = async ({ params }: TPageProps) => {
   const { product, discount } = await getProductById(params.id, params.type);
 
   return (
-    <main className="relative pt-[60px] md:pt-0 z-10 lg:mb-[100vh] min-h-screen bg-background flex flex-col justify-center items-center">
+    <Main extraClasses="pt-[60px] lg:mb-[100vh] min-h-screen bg-background flex flex-col justify-center items-center">
       <Product params={params} product={product} discount={discount} />
-    </main>
+    </Main>
   );
 };
 

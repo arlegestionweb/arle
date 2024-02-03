@@ -9,8 +9,8 @@ const Navbar = () => {
   if (pathname.includes("admin")) return;
   return (
     <>
-      <MobileNavBar className="fixed max-w-screen md:hidden"/>
-      <DesktopNavBar className="hidden max-w-screen md:block bg-color-bg-surface-0-default"/>
+      <MobileNavBar className="fixed w-full md:hidden" />
+      <DesktopNavBar className="hidden w-full md:block" />
     </>
   );
 };

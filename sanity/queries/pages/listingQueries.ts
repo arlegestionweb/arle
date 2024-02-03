@@ -146,7 +146,6 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
-
     const parsedResult = zodListPage.safeParse(result);
 
     if (!parsedResult.success) {

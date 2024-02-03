@@ -48,7 +48,7 @@ const PerfumeLujo = ({
         />
       </div>
 
-      {product.inspiracion.usarInspiracion && (
+      {product.inspiracion?.usarInspiracion && (
         <div className="bg-color-bg-surface-1-default w-screen flex justify-center">
           <InfoSection
             titulo="Inspiración"
@@ -73,13 +73,13 @@ const PerfumeLujo = ({
                   familiaOlfativa: product.notasOlfativas.familiaOlfativa || "",
                   notasDeCorazon: product.notasOlfativas.notasDeCorazon || "",
                 },
-                ingredientes: product.ingredientes,
+                ingredientes: product.ingredientes || [],
               }}
             />
           }
           ImageComp={
             <ProductSlide
-              imageVideoProducts={product.banners}
+              imageVideoProducts={product.banners || []}
               className="max-h-[377px] w-full"
               isLink={false}
             />
