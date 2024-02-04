@@ -9,7 +9,7 @@ import { LuSettings2 } from "react-icons/lu";
 import FilterMenu from "./FilterMenu";
 import Link from "next/link";
 import { createUrl, makeNewParams } from "@/app/_lib/utils";
-// import { MarcaType } from "@/app/_components/types";
+import BreadCrumbs, { TBreadCrumb } from "./BreadCrumbs";
 
 
 type TColor = {
@@ -48,9 +48,6 @@ export type TGafaFilters = {
 
 type FiltersProps = {
   areFiltersActive: boolean;
-  // searchParams: {
-  //   [key: string]: string | string[] | undefined;
-  // };
   marcas: string[];
   coleccionesDeMarca: string[];
   relojFilters: TRelojFilters;
@@ -84,19 +81,24 @@ const Filters = ({
     allParams[param].push(value);
   });
 
-  // console.log("All Params:", allParams);
-
-  // console.log("here", searchParams.values())
-  // const search = searchParams.get("search");
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
-  // const filters = Object.keys(searchParams).map((key) => {
-  //   return key;
-  // });
+  const breadCrumbs: TBreadCrumb[] = []
 
+  Object.keys(allParams).forEach((key) => {
+    allParams[key].forEach((value: string) => {
+      if (value === "todos") return;
+      breadCrumbs.push({
+        param: key,
+        label: `${value === "reloj" ? "relojes" : value === "premium" ? "excelencia" : value === "lujo" ? "elite" : value === "gafa" ? "gafas" : value === "perfume" ? "perfumes" : value}`,
+        href: `?${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+      });
+    });
+  });
 
+  console.log({ allParams, breadCrumbs })
   const sortingOptions: TSortingOption[] = [
     { label: "Recientes", value: "recientes" },
     { label: "Precio: Mayor a Menor", value: "precio_mayor_menor" },
@@ -119,8 +121,8 @@ const Filters = ({
             <LuSettings2 /> Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recients"}
             <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
           </Button>
+          <BreadCrumbs breadCrumbs={breadCrumbs} />
         </section>
-        {/* <BreadCrumbs filters={filters} searchParams={allParams} /> */}
       </section>
       <FilterMenu
         areFiltersActive={areFiltersActive}

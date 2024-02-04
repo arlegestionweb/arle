@@ -1,27 +1,34 @@
 import Link from "next/link";
-type BreadCrumbsProps = {
-  filters: string[];
-  searchParams: {
-    [key: string]: string | string[] | undefined;
-  };
+
+export type TBreadCrumb = {
+  label: string;
+  href: string;
+  param: string;
 };
-const BreadCrumbs = ({ filters, searchParams }: BreadCrumbsProps) => {
+
+type BreadCrumbsProps = {
+  breadCrumbs: TBreadCrumb[];
+};
+const BreadCrumbs = ({ breadCrumbs }: BreadCrumbsProps) => {
   return (
-    <ul className="flex mt-2">
-      {filters?.map((filter, index) => (
-        <li
-          key={filter}
-          className={`${
-            index >= 1 ? "ml-2" : ""
-          } flex items-center gap-2 text-sm`}
-        >
-          {!searchParams[filter] ? <></> : `${filter}:`}
-          {/* <Link href={`?${filter}=${searchParams[filter]}`}>
-            {searchParams[filter]}
-          </Link> */}
+    <section className=" flex items-center">
+    <ul className="flex gap-2 items-center ">
+      <li>
+        <Link href={"/listing"} scroll={false}>
+          Productos 
+          {breadCrumbs.length > 0 && " >"} 
+        </Link>
+      </li>
+      {breadCrumbs.map((crumb, index) => (
+        <li key={crumb.param} className="flex items-center gap-1 capitalize">
+          <Link href={`/listing${crumb.href}`} scroll={false}>
+            {crumb.label.toLowerCase()} {index < breadCrumbs.length - 1 ? ' >' : ''}
+
+          </Link>
         </li>
       ))}
     </ul>
+  </section>
   );
 };
 
