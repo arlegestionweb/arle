@@ -40,9 +40,6 @@ const FilterMenu = ({
 
   const { push } = useRouter();
   const searchParams = useSearchParams();
-  // console.log({ searchParams });
-  const menuRef = useRef(null);
-
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // console.log("running");
@@ -89,7 +86,7 @@ const FilterMenu = ({
     if (!isFilterOpen) return;
     toggleFilter();
   });
-  
+
   return (
     <div
       className={`${isFilterOpen ? "w-screen" : "w-0"

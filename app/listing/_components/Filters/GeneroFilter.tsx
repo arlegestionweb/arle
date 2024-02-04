@@ -1,9 +1,21 @@
 import { useSearchParams } from "next/navigation";
 import FilterSection from "./FilterSection";
 import InputBox from "./InputBox";
+import { useEffect, useState } from "react";
 
 const GeneroFilter = () => {
   const searchParams = useSearchParams();
+  const options = ["unisex", "mujer", "hombre"];
+  const [checkedState, setCheckedState] = useState<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    const newCheckedState: { [key: string]: boolean } = {};
+    options.forEach((option) => {
+      newCheckedState[option] = searchParams.get("genero")?.includes(option) || false;
+    });
+    setCheckedState(newCheckedState);
+  }, [searchParams]);
+
 
   return (
     <FilterSection
@@ -22,27 +34,17 @@ const GeneroFilter = () => {
           !searchParams.get("genero")
         }
       />
-      <InputBox
-        name="genero"
-        title="Unisex"
-        type="radio"
-        value={"unisex"}
-        defaultChecked={searchParams.get("genero")?.includes("unisex")}
-      />
-      <InputBox
-        name="genero"
-        title="Mujer"
-        type="radio"
-        value={"mujer"}
-        defaultChecked={searchParams.get("genero")?.includes("mujer")}
-      />
-      <InputBox
-        name="genero"
-        title="Hombre"
-        type="radio"
-        value={"hombre"}
-        defaultChecked={searchParams.get("genero")?.includes("hombre")}
-      />
+      {options.map((option) => (
+        <InputBox
+          key={option}
+          name="genero"
+          title={option}
+          type="radio"
+          value={option}
+          capitalize
+          checked={!!checkedState[option]}
+        />
+      ))}
     </FilterSection>
   );
 };

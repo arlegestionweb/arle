@@ -58,9 +58,6 @@ const CheckboxSection = ({
       />
 
       {options?.map((option) => {
-        if (name === "marcas") {
-          console.log({ option, checked: searchParams.get(normalizeName(name))?.includes(option.toString()) })
-        }
         return (
           <InputBox
             key={option}
