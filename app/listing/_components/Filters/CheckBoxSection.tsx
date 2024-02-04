@@ -18,6 +18,10 @@ const CheckboxSection = ({
 
   const allTitle = feminine ? "todas" : "todos";
 
+  // if (name === "marcas") {
+  //   console.log({marcas: searchParams.get("marcas")})
+  // }
+
   return (
     <FilterSection
       title={camelToTitleCase(name)}
@@ -28,7 +32,7 @@ const CheckboxSection = ({
         name={normalizeName(name)}
         title={camelToTitleCase(allTitle)}
         type="checkbox"
-        defaultChecked={
+        checked={
           searchParams.get(name)?.includes(allTitle) || !searchParams.get(name)
         }
         value={allTitle}
