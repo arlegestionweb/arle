@@ -87,7 +87,7 @@ const Filters = ({
 
   const breadCrumbs: TBreadCrumb[] = []
 
-  const paramOrder = ['type', 'genero', 'marcas']; // the order in which the params should be displayed in the breadcrumbs
+  const paramOrder = ['type','linea', 'genero', 'marcas']; // the order in which the params should be displayed in the breadcrumbs
 
   Object.keys(allParams).forEach((key) => {
     allParams[key].forEach((value: string, index: number) => {

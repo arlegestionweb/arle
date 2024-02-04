@@ -42,7 +42,7 @@ const CheckboxSection = ({
         name={normalizeName(name)}
         title={camelToTitleCase(allTitle)}
         type="checkbox"
-        checked={
+        defaultChecked={
           searchParams.get(name)?.includes(allTitle) || !searchParams.get(name)
         }
         value={allTitle}
@@ -64,7 +64,7 @@ const CheckboxSection = ({
             name={normalizeName(name)}
             title={option.toString()}
             type="checkbox"
-            checked={checkedState[option] || false}
+            defaultChecked={checkedState[option] || false}
             value={option}
             onChange={(e) => {
               if (e.target.checked) {

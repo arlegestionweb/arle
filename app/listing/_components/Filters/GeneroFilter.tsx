@@ -42,7 +42,7 @@ const GeneroFilter = () => {
           type="radio"
           value={option}
           capitalize
-          checked={!!checkedState[option]}
+          defaultChecked={!!checkedState[option]}
         />
       ))}
     </FilterSection>
