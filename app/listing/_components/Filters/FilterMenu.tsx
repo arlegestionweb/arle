@@ -9,6 +9,7 @@ import RelojFilters from "./RelojFilters";
 import type { TGafaFilters, TPerfumeFilters, TRelojFilters } from ".";
 import PerfumeFilters from "./PerfumeFilters";
 import GafaFilters from "./GafaFilters.tsx";
+import { useClickOutside } from "@/app/_lib/hooks";
 
 type TypeSearchParams = {
   [key: string]: string | string[] | undefined;
@@ -34,13 +35,11 @@ const FilterMenu = ({
   perfumeFilters,
   gafaFilters,
 }: // searchParams,
-FilterMenuProps) => {
+  FilterMenuProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const { push } = useRouter();
   const searchParams = useSearchParams();
-  // console.log({ searchParams });
-
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // console.log("running");
@@ -83,16 +82,20 @@ FilterMenuProps) => {
     }
   };
 
+  useClickOutside(formRef, () => {
+    if (!isFilterOpen) return;
+    toggleFilter();
+  });
+
   return (
     <div
-      className={`${
-        isFilterOpen ? "w-screen" : "w-0"
-      } fixed z-50 top-[60px] left-0 transition-all h-screen bg-black bg-opacity-50 flex`}
+      className={`${isFilterOpen ? "w-screen" : "w-0"
+        } fixed z-50 top-[60px] left-0 transition-all h-screen bg-black bg-opacity-50 flex`}
     >
       <aside
-        className={`${
-          isFilterOpen ? "" : "hidden"
-        } w-[80vw] max-w-[400px] max-h-[calc(100vh-60px)] bg-white flex-col relative overflow-y-scroll`}
+        // ref={menuRef}
+        className={`${isFilterOpen ? "" : "hidden"
+          } w-[80vw] max-w-[400px] max-h-[calc(100vh-60px)] bg-white flex-col relative overflow-y-scroll`}
       >
         <form onSubmit={onFormSubmit} ref={formRef}>
           <header className="flex justify-end p-4">

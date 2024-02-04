@@ -9,7 +9,7 @@ import { LuSettings2 } from "react-icons/lu";
 import FilterMenu from "./FilterMenu";
 import Link from "next/link";
 import { createUrl, makeNewParams } from "@/app/_lib/utils";
-// import { MarcaType } from "@/app/_components/types";
+import BreadCrumbs, { TBreadCrumb } from "./BreadCrumbs";
 
 
 type TColor = {
@@ -48,9 +48,6 @@ export type TGafaFilters = {
 
 type FiltersProps = {
   areFiltersActive: boolean;
-  // searchParams: {
-  //   [key: string]: string | string[] | undefined;
-  // };
   marcas: string[];
   coleccionesDeMarca: string[];
   relojFilters: TRelojFilters;
@@ -84,19 +81,31 @@ const Filters = ({
     allParams[param].push(value);
   });
 
-  // console.log("All Params:", allParams);
-
-  // console.log("here", searchParams.values())
-  // const search = searchParams.get("search");
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
-  // const filters = Object.keys(searchParams).map((key) => {
-  //   return key;
-  // });
+  const breadCrumbs: TBreadCrumb[] = []
 
+  const paramOrder = ['type','linea', 'genero', 'marcas']; // the order in which the params should be displayed in the breadcrumbs
 
+  Object.keys(allParams).forEach((key) => {
+    allParams[key].forEach((value: string, index: number) => {
+      if (value === "todos") return;
+      let href = '?';
+      paramOrder.forEach((paramKey) => {
+        if (paramOrder.indexOf(paramKey) > paramOrder.indexOf(key)) return;
+        allParams[paramKey]?.forEach((paramValue: string) => {
+          href += `${encodeURIComponent(paramKey)}=${encodeURIComponent(paramValue)}&`;
+        });
+      });
+      breadCrumbs.push({
+        param: key,
+        label: `${value === "reloj" ? "relojes" : value === "premium" ? "excelencia" : value === "lujo" ? "elite" : value === "gafa" ? "gafas" : value === "perfume" ? "perfumes" : value}`,
+        href: href.slice(0, -1), // remove the trailing '&'
+      });
+    });
+  });
   const sortingOptions: TSortingOption[] = [
     { label: "Recientes", value: "recientes" },
     { label: "Precio: Mayor a Menor", value: "precio_mayor_menor" },
@@ -104,23 +113,26 @@ const Filters = ({
   ];
   return (
     <>
-      <section className="flex flex-col mb-5">
-        <section className="flex gap-3">
-          <Button
-            className="flex items-center gap-2"
-            active={areFiltersActive}
-            onClick={toggleFilter}
-            type="button"
-          >
-            <FiFilter />
-            Filtros
-          </Button>
-          <Button className="flex items-center gap-2 relative" type="button" onClick={() => setIsSortingOpen(!isSortingOpen)} >
-            <LuSettings2 /> Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recients"}
-            <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
-          </Button>
+      <section className="flex flex-col mb-5 max-w-full">
+        <section className="flex gap-3 flex-wrap max-w-full">
+          <section className="flex items-center gap-3 w-full ">
+
+            <Button
+              className="flex items-center gap-2"
+              active={areFiltersActive}
+              onClick={toggleFilter}
+              type="button"
+            >
+              <FiFilter />
+              Filtros
+            </Button>
+            <Button className="flex items-center gap-2 relative overflow-hidden text-ellipsis whitespace-nowrap max-w-full" type="button" onClick={() => setIsSortingOpen(!isSortingOpen)} >
+              <LuSettings2 /> Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recients"}
+              <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
+            </Button>
+          </section>
+          <BreadCrumbs breadCrumbs={breadCrumbs} />
         </section>
-        {/* <BreadCrumbs filters={filters} searchParams={allParams} /> */}
       </section>
       <FilterMenu
         areFiltersActive={areFiltersActive}
