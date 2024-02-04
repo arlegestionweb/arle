@@ -106,7 +106,6 @@ const Filters = ({
       });
     });
   });
-  console.log({ allParams, breadCrumbs })
   const sortingOptions: TSortingOption[] = [
     { label: "Recientes", value: "recientes" },
     { label: "Precio: Mayor a Menor", value: "precio_mayor_menor" },
