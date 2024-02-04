@@ -11,7 +11,7 @@ type BreadCrumbsProps = {
 };
 const BreadCrumbs = ({ breadCrumbs }: BreadCrumbsProps) => {
   return (
-    <section className="flex overflow-x-scroll max-w-[100%]">
+    <section className="flex overflow-x-scroll max-w-[100%] scrollbar-hide">
       <ul className="flex gap-2 items-center">
         <li>
           <Link href={"/listing"} scroll={false} className="whitespace-nowrap">
