@@ -87,17 +87,25 @@ const Filters = ({
 
   const breadCrumbs: TBreadCrumb[] = []
 
+  const paramOrder = ['type', 'genero', 'marcas']; // the order in which the params should be displayed in the breadcrumbs
+
   Object.keys(allParams).forEach((key) => {
-    allParams[key].forEach((value: string) => {
+    allParams[key].forEach((value: string, index: number) => {
       if (value === "todos") return;
+      let href = '?';
+      paramOrder.forEach((paramKey) => {
+        if (paramOrder.indexOf(paramKey) > paramOrder.indexOf(key)) return;
+        allParams[paramKey]?.forEach((paramValue: string) => {
+          href += `${encodeURIComponent(paramKey)}=${encodeURIComponent(paramValue)}&`;
+        });
+      });
       breadCrumbs.push({
         param: key,
         label: `${value === "reloj" ? "relojes" : value === "premium" ? "excelencia" : value === "lujo" ? "elite" : value === "gafa" ? "gafas" : value === "perfume" ? "perfumes" : value}`,
-        href: `?${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+        href: href.slice(0, -1), // remove the trailing '&'
       });
     });
   });
-
   console.log({ allParams, breadCrumbs })
   const sortingOptions: TSortingOption[] = [
     { label: "Recientes", value: "recientes" },
@@ -106,21 +114,24 @@ const Filters = ({
   ];
   return (
     <>
-      <section className="flex flex-col mb-5">
-        <section className="flex gap-3">
-          <Button
-            className="flex items-center gap-2"
-            active={areFiltersActive}
-            onClick={toggleFilter}
-            type="button"
-          >
-            <FiFilter />
-            Filtros
-          </Button>
-          <Button className="flex items-center gap-2 relative" type="button" onClick={() => setIsSortingOpen(!isSortingOpen)} >
-            <LuSettings2 /> Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recients"}
-            <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
-          </Button>
+      <section className="flex flex-col mb-5 max-w-full">
+        <section className="flex gap-3 flex-wrap max-w-full">
+          <section className="flex items-center gap-3 w-full ">
+
+            <Button
+              className="flex items-center gap-2"
+              active={areFiltersActive}
+              onClick={toggleFilter}
+              type="button"
+            >
+              <FiFilter />
+              Filtros
+            </Button>
+            <Button className="flex items-center gap-2 relative overflow-hidden text-ellipsis whitespace-nowrap max-w-full" type="button" onClick={() => setIsSortingOpen(!isSortingOpen)} >
+              <LuSettings2 /> Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recients"}
+              <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
+            </Button>
+          </section>
           <BreadCrumbs breadCrumbs={breadCrumbs} />
         </section>
       </section>

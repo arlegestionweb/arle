@@ -11,24 +11,23 @@ type BreadCrumbsProps = {
 };
 const BreadCrumbs = ({ breadCrumbs }: BreadCrumbsProps) => {
   return (
-    <section className=" flex items-center">
-    <ul className="flex gap-2 items-center ">
-      <li>
-        <Link href={"/listing"} scroll={false}>
-          Productos 
-          {breadCrumbs.length > 0 && " >"} 
-        </Link>
-      </li>
-      {breadCrumbs.map((crumb, index) => (
-        <li key={crumb.param} className="flex items-center gap-1 capitalize">
-          <Link href={`/listing${crumb.href}`} scroll={false}>
-            {crumb.label.toLowerCase()} {index < breadCrumbs.length - 1 ? ' >' : ''}
-
+    <section className="flex overflow-x-scroll max-w-[100%]">
+      <ul className="flex gap-2 items-center">
+        <li>
+          <Link href={"/listing"} scroll={false} className="whitespace-nowrap">
+            Productos
+            {breadCrumbs.length > 0 && " >"}
           </Link>
         </li>
-      ))}
-    </ul>
-  </section>
+        {breadCrumbs.map((crumb, index) => (
+          <li key={crumb.param} className="flex items-center gap-1 capitalize">
+            <Link href={`/listing${crumb.href}`} scroll={false} className="whitespace-nowrap">
+              {crumb.label.toLowerCase()} {index < breadCrumbs.length - 1 ? ' >' : ''}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 };
 
