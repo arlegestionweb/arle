@@ -60,6 +60,8 @@ const CardLayout = ({
     quantity: number = 1
   ) => {
     addItem({
+      discountType: "none",
+      originalPrice: 1999,
       productId: producto._id,
       variantId: selectedVariant.registroInvima,
       price: colombianPriceStringToNumber(selectedVariant.precio),
