@@ -1,7 +1,6 @@
 import { getProductById } from "@/sanity/queries/pages/productPage";
 import Product from "./_components/Product";
 import { unstable_noStore as noStore } from 'next/cache';
-import TimedDiscount from "./_components/TimedDiscount";
 import Main from "@/app/_components/Main";
 
 

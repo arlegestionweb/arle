@@ -2,7 +2,7 @@ import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import { create } from "zustand";
 
 type TRecentlyViewedProductsState = {
-  products: TProduct[];
+  recentlyViewedProducts: TProduct[];
 };
 
 type TRecentlyViewedProductsActions = {
@@ -17,35 +17,40 @@ type TRecentlyViewedProductsStore = TRecentlyViewedProductsState &
 
 export const useRecentlyViewedProductsStore =
   create<TRecentlyViewedProductsStore>((set, get) => ({
-    products: [],
+    recentlyViewedProducts: [],
     addProduct: (product: TProduct) =>
       set((state) => {
-        const newProducts = state.products.filter((p) => p._id !== product._id);
+        const newProducts = state.recentlyViewedProducts.filter(
+          (p) => p._id !== product._id
+        );
         newProducts.unshift(product);
+        const productsToStore = newProducts.slice(0, 6); // Keep only the first 6 products
         localStorage.setItem(
           "recentlyViewedProducts",
-          JSON.stringify(newProducts.slice(0, 5))
+          JSON.stringify(productsToStore)
         );
-        return { products: newProducts.slice(0, 5) };
+        return { recentlyViewedProducts: productsToStore };
       }),
     removeProduct: (product: TProduct) =>
       set((state) => {
-        const newProducts = state.products.filter((p) => p._id !== product._id);
+        const newProducts = state.recentlyViewedProducts.filter(
+          (p) => p._id !== product._id
+        );
         localStorage.setItem(
           "recentlyViewedProducts",
           JSON.stringify(newProducts)
         );
-        return { products: newProducts };
+        return { recentlyViewedProducts: newProducts };
       }),
     clearProducts: () =>
       set(() => {
         localStorage.removeItem("recentlyViewedProducts");
-        return { products: [] };
+        return { recentlyViewedProducts: [] };
       }),
     getProductsFromLocalStorage: () => {
       const products = localStorage.getItem("recentlyViewedProducts");
       if (products) {
-        set(() => ({ products: JSON.parse(products) }));
+        set(() => ({ recentlyViewedProducts: JSON.parse(products) }));
       }
     },
   }));

@@ -112,6 +112,7 @@ export default ({
         .id(recomendadosSchema.name)
         .schemaType(recomendadosSchema.name)
         .documentId(recomendadosSchema.name)
+        .title("Recomendados")
     );
 
   return listItem()

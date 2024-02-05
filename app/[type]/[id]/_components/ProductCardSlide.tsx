@@ -1,23 +1,31 @@
+"use client";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import React, { useEffect, useState } from "react";
-import SuggestionProductCard from "./SuggestionProductCard";
 import { cn } from "@/app/_lib/utils";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import SuggestedProductCard from "./SuggestedProductCard";
 
 type ProductCardSlideProps = {
   nameSection: string;
-  products?: TProduct[]; // for test
+  products: TProduct[]; // for test
 };
 
-export const ProductCardSlide = ({ nameSection }: ProductCardSlideProps) => {
+export const ProductCardSlide = ({ 
+  nameSection, 
+  products 
+}: ProductCardSlideProps) => {
   return (
     <section className="max-w-mx px-0 min-[1024px]:px-10 min-[1280px]:px-0 w-screen py-0 md:py-4 pl-8 lg:flex lg:flex-col">
       {" "}
       <h3 className="text-zinc-800 text-[28px] font-semibold font-crimson leading-loose">
         {nameSection}
       </h3>
-      <SlideMobile products={products} className="flex lg:hidden"/>
-      <SlideDesktop products={products} className="hidden lg:grid"/>
+      {products && products.length > 0 && (
+        <>
+          <SlideMobile products={products} className="flex" />
+          {/* <SlideDesktop products={products} className="hidden lg:grid" /> */}
+        </>
+      )}
     </section>
   );
 };
@@ -33,13 +41,13 @@ const SlideDesktop = ({
   const [productosVisibles, setProductosVisibles] = useState<TProduct[]>([]);
 
   const nextProduct = () => {
-    
+
     setProductosVisibles([])
     setStartIndex(prevIndex => (prevIndex + 1) % products.length);
   };
 
   const prevProduct = () => {
-    
+
     setProductosVisibles([])
     setStartIndex(prevIndex =>
       prevIndex === 0 ? products.length - 4 : prevIndex - 1
@@ -55,9 +63,9 @@ const SlideDesktop = ({
     );
   }, [startIndex]);
 
-
+  console.log({products, productosVisibles})
   return (
-    <section className={cn("relative min-h-[380px]",className)}>
+    <section className={cn("relative min-h-[380px]", className)}>
       <button
         onClick={prevProduct}
         className="absolute z-20 -left-[20px] top-1/3 transform -translate-y-1/2 w-10 h-10 p-[7px] border border-spacing-1 border-neutral-900 opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
@@ -72,7 +80,7 @@ const SlideDesktop = ({
           <li
             key={`${idx}`}
             className="relative bg-white md:m-0 w-full">
-            <SuggestionProductCard producto={product} />
+            <SuggestedProductCard producto={product} />
           </li>
         ))}
       </ul>
@@ -104,7 +112,7 @@ const SlideMobile = ({
           key={product._id}
           className=" w-[159px] mr-4 md:m-0 md:w-72 snap-always snap-center">
           <div className="relative w-[159px] h-auto md:w-[288px]">
-            <SuggestionProductCard producto={product} />
+            <SuggestedProductCard producto={product} />
           </div>
         </li>
       ))}
@@ -112,7 +120,7 @@ const SlideMobile = ({
   );
 };
 
-const products: TProduct[] = [
+const hardCodedProducts: TProduct[] = [
   {
     date: "2023-10-18T13:03:29Z",
     slug: "/perfumePremium/11c45a88-31d6-4582-be96-99192f9a7096",

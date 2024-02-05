@@ -16,6 +16,7 @@ import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import TimedDiscount from "./TimedDiscount";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { useRecentlyViewedProductsStore } from "./recentlyViewedProductsStore";
+import { ProductCardSlide } from "./ProductCardSlide";
 
 export type TPricing = {
   precioConDescuento?: number;
@@ -48,7 +49,7 @@ const Product = ({
     setCantidadState(newCantidad);
   };
 
-  const {addProduct} = useRecentlyViewedProductsStore();
+  const { addProduct, recentlyViewedProducts } = useRecentlyViewedProductsStore();
 
   useEffect(() => {
     addProduct(product)
@@ -144,6 +145,10 @@ const Product = ({
 
         />
       )}
+      <section className="flex flex-col gap-6">
+        <ProductCardSlide nameSection="Vistos recientemente" products={recentlyViewedProducts} />
+        <ProductCardSlide nameSection="Productos Sugeridos" products={recentlyViewedProducts} />
+      </section>
     </>
   );
 };

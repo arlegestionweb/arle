@@ -4,11 +4,10 @@ import InfoSection from "../InfoSection";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
 import ProductSlide, { ProductImage } from "@/app/_components/ProductSlide";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
-import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
 import { TPricing } from "../Product";
-import { ProductCardSlide } from "../ProductCardSlide";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 
 type TGafaLujoProps = {
   product: TGafaLujo;
@@ -137,10 +136,6 @@ const GafaLujo = ({
         pricing={pricing}
       />
 
-      <section className="flex flex-col gap-6">
-        <ProductCardSlide nameSection="Vistos recientemente" />
-        <ProductCardSlide nameSection="Otras personas también vieron" />
-      </section>
     </>
   );
 };
