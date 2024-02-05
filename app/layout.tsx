@@ -38,7 +38,7 @@ const crimson_Text = Crimson_Text({
   variable: "--crimson-text",
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = {  
   title: "Arlé",
   description: "Tienda de accesorios Arlé",
 };
@@ -48,7 +48,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
+  
   const siteSettings = await getSiteSettings()
   return (
     <html lang="en">
