@@ -8,13 +8,14 @@ import PerfumeLujo from "./perfumes/Lujo";
 import PerfumePremium from "./perfumes/Premium";
 import RelojPremium from "./relojes/Premium";
 import RelojLujo from "./relojes/Lujo";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import TimedDiscount from "./TimedDiscount";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
+import { useRecentlyViewedProductsStore } from "./recentlyViewedProductsStore";
 
 export type TPricing = {
   precioConDescuento?: number;
@@ -46,6 +47,12 @@ const Product = ({
 
     setCantidadState(newCantidad);
   };
+
+  const {addProduct} = useRecentlyViewedProductsStore();
+
+  useEffect(() => {
+    addProduct(product)
+  }, [])
 
   const pricing: TPricing = {
     precioConDescuento: selectedVariant.precioConDescuento ? colombianPriceStringToNumber(selectedVariant.precioConDescuento) : undefined,
