@@ -15,14 +15,14 @@ import ProductSlide from "../../_components/ProductSlide";
 import Link from "next/link";
 import Labels, { LabelTypes } from "../../_components/Labels";
 import { useEffect, useState } from "react";
-import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
-import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { useCartStore } from "@/app/_components/cart/store";
 import Precio from "@/app/_components/Precio";
 import { TPricing } from "@/app/[type]/[id]/_components/Product";
 import { TTimedDiscount } from "@/sanity/queries/pages/zodSchemas/general";
+import { TVarianSelectorProps } from "@/app/_components/types/card";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 
 const ProductoCard = ({ producto, discount }: {
   producto: TProduct,
@@ -76,7 +76,6 @@ const ProductoCard = ({ producto, discount }: {
   );
 };
 
-type TVariant = TPerfumeVariant | TVarianteGafa | TRelojVariant;
 
 const CardLayout = ({
   product,
@@ -149,8 +148,8 @@ const CardLayout = ({
           {isPerfume(product)
             ? product.titulo
             : isReloj(product)
-              ? product.modelo
-              : ([] as any)}
+            ? product.modelo
+            : product.modelo}
         </h3>
         <VariantSelector
           product={product}
@@ -179,11 +178,7 @@ const CardLayout = ({
 
 export default ProductoCard;
 
-type TVarianSelectorProps<T extends TProduct> = {
-  product: T;
-  selectedVariant: T["variantes"][0];
-  setSelectedVariant: (variant: T["variantes"][0]) => void;
-};
+
 export const VariantSelector = <T extends TProduct>({
   product,
   setSelectedVariant,

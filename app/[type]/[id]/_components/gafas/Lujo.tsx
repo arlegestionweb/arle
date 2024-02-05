@@ -8,6 +8,7 @@ import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/gene
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
 import { TPricing } from "../Product";
+import { ProductCardSlide } from "../ProductCardSlide";
 
 type TGafaLujoProps = {
   product: TGafaLujo;
@@ -135,6 +136,11 @@ const GafaLujo = ({
         selectedVariant={selectedVariant}
         pricing={pricing}
       />
+
+      <section className="flex flex-col gap-6">
+        <ProductCardSlide nameSection="Vistos recientemente" />
+        <ProductCardSlide nameSection="Otras personas también vieron" />
+      </section>
     </>
   );
 };

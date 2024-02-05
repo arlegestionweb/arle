@@ -7,8 +7,13 @@ import AddToCart from "../AddToCart";
 import PremiumLayout from "@/app/_components/premium/PremiumLayout";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
-import { VariantSelector } from "@/app/listing/_components/ProductCard";
 import { TPricing } from "../Product";
+import ProductoCard, {
+  VariantSelector,
+} from "@/app/listing/_components/ProductCard";
+import { TProduct } from "@/sanity/queries/pages/listingQueries";
+import SuggestionProductCard from "../SuggestionProductCard";
+import { ProductCardSlide } from "../ProductCardSlide";
 
 type TGafaPremiumProps = {
   product: TGafaPremium;
@@ -26,49 +31,61 @@ const GafaPremium = ({
   cantidad,
   setCantidad,
   pricing
-
 }: TGafaPremiumProps) => {
   return (
-    <PremiumLayout product={product} selectedVariant={selectedVariant} pricing={pricing}>
-      <section className="my-2 flex flex-col gap-5">
-        <VariantSelector
+    <>
+      <PremiumLayout
+        product={product}
+        selectedVariant={selectedVariant}
+        pricing={pricing}
+        >
+        <section className="my-2 flex flex-col gap-5">
+          <VariantSelector
+            product={product}
+            selectedVariant={selectedVariant}
+            setSelectedVariant={setSelectedVariant}
+          />
+          <Cantidad
+            cantidad={cantidad}
+            anadirACantidad={() => setCantidad(cantidad + 1)}
+            restarACantidad={() => setCantidad(cantidad - 1)}
+          />
+        </section>
+        <AddToCart
+          pricing={pricing}
           product={product}
+          quantity={cantidad}
           selectedVariant={selectedVariant}
-          setSelectedVariant={setSelectedVariant}
+          className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block"
         />
-        <Cantidad
-          cantidad={cantidad}
-          anadirACantidad={() => setCantidad(cantidad + 1)}
-          restarACantidad={() => setCantidad(cantidad - 1)}
+
+        {product.descripcion ? (
+          <CollapsibleProductSection
+            classNames="mt-2"
+            title="Descripción">
+            <p>{product.descripcion}</p>
+          </CollapsibleProductSection>
+        ) : (
+          <></>
+        )}
+
+        <EspecificacionesGafa product={product} />
+
+        <NuestrasComprasIncluyen garantia={product.garantia} />
+        <AddToCart
+          pricing={pricing}
+          className="lg:hidden"
+          product={product}
+          quantity={cantidad}
+          selectedVariant={selectedVariant}
         />
+      </PremiumLayout>
+
+      <section className="flex flex-col gap-6">
+        <ProductCardSlide nameSection="Vistos recientemente" />
+        <ProductCardSlide nameSection="Otras personas también vieron" />
       </section>
-      <AddToCart
-        pricing={pricing}
-        product={product}
-        quantity={cantidad}
-        selectedVariant={selectedVariant}
-        className="hidden static shadow-none w-full px-0 gap-6 space-y-2 lg:block"
-      />
-
-      {product.descripcion ? (
-        <CollapsibleProductSection classNames="mt-2" title="Descripción">
-          <p>{product.descripcion}</p>
-        </CollapsibleProductSection>
-      ) : (
-        <></>
-      )}
-
-      <EspecificacionesGafa product={product} />
-
-      <NuestrasComprasIncluyen garantia={product.garantia} />
-      <AddToCart
-        pricing={pricing}
-        className="lg:hidden"
-        product={product}
-        quantity={cantidad}
-        selectedVariant={selectedVariant}
-      />
-    </PremiumLayout>
+    </>
   );
 };
 
@@ -83,16 +100,24 @@ const EspecificacionesGafa = ({ product }: TEspecificacionesProps) => {
     <CollapsibleProductSection
       classNames="mt-2"
       title="Especificaciones"
-      titleActive
-    >
+      titleActive>
       <div className="grid grid-cols-2 gap-2">
-        <SeccionEspecificaciones title="Modelo" paragraph={product.modelo} />
-        <SeccionEspecificaciones title="Género" paragraph={product.genero} />
+        <SeccionEspecificaciones
+          title="Modelo"
+          paragraph={product.modelo}
+        />
+        <SeccionEspecificaciones
+          title="Género"
+          paragraph={product.genero}
+        />
         <SeccionEspecificaciones
           title="Forma de Montura"
           paragraph={product.detalles.montura.formaDeLaMontura}
         />
-        <SeccionEspecificaciones title="Marca" paragraph={product.marca} />
+        <SeccionEspecificaciones
+          title="Marca"
+          paragraph={product.marca}
+        />
         <SeccionEspecificaciones
           title="Tipo"
           paragraph={product.detalles.tipoDeGafa}

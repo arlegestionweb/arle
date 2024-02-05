@@ -54,7 +54,7 @@ const ProductGrid = ({
     <section className={cn("relative col-span-6 pb-7", className)}>
       <div className={cn("grid grid-cols-[repeat(2,minmax(200px,1fr))] overflow-y-scroll no-scrollbar overflow-hidden w-full gap-[10px] justify-start h-auto ", product.length > 4 && "h-[1155px]")}>
         {product.length > 4 && (
-          <div className="absolute right-[0px] top-[calc(1155px-85px)] max-w-[100%] w-[40vw] z-10 h-[85px] bg-gradient-to-b from-transparent to-[#00000080] opacity-70"></div>
+          <div className="absolute right-[0px] top-[calc(1155px-85px)] max-w-[100%] w-[100%] z-10 h-[85px] bg-gradient-to-b from-transparent to-[#00000080] opacity-70"></div>
         )}
 
         {product.map(image => (
