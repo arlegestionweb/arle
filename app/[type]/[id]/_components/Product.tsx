@@ -29,11 +29,13 @@ export type TPricing = {
 const Product = ({
   params,
   product,
-  discount
+  discount,
+  recommendedProducts
 }: {
   params: TParams;
   product: TProduct;
   discount?: TTimedDiscount;
+  recommendedProducts?: TProduct[];
 }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
     product.variantes[0]
@@ -49,9 +51,14 @@ const Product = ({
     setCantidadState(newCantidad);
   };
 
-  const { addProduct, recentlyViewedProducts } = useRecentlyViewedProductsStore();
+  const { addProduct, recentlyViewedProducts, getProductsFromLocalStorage } = useRecentlyViewedProductsStore();
 
   useEffect(() => {
+    const fetchRecentlyViewedProductsFromLocalStorage = async () =>{
+      return await getProductsFromLocalStorage();
+    };
+
+    fetchRecentlyViewedProductsFromLocalStorage();
     addProduct(product)
   }, [])
 
@@ -146,8 +153,8 @@ const Product = ({
         />
       )}
       <section className="flex flex-col gap-6">
+        <ProductCardSlide nameSection="Productos Sugeridos" products={recommendedProducts || []} />
         <ProductCardSlide nameSection="Vistos recientemente" products={recentlyViewedProducts} />
-        <ProductCardSlide nameSection="Productos Sugeridos" products={recentlyViewedProducts} />
       </section>
     </>
   );

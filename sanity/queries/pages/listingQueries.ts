@@ -103,11 +103,15 @@ const zodRelojListingQuery = z.discriminatedUnion("_type", [
   relojLujoSchema,
 ]);
 
-const zodProduct = z.union([
+export const zodProduct = z.union([
   zodPerfumeListingQuery,
   zodRelojListingQuery,
   zodGafaListingQuery,
 ]);
+
+export const recommendedProductsSchema = z.object({
+  productos: z.array(zodProduct),
+});
 
 export type TPerfume = z.infer<typeof zodPerfumeListingQuery>;
 export type TReloj = z.infer<typeof zodRelojListingQuery>;
@@ -180,4 +184,46 @@ export const getTimedDiscountByProductId = async (productId: string) => {
   );
 
   return { discount: activeDiscounts?.[0]};
+};
+
+export const getRecommendedProducts = async () => {
+  try {
+    const result = await sanityClient.fetch(`*[_type == "recomendados"][0]{
+      "productos": productos[]->{
+        "marca": marca->titulo,
+        "date": createdAt, 
+        _type,
+        _type == "perfumeLujo" =>
+          ${productQuery.perfumeLujo}
+        ,
+        _type == "perfumePremium" =>
+          ${productQuery.perfumePremium}
+        ,
+        _type == "relojesLujo" =>
+          ${productQuery.relojesLujo}
+        ,
+        _type == "relojesPremium" =>
+          ${productQuery.relojesPremium}
+        ,
+        _type == "gafasLujo" =>
+          ${productQuery.gafasLujo}
+        ,
+        _type == "gafasPremium" =>
+          ${productQuery.gafasPremium}
+      }  
+    }`);
+
+    const parsedResult = recommendedProductsSchema.safeParse(result);
+
+    if (!parsedResult.success) {
+      throw new Error(parsedResult.error.message);
+    }
+
+
+
+
+    return parsedResult.data;
+  } catch (error) {
+    console.error(error);
+  }
 };

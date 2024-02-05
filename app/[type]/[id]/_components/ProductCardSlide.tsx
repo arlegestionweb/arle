@@ -63,7 +63,6 @@ const SlideDesktop = ({
     );
   }, [startIndex]);
 
-  console.log({products, productosVisibles})
   return (
     <section className={cn("relative min-h-[380px]", className)}>
       <button

@@ -1,5 +1,5 @@
 import sanityClient from "@/sanity/sanityClient";
-import { bannersQuery, imageQuery } from "../objects";
+import { imageQuery } from "../objects";
 
 // TODO debe ser objeto 
 const homepageQueryString = `*[_type == "homepage"]{
