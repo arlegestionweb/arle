@@ -113,7 +113,6 @@ export const getHomepageContent = async () => {
     const result = await sanityClient.fetch(homepageQueryString);
 
     const parsedResult = zodHomepageSchema.safeParse(result);
-    console.log(parsedResult);
     if(!parsedResult.success){
       throw new Error(parsedResult.error.message);
     }
