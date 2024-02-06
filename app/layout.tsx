@@ -12,7 +12,7 @@ import Navbar from "./_components/navbar";
 import Footer from "./_components/Footer";
 import { headers } from "next/headers";
 import Cart from "./_components/cart";
-import { getSiteSettings, getMetadata } from "@/sanity/queries/siteSettings";
+import { getSiteSettings, getSiteSettingsMetadata } from "@/sanity/queries/siteSettings";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -40,7 +40,7 @@ const crimson_Text = Crimson_Text({
 
 export async function generateMetadata(){
   // fetch data
-  const Metadata = await getMetadata()
+  const Metadata = await getSiteSettingsMetadata()
   // optionally access and extend (rather than replace) parent metadata
  
   return {

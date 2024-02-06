@@ -14,6 +14,7 @@ import Banner from "../_components/homepage/Banner";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { unstable_noStore as noStore } from 'next/cache';
 import Main from "../_components/Main";
+import { Metadata } from "next";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -31,11 +32,8 @@ const sortingFunctions: Record<TSortingOption['value'], (a: TProduct, b: TProduc
     return lowestPriceA - lowestPriceB;
   }
 };
-
-export function generateMetadata(){
-  return{
-    title: 'Arlé | Productos'
-  }
+export const metadata: Metadata = {
+  title: 'Arlé | Productos',
 }
 
 const Listing = async ({

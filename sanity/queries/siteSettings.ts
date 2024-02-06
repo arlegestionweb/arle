@@ -32,7 +32,7 @@ export const getSiteSettings = async () => {
   }
 };
 
-export const getMetadata = async () => {
+export const getSiteSettingsMetadata = async () => {
     try {
       const result = await sanityClient.fetch(`
         *[_type == "configuracion"][0]{
