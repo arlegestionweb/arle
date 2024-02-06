@@ -7,6 +7,7 @@ import { gafasLujoSchema, gafasPremiumSchema } from "./zodSchemas/gafas";
 import { perfumeLujoSchema, perfumePremiumSchema } from "./zodSchemas/perfume";
 import { relojLujoSchema, relojPremiumSchema } from "./zodSchemas/reloj";
 import { zodColorSchema, zodTimedDiscountsSchema } from "./zodSchemas/general";
+import { zodHomeSectionSchema } from "./homepageQuery";
 
 const listingMainString = ` 
 {
@@ -102,6 +103,8 @@ const zodRelojListingQuery = z.discriminatedUnion("_type", [
   relojPremiumSchema,
   relojLujoSchema,
 ]);
+
+export const zodCollectionsWithoutProducts = z.array(zodHomeSectionSchema);
 
 export const zodProduct = z.union([
   zodPerfumeListingQuery,

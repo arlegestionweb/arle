@@ -10,6 +10,7 @@ export const siteSettings = defineType({
     {
       name: "general",
       title: "General",
+      default: true,
     },
     {
       name: "legal",
@@ -27,31 +28,22 @@ export const siteSettings = defineType({
     defineField({
       name: "descripcion",
       title: "Descripción del sitio",
+      group: "general",
       type: "text",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "marcaPromocionada",
       title: "Marca Promocionada",
+      group: "general",
       type: "reference",
       to: [{ type: "marca" }],
     }),
     defineField({
-      name: "navbarBanner",
-      title: "Banner Navbar",
-      type: "object",
-      fields: [
-        defineField({
-          name: "imagen",
-          title: "Imagen",
-          type: "imagenObject",
-        }),
-      ]
-    }),
-    defineField({
-      type: "array",
       name: "linksSociales",
       title: "Links Sociales",
+      group: "general",
+      type: "array",
       of: [
         defineArrayMember({
           name: "link",
@@ -73,38 +65,46 @@ export const siteSettings = defineType({
       ],
     }),
     defineField({
-      name: "terminosCondiciones",
-      title: "Términos y condiciones",
-      type: "url",
+      name: "legal",
+      title: "Legal",
       group: "legal",
-    }),
-    defineField({
-      name: "politicasPrivacidad",
-      title: "Políticas y Privacidad",
-      type: "url",
-      group: "legal",
-    }),
-    defineField({
-      name: "garantiasCambiosDevoluciones",
-      title: "Garantias, Cambios y Devoluciones",
-      type: "url",
-      group: "legal",
-    }),
-    defineField({
-      name: "politicasEnvio",
-      title: "Políticas de envío",
-      type: "url",
-      group: "legal",
-    }),
-    defineField({
-      name: "politicasCookies",
-      title: "Políticas Cookies",
-      type: "url",
-      group: "legal",
+      type: "object",
+      fields: [
+        defineField({
+          name: "terminosCondiciones",
+          title: "Términos y condiciones",
+          type: "array",
+          of: [{type: "block"}],
+        }),
+        defineField({
+          name: "politicasPrivacidad",
+          title: "Políticas y Privacidad",
+          type: "array",
+          of: [{type: "block"}],
+        }),
+        defineField({
+          name: "garantiasCambiosDevoluciones",
+          title: "Garantias, Cambios y Devoluciones",
+          type: "array",
+          of: [{type: "block"}],
+        }),
+        defineField({
+          name: "politicasEnvio",
+          title: "Políticas de envío",
+          type: "array",
+          of: [{type: "block"}],
+        }),
+        defineField({
+          name: "politicasCookies",
+          title: "Políticas Cookies",
+          type: "array",
+          of: [{type: "block"}],
+        }),
+      ],
     }),
     defineField({
       name: "mostrarCodigoDeDescuento",
-      title: "Mostrar código de descuento",
+      title: "Mostrar códigos de descuento",
       type: "boolean",
       initialValue: false,
       group: "general",

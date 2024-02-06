@@ -12,7 +12,7 @@ import Navbar from "./_components/navbar";
 import Footer from "./_components/Footer";
 import { headers } from "next/headers";
 import Cart from "./_components/cart";
-import { getSiteSettings } from "@/sanity/queries/siteSettings";
+import { getSiteSettings, getSiteSettingsMetadata } from "@/sanity/queries/siteSettings";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -38,17 +38,23 @@ const crimson_Text = Crimson_Text({
   variable: "--crimson-text",
 });
 
-export const metadata: Metadata = {
-  title: "Arlé",
-  description: "Tienda de accesorios Arlé",
-};
+export async function generateMetadata(){
+  // fetch data
+  const Metadata = await getSiteSettingsMetadata()
+  // optionally access and extend (rather than replace) parent metadata
+ 
+  return {
+    title: Metadata?.titulo,
+    description: Metadata?.descripcion,
+  }
+}
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
+  
   const siteSettings = await getSiteSettings()
   return (
     <html lang="en">

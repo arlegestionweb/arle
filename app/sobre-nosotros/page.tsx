@@ -1,8 +1,13 @@
 import { getSobreNosotrosContent } from "@/sanity/queries/pages/sobreNosotrosQueries";
 import Image from "next/image";
 import Main from "../_components/Main";
+import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: 'Arlé | Sobre Nosotros',
+}
 
 const Page = async () => {
   const pageContent = await getSobreNosotrosContent();

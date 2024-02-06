@@ -1,9 +1,9 @@
-import { TColecciones } from "@/sanity/queries/pages/listingQueries";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "../_lib/utils";
+import { THomeSection } from "@/sanity/queries/pages/homepageQuery";
 
-type ColeccionesProps = { colecciones: TColecciones, className?: string }
+type ColeccionesProps = { colecciones: THomeSection[], className?: string }
 
 const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
   return (
@@ -12,7 +12,7 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
         Colecciones
       </h2>
       <ul className="no-scrollbar pb-2 flex justify-start gap-4 px-8 max-w-full overflow-x-scroll overflow-y-hidden">
-        {colecciones.map((coleccion) => (
+        {colecciones?.map((coleccion) => (
           <li
             key={coleccion.titulo}
             className="w-[159px] snap-always snap-center"

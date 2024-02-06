@@ -3,7 +3,6 @@ import HeroBanner from "./_components/homepage/HeroBanner";
 import ExploreSection from "./_components/homepage/ExploreSection";
 import Colecciones from "./_components/Colecciones";
 import AboutArle from "./_components/homepage/AboutArle";
-import Button from "./_components/Button";
 import { unstable_noStore as noStore } from 'next/cache';
 import Asesoria from "./_components/homepage/Asesoria";
 
@@ -12,6 +11,7 @@ const Home = async function () {
   noStore();
   const pageContent = await getHomepageContent();
 
+  if(!pageContent) return null;
 
   const exploreSections = [
     pageContent.perfumes,

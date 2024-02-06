@@ -3,8 +3,13 @@ import { toKebabCase } from "@/utils/helpers";
 import Image from "next/image";
 import Link from "next/link";
 import Main from "../_components/Main";
+import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: 'Arlé | Trabaja con Nosotros',
+}
 
 const Page = async () => {
 

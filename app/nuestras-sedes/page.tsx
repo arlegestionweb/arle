@@ -4,8 +4,13 @@ import Map from "./_components/Map";
 import Link from "next/link";
 import { toKebabCase } from "@/utils/helpers";
 import Main from "../_components/Main";
+import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: 'Arlé | Nuestras Sedes',
+}
 
 const Page = async () => {
 
