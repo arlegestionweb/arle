@@ -6,6 +6,11 @@ const zodConfigSchema = z.object({
   mostrarCodigoDeDescuento: z.boolean(),
 });
 
+const zodMetaSchema = z.object({
+  titulo: z.string(),
+  descripcion: z.string(),
+})
+
 export const getSiteSettings = async () => {
   try {
     const result = await sanityClient.fetch(`
@@ -26,3 +31,24 @@ export const getSiteSettings = async () => {
     console.error(error);
   }
 };
+
+export const getMetadata = async () => {
+    try {
+      const result = await sanityClient.fetch(`
+        *[_type == "configuracion"][0]{
+          titulo,
+          descripcion,
+        }
+      `);
+  
+      const parsedResult = zodMetaSchema.safeParse(result);
+  
+      if (!parsedResult.success) {
+        throw new Error(parsedResult.error.message);
+      }
+  
+      return parsedResult.data;
+    } catch (error) {
+      console.error(error);
+    }
+}

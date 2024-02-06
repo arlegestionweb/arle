@@ -32,6 +32,12 @@ const sortingFunctions: Record<TSortingOption['value'], (a: TProduct, b: TProduc
   }
 };
 
+export function generateMetadata(){
+  return{
+    title: 'Arlé | Productos'
+  }
+}
+
 const Listing = async ({
   searchParams,
 }: {

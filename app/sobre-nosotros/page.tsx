@@ -4,6 +4,12 @@ import Main from "../_components/Main";
 
 export const dynamic = "force-dynamic";
 
+export function generateMetadata(){
+  return{
+    title: 'Arlé | Sobre Nosotros'
+  }
+}
+
 const Page = async () => {
   const pageContent = await getSobreNosotrosContent();
   if (!pageContent) {
