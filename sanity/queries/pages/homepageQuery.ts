@@ -4,7 +4,7 @@ import { z } from "zod";
 import { imageSchema, videoSchema } from "./zodSchemas/general";
 
 
-const zodHomeSectionSchema = z.object({
+export const zodHomeSectionSchema = z.object({
   titulo: z.string(),
   descripcion: z.string(),
   imagen: imageSchema,

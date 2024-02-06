@@ -1,6 +1,7 @@
 import {
   TProduct,
   getListingInitialLoadContent,
+  zodCollectionsWithoutProducts,
 } from "@/sanity/queries/pages/listingQueries";
 import Productos from "./_components/Productos";
 import Colecciones from "../_components/Colecciones";
@@ -15,6 +16,7 @@ import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { unstable_noStore as noStore } from 'next/cache';
 import Main from "../_components/Main";
 import { Metadata } from "next";
+import { zodHomeSectionSchema } from "@/sanity/queries/pages/homepageQuery";
 
 // export const revalidate = 10; // revalidate at most every hour
 
@@ -820,9 +822,9 @@ const Listing = async ({
 
   const coleccionesDeMarca = getAllColeccionesDeMarca(filteredProducts);
 
-
-
   const sortedProducts = [...filteredProducts]?.sort(sortingFunctions[sortSeleccionado as TSortingOption['value']]);
+
+  const parsedCollections = zodCollectionsWithoutProducts.safeParse(colecciones);
 
   return (
     <Main extraClasses=" lg:mb-[100vh] bg-color-bg-surface-0-default min-h-screen pt-[60px]">
@@ -833,7 +835,7 @@ const Listing = async ({
 
       {!coleccionSeleccionada ? (
         <Colecciones
-          colecciones={colecciones ?? []}
+          colecciones={parsedCollections.success ? parsedCollections.data : []}
         />
       ) : (
         <h2 className="text-3xl font-bold capitalize">
