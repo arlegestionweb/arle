@@ -6,9 +6,8 @@ import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import DetallesProducto from "@/app/_components/lujo/DetallesProduct";
 import HeroProduct from "@/app/_components/lujo/HeroProduct";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
-import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
-import { ProductCardSlide } from "../ProductCardSlide";
 
 type TPerfumeLujoProps = {
   product: TPerfumeLujo;
@@ -100,11 +99,6 @@ const PerfumeLujo = ({
         quantity={cantidad}
         selectedVariant={selectedVariant}
       />
-
-      <section className="flex flex-col gap-6">
-        <ProductCardSlide nameSection="Vistos recientemente" />
-        <ProductCardSlide nameSection="Otras personas también vieron" />
-      </section>
     </>
   );
 };

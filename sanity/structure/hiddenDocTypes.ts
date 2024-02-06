@@ -1,3 +1,4 @@
+import { codigoDeDescuentosSchema } from "../schemas/documents/codigosDeDescuento";
 import { coleccionesSchema } from "../schemas/documents/colecciones";
 import { descuentosSchema } from "../schemas/documents/descuentos";
 import { colorSchema, paisDeOrigenSchema } from "../schemas/documents/documentosVarios";
@@ -64,6 +65,7 @@ export const hiddenDocTypes = (listItem: any) => {
     materialDeLaVarillaSchema.name,
     nuestrasSedesSchema.name,
     trabajaConNosotrosSchema.name,
-    sedeSchema.name
+    sedeSchema.name,
+    codigoDeDescuentosSchema.name
   ].includes(listItem.getId());
 };

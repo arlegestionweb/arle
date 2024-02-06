@@ -8,13 +8,15 @@ import PerfumeLujo from "./perfumes/Lujo";
 import PerfumePremium from "./perfumes/Premium";
 import RelojPremium from "./relojes/Premium";
 import RelojLujo from "./relojes/Lujo";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import TimedDiscount from "./TimedDiscount";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
+import { useRecentlyViewedProductsStore } from "./recentlyViewedProductsStore";
+import { ProductCardSlide } from "./ProductCardSlide";
 
 export type TPricing = {
   precioConDescuento?: number;
@@ -27,11 +29,13 @@ export type TPricing = {
 const Product = ({
   params,
   product,
-  discount
+  discount,
+  recommendedProducts
 }: {
   params: TParams;
   product: TProduct;
   discount?: TTimedDiscount;
+  recommendedProducts?: TProduct[];
 }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
     product.variantes[0]
@@ -46,6 +50,17 @@ const Product = ({
 
     setCantidadState(newCantidad);
   };
+
+  const { addProduct, recentlyViewedProducts, getProductsFromLocalStorage } = useRecentlyViewedProductsStore();
+
+  useEffect(() => {
+    const fetchRecentlyViewedProductsFromLocalStorage = async () =>{
+      return await getProductsFromLocalStorage();
+    };
+
+    fetchRecentlyViewedProductsFromLocalStorage();
+    addProduct(product)
+  }, [])
 
   const pricing: TPricing = {
     precioConDescuento: selectedVariant.precioConDescuento ? colombianPriceStringToNumber(selectedVariant.precioConDescuento) : undefined,
@@ -137,6 +152,10 @@ const Product = ({
 
         />
       )}
+      <section className="flex flex-col gap-6">
+        <ProductCardSlide nameSection="Productos Sugeridos" products={recommendedProducts || []} />
+        <ProductCardSlide nameSection="Vistos recientemente" products={recentlyViewedProducts} />
+      </section>
     </>
   );
 };

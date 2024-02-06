@@ -6,14 +6,11 @@ import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
 import PremiumLayout from "@/app/_components/premium/PremiumLayout";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
-import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
-import ProductoCard, {
+import {
   VariantSelector,
 } from "@/app/listing/_components/ProductCard";
-import { TProduct } from "@/sanity/queries/pages/listingQueries";
-import SuggestionProductCard from "../SuggestionProductCard";
-import { ProductCardSlide } from "../ProductCardSlide";
 
 type TGafaPremiumProps = {
   product: TGafaPremium;
@@ -81,10 +78,6 @@ const GafaPremium = ({
         />
       </PremiumLayout>
 
-      <section className="flex flex-col gap-6">
-        <ProductCardSlide nameSection="Vistos recientemente" />
-        <ProductCardSlide nameSection="Otras personas también vieron" />
-      </section>
     </>
   );
 };

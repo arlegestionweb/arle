@@ -9,7 +9,6 @@ import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
-import { ProductCardSlide } from "../ProductCardSlide";
 
 type TRelojPremiumProps = {
   product: TRelojPremium;
@@ -75,10 +74,6 @@ const RelojPremium = ({
           className="lg:hidden"
         />
       </PremiumLayout>
-      <section className="flex flex-col gap-6">
-        <ProductCardSlide nameSection="Vistos recientemente" />
-        <ProductCardSlide nameSection="Otras personas también vieron" />
-      </section>
     </>
   );
 };

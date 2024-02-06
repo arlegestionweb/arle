@@ -6,10 +6,9 @@ import CollapsibleProductSection from "../CollapsibleSection";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import SeccionEspecificaciones from "../SeccionEspecificaciones";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
-import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
-import { ProductCardSlide } from "../ProductCardSlide";
 
 type TPerfumePremiumProps = {
   product: TPerfumePremium;
@@ -74,10 +73,6 @@ const PerfumePremium = ({
         />
       </PremiumLayout>
 
-      <section className="flex flex-col gap-6">
-        <ProductCardSlide nameSection="Vistos recientemente" />
-        <ProductCardSlide nameSection="Otras personas también vieron" />
-      </section>
     </>
   );
 };

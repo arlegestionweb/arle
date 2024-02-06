@@ -17,9 +17,8 @@ import { colombianPriceStringToNumber } from "@/utils/helpers";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { LuShoppingCart } from "react-icons/lu";
 
-const SuggestionProductCard = ({ producto }: { producto: TProduct }) => {
+const SuggestedProductCard = ({ producto }: { producto: TProduct }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
     producto.variantes[0]
   );
@@ -133,4 +132,4 @@ const CardLayout = ({
   );
 };
 
-export default SuggestionProductCard;
+export default SuggestedProductCard;
