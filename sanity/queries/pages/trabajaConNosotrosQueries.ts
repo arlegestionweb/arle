@@ -63,7 +63,7 @@ const sedeSchema = z.object({
   direccion: z.string(),
 });
 
-const baseBlockSchema = z
+export const baseBlockSchema = z
 .object({
   _type: z.string(),
     _key: z.string(),

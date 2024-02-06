@@ -2,15 +2,11 @@
 import React, { useRef, useState } from "react";
 import GradientImage from "../GradientImage";
 import { cn } from "@/app/_lib/utils";
-import { TBanner } from "@/sanity/queries/pages/listingQueries";
 import Link from "next/link";
+import { THeroSection } from "@/sanity/queries/pages/homepageQuery";
 
 type BannerProps = {
-    content: {
-        titulo: string,
-        subtitulo: string,
-        banners: TBanner[];
-    }
+    content: THeroSection,
   className?: string;
 };
 
@@ -49,7 +45,7 @@ const Banner = ({ content, className }: BannerProps) => {
         onScroll={handleScroll}
         ref={bannerRef}>
         {content.banners.map((banner, index) => (
-          <React.Fragment key={index + banner?.titulo}>
+          <React.Fragment key={index + banner.imagen.alt}>
             {banner.imagen && (
               <GradientImage
                 src={banner.imagen.url}
