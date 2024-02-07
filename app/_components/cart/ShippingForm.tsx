@@ -1,26 +1,28 @@
+
+
 const ShippingForm = () => {
   const availableCountries = ["Colombia"];
   return (
-    <form className="flex flex-col gap-4">
+    <section className="flex flex-col gap-4" >
       <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
         Información de envío
       </h3>
 
       <InputComponent
-        name="nombre"
+        name="name"
         placeholder="Daniel Guillermo Bustidas"
         title="Nombre completo"
       />
 
       <InputComponent
-        name="identificacion"
+        name="id"
         placeholder="123456789"
         title="Identificación"
         type="id"
       />
 
       <InputComponent
-        name="telefono"
+        name="phone"
         placeholder="3001234567"
         title="Teléfono"
         type="number"
@@ -48,30 +50,31 @@ const ShippingForm = () => {
           title="Código Postal"
         />
       </div>
+        <InputComponent name="departamento" placeholder="Valle del Cauca" title="Departamento" />
       <InputComponent
         name="direccion"
         placeholder="Cra. 98 #16-200"
         title="Dirección de envío"
       />
-    </form>
+    </section>
   );
 };
 
 type TInputComponent =
   | {
-      name: string;
-      type?: "text" | "number" | "id" | "email";
-      title?: string;
-      placeholder: string;
-      options?: string[];
-    }
+    name: string;
+    type?: "text" | "number" | "id" | "email";
+    title?: string;
+    placeholder: string;
+    options?: string[];
+  }
   | {
-      name: string;
-      type?: "select";
-      title?: string;
-      placeholder?: string;
-      options: string[]; // This prop is required when type is "pais"
-    };
+    name: string;
+    type?: "select";
+    title?: string;
+    placeholder?: string;
+    options: string[]; // This prop is required when type is "pais"
+  };
 
 const InputComponent = ({
   name,
