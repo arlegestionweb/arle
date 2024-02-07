@@ -7,11 +7,15 @@ import { usePathname } from "next/navigation";
 import AddedToCartModal from "./AddedToCartModal";
 import { useHideBodyOverflow } from "@/app/_lib/hooks";
 
-import { useEffect, useState } from "react";
 import { useCartStore } from "./store";
 import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
 import { GoChevronLeft } from "react-icons/go";
+import { createInvoice } from "./actions";
+// @ts-ignore
+import { useFormState } from 'react-dom';
+import MenuModal from "../MenuModal";
+import WompiPayButton from "./WompiPayButton";
 
 
 const Cart = ({
@@ -32,6 +36,7 @@ const Cart = ({
     getCartTax
   } = useCartStore((state) => state);
 
+  const [formState, formAction] = useFormState(createInvoice, null);
   useHideBodyOverflow(isCartOpen);
 
   if (pathname.includes("/admin")) return null;
@@ -40,8 +45,10 @@ const Cart = ({
 
   if (!isCartOpen) return null;
 
+  console.log({ formState, useFormState })
+
   return (
-    <section className="bg-white z-[60] overflow-y-scroll w-screen h-screen fixed top-0 left-0 flex flex-col md:flex-row no-scrollbar">
+    <form className="bg-white z-[60] overflow-y-scroll w-screen h-screen fixed top-0 left-0 flex flex-col md:flex-row no-scrollbar" action={formAction}>
       <section className="md:flex-1 pt-16 px-5">
       <button
             className="flex items-center -ml-1 group"
@@ -109,12 +116,13 @@ const Cart = ({
           </div>
           <div className="self-stretch h-px bg-stone-300" />
 
-          <div className="flex w-full justify-between">
+          <label className="flex w-full justify-between">
+            <input hidden type="text" name="total" value={getCartTotal()} />
             <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
               Total
             </h5>
             <span>${numberToColombianPriceString(getCartTotal())}</span>
-          </div>
+          </label>
           <Button
             // onClick={() => addToCart(product, selectedVariant)}
             labelType={"dark"}
@@ -124,9 +132,19 @@ const Cart = ({
               $ Ir a pagar
             </span>
           </Button>
+          {formState && formState.error ? (
+            <p className="text-red-500 text-sm">{JSON.parse(formState.error)[0].message}</p>
+          ) : (
+            <MenuModal isMenuOpen={!!formState}>
+              <div className=" relative z-10 h-full w-full grid place-content-center ">
+
+                <WompiPayButton amount={getCartTotal()} reference={"something-uniquer-and-uniquous"} redirectUrl="http://localhost:3000/success/something-uniquer-and-uniquous" />
+              </div>
+            </MenuModal>
+          )}
         </section>
       </section>
-    </section>
+    </form>
   );
 };
 

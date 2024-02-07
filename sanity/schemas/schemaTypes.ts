@@ -26,6 +26,7 @@ import { imageObjectSchema, videoObjectSchema } from "./objects/image";
 import { contentSchema } from "./objects/contentSchema";
 import { citySchema, nuestrasSedesSchema, sedeSchema } from "./pages/nuestrasSedesSchema";
 import { trabajaConNosotrosSchema } from "./pages/trabajaConNosotrosSchema";
+import { ordersSchema } from "./orders";
 
 export const schemaTypes = [
   siteSettings,
@@ -75,6 +76,7 @@ export const schemaTypes = [
   codigoDeDescuentosSchema,
   sedeSchema,
   citySchema,
+  ordersSchema,
 
 
   // objects
