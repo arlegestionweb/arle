@@ -65,6 +65,8 @@ const nuestrasSedesSchema = z.object({
   sedes: z.array(sedeSchema),
 });
 
+export type TNuestrasSedesSchema = z.infer<typeof nuestrasSedesSchema>;
+
 export const getNuestrasSedesContent = async () => {
   try {
     const data = await sanityClient.fetch(nuestrasSedesQuery);

@@ -165,7 +165,7 @@ export const etiquetaSchema = defineField({
   title: "Etiqueta",
   type: "string",
   options: {
-    list: ["nuevo", "mas vendido", "ultimas unidades", "agotado", "super descuento"],
+    list: ["Nuevo", "Mas Vendido", "Ultimas Unidades", "Agotado", "Super Descuento"],
   },
 });
 

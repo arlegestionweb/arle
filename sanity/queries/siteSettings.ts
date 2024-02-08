@@ -8,7 +8,7 @@ const zodConfigSchema = z.object({
   }).optional().nullable(),
   linksSociales: z.array(
     z.object({
-      titulo: z.string(),
+      redSocial: z.string(),
       url: z.string(),
     })
   ).optional().nullable(),
@@ -22,6 +22,8 @@ const zodConfigSchema = z.object({
   })
 });
 
+export type TSiteSettings = z.infer<typeof zodConfigSchema>;
+
 export const getSiteSettings = async () => {
   try {
     const result = await sanityClient.fetch(`
@@ -30,8 +32,8 @@ export const getSiteSettings = async () => {
       "marcaPromocionada": marcaPromocionada->{
         titulo,
       },
-      "linksSociales": linksSociales[]{
-        titulo,
+      "linksSociales": socialLinks[]{
+        redSocial,
         url,
       },
       mostrarCodigoDeDescuento,
@@ -73,6 +75,7 @@ export const getSiteSettingsMetadata = async () => {
       `);
   
       const parsedResult = zodMetaSchema.safeParse(result);
+
   
       if (!parsedResult.success) {
         throw new Error(parsedResult.error.message);

@@ -40,7 +40,7 @@ export const siteSettings = defineType({
       to: [{ type: "marca" }],
     }),
     defineField({
-      name: "linksSociales",
+      name: "socialLinks",
       title: "Links Sociales",
       group: "general",
       type: "array",
@@ -51,14 +51,19 @@ export const siteSettings = defineType({
           type: "object",
           fields: [
             defineField({
-              name: "titulo",
-              title: "Título",
+              name: "redSocial",
+              title: "Red Social",
               type: "string",
+              options: {
+                list: ["facebook", "X", "WhatsApp", "Instagram", "linkedIn", "YouTube", "TikTok", "Otra" ],
+              },
+              validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: "url",
-              title: "URL",
+              title: "Link",
               type: "url",
+              validation: (Rule) => Rule.required(),
             }),
           ],
         }),
@@ -78,7 +83,7 @@ export const siteSettings = defineType({
         }),
         defineField({
           name: "politicasPrivacidad",
-          title: "Políticas y Privacidad",
+          title: "Políticas de Privacidad",
           type: "array",
           of: [{type: "block"}],
         }),
@@ -96,7 +101,7 @@ export const siteSettings = defineType({
         }),
         defineField({
           name: "politicasCookies",
-          title: "Políticas Cookies",
+          title: "Políticas de Cookies",
           type: "array",
           of: [{type: "block"}],
         }),

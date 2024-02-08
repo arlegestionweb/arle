@@ -11,9 +11,10 @@ import Menu from "../menu";
 
 type NavDesktopProps = {
   className?: string;
+  marca?: string | null;
 };
 
-const DesktopNavBar = ({ className }: NavDesktopProps) => {
+const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const { isCartOpen, toggleCart, items } = useCartStore();
 
@@ -54,7 +55,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
             openNav={() => setIsNavOpen(true)}
             closeNav={() => setIsNavOpen(false)}
           />
-          <Menu isMenuOpen={isNavOpen} setIsMenu={setIsNavOpen} />
+          <Menu isMenuOpen={isNavOpen} setIsMenu={setIsNavOpen} marca={marca} />
 
           {/* <MenuDrawer
             isOpen={isNavOpen}
@@ -65,7 +66,7 @@ const DesktopNavBar = ({ className }: NavDesktopProps) => {
       </section>
       </section>
       <section className="relative z-10">
-        <SubMenuDesktop />
+        <SubMenuDesktop marca={marca} />
       </section>
     </nav>
   );

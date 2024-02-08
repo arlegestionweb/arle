@@ -11,9 +11,10 @@ import Menu from "./menu";
 
 type MobileNavBarProps = {
   className?: string;
+  marca?: string | null;
 };
 
-const MobileNavBar = ({ className }: MobileNavBarProps) => {
+const MobileNavBar = ({ className, marca }: MobileNavBarProps) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const pathname = usePathname();
 
@@ -35,7 +36,7 @@ const MobileNavBar = ({ className }: MobileNavBarProps) => {
           closeNav={() => setIsNavOpen(false)}
         />
 
-        <Menu isMenuOpen={isNavOpen} setIsMenu={setIsNavOpen} />
+        <Menu marca={marca} isMenuOpen={isNavOpen} setIsMenu={setIsNavOpen} />
       </div>
     </nav>
   );

@@ -1,5 +1,4 @@
 import "./globals.css";
-import type { Metadata } from "next";
 import {
   Inter,
   Lora,
@@ -10,9 +9,9 @@ import {
 } from "next/font/google";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/Footer";
-import { headers } from "next/headers";
 import Cart from "./_components/cart";
 import { getSiteSettings, getSiteSettingsMetadata } from "@/sanity/queries/siteSettings";
+import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQueries";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -55,15 +54,20 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   
-  const siteSettings = await getSiteSettings()
+  const siteSettings = await getSiteSettings();
+  const nuestrasSedes = await getNuestrasSedesContent();
+
+
   return (
     <html lang="en">
       <body
         className={`${inter.variable} ${lora.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson_Text.variable} overflow-x-hidden`}>
-        <Navbar />
+        <Navbar marca={siteSettings?.marcaPromocionada && siteSettings.marcaPromocionada.titulo}/>
         <Cart showDiscountCode={siteSettings?.mostrarCodigoDeDescuento || false} />
         {children}
-        <Footer />
+        {siteSettings && nuestrasSedes && (
+          <Footer settings={siteSettings} sedes={nuestrasSedes}/>
+        )}
       </body>
     </html>
   );
