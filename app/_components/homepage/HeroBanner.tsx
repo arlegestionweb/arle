@@ -7,7 +7,7 @@ import { THeroSection } from "@/sanity/queries/pages/homepageQuery";
 
 type BannerProps = {
     content: THeroSection,
-  className?: string;
+  className?: string,
 };
 
 const Banner = ({ content, className }: BannerProps) => {

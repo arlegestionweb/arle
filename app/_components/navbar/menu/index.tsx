@@ -29,7 +29,8 @@ const secondScreenItems: Item[] = [
 type Item = {
   name: string;
 }
-const Menu = ({ isMenuOpen, setIsMenu }: {
+const Menu = ({ marca, isMenuOpen, setIsMenu }: {
+  marca?: string | null;
   isMenuOpen: boolean;
   setIsMenu: (arg0: boolean) => void;
 }) => {
@@ -85,6 +86,7 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
 
         <div style={{ transform: `translateX(-${currentScreen * 100}%)`, transition: 'transform 0.3s ease-out' }}>
           <ModalContent
+            marca={marca}
             currentScreen={currentScreen}
             isMenuOpen={isMenuOpen}
             items={firstScreenItems}
@@ -97,6 +99,7 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
         </div>
         <div style={{ transform: `translateX(-${currentScreen * 100}%)`, transition: 'transform 0.3s ease-out' }}>
           <ModalContent
+            marca={marca}
             currentScreen={currentScreen}
             onBackButtonClick={goBack}
             isMenuOpen={isMenuOpen}
@@ -110,6 +113,7 @@ const Menu = ({ isMenuOpen, setIsMenu }: {
         </div>
         <div style={{ transform: `translateX(-${currentScreen * 100}%)`, transition: 'transform 0.3s ease-out' }}>
           <ModalContent
+            marca={marca}
             currentScreen={currentScreen}
             onBackButtonClick={goBack}
             isMenuOpen={isMenuOpen}

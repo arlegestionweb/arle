@@ -6,6 +6,7 @@ import Button from "../../Button";
 import { useRouter } from "next/navigation";
 
 type ModalContentProps = {
+  marca?: string | null;
   setIsMenu: (arg0: boolean) => void;
   isMenuOpen: boolean;
   title?: string;
@@ -20,7 +21,7 @@ type ModalContentProps = {
   );
 
 
-const ModalContent = ({ selectedItems, currentScreen, setIsMenu, isMenuOpen, title, items, setSelectedItems, subtitle, withBackButton, onBackButtonClick }: ModalContentProps) => {
+const ModalContent = ({ marca, selectedItems, currentScreen, setIsMenu, isMenuOpen, title, items, setSelectedItems, subtitle, withBackButton, onBackButtonClick }: ModalContentProps) => {
   const [productType, gender] = selectedItems.map(item => item.name);
 
   const { push } = useRouter()
@@ -81,17 +82,19 @@ const ModalContent = ({ selectedItems, currentScreen, setIsMenu, isMenuOpen, tit
 
           </ul>
         ) : (
-          <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight">No hay resultados</p>
+          <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight">Cargando...</p>
         )}
       </section>
       <footer className="p-4 flex flex-col gap-6">
-        <Link href={'/about'} className="flex items-center gap-2">
+        <Link href={'/sobre-nosotros'} className="flex items-center gap-2" onClick={() => setIsMenu(false)}>
           <GoArrowUpRight className="w-5 h-5" />
           <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight">Acerca de ARLÉ</p>
         </Link>
-        <Button type="button" className="w-full">
-          <p className="text-black text-base font-medium font-inter leading-normal">Pure White Cologne</p>
-        </Button>
+        {marca && (
+          <Link href={`/listing?marcas=${marca}`} className="w-full flex justify-center border-black border py-1" onClick={() => setIsMenu(false)}>
+          <p className="text-black text-base font-medium font-inter leading-normal">{marca}</p>
+          </Link>
+        )}
       </footer>
     </aside>
   );
