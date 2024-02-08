@@ -1,4 +1,7 @@
+import { BiSolidWatchAlt } from "react-icons/bi";
 import { IoCash } from "react-icons/io5";
+import { PiSunglassesBold } from "react-icons/pi";
+import { TbPerfume } from "react-icons/tb";
 import { defineField, defineType } from "sanity";
 
 const addressSchema = defineField({
@@ -26,6 +29,11 @@ const addressSchema = defineField({
       title: "Código Postal",
       type: "string",
     }),
+    defineField({
+      name: "country",
+      title: "País",
+      type: "string",
+    }),
   ],
 });
 
@@ -36,14 +44,14 @@ export const ordersSchema = defineType({
   icon: IoCash,
   fields: [
     defineField({
-      name: "orderId",
-      title: "Identificación de la orden",
-      type: "string",
-    }),
-    defineField({
       name: "orderDate",
       title: "Fecha de la orden",
       type: "datetime",
+    }),
+    defineField({
+      name: "status",
+      title: "Estado",
+      type: "string",
     }),
     defineField({
       name: "customer",
@@ -86,43 +94,6 @@ export const ordersSchema = defineType({
       ],
     }),
     defineField({
-      name: "items",
-      title: "Items",
-      type: "array",
-      of: [
-        defineField({
-          name: "orderItem",
-          title: "Order Item",
-          type: "object",
-          fields: [
-            defineField({
-              name: "product",
-              title: "Producto",
-              type: "reference",
-              to: [
-                { type: "gafasLujo" },
-                { type: "gafasPremium" },
-                { type: "relojesLujo" },
-                { type: "relojesPremium" },
-                { type: "perfumeLujo" },
-                { type: "perfumePremium" },
-              ],
-            }),
-            defineField({
-              name: "quantity",
-              title: "Cantidad",
-              type: "number",
-            }),
-            defineField({
-              name: "price",
-              title: "Precio",
-              type: "number",
-            }),
-          ],
-        }),
-      ],
-    }),
-    defineField({
       name: "amounts",
       title: "Cantidades",
       type: "object",
@@ -155,11 +126,6 @@ export const ordersSchema = defineType({
       ],
     }),
     defineField({
-      name: "wompiReference",
-      title: "Referencia Wompi",
-      type: "string",
-    }),
-    defineField({
       name: "shipping",
       title: "Envío",
       type: "object",
@@ -171,6 +137,90 @@ export const ordersSchema = defineType({
         }),
         addressSchema,
       ],
+    }),
+
+    defineField({
+      name: "items",
+      title: "Items",
+      type: "array",
+      of: [
+        defineField({
+          name: "orderItem",
+          title: "Order Item",
+          type: "object",
+          fields: [
+            defineField({
+              name: "productId",
+              title: "Producto",
+              type: "reference",
+              to: [
+                { type: "gafasLujo" },
+                { type: "gafasPremium" },
+                { type: "relojesLujo" },
+                { type: "relojesPremium" },
+                { type: "perfumeLujo" },
+                { type: "perfumePremium" },
+              ],
+            }),
+            defineField({
+              name: "quantity",
+              title: "Cantidad",
+              type: "number",
+            }),
+            defineField({
+              name: "price",
+              title: "Precio",
+              type: "number",
+            }),
+            defineField({
+              name: "discountType",
+              title: "Tipo de descuento",
+              type: "string",
+            }),
+            defineField({
+              name: "productType",
+              title: "Tipo de descuento",
+              type: "string",
+            }),
+            defineField({
+              name: "originalPrice",
+              title: "Precio original",
+              type: "number",
+            }),
+            defineField({
+              name: "variantId",
+              title: "ID de la variante",
+              type: "string",
+            }),
+          ],
+          preview: {
+            select: {
+              title: "productId.marca.titulo",
+              quantity: "quantity",
+              productType: "productType",
+            },
+            prepare({ title, productType, quantity }) {
+              const media = productType.includes("perfume")
+                ? TbPerfume
+                : productType.includes("gafa")
+                ? PiSunglassesBold
+                : productType.includes("reloj")
+                ? BiSolidWatchAlt
+                : null;
+              return {
+                title,
+                media,
+                subtitle: `Cantidad: ${quantity}`,
+              };
+            },
+          },
+        }),
+      ],
+    }),
+    defineField({
+      name: "wompiReference",
+      title: "Referencia Wompi",
+      type: "string",
     }),
   ],
 });

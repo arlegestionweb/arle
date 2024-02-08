@@ -1,11 +1,6 @@
 import MenuModal from "../../MenuModal";
-import { IoCloseSharp } from "react-icons/io5";
 import { useEffect, useRef, useState } from "react";
 import { useClickOutside } from "@/app/_lib/hooks";
-import SearchInput from "../SearchInput";
-import Link from "next/link";
-import { GoArrowUpRight } from "react-icons/go";
-import Button from "../../Button";
 import ModalContent from "./ModalContent";
 import { getBrandsByProductTypeAndGender } from "@/sanity/queries/menu";
 
