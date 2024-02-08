@@ -1,19 +1,26 @@
-import { getSiteSettings } from "@/sanity/queries/siteSettings";
+import Main from "@/app/_components/Main";
+import { TLegalSchema, getSiteSettings } from "@/sanity/queries/siteSettings";
 import { PortableText } from "@portabletext/react";
 
-
-const Page = async ({ params }: { params: { type: string } }) => {
-
+const Page = async ({ params }: { params: { type: keyof TLegalSchema } }) => {
+  
   const siteSettings = await getSiteSettings();
 
-return(
-    <section className="flex flex-col gap-3">
-            {params.type}
-            {siteSettings?.legal && (
-                <PortableText value={siteSettings?.legal?.garantiasCambiosDevoluciones} />
-                )}
-    </section>
-)
-}
+  if (!siteSettings?.legal) return null;
+
+  const legalContent = siteSettings.legal[params.type]
+
+  if (!legalContent) return null;
+
+  return (
+    <Main>
+      <section className="flex flex-col gap-3">
+        {siteSettings?.legal &&  params.type in siteSettings.legal && (
+          <PortableText value={legalContent}></PortableText>
+        )}
+      </section>
+    </Main>
+  );
+};
 
 export default Page;

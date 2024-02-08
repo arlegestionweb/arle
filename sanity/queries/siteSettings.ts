@@ -2,6 +2,16 @@ import { z } from "zod";
 import sanityClient from "../sanityClient";
 import { baseBlockSchema } from "./pages/trabajaConNosotrosQueries";
 
+const zodLegalSchema = z.object({
+  terminosCondiciones: z.array(baseBlockSchema).optional().nullable(),
+  politicasPrivacidad: z.array(baseBlockSchema).optional().nullable(),
+  garantiasCambiosDevoluciones: z.array(baseBlockSchema).optional().nullable(),
+  politicasEnvio: z.array(baseBlockSchema).optional().nullable(),
+  politicasCookies: z.array(baseBlockSchema).optional().nullable(),
+})
+
+export type TLegalSchema = z.infer<typeof zodLegalSchema>;
+
 const zodConfigSchema = z.object({
   marcaPromocionada: z.object({
     titulo: z.string(),
@@ -13,14 +23,9 @@ const zodConfigSchema = z.object({
     })
   ).optional().nullable(),
   mostrarCodigoDeDescuento: z.boolean(),
-  legal: z.object({
-    terminosCondiciones: z.array(baseBlockSchema).optional().nullable(),
-    politicasPrivacidad: z.array(baseBlockSchema).optional().nullable(),
-    garantiasCambiosDevoluciones: z.array(baseBlockSchema).optional().nullable(),
-    politicasEnvio: z.array(baseBlockSchema).optional().nullable(),
-    politicasCookies: z.array(baseBlockSchema).optional().nullable(),
-  })
+  legal: zodLegalSchema,
 });
+
 
 export type TSiteSettings = z.infer<typeof zodConfigSchema>;
 
