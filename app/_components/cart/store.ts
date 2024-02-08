@@ -1,25 +1,35 @@
+import { nanoid } from "nanoid";
+import { z } from "zod";
 import { create } from "zustand";
 
 
 const TAX = 0.19;
 
-export type TCartItem = {
-  productId: string;
-  variantId: string;
-  price: number;
-  quantity: number;
-  productType:
-    | "perfumePremium"
-    | "perfumeLujo"
-    | "relojesPremium"
-    | "relojesLujo"
-    | "gafasPremium"
-    | "gafasLujo";
-    discountType: "none" | "timedDiscount" | "discountedPrice";
-    originalPrice: number;
-};
+export const zodCartItem = z.object({
+  productId: z.string(),
+  variantId: z.string(),
+  price: z.number(),
+  quantity: z.number(),
+  productType: z.union([
+    z.literal("perfumePremium"),
+    z.literal("perfumeLujo"),
+    z.literal("relojesPremium"),
+    z.literal("relojesLujo"),
+    z.literal("gafasPremium"),
+    z.literal("gafasLujo"),
+  ]),
+  discountType: z.union([
+    z.literal("none"),
+    z.literal("timedDiscount"),
+    z.literal("discountedPrice"),
+  ]),
+  originalPrice: z.number(),
+});
+
+export type TCartItem = z.infer<typeof zodCartItem>;
 
 type TCartState = {
+  id: string;
   isCartOpen: boolean;
   items: TCartItem[];
   discountCode: {
@@ -44,11 +54,35 @@ type TCartActions = {
   setItemAddedToCart: (item?: TCartItem) => void;
   getCartTotalWithoutDiscountsOrTax: () => number;
   getCartTax: () => number;
+
 };
 
 type TCartStore = TCartState & TCartActions;
 
+const getCartIdFromLocalStorage = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem("cartId");
+  }
+};
+
+// Function to set the cart ID in localStorage
+const setCartIdInLocalStorage = (id: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem("cartId", id);
+  }
+};
+
+// Get the existing cart ID from localStorage, or generate a new one if it doesn't exist
+let cartId = getCartIdFromLocalStorage();
+if (!cartId) {
+  cartId = nanoid();
+  setCartIdInLocalStorage(cartId);
+}
+
+
+
 export const useCartStore = create<TCartStore>((set, get) => ({
+  id: cartId!,
   isAddedToCartModalOpen: false,
   toggleAddedToCartModal: () =>
     set((state) => ({ isAddedToCartModalOpen: !state.isAddedToCartModalOpen })),

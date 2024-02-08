@@ -1,5 +1,4 @@
 import MenuModal from "../../MenuModal";
-import { IoCloseSharp } from "react-icons/io5";
 import { useEffect, useRef, useState } from "react";
 import { useClickOutside } from "@/app/_lib/hooks";
 import SearchInput from "../SearchInput";
