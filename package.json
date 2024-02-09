@@ -11,6 +11,8 @@
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.2",
     "@portabletext/react": "^3.0.7",
+    "@react-email/components": "0.0.14",
+    "@react-email/img": "0.0.7",
     "@sanity/client": "^6.9.1",
     "@sanity/color-input": "^3.1.0",
     "@sanity/icons": "^2.7.0",
@@ -34,6 +36,7 @@
     "react": "18.3.0-canary-2cd19ed1d-20240207",
     "react-dom": "18.3.0-canary-2cd19ed1d-20240207",
     "react-icons": "^4.10.1",
+    "resend": "^3.1.0",
     "sanity": "^3.20.1",
     "sharp": "^0.33.0",
     "tailwind-merge": "^1.14.0",

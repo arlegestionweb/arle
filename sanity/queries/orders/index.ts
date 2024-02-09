@@ -48,7 +48,10 @@ const zodSanityOrderSchema = zodOrderSchema.merge(
     items: z.array(
       zodCartItem.merge(
         z.object({
-          productId: z.string(),
+          productId: z.object({
+            _type: z.literal("reference"),
+            _ref: z.string(),
+          }),
           product: zodProduct,
         })
       )
@@ -56,6 +59,7 @@ const zodSanityOrderSchema = zodOrderSchema.merge(
   })
 );
 
+export type TFrontEndOrderSchema = z.infer<typeof zodSanityOrderSchema>;
 export type TOrderSchema = z.infer<typeof zodOrderSchema>;
 
 export const getOrderById = async (id: string) => {
@@ -70,7 +74,7 @@ export const getOrderById = async (id: string) => {
       shipping,
       "items": items[] {
         ...,
-        "productId": productId -> _id,
+        "productId": productId,
         "product": productId -> {
           "marca": marca->titulo,
           "date": createdAt, 
