@@ -60,10 +60,10 @@ const Banner = ({ content, className }: BannerProps) => {
           </React.Fragment>
         ))}
                 <section className="absolute bottom-20 w-full z-10 self-stretch flex-col justify-center items-center gap-2.5 flex">
-                  <h2 className="self-stretch text-center text-white text-[32px] font-semibold font-lora uppercase leading-[38.40px]">
+                  <h2 className="self-stretch text-center text-white text-[32px] font-semibold uppercase leading-[38.40px]">
                     {content.titulo}
                   </h2>
-                  <p className="text-center text-white text-2xl font-light font-lora leading-[28.80px]">
+                  <p className="text-center text-white text-2xl font-light leading-[28.80px]">
                     {content.subtitulo}
                   </p>
                   <Link className="text-zinc-800 text-lg font-medium leading-[27px] px-20 py-[8.50px] bg-color-bg-surface-1-default" href="/listing" >Explora todos los productos</Link>

@@ -55,7 +55,7 @@ const Banner = ({ banners, className }: BannerProps) => {
                   index === 1 && "snap-mandatory"
                 } min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`}>
                 <div className="sticky z-10 self-stretch h-[114px] flex-col justify-center items-center gap-2.5 flex">
-                  <div className="self-stretch text-center text-white text-[32px] font-semibold font-lora uppercase leading-[38.40px]">
+                  <div className="self-stretch text-center text-white text-[32px] font-semibold uppercase leading-[38.40px]">
                     {banner?.titulo}
                   </div>
                 </div>

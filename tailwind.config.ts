@@ -28,12 +28,11 @@ const config: Config = {
         "guidelines-on-color-beige": "#CBBBA0",
       },
       fontFamily: {
-        inter: "var(--font-inter)",
-        lora: "var(--font-lora)",
-        raleway: "var(--font-raleway)",
+        crimson: "var(--crimson-pro)",
         tajawal: "var(--font-tajawal)",
+        inter: "var(--font-inter)",
         kanit: "var(--font-kanit)",
-        crimson: "var(--crimson-text)",
+        raleway: "var(--font-raleway)",
       },
       borderRadius: {
         lg: `var(--radius)`,

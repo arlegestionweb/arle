@@ -17,7 +17,7 @@ const AboutArle = ({ sobre }: AboutArleProps) => {
     <section className="relative w-screen bg-[#00002E] flex flex-col md:flex-row md:items-center md:justify-end">
 
       <section className="md:w-1/2 px-8 sm:pl-14 xl:pl-4 py-6 lg:max-w-screen-sm flex flex-col gap-4">
-        <h3 className="text-white text-center md:text-start text-2xl md:text-[28px] font-lora font-semibold">
+        <h3 className="text-white text-center md:text-start text-2xl md:text-[28px] font-semibold">
     {sobre.titulo}
         </h3>
         <p className=" text-zinc-100 text-base font-normal font-raleway leading-tight md:max-w-3xl">

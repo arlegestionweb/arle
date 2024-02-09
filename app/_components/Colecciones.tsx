@@ -8,7 +8,7 @@ type ColeccionesProps = { colecciones: THomeSection[], className?: string }
 const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
   return (
     <section className={cn("bg-color-bg-surface-0-default flex flex-col items-center", className)}>
-      <h2 className="lg:max-w-mx w-full text-zinc-800 text-[28px] font-semibold font-lora leading-loose text-center">
+      <h2 className="lg:max-w-mx w-full text-zinc-800 text-[28px] font-semibold leading-loose text-center">
         Colecciones
       </h2>
       <ul className="no-scrollbar pb-2 flex justify-start gap-4 px-8 max-w-full overflow-x-scroll overflow-y-hidden">

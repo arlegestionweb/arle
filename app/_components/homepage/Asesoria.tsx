@@ -20,7 +20,7 @@ const Asesoria = ({content}: PageProps) => {
 				</section>
 			)}
 			<section className={`${content.usarImagen ? 'w-full md:w-1/2 items-start' : 'w-full items-center'} md:pl-14  px-10 py-6 md:py-12 flex flex-col justify-center gap-6`}>
-				<h3 className="text-zinc-800  text-center font-lora text-2xl md:text-[28px] font-semibold leading-[115%]">{content.titulo}</h3>
+				<h3 className="text-zinc-800  text-center text-2xl md:text-[28px] font-semibold leading-[115%]">{content.titulo}</h3>
 				<ul className="pl-4 list-disc flex flex-col justify-center gap-4 text-zinc-800 text-base font-normal font-raleway leading-tight">
 					{content.beneficios && content.beneficios.map((beneficio, i) => (
 						<li key={i}>{beneficio}</li>

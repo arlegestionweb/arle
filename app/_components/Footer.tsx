@@ -52,7 +52,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
         </div>
         <section className="flex flex-col items-start justify-center lg:flex-row gap-[50px] lg:gap-20 pb-[50px]">
           <section>
-            <h3 className="pb-4 text-guidelines-on-color-beige font-lora text-2xl font-semibold leading-7 cursor-default">
+            <h3 className="pb-4 text-guidelines-on-color-beige text-2xl font-semibold leading-7 cursor-default">
               <Link href={"/listing"}>Productos</Link>
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
@@ -71,7 +71,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
             </ul>
           </section>
           <section>
-            <h3 className="pb-4 text-guidelines-on-color-beige font-lora text-2xl font-semibold leading-7 cursor-default">
+            <h3 className="pb-4 text-guidelines-on-color-beige text-2xl font-semibold leading-7 cursor-default">
               Arlé
             </h3>
             <ul className="flex flex-col gap-4 text-lg">
@@ -88,7 +88,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
           </section>
           {sedes && (
             <section>
-              <h3 className="pb-4 text-guidelines-on-color-beige font-lora text-2xl font-semibold leading-7 cursor-default">
+              <h3 className="pb-4 text-guidelines-on-color-beige text-2xl font-semibold leading-7 cursor-default">
                 Visítanos
               </h3>
               <ul className="flex flex-col gap-4 text-lg">
@@ -112,7 +112,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
           )}
           {settings.legal && (
             <section>
-              <h3 className="pb-4 text-guidelines-on-color-beige font-lora text-2xl font-semibold leading-7 cursor-default">
+              <h3 className="pb-4 text-guidelines-on-color-beige text-2xl font-semibold leading-7 cursor-default">
                 Legal
               </h3>
               <ul className="flex flex-col gap-4 text-lg">
