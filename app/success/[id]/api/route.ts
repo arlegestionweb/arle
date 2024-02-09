@@ -1,4 +1,5 @@
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
+import { sendInvoiceEmail } from "../actions";
 
 export const GET = async (
   req: Request,
@@ -17,6 +18,7 @@ export const GET = async (
 
     const wompyJson = await wompyResponse.json();
 
+
     if (wompyJson.data.status === "APPROVED") {
       const sanityOrder = await sanityClient.fetch(
         `*[_type == "orders" && _id == $id][0]`,
@@ -30,17 +32,27 @@ export const GET = async (
       };
 
       await sanityWriteClient.patch(newSanityOrder._id).set(newSanityOrder).commit();
-      
+
       const localUrl = req.url.split("api")[0];
-      const responseUrl = `${localUrl}${params.id}`;
+      const responseUrl = `${localUrl}`;
+
+      const {data, error} = await sendInvoiceEmail(newSanityOrder);
+      console.log("after running sendInvoice Email", {data, error})
+      
+      if (error || !data) {
+        Response.json({
+          message: "Hubo un error enviando to factura a tu correo electronico por favor contactanos con tu numero de orden",
+          status: 400,
+          error,
+          "numero-de-orden": newSanityOrder._id,
+        });
+      }
 
       return Response.redirect(responseUrl);
     }
+    return Response.redirect("http://localhost:3000/error-procesando-pago");
   } catch (error) {
-    return Response.json({
-      message: "Error",
-      status: 400,
-      error,
-    });
+    console.log({error})
+    return Response.redirect("http://localhost:3000/error-procesando-pago");
   }
 };

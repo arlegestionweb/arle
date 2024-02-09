@@ -7,11 +7,12 @@ import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { IoMdClose } from "react-icons/io";
 import { TCartItem, useCartStore } from "./store";
 import Precio from "../Precio";
+import ProductCard from "./ProductCard";
 
 const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, withoutQuantity?: boolean }) => {
   const [product, setProduct] = useState<TProduct | null>(null);
   const { addItem, removeItem, removeAllOfOneItem } = useCartStore();
-  
+
   useEffect(() => {
     const getProduct = async () => {
       const { product } = await getProductById(item.productId, item.productType);
@@ -67,17 +68,13 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
         />
       )}
       <section>
-        <h4 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">
-          {productTitle}
-        </h4>
-        <h5 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">
-          {product.marca}
-        </h5>
 
-        <Precio
-          fullPrice={item.originalPrice}
-          discountedPrice={item.price < item.originalPrice ? item.price : undefined}
-          dontDisplayPaymentOptions
+        <ProductCard
+          image={image}
+          productTitle={productTitle}
+          product={product}
+          item={item}
+
         />
         {!withoutQuantity && (
           <Cantidad
@@ -86,9 +83,9 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
             restarACantidad={() => removeItem(item)}
           />
         )}
-        
+
       </section>
-    </li>
+    </li >
   );
 };
 

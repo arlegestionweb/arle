@@ -1,8 +1,9 @@
 import Main from "@/app/_components/Main";
-import ProductItem from "@/app/_components/cart/ProductItem";
-import { TCartItem } from "@/app/_components/cart/store";
 import { getOrderById } from "@/sanity/queries/orders";
 import RemoveCartItems from "./_components/RemoveCartItems";
+import SendInvoice from "./_components/SendInvoice";
+import React, { Suspense } from "react";
+import ProductCard from "@/app/_components/cart/ProductCard";
 
 const Page = async ({ params }: {
   params: {
@@ -39,11 +40,44 @@ const Page = async ({ params }: {
       <p>Envío: {sanityOrder.amounts.shipping}</p>
       <p>Total: {sanityOrder.amounts.total}</p>
       <h3>Productos:</h3>
-      <ul>
-        {sanityOrder.items.map((item) => {
-          return <ProductItem key={item.variantId} item={item} withoutQuantity />;
-        })}
-      </ul>
+      {/* <Suspense fallback="loading"> */}
+        <ul>
+          {sanityOrder.items.map((item) => {
+            const {product} = item;
+
+            const variant = product.variantes.find(variante => variante.codigoDeReferencia === item.variantId)
+
+            const image =
+            product._type === "relojesLujo" ||
+              product._type === "relojesPremium" ||
+              product._type === "gafasLujo" ||
+              product._type === "gafasPremium"
+              ? variant.imagenes[0]
+              : product.imagenes[0];
+        
+          const productTitle =
+            product._type === "relojesLujo" ||
+              product._type === "relojesPremium" ||
+              product._type === "gafasLujo" ||
+              product._type === "gafasPremium"
+              ? product.modelo
+              : product.titulo;
+        
+
+            return (
+              <React.Fragment key={item.variantId}>
+                {productTitle}
+                <ProductCard key={item.variantId} item={item} image={image} productTitle={productTitle} product={product} />
+              </React.Fragment>
+            )
+          }
+          )}
+        </ul>
+      {/* </Suspense> */}
+      <Suspense fallback="loading....">
+
+        <SendInvoice order={sanityOrder} />
+      </Suspense>
     </Main>
   );
 }
