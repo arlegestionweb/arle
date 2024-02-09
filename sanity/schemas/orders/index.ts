@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { BiSolidWatchAlt } from "react-icons/bi";
 import { IoCash } from "react-icons/io5";
 import { PiSunglassesBold } from "react-icons/pi";
@@ -223,4 +224,18 @@ export const ordersSchema = defineType({
       type: "string",
     }),
   ],
+  preview: {
+    select: {
+      id: "_id",
+      orderDate: "orderDate",
+      status: "status",
+      customerName: "customer.name",
+    },
+    prepare({ id, status, customerName }) {
+      return {
+        title: customerName,
+        subtitle: `${id} - ${status}`,
+      };
+    },
+  },
 });

@@ -18,27 +18,24 @@ export const GET = async (
 
     const wompyJson = await wompyResponse.json();
 
-    console.log({ wompyJson });
-
-    
     if (wompyJson.data.status === "APPROVED") {
       const sanityOrder = await sanityClient.fetch(
         `*[_type == "orders" && _id == $id][0]`,
         { id: params.id }
-        );
-        
-        const newSanityOrder = {
-          ...sanityOrder,
-          status: "PAID",
-          wompiReference: wompyJson.data.id,
-        };
-        
-        const updatedOrder = await sanityWriteClient
+      );
+
+      const newSanityOrder = {
+        ...sanityOrder,
+        status: "PAID",
+        wompiReference: wompyJson.data.id,
+      };
+
+      const updatedOrder = await sanityWriteClient
         .patch(newSanityOrder._id)
         .set(newSanityOrder)
         .commit();
-        const localUrl = req.url.split("api")[0];
-        const responseUrl = `${localUrl}${params.id}`;
+      const localUrl = req.url.split("api")[0];
+      const responseUrl = `${localUrl}${params.id}`;
 
       // return Response.json({
       //   message: "Success",
@@ -48,14 +45,8 @@ export const GET = async (
       //   responseUrl,
       // });
 
-      return Response.redirect(
-        responseUrl
-      );
+      return Response.redirect(responseUrl);
     }
-    return Response.json({
-      message: "Error",
-      status: 400,
-    });
   } catch (error) {
     return Response.json({
       message: "Error",
