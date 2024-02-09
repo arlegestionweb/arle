@@ -8,6 +8,7 @@ import {
   getSiteSettingsMetadata,
 } from "@/sanity/queries/siteSettings";
 import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQueries";
+import { Suspense } from "react";
 
 const jomolhari = Jomolhari({
   weight: ["400"],
@@ -92,4 +93,3 @@ export default async function RootLayout({
     </html>
   );
 }
-// /perfumepremium/carolina-herrera/good-girl-supreme-edp/ff2cfa02-3708-4bdf-9211-c329b7b0fad5
