@@ -12,6 +12,7 @@ import Footer from "./_components/Footer";
 import Cart from "./_components/cart";
 import { getSiteSettings, getSiteSettingsMetadata } from "@/sanity/queries/siteSettings";
 import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQueries";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -20,13 +21,13 @@ const lora = Lora({ subsets: ["latin"], variable: "--font-lora" });
 const raleway = Raleway({ subsets: ["latin"], variable: "--font-raleway" });
 
 const tajawal = Tajawal({
-  weight: [ "200","400", "700", "900"],
+  weight: ["200", "400", "700", "900"],
   subsets: ["latin"],
   variable: "--font-tajawal",
 });
 
 const kanit = Kanit({
-  weight: ["200","400", "700", "900"],
+  weight: ["200", "400", "700", "900"],
   subsets: ["latin"],
   variable: "--font-kanit",
 });
@@ -37,11 +38,11 @@ const crimson_Text = Crimson_Text({
   variable: "--crimson-text",
 });
 
-export async function generateMetadata(){
+export async function generateMetadata() {
   // fetch data
   const Metadata = await getSiteSettingsMetadata()
   // optionally access and extend (rather than replace) parent metadata
- 
+
   return {
     title: Metadata?.titulo,
     description: Metadata?.descripcion,
@@ -62,7 +63,9 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={`${inter.variable} ${lora.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson_Text.variable} overflow-x-hidden`}>
+        <Suspense>
         <Navbar marca={siteSettings?.marcaPromocionada && siteSettings.marcaPromocionada.titulo}/>
+        </Suspense>
         <Cart showDiscountCode={siteSettings?.mostrarCodigoDeDescuento || false} />
         {children}
         {siteSettings && nuestrasSedes && (
@@ -72,4 +75,3 @@ export default async function RootLayout({
     </html>
   );
 }
-// /perfumepremium/carolina-herrera/good-girl-supreme-edp/ff2cfa02-3708-4bdf-9211-c329b7b0fad5
