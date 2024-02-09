@@ -5,43 +5,9 @@ import { z } from "zod";
 import { DateTime } from "luxon";
 import { TCartItem, zodCartItem } from "./store";
 import { nanoid } from "nanoid";
+import { TOrderSchema, zodOrderSchema } from "@/sanity/queries/orders";
 
-const zodAddressSchema = z.object({
-  country: z.string().min(1, "El país es requerido"),
-  address: z.string().min(1, "La dirección es requerida"),
-  department: z.string().min(1, "El departamento es requerido"),
-  postalCode: z.string().min(1, "El código postal es requerido"),
-  city: z.string().min(1, "La ciudad es requerida"),
-});
 
-const zodOrderSchema = z.object({
-  _id: z.string().min(1, "El id es requerido"),
-  _type: z.literal("orders"),
-  orderDate: z.string().refine(value => DateTime.fromISO(value).isValid),
-  status: z.string().min(1, "El estado es requerido"),
-  customer: z.object({
-    name: z.string().min(1, "El nombre es requerido"),
-    email: z.string().min(1, "El correo es requerido"),
-    id: z.object({
-      type: z.string().min(1, "El tipo de documento es requerido"),
-      number: z.string().min(1, "El número de documento es requerido"),
-    }),
-    phone: z.string().min(1, "El teléfono es requerido"),
-    addressObject: zodAddressSchema.optional().nullable(),
-  }),
-  amounts: z.object({
-    subtotal: z.number(),
-    discount: z.number(),
-    taxes: z.number(),
-    shipping: z.number(),
-    total: z.number(),
-  }),
-  shipping: z.object({
-    price: z.number(),
-    addressObject: zodAddressSchema,
-  }),
-  items: z.array(zodCartItem),
-});
 
 
 const zodOrderSchemaWithProductReference = zodOrderSchema.merge(z.object({
@@ -51,7 +17,6 @@ const zodOrderSchemaWithProductReference = zodOrderSchema.merge(z.object({
   })))
 }))
 
-type TOrderSchema = z.infer<typeof zodOrderSchema>;
 
 export const createInvoice = async function (
   currentState: any,
@@ -115,7 +80,6 @@ export const createInvoice = async function (
 
 
   if (!parsedFormDataWithProductReference.success) {
-    console.log(rawFormData.items)
     console.error(parsedFormDataWithProductReference.error);
     return { status: 400, error: parsedFormDataWithProductReference.error.message };
   }
