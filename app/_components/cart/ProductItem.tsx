@@ -18,6 +18,7 @@ import {
   isPerfumePremium,
   isRelojLujo,
 } from "@/sanity/queries/pages/types";
+import ProductCard from "./ProductCard";
 
 const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, withoutQuantity?: boolean }) => {
   const [product, setProduct] = useState<TProduct | null>(null);
@@ -142,7 +143,7 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
           />
         </section>
       </section>
-    </li>
+    </li >
   );
 };
 
