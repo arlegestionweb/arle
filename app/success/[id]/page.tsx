@@ -52,6 +52,7 @@ const Page = async ({ params }: {
               product._type === "relojesPremium" ||
               product._type === "gafasLujo" ||
               product._type === "gafasPremium"
+              // @ts-ignore
               ? variant.imagenes[0]
               : product.imagenes[0];
         
