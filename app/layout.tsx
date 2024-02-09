@@ -102,4 +102,3 @@ export default async function RootLayout({
     </html>
   );
 }
-// /perfumepremium/carolina-herrera/good-girl-supreme-edp/ff2cfa02-3708-4bdf-9211-c329b7b0fad5

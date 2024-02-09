@@ -11,7 +11,6 @@ export const GET = async (
   const wompyQueryUrl = `https://${
     isEnvDev ? "sandbox" : "production"
   }.wompi.co/v1/transactions/${wompyPaymentId}`;
-  console.log({ wompyQueryUrl });
 
   try {
     const wompyResponse = await fetch(wompyQueryUrl);
@@ -30,20 +29,10 @@ export const GET = async (
         wompiReference: wompyJson.data.id,
       };
 
-      const updatedOrder = await sanityWriteClient
-        .patch(newSanityOrder._id)
-        .set(newSanityOrder)
-        .commit();
+      await sanityWriteClient.patch(newSanityOrder._id).set(newSanityOrder).commit();
+      
       const localUrl = req.url.split("api")[0];
       const responseUrl = `${localUrl}${params.id}`;
-
-      // return Response.json({
-      //   message: "Success",
-      //   status: 200,
-      //   wompyJson,
-      //   updatedOrder,
-      //   responseUrl,
-      // });
 
       return Response.redirect(responseUrl);
     }
