@@ -61,6 +61,7 @@ const Cart = ({
   const payment_reference = id;
 
   // const error = formState?.error && JSON.parse(formState.error)[0].message
+  
 
   return (
     <form className="bg-white z-[60] overflow-y-scroll w-screen h-screen fixed top-0 left-0 flex flex-col md:flex-row " action={formAction}>
@@ -166,7 +167,7 @@ const Cart = ({
               <div className=" relative z-10 h-full w-full grid place-content-center " >
                 <div ref={wompiRef}>
 
-                  <WompiPayButton amount={getCartTotal()} reference={payment_reference} redirectUrl={`http://localhost:3000/success/api/${payment_reference}`} />
+                  <WompiPayButton amount={getCartTotal()} reference={payment_reference} redirectUrl={`http://localhost:3000/success/${payment_reference}/api`} />
                 </div>
               </div>
             </MenuModal>
