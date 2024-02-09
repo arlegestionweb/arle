@@ -1,16 +1,17 @@
+"use client";
 import { useEffect, useState } from "react";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import { getProductById } from "@/sanity/queries/pages/productPage";
 import Image from "next/image";
-import { numberToColombianPriceString } from "@/utils/helpers";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { IoMdClose } from "react-icons/io";
 import { TCartItem, useCartStore } from "./store";
 import Precio from "../Precio";
 
-const ProductItem = ({ item }: { item: TCartItem }) => {
+const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, withoutQuantity?: boolean }) => {
   const [product, setProduct] = useState<TProduct | null>(null);
   const { addItem, removeItem, removeAllOfOneItem } = useCartStore();
+  
   useEffect(() => {
     const getProduct = async () => {
       const { product } = await getProductById(item.productId, item.productType);
@@ -78,11 +79,14 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
           discountedPrice={item.price < item.originalPrice ? item.price : undefined}
           dontDisplayPaymentOptions
         />
-        <Cantidad
-          cantidad={item.quantity}
-          anadirACantidad={() => addItem(item)}
-          restarACantidad={() => removeItem(item)}
-        />
+        {!withoutQuantity && (
+          <Cantidad
+            cantidad={item.quantity}
+            anadirACantidad={() => addItem(item)}
+            restarACantidad={() => removeItem(item)}
+          />
+        )}
+        
       </section>
     </li>
   );

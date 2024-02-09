@@ -157,7 +157,10 @@ export const useCartStore = create<TCartStore>((set, get) => ({
   clearCart: () =>
     set(() => {
       localStorage.removeItem("cart");
-      return { items: [] };
+      const newCartId = nanoid();
+      localStorage.setItem("cartId", newCartId );
+
+      return { items: [], id: newCartId };
     }),
  
 
