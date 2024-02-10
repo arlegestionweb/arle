@@ -22,7 +22,7 @@ const MobileNavBar = ({ className, marca }: MobileNavBarProps) => {
 
   return (
     <nav
-      className={`${className} fixed z-30 h-[60px] w-full px-8 bg-color-bg-surface-1-default text-black flex justify-between items-center`}
+      className={`${className} fixed z-30 h-[50px] w-full px-8 bg-color-bg-surface-1-default text-black flex justify-between items-center border-b border-zinc-200`}
     >
       <Link href="/">
         <Image src={"/ArleBasicLogo.svg"} width={80} height={30} alt="logo" />
@@ -50,7 +50,7 @@ const Kart = () => {
     <div className="w-fit h-9 justify-start items-center gap-4 inline-flex cursor-pointer" onClick={() => toggleCart()}>
       <div className="p-2 bg-color-bg-surface-0-default justify-center items-center flex relative">
         <div className="w-5 h-5 justify-center items-center gap-1 flex">
-            <LuShoppingCart className="w-[18px] h-[18px]" />
+            <LuShoppingCart className="w-[18px] h-[18px] stroke-gray-600" />
         </div>
         <RedDot  active={items.length > 0} position="topRight"/>
       </div>

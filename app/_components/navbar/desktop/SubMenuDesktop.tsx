@@ -26,23 +26,23 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
 
   if (pathname.includes("listing") || pathname === "/") 
   return (
-    <section className="bg-color-bg-surface-0-default flex mt-[60px] h-[42px] px-8 items-center justify-center">
-      <section className="py-2 gap-2 -ml-5 w-full h-full flex items-center max-w-screen-xl">
+    <section className="bg-color-bg-surface-0-default hidden md:flex mt-[53px] md:h-[36px] px-8 items-center justify-center">
+      <section className="py-0 gap-2 -ml-5 w-full h-full flex items-center max-w-screen-xl">
       {subMenu.map(item => (
         <Link
         href={`/listing?type=${item.param}`}
         key={item.title}
         className={`px-3 py-0.5 flex justify-center items-center 
         ${selectedProducto?.includes(item.param) ? "border border-black" : ""}`}>
-          <p className="text-black font-medium">{item.title}</p>
+          <p className="text-gray-700 font-inter text-sm font-medium">{item.title}</p>
         </Link>
       ))}
       {marca && (
         <Link
         href={`/listing?marcas=${marca}`}
-        className={`px-3 py-0.5 flex justify-center items-center 
+        className={`px-2 py-0.5 flex justify-center items-center 
         ${selectedMarca?.includes(marca) ? "border border-black" : ""}`}>
-          <p className="text-black font-medium">{marca}</p>
+          <p className="text-gray-700 font-inter text-sm font-medium">{marca}</p>
         </Link>
       )}
       </section>
