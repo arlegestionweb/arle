@@ -57,9 +57,9 @@ const ProductGrid = ({
           <div className="absolute right-[0px] top-[calc(1155px-85px)] max-w-[100%] w-[100%] z-10 h-[85px] bg-gradient-to-b from-transparent to-[#00000080] opacity-70"></div>
         )}
 
-        {product.map(image => (
+        {product.map((image,index) => (
           <div
-            key={image.alt}
+            key={image.alt+index}
             className="relative w-full h-[377px]">
             <Image
               src={image.url}

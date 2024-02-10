@@ -1,6 +1,6 @@
 "use client";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/app/_lib/utils";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import SuggestedProductCard from "./SuggestedProductCard";
@@ -34,17 +34,15 @@ export const ProductCardSlide = ({
   );
 };
 
-interface CarouselProps {
+interface SlideProps {
   products: TProduct[];
   columns: number;
   className?: string
 }
 
-const SlideDesktop = ({ products, columns, className }: CarouselProps) => {
+const SlideDesktop = ({ products, columns, className }: SlideProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [hasNext, setHasNext] = useState(
-    products.length == columns ? false : true
-  );
+  const [hasNext, setHasNext] = useState(false);
   const [hasPrev, setHasPrev] = useState(false);
 
   const handlePrev = () => {
@@ -76,6 +74,16 @@ const SlideDesktop = ({ products, columns, className }: CarouselProps) => {
     }
     return 1280 / 4
   }
+
+  const determineHasNext = useCallback(() => {
+    return products.length > columns;
+  }, [products.length, columns]);
+
+  useEffect(()=>{
+    console.log(1);
+    
+    setHasNext(determineHasNext());
+  },[products.length, determineHasNext])
 
   return (
     <section className={cn("relative flex items-center", className)}>
