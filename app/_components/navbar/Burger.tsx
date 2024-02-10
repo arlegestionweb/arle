@@ -51,7 +51,7 @@ const Bar = ({
 }: BarProps) => {
   return (
     <div
-      className={`${width} ${rotateZ} transition-all duration-1000 h-[2px]  ${barColor} rounded-md`}
+      className={`${width} ${rotateZ} transition-all duration-700 h-[2px]  ${barColor} rounded-md`}
     />
   );
 };

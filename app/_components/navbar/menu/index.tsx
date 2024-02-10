@@ -85,12 +85,12 @@ const Menu = ({
       <div
         className={`${
           isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        } fixed z-[100] top-[0px] left-0 items-end transition-all duration-1000 w-screen h-screen bg-black bg-opacity-50 backdrop-blur-md flex flex-col overflow-hidden`}
+        } fixed z-[100] top-[0px] left-0 items-end transition-all duration-700 w-screen h-screen bg-black bg-opacity-50 backdrop-blur-md flex flex-col overflow-hidden`}
       />
       <div
         className={`${
           isMenuOpen ? "right-0" : "-right-[400px]"
-        } w-screen fixed top-0 items-end z-[102] max-w-[400px] h-screen flex flex-col bg-white transition-all duration-700 overflow-hidden`}
+        } w-screen fixed top-0 items-end z-[102] max-w-[400px] h-screen flex flex-col bg-white transition-all duration-500 ease-out overflow-hidden`}
         ref={menuRef}
       >
         <header className="w-full h-16 border-b border-stone-300 px-4 flex items-center justify-between">
@@ -115,7 +115,7 @@ const Menu = ({
           <div
             style={{
               transform: `translateX(-${currentScreen * 100}%)`,
-              transition: "transform 0.45s ease-out",
+              transition: "transform 0.4s ease-out",
             }}
           >
             <ModalContent
@@ -133,7 +133,7 @@ const Menu = ({
           <div
             style={{
               transform: `translateX(-${currentScreen * 100}%)`,
-              transition: "transform 0.45s ease-out",
+              transition: "transform 0.4s ease-out",
             }}
           >
             <ModalContent
@@ -151,7 +151,7 @@ const Menu = ({
           <div
             style={{
               transform: `translateX(-${currentScreen * 100}%)`,
-              transition: "transform 0.45s ease-out",
+              transition: "transform 0.4s ease-out",
             }}
           >
             <ModalContent
