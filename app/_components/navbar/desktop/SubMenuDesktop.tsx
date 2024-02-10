@@ -33,16 +33,16 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
         href={`/listing?type=${item.param}`}
         key={item.title}
         className={`px-3 py-0.5 flex justify-center items-center 
-        ${selectedProducto?.includes(item.param) ? "border border-black" : ""}`}>
-          <p className="text-gray-700 font-inter text-sm font-medium">{item.title}</p>
+        ${selectedProducto?.includes(item.param) ? "border border-black pointer-events-none" : ""}`}>
+          <p className="text-gray-700 font-inter text-sm font-medium hover:text-gray-500">{item.title}</p>
         </Link>
       ))}
       {marca && (
         <Link
         href={`/listing?marcas=${marca}`}
         className={`px-2 py-0.5 flex justify-center items-center 
-        ${selectedMarca?.includes(marca) ? "border border-black" : ""}`}>
-          <p className="text-gray-700 font-inter text-sm font-medium">{marca}</p>
+        ${selectedMarca?.includes(marca) ? "border border-black pointer-events-none" : ""}`}>
+          <p className="text-gray-700 font-inter text-sm font-medium hover:text-gray-500">{marca}</p>
         </Link>
       )}
       </section>
