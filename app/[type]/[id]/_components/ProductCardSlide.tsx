@@ -1,6 +1,6 @@
 "use client";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/app/_lib/utils";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import SuggestedProductCard from "./SuggestedProductCard";
@@ -10,9 +10,9 @@ type ProductCardSlideProps = {
   products: TProduct[]; // for test
 };
 
-export const ProductCardSlide = ({ 
-  nameSection, 
-  products 
+export const ProductCardSlide = ({
+  nameSection,
+  products,
 }: ProductCardSlideProps) => {
   return (
     <section className="max-w-mx px-0 min-[1024px]:px-10 min-[1280px]:px-0 w-screen py-0 md:py-4 pl-8 lg:flex lg:flex-col">
@@ -22,71 +22,91 @@ export const ProductCardSlide = ({
       </h3>
       {products && products.length > 0 && (
         <>
-          <SlideMobile products={products} className="flex" />
-          {/* <SlideDesktop products={products} className="hidden lg:grid" /> */}
+          <SlideMobile products={products} className="flex lg:hidden"/>
+          <SlideDesktop
+            products={hardCodedProducts}
+            columns={4}
+            className="hidden lg:flex"
+          />
         </>
       )}
     </section>
   );
 };
 
-const SlideDesktop = ({
-  products,
-  className,
-}: {
+interface CarouselProps {
   products: TProduct[];
-  className?: string;
-}) => {
-  const [startIndex, setStartIndex] = useState(0);
-  const [productosVisibles, setProductosVisibles] = useState<TProduct[]>([]);
+  columns: number;
+  className?: string
+}
 
-  const nextProduct = () => {
+const SlideDesktop = ({ products, columns, className }: CarouselProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasNext, setHasNext] = useState(
+    products.length == columns ? false : true
+  );
+  const [hasPrev, setHasPrev] = useState(false);
 
-    setProductosVisibles([])
-    setStartIndex(prevIndex => (prevIndex + 1) % products.length);
+  const handlePrev = () => {
+    setCurrentIndex(prevIndex => {
+      if (prevIndex <= 1) {
+        setHasPrev(false);
+      } else {
+        setHasPrev(true);
+      }
+      setHasNext(true);
+
+      return prevIndex - 1;
+    });
   };
 
-  const prevProduct = () => {
-
-    setProductosVisibles([])
-    setStartIndex(prevIndex =>
-      prevIndex === 0 ? products.length - 4 : prevIndex - 1
-    );
+  const handleNext = () => {
+    setCurrentIndex(prevIndex => {
+      if (prevIndex + 1 >= products.length - columns) {
+        setHasNext(false);
+      }
+      setHasPrev(true);
+      return prevIndex + 1;
+    });
   };
 
-  useEffect(() => {
-    setProductosVisibles(
-      Array.from({ length: 4 }, (_, idx) => {
-        const arrayIndex = (startIndex + idx) % products.length;
-        return products[arrayIndex];
-      })
-    );
-  }, [startIndex]);
+  const getWidthCard = ()=>{
+    if(window.innerWidth < 1280){
+      return (window.innerWidth-80)/4
+    }
+    return 1280 / 4
+  }
 
   return (
-    <section className={cn("relative min-h-[380px]", className)}>
+    <section className={cn("relative flex items-center", className)}>
       <button
-        onClick={prevProduct}
-        className="absolute z-20 -left-[20px] top-1/3 transform -translate-y-1/2 w-10 h-10 p-[7px] border border-spacing-1 border-neutral-900 opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
+        onClick={handlePrev}
+        disabled={!hasPrev}
+        className={`absolute z-20 -left-[20px] top-1/3 transform -translate-y-1/2 w-10 h-10 p-[7px] border border-spacing-1 border-neutral-900 opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex `}>
         <IoIosArrowBack />
       </button>
-
-      <ul
-        className={cn(
-          "pt-4 md:pt-7 pb-3 h-auto w-full max-w-mx  grid grid-cols-[repeat(4,minmax(200px,1fr))] place-content-center gap-4"
-        )}>
-        {productosVisibles.map((product, idx) => (
-          <li
-            key={`${idx}`}
-            className="relative bg-white md:m-0 w-full">
-            <SuggestedProductCard producto={product} />
-          </li>
-        ))}
-      </ul>
-
+      <section className="w-mx overflow-hidden mx-auto">
+        <div
+          style={{
+            transition: "transform 0.5s ease",
+            transform: `translateX(-${currentIndex * getWidthCard()}px)`, 
+          }}
+          >
+          <ul className={"pt-4 md:pt-7 pb-3 h-auto max-w-mx  grid grid-cols-[repeat(7,calc(95%/4))] gap-4"}>
+            {products.map((product, index) => (
+              <li
+                key={product._id + index}
+                className="relative bg-white md:m-0 ">
+                <SuggestedProductCard producto={product} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
       <button
-        onClick={nextProduct}
-        className="absolute -right-[20px] top-1/3 transform -translate-y-1/2 w-10 h-10 p-[7px] opacity-80 border border-spacing-1 border-neutral-900 bg-neutral-100 shadow justify-center items-center inline-flex">
+        onClick={handleNext}
+        disabled={!hasNext}
+        className={`absolute -right-[20px] top-1/3 transform -translate-y-1/2 w-10 h-10 p-[7px] opacity-80 border border-spacing-1 border-neutral-900 bg-neutral-100 shadow justify-center items-center inline-flex`}>
         <IoIosArrowForward />
       </button>
     </section>
@@ -395,6 +415,118 @@ const hardCodedProducts: TProduct[] = [
     parteDeUnSet: false,
     descripcion:
       "Perfume con una nota principal envuelta en un delicioso aroma de Ámbar amaderada con notas aromáticas, cítricas y avainilladas.",
+    coleccionDeMarca: null,
+  },
+  {
+    date: "2023-10-18T13:06:35Z",
+    slug: "/perfumePremium/ff2cfa02-3708-4bdf-9211-c329b7b0fad5",
+    _id: "ff2cfa02-3708-4bdf-9211-c329b7b0fad5",
+    detalles: {
+      concentracion: "Eau de Toilette",
+      resenaCorta: null,
+      notasOlfativas: {
+        notasDeBase: null,
+        notasDeSalida: null,
+        familiaOlfativa: "Cítrico",
+        notasDeCorazon: null,
+      },
+    },
+    genero: "mujer",
+    titulo: "Good Girl Supreme EDP",
+    _type: "perfumePremium",
+    mostrarCredito: false,
+    imagenes: [
+      {
+        alt: "perfume good girl supreme en un fondo dorado",
+        url: "https://cdn.sanity.io/images/qhszuxx1/production/4176f8b35dbc2e40fb93ae1f8629fd9dfb573046-522x524.png",
+      },
+    ],
+    marca: "Carolina Herrera",
+    variantes: [
+      {
+        tamano: 80,
+        precio: "560.000",
+        codigoDeReferencia: "1321516486",
+        registroInvima: "onedfiodub2fij3",
+        unidadesDisponibles: 15,
+        etiqueta: "mas vendido",
+      },
+      {
+        tamano: 150,
+        precio: "1.500.000",
+        codigoDeReferencia: "qweqwecqwecq",
+        registroInvima: "lokmsdckvbhvop2okfop2ienf",
+        unidadesDisponibles: 4,
+        etiqueta: "nuevo",
+      },
+      {
+        tamano: 200,
+        precio: "200.000",
+        codigoDeReferencia: "09u1e497yhfojnef",
+        registroInvima: "klmjcuh2fin2f",
+        unidadesDisponibles: 3,
+        etiqueta: "mas vendido",
+      },
+    ],
+    parteDeUnSet: false,
+    descripcion:
+      "Intensamente seductora, Good Girl Eau de Parfum Suprême es una reinvención de la icónica fragancia Good Girl, con una fórmula nueva y atrevida. Redefine el emblemático contraste entre luces y sombras y nos anima a conectar con nuestro lado rebelde, para que aceptemos plenamente todas las facetas de nuestra personalidad. En palabras de Carolina A. Herrera, directora creativa de Belleza: “It's so good to be bad!”.",
+    coleccionDeMarca: null,
+  },
+  {
+    date: "2023-10-18T13:06:35Z",
+    slug: "/perfumePremium/ff2cfa02-3708-4bdf-9211-c329b7b0fad5",
+    _id: "ff2cfa02-3708-4bdf-9211-c329b7b0fad5",
+    detalles: {
+      concentracion: "Eau de Toilette",
+      resenaCorta: null,
+      notasOlfativas: {
+        notasDeBase: null,
+        notasDeSalida: null,
+        familiaOlfativa: "Cítrico",
+        notasDeCorazon: null,
+      },
+    },
+    genero: "mujer",
+    titulo: "Good Girl Supreme EDP",
+    _type: "perfumePremium",
+    mostrarCredito: false,
+    imagenes: [
+      {
+        alt: "perfume good girl supreme en un fondo dorado",
+        url: "https://cdn.sanity.io/images/qhszuxx1/production/4176f8b35dbc2e40fb93ae1f8629fd9dfb573046-522x524.png",
+      },
+    ],
+    marca: "Carolina Herrera",
+    variantes: [
+      {
+        tamano: 80,
+        precio: "560.000",
+        codigoDeReferencia: "1321516486",
+        registroInvima: "onedfiodub2fij3",
+        unidadesDisponibles: 15,
+        etiqueta: "mas vendido",
+      },
+      {
+        tamano: 150,
+        precio: "1.500.000",
+        codigoDeReferencia: "qweqwecqwecq",
+        registroInvima: "lokmsdckvbhvop2okfop2ienf",
+        unidadesDisponibles: 4,
+        etiqueta: "nuevo",
+      },
+      {
+        tamano: 200,
+        precio: "200.000",
+        codigoDeReferencia: "09u1e497yhfojnef",
+        registroInvima: "klmjcuh2fin2f",
+        unidadesDisponibles: 3,
+        etiqueta: "mas vendido",
+      },
+    ],
+    parteDeUnSet: false,
+    descripcion:
+      "Intensamente seductora, Good Girl Eau de Parfum Suprême es una reinvención de la icónica fragancia Good Girl, con una fórmula nueva y atrevida. Redefine el emblemático contraste entre luces y sombras y nos anima a conectar con nuestro lado rebelde, para que aceptemos plenamente todas las facetas de nuestra personalidad. En palabras de Carolina A. Herrera, directora creativa de Belleza: “It's so good to be bad!”.",
     coleccionDeMarca: null,
   },
   {
