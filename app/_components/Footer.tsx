@@ -89,7 +89,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
                 <Link href="/trabaja-con-nosotros">Trabaja con Nosotros</Link>
               </li>
               <li>
-                <Link className="section-text underline-offset-2 hover:underline flex gap-1" href="">
+                <Link className="section-text underline-offset-2 hover:underline flex gap-1" href="https://wa.me/573160700015?text=Hola,%20estoy%20interesad@%20en%20recibir%20una%20asesoría%20personalizada%20con%20Arlé!">
                 <GoArrowUpRight className="w-5 h-5 -mt-0.5" />
                   Recibe una Asesoría
                 </Link>
@@ -144,7 +144,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
               if (!item.redSocial) return null;
               return (
                 <Link
-                  className="w-9 h-9 flex bg-arle-beige text-black justify-center items-center"
+                  className="w-9 h-9 flex bg-arle-beige text-black justify-center items-center hover:scale-[1.08]"
                   key={index + item.redSocial}
                   href={item.url}
                   target="_blank"
