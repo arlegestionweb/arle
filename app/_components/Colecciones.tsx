@@ -8,7 +8,7 @@ type ColeccionesProps = { colecciones: THomeSection[], className?: string }
 const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
   return (
     <section className={cn("bg-zinc-100 flex flex-col items-center py-1 gap-1", className)}>
-      <h2 className="w-full text-gray-800 lux-title text-3xl drop-shadow-none text-center font-extralight ">
+      <h2 className="w-full text-gray-800 lux-title text-xl md:text-2xl drop-shadow-none text-center font-extralight ">
         Colecciones
       </h2>
       <ul className="no-scrollbar flex justify-start gap-4 px-8 max-w-full overflow-x-scroll overflow-y-hidden">
@@ -31,7 +31,7 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
                     
                 </div>
               )}
-            <p className="text-center mt-1.5 text-gray-600 text-xl font-normal font-tajawal truncate leading-none">
+            <p className="text-center mt-1.5 text-gray-600 text-md md:text-xl font-normal font-tajawal truncate leading-none">
               {coleccion.titulo}
             </p>
             </Link>

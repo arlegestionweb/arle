@@ -36,11 +36,11 @@ const Banner = ({ banners, className }: BannerProps) => {
   return (
     <section
       className={cn(
-        "max-w-screen h-[70vh] pt-[60px] md:pt-0 overflow-hidden relative group",
+        "w-screen overflow-hidden relative",
         className
       )}>
       <section
-        className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
+        className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory bg-gray-100"
         onScroll={handleScroll}
         ref={bannerRef}>
         {banners.map((banner, index) => (
@@ -50,14 +50,14 @@ const Banner = ({ banners, className }: BannerProps) => {
                 src={banner.imagen.url}
                 alt={banner.imagen.alt}
                 layout="fill"
-                imageClassName="fit object-cover object-top"
+                imageClassName="object-cover object-top w-full h-full"
                 containerclassName={`snap-center snap-always ${
                   index === 1 && "snap-mandatory"
-                } min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`}>
-                <div className="sticky z-10 self-stretch h-[114px] flex-col justify-center items-center gap-2.5 flex">
-                  <div className="self-stretch text-center text-white text-[32px] font-semibold uppercase leading-[38.40px]">
+                } min-w-full justify-center items-center flex`}>
+                <div className="absolute bottom-8 md:bottom-10 z-10 flex justify-center">
+                  <h2 className="capitalize text-center text-white text-xl md:text-2xl lux-title">
                     {banner?.titulo}
-                  </div>
+                  </h2>
                 </div>
               </GradientImage>
             )}
@@ -65,7 +65,7 @@ const Banner = ({ banners, className }: BannerProps) => {
         ))}
       </section>
 
-      <div className="flex absolute z-20 bottom-9 m-auto left-0 right-0 justify-center py-2">
+      <div className="flex absolute z-20 bottom-2 m-auto left-0 right-0 justify-center py-2">
         {banners.map((banner, index) => (
           <div
             key={index}
