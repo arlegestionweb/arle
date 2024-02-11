@@ -61,12 +61,12 @@ const Banner = ({ content, className }: BannerProps) => {
         ))}
                 <section className="absolute bottom-20 w-full z-10 flex justify-center default-paddings pointer-events-none">
                   <section className="w-full flex flex-col justify-center items-start gap-4 max-w-screen-xl">
-                  <h2 className=" text-white lux-title text-2xl xs:text-3xl sm:text-4xl lg:text-[40px] max-w-sm sm:max-w-lg">
+                  <h1 className=" text-white lux-title text-2xl xs:text-3xl sm:text-4xl lg:text-[40px] max-w-sm sm:max-w-lg">
                     {content.titulo}
-                  </h2>
-                  <p className=" text-white normal-subtitle">
+                  </h1>
+                  <h2 className=" text-white normal-subtitle">
                     {content.subtitulo}
-                  </p>
+                  </h2>
                   {content.buttonText && (
                   <Link className="light-button pointer-events-auto" href="/listing">{content.buttonText}</Link>
                   )}

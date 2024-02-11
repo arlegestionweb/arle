@@ -22,7 +22,7 @@ const Home = async function () {
     <main className="relative z-10 lg:mb-[100vh] pt-[50px] md:pt-0 bg-white">
       <HeroBanner content={pageContent.hero} />
       {exploreSections.map((section, index) => (
-        <ExploreSection key={index} section={section} />
+        <ExploreSection key={index + section.titulo} section={section} />
       ))}
       <Colecciones colecciones={pageContent.colecciones} />
       <AboutArle sobre={pageContent.sobre} />

@@ -20,10 +20,10 @@ const Asesoria = ({content}: PageProps) => {
 				</section>
 			)}
 			<section className={`${content.usarImagen ? 'w-full md:w-1/2 items-start' : 'w-full items-center'} md:pl-14  px-4 xs:px-8 sm:px-14 pb-14 md:py-0 flex flex-col justify-center gap-6`}>
-				<h3 className="lux-title text-gray-800 text-3xl drop-shadow-none">{content.titulo}</h3>
-				<ul className="pl-4 list-disc flex flex-col justify-center gap-4 ">
+				<h2 className="section-title text-gray-800 ">{content.titulo}</h2>
+				<ul className="pl-4 list-disc flex flex-col justify-center gap-1 ">
 					{content.beneficios && content.beneficios.map((beneficio, i) => (
-						<li className="text-gray-700 text-lg font-normal font-tajawal leading-tight" key={i}>{beneficio}</li>
+						<li key={i + beneficio}><h3 className="text-gray-700 section-text">{beneficio}</h3></li>
 						))}
 				</ul>
 				<Link href="/listing" className="dark-button">Quiero una asesoría</Link>

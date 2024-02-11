@@ -42,8 +42,17 @@
   .lux-title{
     @apply font-jomolhari font-normal tracking-wide drop-shadow-[-1px_2px_4px_rgba(0,0,0,0.5)] cursor-default;
   }
+  .text-shadow{
+    @apply drop-shadow-[-1px_2px_4px_rgba(0,0,0,0.5)]
+  }
   .normal-subtitle{
     @apply font-tajawal font-extralight text-xl xs:text-2xl lg:text-3xl align-middle leading-none drop-shadow-[-1px_2px_2px_rgba(0,0,0,0.5)] cursor-default;
+  }
+  .section-title{
+    @apply font-jomolhari font-normal tracking-wide cursor-default text-3xl
+  }
+  .section-text{
+    @apply text-lg font-light font-tajawal leading-tight
   }
   .default-paddings{
     @apply px-4 xs:px-8 sm:px-14 md:px-20;

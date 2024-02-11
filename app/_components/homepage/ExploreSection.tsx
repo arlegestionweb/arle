@@ -32,12 +32,12 @@ function ExploreSection({
         containerclassName="flex justify-center items-end"
       >
         <div className="sticky z-10 flex-col justify-center items-center mb-14 gap-2.5 flex w-full default-paddings">
-          <h2 className="lux-title font-extralight text-4xl xs:text-[40px] tracking-wide text-center text-white">
+          <h1 className="lux-title font-extralight text-4xl xs:text-[40px] tracking-wide text-center text-white">
             {titulo}
-          </h2>
-          <p className="text-center text-white normal-subtitle">
+          </h1>
+          <h3 className="text-center text-white normal-subtitle">
             {descripcion}
-          </p>
+          </h3>
           <Link
             href={`/listing?type=${typeParamFromTitle(
               titulo.toLowerCase().trim()
