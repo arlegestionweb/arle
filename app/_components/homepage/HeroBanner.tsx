@@ -37,7 +37,7 @@ const Banner = ({ content, className }: BannerProps) => {
   return (
     <section
       className={cn(
-        "max-w-screen h-[70vh] overflow-hidden relative group",
+        "max-w-screen h-[85vh] md:h-[75vh] overflow-hidden relative group",
         className
       )}>
       <section
@@ -59,14 +59,18 @@ const Banner = ({ content, className }: BannerProps) => {
             )}
           </React.Fragment>
         ))}
-                <section className="absolute bottom-20 w-full z-10 self-stretch flex-col justify-center items-center gap-2.5 flex">
-                  <h2 className="self-stretch text-center text-white text-[32px] font-semibold uppercase leading-[38.40px]">
+                <section className="absolute bottom-20 w-full z-10 flex justify-center default-paddings pointer-events-none">
+                  <section className="w-full flex flex-col justify-center items-start gap-4 max-w-screen-xl">
+                  <h2 className=" text-white lux-title text-2xl xs:text-3xl sm:text-4xl lg:text-[40px] max-w-sm sm:max-w-lg">
                     {content.titulo}
                   </h2>
-                  <p className="text-center text-white text-2xl font-light leading-[28.80px]">
+                  <p className=" text-white normal-subtitle">
                     {content.subtitulo}
                   </p>
-                  <Link className="text-zinc-800 text-lg font-medium leading-[27px] px-20 py-[8.50px] bg-color-bg-surface-1-default" href="/listing" >Explora todos los productos</Link>
+                  {content.buttonText && (
+                  <Link className="light-button pointer-events-auto" href="/listing">{content.buttonText}</Link>
+                  )}
+                  </section>
                 </section>
       </section>
 

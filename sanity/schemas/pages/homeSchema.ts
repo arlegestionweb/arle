@@ -19,10 +19,17 @@ export const homeSchema = defineType({
           name: "titulo",
           title: "Titulo",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "subtitulo",
           title: "Subtítulo",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "buttonText",
+          title: "Texto del Botón",
           type: "string",
         }),
         defineField({
@@ -85,16 +92,19 @@ export const homeSchema = defineType({
           name: "titulo",
           title: "Título",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "descripcion",
           title: "Subtítulo",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
+          validation: (Rule) => Rule.required(),
         }),
       ],
     }),
@@ -107,16 +117,19 @@ export const homeSchema = defineType({
           name: "titulo",
           title: "Título",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "descripcion",
           title: "Subtítulo",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
+          validation: (Rule) => Rule.required(),
         }),
       ],
     }),
@@ -129,16 +142,19 @@ export const homeSchema = defineType({
           name: "titulo",
           title: "Título",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "descripcion",
           title: "Subtítulo",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
+          validation: (Rule) => Rule.required(),
         }),
       ],
     }),
@@ -165,11 +181,13 @@ export const homeSchema = defineType({
           name: "titulo",
           title: "Título",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "descripcion",
           title: "Descripción",
           type: "text",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "imagenes",
@@ -190,6 +208,7 @@ export const homeSchema = defineType({
           name: "titulo",
           title: "Título",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "beneficios",
@@ -200,6 +219,7 @@ export const homeSchema = defineType({
               name: "beneficio",
               title: "Beneficio",
               type: "string",
+              validation: (Rule) => Rule.required(),
             })
           ]
         }),

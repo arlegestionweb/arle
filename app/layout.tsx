@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Inter, Raleway, Tajawal, Kanit, Crimson_Pro } from "next/font/google";
+import { Inter, Raleway, Tajawal, Kanit, Crimson_Text, Jomolhari } from "next/font/google";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/Footer";
 import Cart from "./_components/cart";
@@ -9,8 +9,14 @@ import {
 } from "@/sanity/queries/siteSettings";
 import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQueries";
 
-const crimson_Pro = Crimson_Pro({
-  weight: ["200", "300", "400", "500"],
+const jomolhari = Jomolhari({
+  weight: ["400"],
+  subsets: ["latin"],
+  variable: "--font-jomolhari",
+})
+
+const crimson = Crimson_Text({
+  weight: [ "400", "600", "700"],
   subsets: ["latin"],
   variable: "--crimson-pro",
 });
@@ -61,7 +67,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson_Pro.variable} overflow-x-hidden`}
+        className={`${inter.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson.variable} ${jomolhari.variable} overflow-x-hidden no-scrollbar`}
       >
         <Navbar
           marca={

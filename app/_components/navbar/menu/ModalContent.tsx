@@ -39,7 +39,7 @@ const ModalContent = ({
         }`;
   return (
     <aside
-      className={`w-screen max-w-[400px] flex-col relative overflow-y-scroll transition-all`}
+      className={`w-screen max-w-[400px] flex-col relative overflow-y-scroll no-scrollbar transition-all`}
     >
       <section className="py-[18px] px-6 flex flex-col gap-[12px]">
         <div className="md:hidden">

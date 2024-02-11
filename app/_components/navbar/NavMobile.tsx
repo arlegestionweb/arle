@@ -22,7 +22,7 @@ const MobileNavBar = ({ className, marca }: MobileNavBarProps) => {
 
   return (
     <nav
-      className={`${className} fixed z-30 h-[50px] w-full px-8 bg-color-bg-surface-1-default text-black flex justify-between items-center border-b border-zinc-200`}
+      className={`${className} fixed z-30 h-[50px] w-full px-4 xs:px-8 bg-color-bg-surface-1-default text-black flex justify-between items-center border-b border-zinc-200`}
     >
       <Link href="/">
         <Image src={"/ArleBasicLogo.svg"} width={80} height={30} alt="logo" />
