@@ -3,11 +3,13 @@ import RedDot from "./RedDot";
 import { cn } from "../_lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 
-const buttonsVariants = cva("px-3 py-1.5 border border-black relative", {
+const buttonsVariants = cva("px-6 py-1 relative font-inter font-normal text-base", {
   variants: {
     labelType: {
-      light: "bg-color-bg-surface-1-default text-black",
-      dark: "bg-black text-[#CFCFCF]",
+      light: "bg-white text-gray-800 border border-black ",
+      lightSmall: "bg-white text-gray-800 border border-black px-3 py-[2px] text-sm md:text-base",
+      gray: "bg-gray-100 text-gray-800 ",
+      dark: "bg-black text-gray-100 ",
     },
   },
   defaultVariants: {

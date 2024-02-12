@@ -85,15 +85,15 @@ const Menu = ({
       <div
         className={`${
           isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        } fixed z-[100] top-[0px] left-0 items-end transition-all duration-700 w-screen h-screen bg-black bg-opacity-50 backdrop-blur-md flex flex-col overflow-hidden`}
+        } fixed z-[100] top-0 left-0 transition-all duration-500 w-screen h-screen bg-black bg-opacity-50 backdrop-blur-md`}
       />
       <div
         className={`${
           isMenuOpen ? "right-0" : "-right-[400px]"
-        } w-screen fixed top-0 items-end z-[102] max-w-[400px] h-screen flex flex-col bg-white transition-all duration-500 ease-out overflow-hidden`}
+        } w-screen fixed top-0 z-[102] max-w-[400px] h-screen flex flex-col bg-white transition-all duration-[350ms] ease-out overflow-hidden`}
         ref={menuRef}
       >
-        <header className="w-full h-16 border-b border-stone-300 px-4 flex items-center justify-between">
+        <header className="w-full h-16 border-b border-gray-300 px-4 flex items-center justify-between">
           {currentScreen > 0 ? (
             <button className="flex items-center" onClick={goBack}>
               <GoChevronLeft className="w-5 h-5" />
@@ -128,6 +128,7 @@ const Menu = ({
               setSelectedItems={selectItems}
               selectedItems={selectedItems}
               bottomSection={true}
+              search={true}
             />
           </div>
           <div
@@ -146,6 +147,7 @@ const Menu = ({
               setSelectedItems={selectItems}
               bottomSection={false}
               selectedItems={selectedItems}
+              search={false}
             />
           </div>
           <div
@@ -164,6 +166,7 @@ const Menu = ({
               setSelectedItems={selectItems}
               bottomSection={false}
               selectedItems={selectedItems}
+              search={false}
             />
           </div>
         </div>

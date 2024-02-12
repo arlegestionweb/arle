@@ -54,7 +54,7 @@ const Banner = ({ banners, className }: BannerProps) => {
                 containerclassName={`snap-center snap-always ${
                   index === 1 && "snap-mandatory"
                 } min-w-full justify-center items-center flex`}>
-                <div className="absolute bottom-8 md:bottom-10 z-10 flex justify-center">
+                <div className="absolute bottom-8 md:bottom-10 z-10 px-3 flex justify-center">
                   <h2 className="capitalize text-center text-white text-xl md:text-2xl lux-title">
                     {banner?.titulo}
                   </h2>

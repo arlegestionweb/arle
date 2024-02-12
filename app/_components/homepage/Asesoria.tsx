@@ -10,7 +10,7 @@ const Asesoria = ({content}: PageProps) => {
 	return (
 		<section className="w-full flex flex-col md:flex-row md:justify-end bg-white">
 			{content.usarImagen && content.imagenAsesoria.imagen && (
-				<section className="w-full md:w-1/2 h-[350px] sm:h-[500px] p-8  md:pr-0 md:max-w-screen-sm">
+				<section className="w-full md:w-1/2 h-[350px] sm:h-[400px] p-8  md:pr-0 md:max-w-screen-sm">
 					<GradientImage
 					alt={content.imagenAsesoria.imagen.alt}
 					src={content.imagenAsesoria.imagen.url}

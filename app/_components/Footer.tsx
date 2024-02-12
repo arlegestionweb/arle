@@ -47,7 +47,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
   if (pathname.includes("admin")) return;
   return (
     <section className="lg:fixed ">
-      <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-10 pt-6 md:pt-20  text-white bg-arle-blue pointer-events-auto">
+      <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-20 xs:px-8 sm:px-14 md:pt-20  text-white bg-arle-blue pointer-events-auto">
         <div className="flex-1 pt-10 pb-20 w-[210px] md:w-[260px] flex justify-center self-center items-center">
           <Image src={"/logo-footer.svg"} width={280} height={200} alt="logo" />
         </div>

@@ -85,6 +85,11 @@ const Filters = ({
     setIsFilterOpen(!isFilterOpen);
   };
 
+  const toggleSorting = () => {
+    setIsSortingOpen(!isSortingOpen)
+  }
+
+
   const breadCrumbs: TBreadCrumb[] = []
 
   const paramOrder = ['type','linea', 'genero', 'marcas']; // the order in which the params should be displayed in the breadcrumbs
@@ -108,32 +113,32 @@ const Filters = ({
   });
   const sortingOptions: TSortingOption[] = [
     { label: "Recientes", value: "recientes" },
-    { label: "Precio: Mayor a Menor", value: "precio_mayor_menor" },
-    { label: "Precio: Menor to Mayor", value: "price_menor_mayor" },
+    { label: "Mayor precio", value: "precio_mayor_menor" },
+    { label: "Menor precio", value: "price_menor_mayor" },
   ];
+
   return (
     <>
-      <section className="flex flex-col mb-5 max-w-full">
-        <section className="flex gap-3 flex-wrap max-w-full">
-          <section className="flex items-center gap-3 w-full ">
-
+        <section className="flex flex-col md:flex-row gap-1 pb-1 md:gap-3 w-full md:pb-4">
+          <section className="flex items-center gap-3 ">
             <Button
-              className="flex items-center gap-2"
+              className="flex items-center gap-1"
               active={areFiltersActive}
               onClick={toggleFilter}
               type="button"
+              labelType={"lightSmall"}
             >
-              <FiFilter />
+              <FiFilter className="h-3 w-3" width={14} height={14}/>
               Filtros
             </Button>
-            <Button className="flex items-center gap-2 relative overflow-hidden text-ellipsis whitespace-nowrap max-w-full" type="button" onClick={() => setIsSortingOpen(!isSortingOpen)} >
-              <LuSettings2 /> Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recients"}
+            <Button className="flex items-center gap-1 relative text-ellipsis whitespace-nowrap" labelType={"lightSmall"} type="button" onClick={toggleSorting} >
+              <LuSettings2 className="h-3 w-3" width={14} height={14}/> 
+              Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recientes"}
               <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
             </Button>
           </section>
           <BreadCrumbs breadCrumbs={breadCrumbs} />
         </section>
-      </section>
       <FilterMenu
         areFiltersActive={areFiltersActive}
         isFilterOpen={isFilterOpen}
@@ -173,7 +178,7 @@ const Dropdown = ({ options, isOpen, onClose }: {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
 
   if (!isOpen) return null;

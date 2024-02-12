@@ -13,6 +13,7 @@ type ModalContentProps = {
   selectedItems: { name: string }[];
   currentScreen: number;
   bottomSection: boolean;
+  search: boolean;
 };
 
 const ModalContent = ({
@@ -25,6 +26,7 @@ const ModalContent = ({
   setSelectedItems,
   subtitle,
   bottomSection,
+  search,
 }: ModalContentProps) => {
   const [productType, gender] = selectedItems.map((item) => item.name);
 
@@ -42,9 +44,11 @@ const ModalContent = ({
       className={`w-screen max-w-[400px] flex-col relative overflow-y-scroll no-scrollbar transition-all`}
     >
       <section className="py-[18px] px-6 flex flex-col gap-[12px]">
-        <div className="md:hidden">
+        {search && (
+        <div className="md:hidden pb-4">
           <SearchInput className="w-full" onSearch={() => setIsMenu(false)} />
         </div>
+        )}
         <h2 className="text-zinc-800 text-lg  font-medium font-tajawal leading-snug capitalize cursor-default pb-4">
           {subtitle === "perfume" ? "perfumes" : subtitle}
         </h2>

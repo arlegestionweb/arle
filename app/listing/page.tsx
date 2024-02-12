@@ -849,7 +849,7 @@ const Listing = async ({
 
   return (
     <Main extraClasses=" lg:mb-[100vh] bg-white min-h-screen">
-      <div className="h-[180px] md:h-[210px] lg:h-[250px] flex justify-center bg-arle-blue">
+      <div className="h-[180px] md:h-[210px] lg:h-[250px] xl:h-[280px] flex justify-center bg-gray-950">
         <Banner
           banners={pageContent.listingContent.banners}
           className="h-full max-w-[1350px] w-full"
@@ -865,8 +865,8 @@ const Listing = async ({
           Coleccion {coleccionSeleccionada}
         </h2>
       )}
-      <section className="bg-color-bg-surface-1-default flex flex-col items-center">
-        <section className="max-w-mx w-full py-4 px-4 md:px-9 flex">
+      <section className="bg-white flex flex-col items-center">
+        <section className="max-w-screen-xl w-full py-2 px-4 md:px-8 flex">
           <Filters
             areFiltersActive={areFiltersActive}
             marcas={marcas}

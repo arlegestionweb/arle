@@ -44,7 +44,7 @@ const SearchInput = ({ className, onSearch }: SearchInputProps) => {
           onChange={handleKeyDown}
         />
       </form>
-      <Link href={`/listing?search=${value}`} className="border-l pl-2 pr-3 h-full">
+      <Link href={`/listing?search=${value}`} onClick={onSearch} className="border-l pl-2 pr-3 h-full">
         <FiSearch className="w-[18px] h-[18px] "/> 
       </Link>
     </div>
