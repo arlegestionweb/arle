@@ -1,6 +1,5 @@
 import { TFrontEndOrderSchema } from "@/sanity/queries/orders";
 import { Html, Body, Text, Heading, Container, Tailwind } from "@react-email/components";
-import { Img } from "@react-email/img";
 
 
 type EmailTemplateProps = {
@@ -36,8 +35,8 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
             <Text>Total: {order.amounts.total}</Text>
             <Heading>Productos:</Heading>
             {order.items.map((item) => {
-
               const { product } = item;
+              console.log({product})
               const variant = product.variantes.find(variante => variante.codigoDeReferencia === item.variantId)
 
               const image =
