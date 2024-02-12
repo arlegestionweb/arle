@@ -4,7 +4,7 @@ import { BsMagic, BsCheck2Circle } from "react-icons/bs";
 import { CiCircleAlert, CiPercent, CiCircleMinus } from "react-icons/ci";
 
 const labelsVariants = cva(
-  "absolute top-0 flex p-1 md:p-2 gap-1 items-center border-2 whitespace-nowrap",
+  "absolute top-0 flex py-[2px] md:py-1 px-2 gap-1 items-center border-2 whitespace-nowrap pointer-events-none",
   {
     variants: {
       labelType: {
@@ -63,7 +63,7 @@ const Labels = ({ label, className, labelType }: LabelsProps) => {
     <div className={cn(labelsVariants({ labelType }), className)}>
       {variants[label].icon}
       <span
-        className="font-tajawal font-medium text-[0.7rem] text-base md:text-base leading-tight capitalize">
+        className="font-inter font-light text-sm capitalize">
         {variants[label].text}
       </span>
     </div>

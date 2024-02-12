@@ -116,7 +116,7 @@ const CardLayout = ({
                   ? selectedVariant.imagenes
                   : []
             }
-            className=" h-[180px] sm:h-[250px] lg:h-[288px]"
+            className=" h-[180px] sm:h-[250px]"
           />
         ) : (
           <Link href={product.slug}>
@@ -137,20 +137,25 @@ const CardLayout = ({
               }
               width={288}
               height={288}
-              className="object-cover h-[180px] sm:h-[250px] w-full lg:h-[288px]"
+              className="object-contain h-[180px] sm:h-[250px] w-full"
             />
           </Link>
         )}
       </section>
 
-      <section className=" flex-1 justify-between font-tajawal flex flex-col gap-3">
-        <h3 className="text-xl font-bold leading-6 text-[#303030]">
+      <section className=" flex-1 justify-end font-tajawal flex flex-col gap-1">
+      <Link href={product.slug} className="flex flex-col gap-0.5">
+        <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize">
+          {product.marca}
+        </h2>
+        <h3 className="text-md md:text-lg md:leading-none font-medium text-gray-700 leading-none">
           {isPerfume(product)
             ? product.titulo
             : isReloj(product)
             ? product.modelo
             : product.modelo}
         </h3>
+        </Link>
         <VariantSelector
           product={product}
           selectedVariant={selectedVariant}
@@ -186,8 +191,8 @@ export const VariantSelector = <T extends TProduct>({
 }: TVarianSelectorProps<T>) => {
   if (isPerfume(product)) {
     return (
-      <div className="flex gap-2 flex-col w-fit">
-        <h4>Tamaño (ml):</h4>
+      <section className="flex flex-wrap gap-y-1 gap-x-2 items-center">
+        <h4 className="leading-none text-gray-600 cursor-default">Tamaño (ml):</h4>
         <div className="flex gap-2">
           {product.variantes.map((variante: TVariant, index) => {
             if ("tamano" in variante && "tamano" in selectedVariant) {
@@ -196,7 +201,7 @@ export const VariantSelector = <T extends TProduct>({
               return (
                 <button
                   onClick={() => setSelectedVariant(variante)}
-                  className={`w-[27px] h-[26px] px-5 py-3 rounded-[5px] overflow-hidden border flex-col justify-center items-center gap-2.5 inline-flex ${isVariantSelected
+                  className={` px-1.5 pt-1 rounded-[5px] font-inter leading-none overflow-hidden border justify-center items-center ${isVariantSelected
                     ? "bg-neutral-100 border-black"
                     : "bg-neutral-200 border-neutral-300"
                     }`}
@@ -208,16 +213,16 @@ export const VariantSelector = <T extends TProduct>({
             }
           })}
         </div>
-      </div>
+      </section>
     );
   }
 
   if (isGafa(product)) {
     // product.variantes[0].colorDeLaMontura.color;
     return (
-      <>
-        <h4>Color:</h4>
-        <ul className="flex gap-2">
+      <section className="flex flex-wrap gap-y-1 gap-x-2 items-center">
+        <h4 className="leading-none text-gray-600">Color:</h4>
+        <ul className="flex gap-1.5 items-center">
           {product.variantes.map((variante, index) => (
             <li
               key={`${variante.colorDeLaMontura.nombre}-${index}`}
@@ -225,8 +230,8 @@ export const VariantSelector = <T extends TProduct>({
                 "codigoDeReferencia" in selectedVariant &&
                   variante.codigoDeReferencia ===
                   selectedVariant.codigoDeReferencia
-                  ? `border-2 border-black p-[1px] rounded-[6px]`
-                  : ""
+                  ? `border-[1.5px] border-gray-500 p-[1px] rounded-[6.5px]`
+                  : `border-[1.5px] border-transparent p-[1px]`
               }
             >
               <ColorSelector
@@ -238,15 +243,15 @@ export const VariantSelector = <T extends TProduct>({
             </li>
           ))}
         </ul>
-      </>
+      </section>
     );
   }
   if (isReloj(product)) {
     // product.variantes[0].colorDeLaMontura.color;
     return (
-      <>
-        <h4>Color:</h4>
-        <ul className="flex gap-2">
+      <section className="flex flex-wrap gap-y-1 gap-x-2 items-center">
+        <h4 className="leading-none text-gray-600">Color:</h4>
+        <ul className="flex gap-2 items-center">
           {product.variantes.map((variante: TRelojVariant, index) => (
             <li
               key={`${variante.colorCaja.nombre}-${index}`}
@@ -254,8 +259,8 @@ export const VariantSelector = <T extends TProduct>({
                 "codigoDeReferencia" in selectedVariant &&
                   selectedVariant.codigoDeReferencia ===
                   variante.codigoDeReferencia
-                  ? `border-2 border-black rounded-[6px] p-[1px]`
-                  : ""
+                  ? `border-[1.5px] border-gray-500 rounded-[6.5px] p-[1px]`
+                  : `border-[1.5px] border-transparent p-[1px]`
               }
             >
               <ColorSelector
@@ -267,7 +272,7 @@ export const VariantSelector = <T extends TProduct>({
             </li>
           ))}
         </ul>
-      </>
+      </section>
     );
   }
 };
@@ -286,7 +291,7 @@ const ColorSelector = ({
   return (
     <button
       onClick={onClick}
-      className={`w-[26px] h-[26px] rounded-[5px] border flex overflow-hidden ${
+      className={`w-[20px] h-[20px] rounded-[5px] border flex overflow-hidden ${
         // variante.colorDeLaMontura.color === selectedVariant.colorDeLaMontura.color
         //   ? "bg-neutral-100 border-black"
         //   : "bg-neutral-200 border-neutral-300"

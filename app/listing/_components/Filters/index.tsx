@@ -119,7 +119,7 @@ const Filters = ({
 
   return (
     <>
-        <section className="flex flex-col md:flex-row gap-1 pb-1 md:gap-3 w-full md:pb-4">
+        <section className="flex flex-col md:flex-row gap-1 pb-2.5 md:gap-3 w-full md:pb-4">
           <section className="flex items-center gap-3 ">
             <Button
               className="flex items-center gap-1"
