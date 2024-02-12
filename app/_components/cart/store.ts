@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { customAlphabet } from 'nanoid';
 import { z } from "zod";
 import { create } from "zustand";
 
@@ -72,10 +72,15 @@ const setCartIdInLocalStorage = (id: string) => {
   }
 };
 
+const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const nanoid = customAlphabet(alphabet, 21);
+
+const id = nanoid();
+
 // Get the existing cart ID from localStorage, or generate a new one if it doesn't exist
 let cartId = getCartIdFromLocalStorage();
 if (!cartId) {
-  cartId = nanoid();
+  cartId = id;
   setCartIdInLocalStorage(cartId);
 }
 

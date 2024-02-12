@@ -13,6 +13,7 @@ export const GET = async (
     isEnvDev ? "sandbox" : "production"
   }.wompi.co/v1/transactions/${wompyPaymentId}`;
 
+  const localUrl = req.url.split("api")[0];
   try {
     const wompyResponse = await fetch(wompyQueryUrl);
 
@@ -33,7 +34,6 @@ export const GET = async (
 
       await sanityWriteClient.patch(newSanityOrder._id).set(newSanityOrder).commit();
 
-      const localUrl = req.url.split("api")[0];
       const responseUrl = `${localUrl}`;
 
       const {data, error} = await sendInvoiceEmail(newSanityOrder);
@@ -50,9 +50,11 @@ export const GET = async (
 
       return Response.redirect(responseUrl);
     }
-    return Response.redirect("http://localhost:3000/error-procesando-pago");
+
+
+    return Response.redirect(`${localUrl.split("/success")[0]}/error-procesando-pago`);
   } catch (error) {
-    console.log({error})
-    return Response.redirect("http://localhost:3000/error-procesando-pago");
+    console.error({error})
+    return Response.redirect(`${localUrl.split("/success")[0]}/error-procesando-pago`);
   }
 };
