@@ -21,7 +21,7 @@ export const GET = async (
       return Response.json({
         url: `${localUrl.split("/success")[0]}/error-procesando-pago`,
         wompyJson,
-        env: process.env.NODE_ENV,
+        wompyQueryUrl,
       });
     }
 
