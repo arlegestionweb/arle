@@ -63,12 +63,15 @@ export const GET = async (
     return Response.json({
       url: `${localUrl.split("/success")[0]}/error-procesando-pago`,
       wompyJson,
+      wompyQueryUrl
     });
   } catch (error) {
     console.error({ error });
     return Response.json({
       url: `${localUrl.split("/success")[0]}/error-procesando-pago`,
       error,
+      wompyQueryUrl,
+      inCatch: true,
     });
   }
 };
