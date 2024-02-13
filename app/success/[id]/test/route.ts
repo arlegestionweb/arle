@@ -3,7 +3,7 @@ export const GET = async (
   { params }: { params: { id: string } }
 ) => { 
 
-  return {
+  return Response.json({
     url: req.url,
-  }
+  });
 };
