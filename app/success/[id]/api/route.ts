@@ -7,18 +7,23 @@ export const GET = async (
 ) => {
   const { searchParams } = new URL(req.url);
   const wompyPaymentId = searchParams.get("id");
-  const isEnvDev = process.env.NODE_ENV === "development";
 
-  const wompyQueryUrl = `https://${
-    isEnvDev ? "sandbox" : "production"
-  }.wompi.co/v1/transactions/${wompyPaymentId}`;
+  const wompyQueryUrl = `https://${process.env.WOMPI_ENV}.wompi.co/v1/transactions/${wompyPaymentId}`;
 
   const localUrl = req.url.split("api")[0];
   try {
     const wompyResponse = await fetch(wompyQueryUrl);
 
     const wompyJson = await wompyResponse.json();
-    console.log({ wompyJson })
+    console.log({ wompyJson, wompyQueryUrl });
+
+    if (wompyJson.error) {
+      return Response.json({
+        url: `${localUrl.split("/success")[0]}/error-procesando-pago`,
+        wompyJson,
+        env: process.env.NODE_ENV,
+      });
+    }
 
     if (wompyJson.data.status === "APPROVED") {
       const sanityOrder = await sanityClient.fetch(
@@ -32,16 +37,20 @@ export const GET = async (
         wompiReference: wompyJson.data.id,
       };
 
-      await sanityWriteClient.patch(newSanityOrder._id).set(newSanityOrder).commit();
+      await sanityWriteClient
+        .patch(newSanityOrder._id)
+        .set(newSanityOrder)
+        .commit();
 
       const responseUrl = `${localUrl}`;
 
-      const {data, error} = await sendInvoiceEmail(newSanityOrder);
-      console.log("after running sendInvoice Email", {data, error})
-      
+      const { data, error } = await sendInvoiceEmail(newSanityOrder);
+      console.log("after running sendInvoice Email", { data, error });
+
       if (error || !data) {
         Response.json({
-          message: "Hubo un error enviando to factura a tu correo electronico por favor contactanos con tu numero de orden",
+          message:
+            "Hubo un error enviando to factura a tu correo electronico por favor contactanos con tu numero de orden",
           status: 400,
           error,
           "numero-de-orden": newSanityOrder._id,
@@ -51,10 +60,15 @@ export const GET = async (
       return Response.redirect(responseUrl);
     }
 
-
-    return Response.json({url: `${localUrl.split("/success")[0]}/error-procesando-pago`, wompyJson});
+    return Response.json({
+      url: `${localUrl.split("/success")[0]}/error-procesando-pago`,
+      wompyJson,
+    });
   } catch (error) {
-    console.error({error})
-    return Response.json({url: `${localUrl.split("/success")[0]}/error-procesando-pago`, error});
+    console.error({ error });
+    return Response.json({
+      url: `${localUrl.split("/success")[0]}/error-procesando-pago`,
+      error,
+    });
   }
 };
