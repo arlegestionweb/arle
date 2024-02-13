@@ -1,6 +1,7 @@
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { sendInvoiceEmail } from "../actions";
 
+
 export const GET = async (
   req: Request,
   { params }: { params: { id: string } }
@@ -22,7 +23,7 @@ export const GET = async (
         wompyJson,
         wompyQueryUrl,
         wompyPaymentId,
-        url: req.url
+        url: new URL(req.url).toString()
       });
     }
 
