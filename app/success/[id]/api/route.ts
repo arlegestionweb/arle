@@ -18,7 +18,7 @@ export const GET = async (
     const wompyResponse = await fetch(wompyQueryUrl);
 
     const wompyJson = await wompyResponse.json();
-    console.log({ wompyJson, status: wompyJson.data.status })
+    console.log({ wompyJson })
 
     if (wompyJson.data.status === "APPROVED") {
       const sanityOrder = await sanityClient.fetch(
