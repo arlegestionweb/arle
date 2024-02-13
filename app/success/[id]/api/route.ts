@@ -3,7 +3,7 @@ import { sendInvoiceEmail } from "../actions";
 
 
 export const GET = async (
-  req: any,
+  req: Request,
   { params }: { params: { id: string } }
 ) => {
 
