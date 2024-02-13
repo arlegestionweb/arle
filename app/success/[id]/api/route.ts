@@ -6,6 +6,8 @@ export const GET = async (
   req: Request,
   { params }: { params: { id: string } }
 ) => {
+
+  const url = req.url;
   const { searchParams } = new URL(req.url);
   const wompyPaymentId = searchParams.get("id");
 
@@ -23,7 +25,8 @@ export const GET = async (
         wompyJson,
         wompyQueryUrl,
         wompyPaymentId,
-        url: new URL(req.url).toString()
+        urlString: new URL(req.url).toString(),
+        url
       });
     }
 
