@@ -4,7 +4,7 @@ import { sendInvoiceEmail } from "../actions";
 
 export const GET = async (
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { paymentId: string } }
 ) => {
 
   const url = req.url;
@@ -34,7 +34,7 @@ export const GET = async (
     if (wompyJson.data.status === "APPROVED") {
       const sanityOrder = await sanityClient.fetch(
         `*[_type == "orders" && _id == $id][0]`,
-        { id: params.id }
+        { id: params.paymentId }
       );
 
       const newSanityOrder = {
