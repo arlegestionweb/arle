@@ -26,7 +26,8 @@ export const GET = async (
         wompyQueryUrl,
         wompyPaymentId,
         urlString: new URL(req.url).toString(),
-        url
+        url,
+        req
       });
     }
 
