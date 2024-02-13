@@ -19,10 +19,10 @@ export const GET = async (
 
     if (wompyJson.error) {
       return Response.json({
-        url: `${localUrl.split("/success")[0]}/error-procesando-pago`,
         wompyJson,
         wompyQueryUrl,
-        wompyPaymentId
+        wompyPaymentId,
+        url: req.url
       });
     }
 
