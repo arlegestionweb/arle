@@ -22,6 +22,7 @@ export const GET = async (
         url: `${localUrl.split("/success")[0]}/error-procesando-pago`,
         wompyJson,
         wompyQueryUrl,
+        wompyPaymentId
       });
     }
 
