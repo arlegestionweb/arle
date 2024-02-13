@@ -52,9 +52,9 @@ export const GET = async (
     }
 
 
-    return Response.redirect(`${localUrl.split("/success")[0]}/error-procesando-pago`);
+    return Response.json({url: `${localUrl.split("/success")[0]}/error-procesando-pago`, wompyJson});
   } catch (error) {
     console.error({error})
-    return Response.redirect(`${localUrl.split("/success")[0]}/error-procesando-pago`);
+    return Response.json({url: `${localUrl.split("/success")[0]}/error-procesando-pago`, error});
   }
 };
