@@ -15,10 +15,8 @@ async function Page({
   const wompyQueryUrl = `https://${process.env.WOMPI_ENV}.wompi.co/v1/transactions/${wompyPaymentId}`;
 
   const wompyResponse = await fetch(wompyQueryUrl);
-
   
   const wompyJson = await wompyResponse.json();
-  console.log({wompyJson })
 
   if (wompyJson.error) {
     return redirect(`/payment-error?error=${wompyJson.error}`);
@@ -42,18 +40,3 @@ async function Page({
 export default Page;
 
 
-// "use client"
-
-// import { useSearchParams } from "next/navigation";
-
-// function Page({
-//   params,
-// }: {
-//   params: { paymentId: string }
-// }) {
-
-//   const searchParams = useSearchParams();
-//   return <h1>{JSON.stringify(searchParams)}</h1>
-// }
-
-// export default Page;
