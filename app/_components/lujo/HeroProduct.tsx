@@ -43,8 +43,9 @@ const HeroProduct = ({
   setCantidad,
   pricing,
 }: HeroProductProps) => {
+  console.log(selectedVariant.mostrarUnidadesDisponibles, selectedVariant.unidadesDisponibles)
   return (
-    <section className="lg:grid lg:grid-cols-12 gap-8 lg:pb-8 row-auto w-full lg:max-w-screen-xl lg:pt-8">
+    <section className="lg:grid lg:grid-cols-12 gap-8 row-auto w-full lg:max-w-screen-xl lg:py-8">
       {/* Product view */}
       <GalleryProduct
         className="col-start-1 col-span-6"
@@ -54,17 +55,33 @@ const HeroProduct = ({
 
       <section className="relative row-start-1 col-start-7 col-span-6 flex flex-col">
         <header className="default-paddings lg:px-4 flex flex-col gap-2 lg:gap-3">
-        <button className="flex items-center -ml-1 group" onClick={()=> window.history.back()}>
-              <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />
-              <span className="text-gray-700 text-base font-normal font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-500">
-                Volver
-              </span>
-            </button>
-          {selectedVariant.tag && (
+          <button
+            className="flex items-center -ml-1 group"
+            onClick={() => window.history.back()}
+          >
+            <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />
+            <span className="text-gray-700 text-base font-normal font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-500">
+              Volver
+            </span>
+          </button>
+          {selectedVariant.unidadesDisponibles === 0 ? (
             <Labels
-              label={selectedVariant.tag}
+              label={"Agotado"}
               className="relative max-w-fit lg:mt-0 mb-2"
             />
+          ) : selectedVariant.mostrarUnidadesDisponibles &&
+            selectedVariant.unidadesDisponibles < 4 ? (
+            <Labels
+              label={"Ultimas Unidades"}
+              className="relative max-w-fit lg:mt-0 mb-2"
+            />
+          ) : (
+            selectedVariant.tag && (
+              <Labels
+                label={selectedVariant.tag}
+                className="relative max-w-fit lg:mt-0 mb-2"
+              />
+            )
           )}
 
           <h1 className="text-gray-800 text-4xl font-jomolhari leading-none w-full">
@@ -73,21 +90,21 @@ const HeroProduct = ({
           <h1 className="text-2xl text-gray-600 font-jomolhari leading-none ">
             {isPerfumeLujo(product) ? product.titulo : product.modelo}
           </h1>
-          {(isGafa(product) && product.descripcion) && (
+          {isGafa(product) && product.descripcion && (
             <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 ">
               {product.descripcion}
             </p>
           )}
-          {(isReloj(product) && product.descripcion) && (
+          {isReloj(product) && product.descripcion && (
             <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 ">
               {product.descripcion}
             </p>
           )}
-          {isPerfumeLujo(product) && 
-          <h2 className="text-gray-600 text-xl font-normal font-tajawal leading-none mt-0.5">
-            {product.concentracion}
-          </h2>
-          }
+          {isPerfumeLujo(product) && (
+            <h2 className="text-gray-600 text-xl font-normal font-tajawal leading-none mt-0.5">
+              {product.concentracion}
+            </h2>
+          )}
           <p className="text-zinc-500 text-sm md:text-base font-normal font-tajawal leading-none md:leading-none">
             <span className="capitalize">
               {product.marca} | {product.genero}
@@ -97,7 +114,7 @@ const HeroProduct = ({
             Código: {selectedVariant.codigoDeReferencia}
           </span>
           <Precio
-            dontDisplayPaymentOptions = {product.mostrarCredito ? false : true}
+            dontDisplayPaymentOptions={product.mostrarCredito ? false : true}
             fullPrice={pricing.precioSinDescuento}
             discountedPrice={
               pricing.timedDiscountPrice || pricing.precioConDescuento
@@ -106,11 +123,12 @@ const HeroProduct = ({
         </header>
 
         <section className="default-paddings lg:px-4 py-2 pb-6 lg:pb-2 flex first:flex-col gap-6 font-tajawal">
-          <VariantSelector
+          { product.variantes.length > 1 &&
+            <VariantSelector
             product={product}
             selectedVariant={selectedVariant}
             setSelectedVariant={setSelectedVariant}
-          />
+          />}
           <Cantidad
             cantidad={cantidad}
             anadirACantidad={() => setCantidad(cantidad + 1)}

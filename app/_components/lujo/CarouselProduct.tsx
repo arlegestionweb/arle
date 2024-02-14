@@ -68,7 +68,7 @@ const CarouselProduct = ({
               alt={img.alt || "perfume"}
               width={300}
               height={300}
-              className="object-contain w-full h-20"
+              className="object-contain w-full h-20 cursor-pointer"
             />
           </div>
         ))}

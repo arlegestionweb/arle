@@ -23,21 +23,34 @@ import { TPricing } from "@/app/[type]/[id]/_components/Product";
 import { TTimedDiscount } from "@/sanity/queries/pages/zodSchemas/general";
 import { TVarianSelectorProps } from "@/app/_components/types/card";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import { isGafaLujo } from "@/sanity/queries/pages/types";
 
-const ProductoCard = ({ producto, discount }: {
-  producto: TProduct,
+const ProductoCard = ({
+  producto,
+  discount,
+}: {
+  producto: TProduct;
   discount?: TTimedDiscount;
 }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
     producto.variantes[0]
   );
   const pricing: TPricing = {
-    precioConDescuento: selectedVariant.precioConDescuento ? colombianPriceStringToNumber(selectedVariant.precioConDescuento) : undefined,
+    precioConDescuento: selectedVariant.precioConDescuento
+      ? colombianPriceStringToNumber(selectedVariant.precioConDescuento)
+      : undefined,
     precioSinDescuento: colombianPriceStringToNumber(selectedVariant.precio),
-    timedDiscountPrice: discount ? parseFloat(((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)).toFixed(0)) : undefined,
+    timedDiscountPrice: discount
+      ? parseFloat(
+          (
+            (1 - +discount.porcentaje / 100) *
+            colombianPriceStringToNumber(selectedVariant.precio)
+          ).toFixed(0)
+        )
+      : undefined,
     finalPrice: 0,
-    discountTypeUsed: "none"
-  }
+    discountTypeUsed: "none",
+  };
 
   if (pricing.timedDiscountPrice) {
     pricing.finalPrice = pricing.timedDiscountPrice;
@@ -50,39 +63,61 @@ const ProductoCard = ({ producto, discount }: {
     pricing.discountTypeUsed = "none";
   }
 
-// console.log(selectedVariant.tag + producto.marca)
+  // console.log(selectedVariant.tag + producto.marca)
 
   useEffect(() => {
     const fetchTimedDiscounts = async () => {
       const { discount } = await getTimedDiscountByProductId(producto._id);
 
       if (discount) {
-        pricing.timedDiscountPrice = parseFloat(((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)).toFixed(0));
+        pricing.timedDiscountPrice = parseFloat(
+          (
+            (1 - +discount.porcentaje / 100) *
+            colombianPriceStringToNumber(selectedVariant.precio)
+          ).toFixed(0)
+        );
       }
-    }
+    };
 
     fetchTimedDiscounts();
-  }, [])
+  }, []);
 
   return (
     <>
-    {selectedVariant.tag && (
-      <Labels
-      label={selectedVariant.tag}
-      className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
-      />
+      {selectedVariant.unidadesDisponibles === 0 ? (
+        <Labels
+          label={"Agotado"}
+          className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+        />
+      ) : selectedVariant.mostrarUnidadesDisponibles &&
+        selectedVariant.unidadesDisponibles < 4 ? (
+        <Labels
+          label={"Ultimas Unidades"}
+          className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+        />
+      ) : (
+        selectedVariant.tag && (
+          <Labels
+            label={selectedVariant.tag}
+            className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+          />
+        )
       )}
-      <CardLayout pricing={pricing} product={producto} selectedVariant={selectedVariant} setSelectedVariant={setSelectedVariant} />
+      <CardLayout
+        pricing={pricing}
+        product={producto}
+        selectedVariant={selectedVariant}
+        setSelectedVariant={setSelectedVariant}
+      />
     </>
   );
 };
-
 
 const CardLayout = ({
   product,
   selectedVariant,
   setSelectedVariant,
-  pricing
+  pricing,
 }: {
   product: TProduct;
   selectedVariant: TVariant;
@@ -90,7 +125,11 @@ const CardLayout = ({
   pricing: TPricing;
 }) => {
   const { addItem } = useCartStore();
-  const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
+  const addToCart = (
+    producto: TProduct,
+    selectedVariant: TVariant,
+    quantity: number = 1
+  ) => {
     addItem({
       productId: producto._id,
       variantId: selectedVariant.codigoDeReferencia,
@@ -106,16 +145,16 @@ const CardLayout = ({
     <>
       <section className="w-full  overflow-hidden">
         {(isPerfume(product) && product.imagenes.length > 1) ||
-          (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
-          (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
+        (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
+        (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
           <ProductSlide
             slug={product.slug}
             imagesProduct={
               isPerfume(product)
                 ? product.imagenes
                 : "imagenes" in selectedVariant
-                  ? selectedVariant.imagenes
-                  : []
+                ? selectedVariant.imagenes
+                : []
             }
             className=" h-[180px] sm:h-[250px]"
           />
@@ -126,15 +165,15 @@ const CardLayout = ({
                 isPerfume(product)
                   ? product.imagenes[0].url
                   : "imagenes" in selectedVariant
-                    ? selectedVariant.imagenes[0].url
-                    : ""
+                  ? selectedVariant.imagenes[0].url
+                  : ""
               }
               alt={
                 isPerfume(product)
                   ? product.imagenes[0].url
                   : isReloj(product)
-                    ? product.variantes[0].imagenes[0].alt!
-                    : (product as TGafa).variantes[0].imagenes[0].alt!
+                  ? product.variantes[0].imagenes[0].alt!
+                  : (product as TGafa).variantes[0].imagenes[0].alt!
               }
               width={288}
               height={288}
@@ -145,34 +184,59 @@ const CardLayout = ({
       </section>
 
       <section className=" flex-1 justify-end font-tajawal flex flex-col gap-1">
-      <Link href={product.slug} className="flex flex-col gap-0.5">
-        <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize">
-          {product.marca}
-        </h2>
-        <h3 className="text-md md:text-lg md:leading-none font-medium text-gray-700 leading-none">
-          {isPerfume(product)
-            ? product.titulo
-            : isReloj(product)
-            ? product.modelo
-            : product.modelo}
-        </h3>
+        <Link href={product.slug} className="flex flex-col gap-0.5">
+          <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize">
+            {product.marca}
+          </h2>
+          <h3 className="text-md md:text-lg md:leading-none font-medium text-gray-700 leading-none">
+            {isPerfume(product)
+              ? product.titulo
+              : isReloj(product)
+              ? product.modelo
+              : product.modelo}
+          </h3>
+          {isPerfume(product) && (
+            <p className="text-sm leading-none text-gray-600">
+              {product.genero}{" "}
+              {product.variantes.length === 1 &&
+                ` | ${"tamano" in selectedVariant && selectedVariant.tamano}ml`}
+            </p>
+          )}
+          {isGafa(product) && (
+            <p className="text-sm leading-none text-gray-600">
+              {isGafaLujo(product)
+                ? product.especificaciones.tipoDeGafa
+                : product.detalles.tipoDeGafa}
+              {` | ${product.genero}`}
+            </p>
+          )}
         </Link>
-        <VariantSelector
-          product={product}
-          selectedVariant={selectedVariant}
-          setSelectedVariant={setSelectedVariant}
-        />
+        {product.variantes.length > 1 && (
+          <VariantSelector
+            product={product}
+            selectedVariant={selectedVariant}
+            setSelectedVariant={setSelectedVariant}
+          />
+        )}
         <Precio
           fullPrice={pricing.precioSinDescuento}
-          discountedPrice={pricing.timedDiscountPrice || pricing.precioConDescuento}
+          discountedPrice={
+            pricing.timedDiscountPrice || pricing.precioConDescuento
+          }
           dontDisplayPaymentOptions
         />
       </section>
       <Button
-        disabled = {selectedVariant.tag === "Agotado" ? true : false}
+        disabled={
+          selectedVariant.tag === "Agotado"
+            ? true
+            : selectedVariant.unidadesDisponibles === 0
+            ? true
+            : false
+        }
         onClick={() => addToCart(product, selectedVariant)}
         labelType={"dark"}
-        className="flex justify-center items-center gap-2"
+        className="flex justify-center items-center gap-2 button-float"
       >
         <LuShoppingCart />
         <span className="font-inter text-base font-medium leading-6">
@@ -185,7 +249,6 @@ const CardLayout = ({
 
 export default ProductoCard;
 
-
 export const VariantSelector = <T extends TProduct>({
   product,
   setSelectedVariant,
@@ -194,7 +257,9 @@ export const VariantSelector = <T extends TProduct>({
   if (isPerfume(product)) {
     return (
       <section className="flex flex-wrap gap-y-1 gap-x-2 items-center">
-        <h4 className="leading-none font-tajawal text-gray-600 cursor-default">Tamaño (ml):</h4>
+        <h4 className="leading-none font-tajawal text-gray-600 cursor-default">
+          Tamaño:
+        </h4>
         <div className="flex gap-2">
           {product.variantes.map((variante: TVariant, index) => {
             if ("tamano" in variante && "tamano" in selectedVariant) {
@@ -203,13 +268,14 @@ export const VariantSelector = <T extends TProduct>({
               return (
                 <button
                   onClick={() => setSelectedVariant(variante)}
-                  className={`h-7 min-w-7 px-1.5 pt-1 rounded-[5px] text-sm leading-none overflow-hidden border justify-center items-center ${isVariantSelected
-                    ? "bg-neutral-100 border-black"
-                    : "bg-neutral-200 border-neutral-300"
-                    }`}
+                  className={`h-7 min-w-7 px-1.5 pt-1 rounded-[5px] text-sm leading-none overflow-hidden border justify-center items-center ${
+                    isVariantSelected
+                      ? "bg-neutral-100 border-black"
+                      : "bg-neutral-200 border-neutral-300"
+                  }`}
                   key={`${variante.tamano}-${variante.precio}-${index}`}
                 >
-                  {variante.tamano}
+                  {variante.tamano}ml
                 </button>
               );
             }
@@ -230,7 +296,7 @@ export const VariantSelector = <T extends TProduct>({
               key={`${variante.colorDeLaMontura.nombre}-${index}`}
               className={
                 "codigoDeReferencia" in selectedVariant &&
-                  variante.codigoDeReferencia ===
+                variante.codigoDeReferencia ===
                   selectedVariant.codigoDeReferencia
                   ? `border-[1.5px] border-gray-500 p-[1px] rounded-[6.5px]`
                   : `border-[1.5px] border-transparent p-[1px]`
@@ -259,7 +325,7 @@ export const VariantSelector = <T extends TProduct>({
               key={`${variante.colorCaja.nombre}-${index}`}
               className={
                 "codigoDeReferencia" in selectedVariant &&
-                  selectedVariant.codigoDeReferencia ===
+                selectedVariant.codigoDeReferencia ===
                   variante.codigoDeReferencia
                   ? `border-[1.5px] border-gray-500 rounded-[6.5px] p-[1px]`
                   : `border-[1.5px] border-transparent p-[1px]`
@@ -298,7 +364,7 @@ const ColorSelector = ({
         //   ? "bg-neutral-100 border-black"
         //   : "bg-neutral-200 border-neutral-300"
         "border-neutral-300"
-        }`}
+      }`}
     >
       <ColorBar color={color1} />
       <ColorBar color={color2} />

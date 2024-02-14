@@ -53,7 +53,7 @@ const bannersQuery = `
 
 const variantesDeGafaQueryString = `
   variantes [] {
-    mostrarUnidadesDispobibles,
+    mostrarUnidadesDisponibles,
     "colorDeLaMontura": colorDeLaMontura -> {
       nombre,
       "color": color.hex
@@ -125,6 +125,7 @@ export const productQuery: Record<TProductType, string> = {
         "url": asset->url,
       },
       unidadesDisponibles,
+      mostrarUnidadesDisponibles,
       codigoDeReferencia,
       registroInvima,
       tag,
@@ -173,6 +174,7 @@ export const productQuery: Record<TProductType, string> = {
       registroInvima,
       tag,
       unidadesDisponibles,
+      mostrarUnidadesDisponibles,
       "colorCaja": colorCaja -> { 
         nombre, 
         "color": color.hex
@@ -213,7 +215,7 @@ export const productQuery: Record<TProductType, string> = {
       registroInvima,
       tag,
       precioConDescuento,
-      mostrarUnidadesDispobibles,
+      mostrarUnidadesDisponibles,
       tamano,
       precio
     },
@@ -279,6 +281,7 @@ export const productQuery: Record<TProductType, string> = {
       codigoDeReferencia,
       registroInvima,
       unidadesDisponibles,
+      mostrarUnidadesDisponibles,
     },
     parteDeUnSet,
     descripcion,
@@ -364,7 +367,7 @@ export const productQuery: Record<TProductType, string> = {
       unidadesDisponibles,
       precio,
       tag,
-      mostrarUnidadesDispobibles
+      mostrarUnidadesDisponibles
     },
     modelo,
     "slug": slug.current, 
@@ -373,7 +376,7 @@ export const productQuery: Record<TProductType, string> = {
     "detalles": detalles {
       "tipoDeGafa": tipoDeGafa -> titulo,
       "estiloDeGafa": estiloDeGafa -> titulo,
-      "lente": lente {
+        "lente": lente {
         "tipo": tipo -> titulo,
         "material": material -> titulo,
       },

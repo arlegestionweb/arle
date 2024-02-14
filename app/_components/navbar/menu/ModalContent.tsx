@@ -113,7 +113,7 @@ const ModalContent = ({
           {marca && (
             <Link
               href={`/listing?marcas=${marca}`}
-              className="w-full flex justify-center border-black border py-1"
+              className="w-full flex justify-center border-black border py-1 button-float"
               onClick={() => setIsMenu(false)}
             >
               <p className="text-black text-base font-medium font-inter leading-normal ">

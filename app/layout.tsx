@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Inter, Raleway, Tajawal, Kanit, Crimson_Text, Jomolhari } from "next/font/google";
+import { Inter, Raleway, Tajawal, Kanit, Crimson_Text, Jomolhari, Play } from "next/font/google";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/Footer";
 import Cart from "./_components/cart";
@@ -45,6 +45,12 @@ const raleway = Raleway({
   variable: "--font-raleway",
 });
 
+const play = Play({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-play",
+})
+
 export async function generateMetadata() {
   // fetch data
   const Metadata = await getSiteSettingsMetadata();
@@ -67,7 +73,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson.variable} ${jomolhari.variable} overflow-x-hidden no-scrollbar`}
+        className={`${inter.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson.variable} ${jomolhari.variable} ${play.variable} overflow-x-hidden no-scrollbar`}
       >
         <Navbar
           marca={

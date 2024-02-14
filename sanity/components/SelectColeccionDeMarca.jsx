@@ -11,7 +11,7 @@ const ColeccionDeMarcaInput = (props) => {
 
   useEffect(() => {
     const fetchColecciones = async () => {
-      const { colecciones } = await sanityClient.fetch(
+      const colecciones = await sanityClient.fetch(
         `*[_id == "${docId}"][0]{"colecciones": marca -> colecciones}`
       );
       setColecciones(colecciones);

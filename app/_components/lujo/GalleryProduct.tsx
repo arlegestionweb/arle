@@ -32,7 +32,7 @@ const GalleryProduct = ({
               alt={img.alt || "perfume"}
               fill
               onClick={() => setIndex(idx)}
-              className="object-contain min-h-20"
+              className="object-contain min-h-20 cursor-pointer"
             />
           </section>
         );

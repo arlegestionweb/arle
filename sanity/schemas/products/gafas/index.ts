@@ -10,6 +10,7 @@ export const tipoDeGafaSchema = defineType({
   title: "Tipo de Gafa",
   type: "document",
   icon: IoMdGlasses,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",
@@ -25,6 +26,7 @@ export const formaDeLaMonturaSchema = defineType({
   title: "Forma de la Montura",
   type: "document",
   icon: PiEyeglasses,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",
@@ -40,6 +42,7 @@ export const materialDelMarcoSchema = defineType({
   title: "Material del Marco",
   type: "document",
   icon: LiaGlassesSolid,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",
@@ -54,6 +57,7 @@ export const materialDeLaVarillaSchema = defineType({
   title: "Material de la Varilla",
   type: "document",
   icon: PiSunglassesThin,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",
@@ -68,6 +72,7 @@ export const materialDelLenteSchema = defineType({
   title: "Material del Lente",
   type: "document",
   icon: GiSpectacleLenses,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",
@@ -82,6 +87,7 @@ export const tipoDeLenteSchema = defineType({
   title: "Tipo de Lente",
   type: "document",
   icon: MdOutlineLens,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",
@@ -97,6 +103,7 @@ export const estiloDeGafaSchema = defineType({
   title: "Estilo de Gafa",
   type: "document",
   icon: GiProtectionGlasses,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",

@@ -8,9 +8,7 @@ import PremiumLayout from "@/app/_components/premium/PremiumLayout";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
-import {
-  VariantSelector,
-} from "@/app/listing/_components/ProductCard";
+import { VariantSelector } from "@/app/listing/_components/ProductCard";
 
 type TGafaPremiumProps = {
   product: TGafaPremium;
@@ -27,7 +25,7 @@ const GafaPremium = ({
   setSelectedVariant,
   cantidad,
   setCantidad,
-  pricing
+  pricing,
 }: TGafaPremiumProps) => {
   return (
     <>
@@ -35,13 +33,15 @@ const GafaPremium = ({
         product={product}
         selectedVariant={selectedVariant}
         pricing={pricing}
-        >
-        <section className="my-2 flex flex-col gap-5">
-          <VariantSelector
-            product={product}
-            selectedVariant={selectedVariant}
-            setSelectedVariant={setSelectedVariant}
-          />
+      >
+        <section className="pt-4 pb-2 flex gap-5">
+          {product.variantes.length > 1 && (
+            <VariantSelector
+              product={product}
+              selectedVariant={selectedVariant}
+              setSelectedVariant={setSelectedVariant}
+            />
+          )}
           <Cantidad
             cantidad={cantidad}
             anadirACantidad={() => setCantidad(cantidad + 1)}
@@ -57,9 +57,7 @@ const GafaPremium = ({
         />
 
         {product.descripcion ? (
-          <CollapsibleProductSection
-            classNames="mt-2"
-            title="Descripción">
+          <CollapsibleProductSection classNames="mt-2" title="Descripción">
             <p>{product.descripcion}</p>
           </CollapsibleProductSection>
         ) : (
@@ -77,7 +75,6 @@ const GafaPremium = ({
           selectedVariant={selectedVariant}
         />
       </PremiumLayout>
-
     </>
   );
 };
@@ -93,24 +90,16 @@ const EspecificacionesGafa = ({ product }: TEspecificacionesProps) => {
     <CollapsibleProductSection
       classNames="mt-2"
       title="Especificaciones"
-      titleActive>
+      titleActive
+    >
       <div className="grid grid-cols-2 gap-2">
-        <SeccionEspecificaciones
-          title="Modelo"
-          paragraph={product.modelo}
-        />
-        <SeccionEspecificaciones
-          title="Género"
-          paragraph={product.genero}
-        />
+        <SeccionEspecificaciones title="Modelo" paragraph={product.modelo} />
+        <SeccionEspecificaciones title="Género" paragraph={product.genero} />
         <SeccionEspecificaciones
           title="Forma de Montura"
           paragraph={product.detalles.montura.formaDeLaMontura}
         />
-        <SeccionEspecificaciones
-          title="Marca"
-          paragraph={product.marca}
-        />
+        <SeccionEspecificaciones title="Marca" paragraph={product.marca} />
         <SeccionEspecificaciones
           title="Tipo"
           paragraph={product.detalles.tipoDeGafa}

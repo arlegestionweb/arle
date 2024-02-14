@@ -16,7 +16,7 @@ const gafaVariantSchema = z.object({
   tag: z.string().optional().nullable(),
   codigoDeReferencia: z.string(),
   registroInvima: z.string(),
-  mostrarUnidadesDispobibles: z.boolean().optional().nullable(),
+  mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   unidadesDisponibles: z.number(),
   imagenes: z.array(imageSchema),
 });

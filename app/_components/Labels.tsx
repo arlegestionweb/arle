@@ -29,7 +29,7 @@ type Variant = {
 };
 
 const variants: Record<string, Variant> = {
-  Nuevo: {
+  "Nuevo": {
     icon: <BsMagic />,
     text: "¡Nuevo!",
     style: "bg-color-bg-surface-1-default border-[#bebebe]",
@@ -44,7 +44,7 @@ const variants: Record<string, Variant> = {
     text: "pocas unidades",
     style: "bg-[#ffecc0] border-[#805a00] text-[#583e00]",
   },
-  Agotado: {
+  "Agotado": {
     icon: <CiCircleMinus size={19} />,
     text: "Agotado",
     style: "bg-[#fceae9] border-[#b52d2a] text-[#7d1f1d]",

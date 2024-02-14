@@ -33,6 +33,7 @@ export const relojVariantSchema = z.object({
   colorTablero: zodColorSchema,
   imagenes: z.array(imageSchema),
   unidadesDisponibles: z.number(),
+  mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   codigoDeReferencia: z.string(),
   registroInvima: z.string(),
   tag: z.string().nullable().optional(),

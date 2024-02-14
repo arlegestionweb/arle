@@ -31,6 +31,7 @@ export const tipoDeRelojSchema = defineType({
   title: "Tipo de Reloj",
   type: "document",
   icon: TbDeviceWatchQuestion,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",
@@ -45,6 +46,7 @@ export const estiloDeRelojSchema = defineType({
   title: "Estilo de Reloj",
   type: "document",
   icon: TbDeviceWatchStats2,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",
@@ -60,6 +62,7 @@ export const cristalSchema = defineType({
   title: "Cristal",
   type: "document",
   icon: GiCrystalGrowth,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",
@@ -74,6 +77,7 @@ export const tipoDeMovimientoSchema = defineType({
   name: "tipoDeMovimiento",
   title: "Tipo de Movimiento",
   type: "document",
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "titulo",
@@ -100,6 +104,7 @@ export const materialesDeCajaSchema = defineType({
   title: "Material de Caja",
   type: "document",
   icon: GiMaterialsScience,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "nombre",
@@ -119,6 +124,7 @@ export const materialesDelPulsoSchema = defineType({
   title: "Material del Pulso",
   type: "document",
   icon: GiMaterialsScience,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "nombre",

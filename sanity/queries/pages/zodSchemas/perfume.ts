@@ -25,7 +25,7 @@ const perfumeVariantSchema = z.object({
   precioConDescuento: z.string().optional().nullable(),
   codigoDeReferencia: z.string(),
   registroInvima: z.string(),
-  mostrarUnidadesDispobibles: z.boolean().optional().nullable(),
+  mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   unidadesDisponibles: z.number(),
   tag: z.string().optional().nullable(),
 });

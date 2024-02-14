@@ -42,6 +42,7 @@ const config: Config = {
         kanit: "var(--font-kanit)",
         raleway: "var(--font-raleway)",
         jomolhari: "var(--font-jomolhari)",
+        play: "var(--font-play)",
       },
       borderRadius: {
         lg: `var(--radius)`,
