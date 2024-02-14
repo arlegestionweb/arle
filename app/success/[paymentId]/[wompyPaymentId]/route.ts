@@ -50,7 +50,7 @@ export const GET = async (
       const responseUrl = `${localUrl}`;
 
       const { data, error } = await sendInvoiceEmail(newSanityOrder);
-      console.log("after running sendInvoice Email", { data, error });
+      console.log("after running sendInvoice Email", { data, error, responseUrl });
 
       if (error || !data) {
         Response.json({
