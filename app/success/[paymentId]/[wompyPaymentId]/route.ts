@@ -58,13 +58,7 @@ export const GET = async (
 
       if (error || !data) {
         console.log("error sending email", error, newSanityOrder);
-        return Response.json({
-          message:
-            "Hubo un error enviando to factura a tu correo electronico por favor contactanos con tu numero de orden",
-          status: 400,
-          error,
-          "orden": newSanityOrder,
-        });
+        return Response.redirect(`${responseUrl}?error=error-sending-email`);
       }
 
       return Response.redirect(responseUrl);
