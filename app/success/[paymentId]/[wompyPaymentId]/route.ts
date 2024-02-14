@@ -62,7 +62,7 @@ export const GET = async (
             "Hubo un error enviando to factura a tu correo electronico por favor contactanos con tu numero de orden",
           status: 400,
           error,
-          "numero-de-orden": newSanityOrder._id,
+          "orden": newSanityOrder,
         });
       }
 
