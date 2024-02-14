@@ -29,14 +29,7 @@ async function Page({
     return redirect(responseUrl);
   }
 
-  return (
-    <Main extraClasses="pt-10 bg-white">
-
-      <h1>{JSON.stringify(wompyPaymentId)}</h1>
-      <h1>{JSON.stringify(wompyQueryUrl)}</h1>
-      <span>{JSON.stringify(wompyJson)}</span>
-    </Main>
-  )
+  return null;
 }
 
 export default Page;
