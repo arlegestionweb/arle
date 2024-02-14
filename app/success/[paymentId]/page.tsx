@@ -10,6 +10,8 @@ const Page = async ({ params }: {
     id: string;
   }
 }) => {
+  console.log("in success page", {params})
+
   const sanityOrder = await getOrderById(params.id);
 
 
@@ -21,7 +23,7 @@ const Page = async ({ params }: {
 
 
   console.log({sanityOrder})
-  if (!sanityOrder) return null;
+  if (!sanityOrder) return <div>no sanity order found</div>;
 
 
   return (
