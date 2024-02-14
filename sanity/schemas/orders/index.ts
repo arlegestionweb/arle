@@ -137,6 +137,20 @@ export const ordersSchema = defineType({
           type: "number",
         }),
         addressSchema,
+        defineField({
+          name: 'status',
+          title: 'Status',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'En Proceso', value: 'in_process' },
+              { title: 'Despachado', value: 'sent' },
+              { title: 'No entregado - Devuelto al vendedor', value: 'returned_to_seller' },
+              { title: 'Entregado al comprador', value: 'delivered' },
+            ],
+            layout: 'radio',
+          },
+        })
       ],
     }),
 
