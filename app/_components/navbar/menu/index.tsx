@@ -95,9 +95,9 @@ const Menu = ({
       >
         <header className="w-full h-16 border-b border-gray-300 px-4 flex items-center justify-between">
           {currentScreen > 0 ? (
-            <button className="flex items-center" onClick={goBack}>
-              <GoChevronLeft className="w-5 h-5" />
-              <span className="text-gray-700 text-base font-semibold font-inter leading-[21px] underline-offset-2 hover:underline hover:text-gray-600">
+            <button className="flex items-center group" onClick={goBack}>
+              <GoChevronLeft className="w-5 h-5 text-gray-700 group-hover:text-gray-500" />
+              <span className="text-gray-700 text-base font-semibold font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-600">
                 Volver
               </span>
             </button>

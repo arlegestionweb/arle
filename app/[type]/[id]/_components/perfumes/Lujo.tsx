@@ -24,7 +24,7 @@ const PerfumeLujo = ({
   setSelectedVariant,
   cantidad,
   setCantidad,
-  pricing
+  pricing,
 }: TPerfumeLujoProps) => {
   return (
     <>
@@ -37,56 +37,51 @@ const PerfumeLujo = ({
         setCantidad={setCantidad}
         pricing={pricing}
       />
-
-      <div className="bg-slate-900 w-screen flex justify-center">
-        <InfoSection
-          titulo="Descripción"
-          descripcion={product.descripcion.texto}
-          alt={product.descripcion.imagen.alt}
-          url={product.descripcion.imagen.url}
-          className="lg:max-w-mx pb-5"
-        />
-      </div>
+      <InfoSection
+        titulo="Descripción"
+        descripcion={product.descripcion.texto}
+        alt={product.descripcion.imagen.alt}
+        url={product.descripcion.imagen.url}
+        className=""
+      />
 
       {product.inspiracion?.usarInspiracion && (
-        <div className="bg-color-bg-surface-1-default w-screen flex justify-center">
-          <InfoSection
-            titulo="Inspiración"
-            descripcion={product.inspiracion.contenido!.resena || ""}
-            alt={product.inspiracion.contenido!.imagen?.alt || ""}
-            url={product.inspiracion.contenido!.imagen?.url || ""}
-            labelType="light"
-            className="text-slate-900 lg:max-w-mx flex-row-reverse pb-5"
-          />
-        </div>
-      )}
-
-      <section className="bg-slate-900 w-screen flex justify-center">
         <InfoSection
           titulo="Inspiración"
-          DesciptionComp={
-            <DetallesProducto
-              detalles={{
-                notasOlfativas: {
-                  notasDeBase: product.notasOlfativas.notasDeBase || "",
-                  notasDeSalida: product.notasOlfativas.notasDeSalida || "",
-                  familiaOlfativa: product.notasOlfativas.familiaOlfativa || "",
-                  notasDeCorazon: product.notasOlfativas.notasDeCorazon || "",
-                },
-                ingredientes: product.ingredientes || [],
-              }}
-            />
-          }
-          ImageComp={
-            <ProductSlide
-              imageVideoProducts={product.banners || []}
-              className="max-h-[377px] w-full"
-              isLink={false}
-            />
-          }
-          className="w-full  lg:max-w-mx"
+          descripcion={product.inspiracion.contenido!.resena || ""}
+          alt={product.inspiracion.contenido!.imagen?.alt || ""}
+          url={product.inspiracion.contenido!.imagen?.url || ""}
+          labelType="light"
+          className="lg:flex-row-reverse"
         />
-      </section>
+      )}
+      <InfoSection
+        titulo="Inspiración"
+        labelType={product.inspiracion?.usarInspiracion ? "dark" : "light"}
+        DescriptionComp={
+          <DetallesProducto
+            theme={product.inspiracion?.usarInspiracion ? "dark" : "light"}
+            detalles={{
+              notasOlfativas: {
+                notasDeBase: product.notasOlfativas.notasDeBase || "",
+                notasDeSalida: product.notasOlfativas.notasDeSalida || "",
+                familiaOlfativa: product.notasOlfativas.familiaOlfativa || "",
+                notasDeCorazon: product.notasOlfativas.notasDeCorazon || "",
+              },
+              ingredientes: product.ingredientes || [],
+            }}
+          />
+        }
+        ImageComp={
+          product.banners ?
+          <ProductSlide
+            imageVideoProducts={product.banners || []}
+            className="w-full h-[60vw] md:max-h-[350px]"
+            isLink={false}
+          /> :
+          null
+        }
+      />
 
       <section className="px-4 py-6 lg:hidden">
         <NuestrasComprasIncluyen />

@@ -33,10 +33,15 @@ const CarouselProduct = ({
     );
   };
 
-  const visibleImages = Array.from({ length: 4 }, (_, idx) => {
+  // const visibleImages = Array.from({ length: 4 }, (_, idx) => {
+  //   const arrayIndex = (startIndex + idx) % imagesProduct.length;
+  //   return imagesProduct[arrayIndex];
+  // });
+
+  const visibleImages = Array.from({ length: Math.min(4, imagesProduct.length) }, (_, idx) => {
     const arrayIndex = (startIndex + idx) % imagesProduct.length;
     return imagesProduct[arrayIndex];
-  });
+});
 
   const selectImages = (image: ImageType) => {
     const imageIndex = imagesProduct.indexOf(image);
@@ -45,7 +50,7 @@ const CarouselProduct = ({
   
   return (
     <div className={cn("relative w-fit",  className)}>
-      {isHorizontal && <button
+      {isHorizontal && imagesProduct.length > 4 && <button
         onClick={prevImages}
         className="absolute z-20 -left-[35px] top-1/2 transform -translate-y-1/2 w-7 h-7 p-[7px] opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
         <IoIosArrowBack />
@@ -63,12 +68,12 @@ const CarouselProduct = ({
               alt={img.alt || "perfume"}
               width={300}
               height={300}
-              className="object-cover w-full h-20"
+              className="object-contain w-full h-20"
             />
           </div>
         ))}
       </div>
-      {isHorizontal && <button
+      {isHorizontal && imagesProduct.length > 4 && <button
         onClick={nextImages}
         className="absolute -right-[35px] top-1/2 transform -translate-y-1/2 w-7 h-7 p-[7px] opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
         <IoIosArrowForward />

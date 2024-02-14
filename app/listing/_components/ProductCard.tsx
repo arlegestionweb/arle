@@ -13,7 +13,7 @@ import Button from "../../_components/Button";
 import { LuShoppingCart } from "react-icons/lu";
 import ProductSlide from "../../_components/ProductSlide";
 import Link from "next/link";
-import Labels, { LabelTypes } from "../../_components/Labels";
+import Labels from "../../_components/Labels";
 import { useEffect, useState } from "react";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
@@ -50,6 +50,8 @@ const ProductoCard = ({ producto, discount }: {
     pricing.discountTypeUsed = "none";
   }
 
+// console.log(selectedVariant.tag + producto.marca)
+
   useEffect(() => {
     const fetchTimedDiscounts = async () => {
       const { discount } = await getTimedDiscountByProductId(producto._id);
@@ -64,12 +66,11 @@ const ProductoCard = ({ producto, discount }: {
 
   return (
     <>
-      {selectedVariant.etiqueta && (
-        <Labels
-          labelType={selectedVariant.etiqueta as LabelTypes}
-          label={selectedVariant.etiqueta as LabelTypes}
-          className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
-        />
+    {selectedVariant.tag && (
+      <Labels
+      label={selectedVariant.tag}
+      className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
+      />
       )}
       <CardLayout pricing={pricing} product={producto} selectedVariant={selectedVariant} setSelectedVariant={setSelectedVariant} />
     </>
@@ -168,6 +169,7 @@ const CardLayout = ({
         />
       </section>
       <Button
+        disabled = {selectedVariant.tag === "Agotado" ? true : false}
         onClick={() => addToCart(product, selectedVariant)}
         labelType={"dark"}
         className="flex justify-center items-center gap-2"
@@ -192,7 +194,7 @@ export const VariantSelector = <T extends TProduct>({
   if (isPerfume(product)) {
     return (
       <section className="flex flex-wrap gap-y-1 gap-x-2 items-center">
-        <h4 className="leading-none text-gray-600 cursor-default">Tamaño (ml):</h4>
+        <h4 className="leading-none font-tajawal text-gray-600 cursor-default">Tamaño (ml):</h4>
         <div className="flex gap-2">
           {product.variantes.map((variante: TVariant, index) => {
             if ("tamano" in variante && "tamano" in selectedVariant) {
@@ -201,7 +203,7 @@ export const VariantSelector = <T extends TProduct>({
               return (
                 <button
                   onClick={() => setSelectedVariant(variante)}
-                  className={` px-1.5 pt-1 rounded-[5px] font-inter leading-none overflow-hidden border justify-center items-center ${isVariantSelected
+                  className={`h-7 min-w-7 px-1.5 pt-1 rounded-[5px] text-sm leading-none overflow-hidden border justify-center items-center ${isVariantSelected
                     ? "bg-neutral-100 border-black"
                     : "bg-neutral-200 border-neutral-300"
                     }`}
@@ -291,7 +293,7 @@ const ColorSelector = ({
   return (
     <button
       onClick={onClick}
-      className={`w-[20px] h-[20px] rounded-[5px] border flex overflow-hidden ${
+      className={`w-6 h-6 rounded-[5px] border flex overflow-hidden ${
         // variante.colorDeLaMontura.color === selectedVariant.colorDeLaMontura.color
         //   ? "bg-neutral-100 border-black"
         //   : "bg-neutral-200 border-neutral-300"

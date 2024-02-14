@@ -35,7 +35,7 @@ export const relojVariantSchema = z.object({
   unidadesDisponibles: z.number(),
   codigoDeReferencia: z.string(),
   registroInvima: z.string(),
-  etiqueta: z.string().nullable().optional(),
+  tag: z.string().nullable().optional(),
   colorCaja: zodColorSchema,
   colorPulso: zodColorSchema,
 });
@@ -81,6 +81,7 @@ export const relojLujoSchema = z.object({
     }).optional().nullable(),
   }).optional(),
   banners: z.array(bannerSchema).optional().nullable(),
+  descripcion: z.string().optional().nullable(),
   coleccionDeMarca: coleccionDeMarcaSchema,
   slug: z.string(),
   caja: zodCajaSchema,

@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/app/_components/Button";
-import Labels, { LabelTypes } from "@/app/_components/Labels";
+import Labels from "@/app/_components/Labels";
 import ProductSlide from "@/app/_components/ProductSlide";
 import { useCartStore } from "@/app/_components/cart/store";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
@@ -26,10 +26,9 @@ const SuggestedProductCard = ({ producto }: { producto: TProduct }) => {
 
   return (
     <>
-      {selectedVariant.etiqueta && (
+      {selectedVariant.tag && (
         <Labels
-          labelType={selectedVariant.etiqueta as LabelTypes}
-          label={selectedVariant.etiqueta as LabelTypes}
+          label={selectedVariant.tag}
           className=" left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
         />
       )}

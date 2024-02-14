@@ -54,21 +54,12 @@ const Precio = ({
         )}
       </section>
       {!dontDisplayPaymentOptions && (
-        <section className="text-justify">
-          <p className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
+        <section className=" -mt-1">
+          <p className="text-zinc-500 text-sm md:text-base md:leading-none font-normal font-tajawal leading-none">
             Págalo a 4 cuotas de $
             {numberToColombianPriceString(
               (discountedPrice ? discountedPrice : fullPrice) / 4
-            )}{" "}
-            sin intereses.
-            <br />
-            [provider]
-          </p>
-          <p className="text-neutral-600 text-sm font-normal font-tajawal leading-[16.80px]">
-            .{" "}
-          </p>
-          <p className="text-zinc-800 text-sm font-normal font-tajawal leading-[16.80px]">
-            Learn More
+            )}{" "}con{" "}[Wompi].
           </p>
         </section>
       )}

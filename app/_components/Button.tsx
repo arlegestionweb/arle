@@ -3,7 +3,7 @@ import RedDot from "./RedDot";
 import { cn } from "../_lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 
-const buttonsVariants = cva("px-6 py-1 relative font-inter font-normal text-base", {
+const buttonsVariants = cva("px-6 py-1 relative font-inter font-normal text-base disabled:opacity-40", {
   variants: {
     labelType: {
       light: "bg-white text-gray-800 border border-black ",

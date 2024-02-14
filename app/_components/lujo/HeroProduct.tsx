@@ -14,10 +14,15 @@ import {
   isPerfumeLujo,
 } from "@/sanity/queries/pages/types";
 import { imageType } from "../types";
-import { TTimedDiscount, TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import {
+  TTimedDiscount,
+  TVariant,
+} from "@/sanity/queries/pages/zodSchemas/general";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
 import Precio from "../Precio";
 import { TPricing } from "@/app/[type]/[id]/_components/Product";
+import { GoChevronLeft } from "react-icons/go";
+import { isGafa, isReloj } from "@/sanity/queries/pages/listingQueries";
 
 type HeroProductProps = {
   product: TPerfumeLujo | TRelojLujo | TGafaLujo;
@@ -36,11 +41,10 @@ const HeroProduct = ({
   setSelectedVariant,
   cantidad,
   setCantidad,
-  pricing
+  pricing,
 }: HeroProductProps) => {
-
   return (
-    <section className="lg:grid lg:grid-cols-12 gap-8 mt-1 lg:pb-12 min-h-[70vh] row-auto w-full lg:max-w-mx">
+    <section className="lg:grid lg:grid-cols-12 gap-8 lg:pb-8 row-auto w-full lg:max-w-screen-xl lg:pt-8">
       {/* Product view */}
       <GalleryProduct
         className="col-start-1 col-span-6"
@@ -48,34 +52,55 @@ const HeroProduct = ({
         orientation={isPerfumeLujo(product) ? "horizontal" : "vertical"}
       />
 
-      <section className="row-start-1 col-start-7 col-span-6 flex flex-col">
-        <Labels
-          className="mx-4 relative max-w-fit lg:mt-0 mb-2"
-          labelType={"ultimas unidades"}
-          label={"ultimas unidades"}
-        />
-        <header className="px-4 ">
-          <h1 className="text-zinc-800 text-[32px] font-semibold font-crimson leading-9 w-full">
+      <section className="relative row-start-1 col-start-7 col-span-6 flex flex-col">
+        <header className="default-paddings lg:px-4 flex flex-col gap-2 lg:gap-3">
+        <button className="flex items-center -ml-1 group" onClick={()=> window.history.back()}>
+              <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />
+              <span className="text-gray-700 text-base font-normal font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-500">
+                Volver
+              </span>
+            </button>
+          {selectedVariant.tag && (
+            <Labels
+              label={selectedVariant.tag}
+              className="relative max-w-fit lg:mt-0 mb-2"
+            />
+          )}
+
+          <h1 className="text-gray-800 text-4xl font-jomolhari leading-none w-full">
+            {product.marca}
+          </h1>
+          <h1 className="text-2xl text-gray-600 font-jomolhari leading-none ">
             {isPerfumeLujo(product) ? product.titulo : product.modelo}
           </h1>
-          <h2 className="text-neutral-600 text-xl font-medium font-tajawal leading-normal">
-            {isPerfumeLujo(product) ? product.concentracion : ""}
+          {isGafa(product) && product.descripcion && (
+            <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 ">
+              {product.descripcion}
+            </p>
+          )}
+          {isPerfumeLujo(product) && 
+          <h2 className="text-gray-600 text-xl font-normal font-tajawal leading-none mt-0.5">
+            {product.concentracion}
           </h2>
-          <p className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
+          }
+          <p className="text-zinc-500 text-sm md:text-base font-normal font-tajawal leading-none md:leading-none">
             <span className="capitalize">
               {product.marca} | {product.genero}
             </span>
           </p>
-          <span className="text-zinc-500 text-sm font-normal font-tajawal leading-[16.80px]">
-            CODE:{selectedVariant.codigoDeReferencia}
+          <span className="text-zinc-500 text-sm md:text-base md:leading-none font-normal font-tajawal leading-none">
+            Código: {selectedVariant.codigoDeReferencia}
           </span>
           <Precio
+            dontDisplayPaymentOptions = {product.mostrarCredito ? false : true}
             fullPrice={pricing.precioSinDescuento}
-            discountedPrice={pricing.timedDiscountPrice || pricing.precioConDescuento}
+            discountedPrice={
+              pricing.timedDiscountPrice || pricing.precioConDescuento
+            }
           />
         </header>
 
-        <section className="px-4 mb-6 lg:my-6 lg:px-8 flex flex-col gap-5">
+        <section className="default-paddings lg:px-4 py-2 pb-6 lg:pb-2 flex first:flex-col gap-6 font-tajawal">
           <VariantSelector
             product={product}
             selectedVariant={selectedVariant}
@@ -93,7 +118,7 @@ const HeroProduct = ({
           quantity={cantidad}
           selectedVariant={selectedVariant}
           pricing={pricing}
-          className="hidden static shadow-none w-full py-6 px-4 gap-6 space-y-2 lg:block"
+          className="hidden static shadow-none w-full px-4 space-y-2 lg:block"
         />
 
         <section className="px-4 hidden pb-0 lg:block">

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { MinusIcon, PlusIcon } from "./Icons";
 import RedDot from "@/app/_components/RedDot";
+import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const CollapsibleProductSection = ({
   children,
@@ -30,7 +30,7 @@ const CollapsibleProductSection = ({
         className="absolute top-0 right-0 w-7 h-7 bg-color-bg-surface-0-default grid place-content-center"
         onClick={toggleIsCollapsed}
       >
-        {isCollapsed ? <PlusIcon /> : <MinusIcon />}
+        {isCollapsed ? <FaPlus className="text-xs" /> : <FaMinus className="text-xs" />}
       </button>
       {!isCollapsed && <>{children}</>}
     </section>

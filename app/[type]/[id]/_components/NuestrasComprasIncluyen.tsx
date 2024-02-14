@@ -1,9 +1,8 @@
-import {
-  GiftIcon,
-  MessagesIcon,
-  SecurityCheckIcon,
-  ShippingBoxIcon,
-} from "./Icons";
+import { RiSecurePaymentLine } from "react-icons/ri";
+import { PiCertificateBold } from "react-icons/pi";
+import { MdOutlineLocalShipping } from "react-icons/md";
+import { BiChat } from "react-icons/bi";
+import { LuShieldCheck } from "react-icons/lu";
 
 const NuestrasComprasIncluyen = ({
   garantia,
@@ -13,33 +12,39 @@ const NuestrasComprasIncluyen = ({
   };
 }) => {
   return (
-    <section>
-      <h2 className="text-zinc-800 text-[28px] w-full font-semibold font-crimson leading-[2rem] mb-2">
+    <section className="pt-4 pointer-events-none">
+      <h2 className="text-gray-600 text-xl w-full font-semibold font-tajawal leading-none mb-1">
         Nuestras compras online incluyen:
       </h2>
-      <div className="flex flex-col gap-2 lg:grid grid-cols-2 lg:gap-x-3 lg:gap-y-2">
+      <div className="flex flex-col gap-2 sm:grid grid-cols-2 lg:gap-x-3 lg:gap-y-2">
         <ItemComprasIncluyen
-          title="Muestras adicionales"
-          description="Recibe muestras de otros productos."
-          icon={<GiftIcon />}
+          title="Pagos Seguros"
+          description="Paga con tranquilidad a través de Wompi"
+          icon={<RiSecurePaymentLine className=" w-5 h-5" />}
         />
+        {garantia ? (
+          <ItemComprasIncluyen
+            title={`Garantía de ${garantia.meses} meses`}
+            description="Para nuestros productos"
+            icon={<LuShieldCheck className=" w-5 h-5" />}
+          />
+        ) : (
+          <ItemComprasIncluyen
+            title={`Originalidad`}
+            description="Garantizamos Productos 100% Originales"
+            icon={<PiCertificateBold className=" w-5 h-5" />}
+          />
+        )}
         <ItemComprasIncluyen
           title="Envío gratis"
-          description="Por compras mayores a [$valor-minimo]."
-          icon={<ShippingBoxIcon />}
+          description="Por compras mayores a $250.000."
+          icon={<MdOutlineLocalShipping className=" w-5 h-5" />}
         />
         <ItemComprasIncluyen
           title="Asesoría personalizada"
           description="Contáctanos para solucionar tus dudas."
-          icon={<MessagesIcon />}
+          icon={<BiChat className=" w-5 h-5" />}
         />
-        {garantia && (
-          <ItemComprasIncluyen
-            title={`Garantía de ${garantia.meses} meses`}
-            description="En todos nuestros productos"
-            icon={<SecurityCheckIcon />}
-          />
-        )}
       </div>
     </section>
   );
@@ -57,16 +62,16 @@ const ItemComprasIncluyen = ({
   description: string;
 }) => {
   return (
-    <div className="px-2 py-3 bg-color-bg-surface-1-default border border-stone-300 items-center justify-start gap-[9px] inline-flex w-full">
-      {icon}
-      <div>
-        <h3 className="basis-0 text-zinc-800 text-sm font-bold font-tajawal leading-[16.80px]">
+    <section className="px-2 py-3 gap-2 bg-gray-100 border border-gray-300 items-center justify-start flex">
+      <header className="flex w-5 text-gray-700">{icon}</header>
+      <footer className="flex flex-col ">
+        <h3 className="basis-0 text-gray-800 text-sm font-bold font-tajawal leading-[16.80px]">
           {title}
         </h3>
-        <p className="text-neutral-600 text-sm font-normal font-tajawal leading-[16.80px]">
+        <p className="text-gray-600 text-sm font-normal font-tajawal leading-[16.80px]">
           {description}
         </p>
-      </div>
-    </div>
+      </footer>
+    </section>
   );
 };

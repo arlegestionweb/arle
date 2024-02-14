@@ -58,7 +58,7 @@ const variantesDeGafaQueryString = `
       nombre,
       "color": color.hex
     },
-    etiqueta,
+    tag,
     "colorDeLaVarilla": colorDeLaVarilla -> {
       nombre,
       "color": color.hex
@@ -127,7 +127,7 @@ export const productQuery: Record<TProductType, string> = {
       unidadesDisponibles,
       codigoDeReferencia,
       registroInvima,
-      etiqueta,
+      tag,
       "colorCaja": colorCaja -> {
         nombre,
         "color": color.hex
@@ -171,7 +171,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       codigoDeReferencia,
       registroInvima,
-      etiqueta,
+      tag,
       unidadesDisponibles,
       "colorCaja": colorCaja -> { 
         nombre, 
@@ -211,6 +211,7 @@ export const productQuery: Record<TProductType, string> = {
       codigoDeReferencia,
       unidadesDisponibles,
       registroInvima,
+      tag,
       precioConDescuento,
       mostrarUnidadesDispobibles,
       tamano,
@@ -273,7 +274,7 @@ export const productQuery: Record<TProductType, string> = {
     "marca": marca->titulo,
     "variantes": variantes[]{
       tamano,
-      etiqueta,
+      tag,
       precio,
       codigoDeReferencia,
       registroInvima,
@@ -304,17 +305,15 @@ export const productQuery: Record<TProductType, string> = {
         }
       }
     },
-    "monturaDetalles":  {
+    "monturaDetalles": monturaDetalles {
       usarDetalles,
-     "detalles": detalles {
         "contenido": contenido {
           texto,
           "imagen": imagen {
             alt,
             "url": asset->url,
           }
-        }
-      },
+        },
     },
     ${bannersQuery},
     "especificaciones": especificaciones {
@@ -335,31 +334,6 @@ export const productQuery: Record<TProductType, string> = {
     "inspiracion": ${inspiracionQuery},    
     "variantes": ${variantesDeGafaQueryString},
     modelo,
-    "variantes": variantes [] {
-      "colorDeLaMontura": colorDeLaMontura -> {
-        nombre,
-        "color": color.hex
-      },
-      "colorDeLaVarilla": colorDeLaVarilla -> {
-        nombre,
-        "color": color.hex
-      },
-      "colorDelLente": colorDelLente -> {
-        nombre,
-        "color": color.hex
-      },
-      precio,
-      precioConDescuento,
-      etiqueta,
-      codigoDeReferencia,
-      registroInvima,
-      mostrarUnidadesDispobibles,
-      unidadesDisponibles,
-      "imagenes": imagenes[]{
-        alt,
-        "url": asset->url,
-      }, 
-    },
     coleccionDeMarca,
     "slug": slug.current,
   }`,
@@ -389,7 +363,7 @@ export const productQuery: Record<TProductType, string> = {
       registroInvima,
       unidadesDisponibles,
       precio,
-      etiqueta,
+      tag,
       mostrarUnidadesDispobibles
     },
     modelo,

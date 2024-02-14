@@ -31,7 +31,7 @@ const DetallesProducto = ({
   };
   return (
     <section className="w-full h-full">
-      <nav className="no-scrollbar lg:pt-4 flex md:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full">
+      <nav className="no-scrollbar flex md:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full">
         {detalles &&
           Object.keys(detalles).map((detalle, index) => (
             <h4
@@ -88,7 +88,7 @@ const DetallesProducto = ({
                           {Array.isArray((detalles[detalle] as any)[object])
                             ? (
                                 detalles[detalle] as { [key: string]: string[] }
-                              )[object].map(obj => <span key={obj}>{obj}</span>)
+                              )[object].map(obj => <span key={obj}>{obj}{", "}</span>)
                             : (detalles[detalle] as any)[object]}
                         </p>
                       </div>

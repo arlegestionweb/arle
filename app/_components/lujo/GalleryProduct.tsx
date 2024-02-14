@@ -21,11 +21,6 @@ const GalleryProduct = ({
   const [index, setIndex] = useState(0);
 
   const thumbnailElement = imagesProduct
-    .filter((img, idx) => {
-      if (idx < 6) {
-        return img;
-      }
-    })
     .map((img, idx) => {
       if (imagesProduct.length > 1) {
         return (
@@ -37,7 +32,7 @@ const GalleryProduct = ({
               alt={img.alt || "perfume"}
               fill
               onClick={() => setIndex(idx)}
-              className="object-cover fit object-center min-h-20"
+              className="object-contain min-h-20"
             />
           </section>
         );
@@ -51,15 +46,15 @@ const GalleryProduct = ({
         orientation == "vertical" && "lg:flex-row-reverse items-start gap-2",
         className
       )}>
-      <div className={"relative w-full h-[377px] lg:h-[569px]"}>
+      <div className={"relative w-full aspect-square max-h-[370px] md:h-[377px] lg:h-[569px]"}>
         <Image
           alt={imagesProduct[index].alt || ""}
           src={imagesProduct[index].url}
           fill
-          className="object-cover object-center"
+          className="object-contain object-center"
         />
       </div>
-      <div className="no-scrollbar flex lg:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">
+      <div className="no-scrollbar flex max-w-[430px] justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">
         {thumbnailElement}
       </div>
       {imagesProduct.length != 1 && (

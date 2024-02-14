@@ -5,7 +5,7 @@ import {
   isPerfumePremium,
 } from "@/sanity/queries/pages/types";
 import ProductViewer from "./ProductView";
-import Labels, { LabelTypes } from "../Labels";
+import Labels from "../Labels";
 import {
   colombianPriceStringToNumber,
   numberToColombianPriceString,
@@ -34,11 +34,13 @@ const PremiumLayout = ({ product, pricing, children, selectedVariant }: PremiumL
       />
 
       <section className="col-span-6 pb-5 col-start-1 row-start-1 flex flex-col px-6 lg:px-0 md:px-6 w-full relative">
-        <Labels
+        {selectedVariant.tag && (
+
+          <Labels
           className="relative max-w-fit mt-4 mb-2"
-          labelType={selectedVariant.etiqueta as LabelTypes}
-          label={selectedVariant.etiqueta as LabelTypes}
-        />
+          label={selectedVariant.tag}
+          />
+        )}
 
         <header>
           <h1 className="text-zinc-800 text-[32px] font-normal font-kanit leading-10 w-full">
