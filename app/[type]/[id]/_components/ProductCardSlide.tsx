@@ -80,8 +80,6 @@ const SlideDesktop = ({ products, columns, className }: SlideProps) => {
   }, [products.length, columns]);
 
   useEffect(()=>{
-    console.log(1);
-    
     setHasNext(determineHasNext());
   },[products.length, determineHasNext])
 

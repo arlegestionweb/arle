@@ -11,32 +11,23 @@ const Page = async ({ params, searchParams }: {
   }
   searchParams: { [key: string]: string | string[] | undefined }
 }) => {
-  console.log("in success page", { params })
 
   const paramError = searchParams.error;
 
   const sanityOrder = await getOrderById(params.paymentId);
 
-
-  // const items = sanityOrder.items.map((item) => {
-  //   const itemData: TCartItem = {
-  //      productId: item.productId,
-
-  // });
-
-
-  console.log({ sanityOrder })
   if (!sanityOrder) return <div>no sanity order found</div>;
 
 
   return (
-    <Main extraClasses="bg-white">
+    <Main extraClasses="bg-white md:pt-[60px] px-10 pb-10">
       <RemoveCartItems cartId={sanityOrder._id} />
       {paramError && (
         <>
-          <h1>Error: {paramError} </h1>
-          <div>haz click aqui para         <SendInvoice order={sanityOrder} />
-          </div>
+          <h1>Hubo un error enviando tu factura </h1>
+          <p>haz click aqui para intentarlo de nuevo
+          </p>
+          <SendInvoice order={sanityOrder} />
         </>
       )}
       <h1>PEDIDO EXITOSO</h1>
