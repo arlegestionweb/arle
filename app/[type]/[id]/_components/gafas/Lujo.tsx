@@ -55,7 +55,7 @@ const GafaLujo = ({
           alt={product.detalles?.contenido?.imagen?.alt || ""}
           url={product.detalles?.contenido?.imagen?.url || ""}
           labelType={product.inspiracion.usarInspiracion ? "light" : "dark"}
-          className="lg:flex-row-reverse"
+          className={product.inspiracion.usarInspiracion ? "lg:flex-row-reverse": ""}
         />
       )}
 
@@ -75,7 +75,12 @@ const GafaLujo = ({
               : "dark"
           }
           className={product.inspiracion.usarInspiracion &&
-            !product.detalles?.usarDetalles ? "lg:flex-row-reverse" : ""}
+            !product.detalles?.usarDetalles
+              ? "lg:flex-row-reverse"
+              : !product.inspiracion.usarInspiracion &&
+                product.detalles?.usarDetalles
+              ? "lg:flex-row-reverse"
+              : ""}
         />
       )}
 
@@ -164,7 +169,23 @@ const GafaLujo = ({
             null
           )
         }
-        className="lg:flex-row-reverse"
+        className={!product.inspiracion.usarInspiracion &&
+        !product.detalles?.usarDetalles &&
+        !product.monturaDetalles?.usarDetalles
+          ? ""
+          : product.inspiracion.usarInspiracion &&
+            product.detalles?.usarDetalles &&
+            !product.monturaDetalles?.usarDetalles
+          ? ""
+          : product.inspiracion.usarInspiracion &&
+            !product.detalles?.usarDetalles &&
+            product.monturaDetalles?.usarDetalles
+          ? ""
+          : !product.inspiracion.usarInspiracion &&
+            product.detalles?.usarDetalles &&
+            product.monturaDetalles?.usarDetalles
+          ? ""
+          : "lg:flex-row-reverse"}
       />
       <section className="px-4 py-6 lg:hidden">
         <NuestrasComprasIncluyen />

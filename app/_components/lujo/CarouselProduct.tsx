@@ -55,7 +55,7 @@ const CarouselProduct = ({
         className={cn("absolute z-20  w-7 h-7 p-[7px] opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex", isHorizontal ? "-left-[35px] top-1/2 transform -translate-y-1/2" : "rotate-90 -top-3")}>
         <IoIosArrowBack />
       </button>}
-      <div className={cn("flex space-x-3 md:space-x-0 md:gap-y-2 md:flex-col md:justify-start md:items-center", isHorizontal && "overflow-hidden flex-row gap-2 lg:flex-row h-full")}>
+      <div className={cn("flex space-x-3 md:space-x-0 md:gap-y-2 md:justify-start md:items-center", isHorizontal ? "overflow-hidden flex-row gap-2 lg:flex-row h-full" : "md:flex-col")}>
 
         {visibleImages.map((img, idx) => (
           <div

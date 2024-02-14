@@ -42,7 +42,7 @@ const GalleryProduct = ({
   return (
     <section
       className={cn(
-        "flex flex-col items-center",
+        "flex flex-col items-center lg:mt-8",
         orientation == "vertical" && "md:flex-row-reverse gap-2 md:px-20 md:mb-4 justify-center md:items-start md:pt-4",
         className
       )}>

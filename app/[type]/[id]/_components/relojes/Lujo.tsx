@@ -18,8 +18,14 @@ type TRelojLujoProps = {
   pricing: TPricing;
 };
 
-const RelojLujo = ({ pricing, product, selectedVariant, setSelectedVariant, cantidad, setCantidad }: TRelojLujoProps) => {
-
+const RelojLujo = ({
+  pricing,
+  product,
+  selectedVariant,
+  setSelectedVariant,
+  cantidad,
+  setCantidad,
+}: TRelojLujoProps) => {
   return (
     <>
       <HeroProduct
@@ -29,101 +35,159 @@ const RelojLujo = ({ pricing, product, selectedVariant, setSelectedVariant, cant
         setSelectedVariant={setSelectedVariant}
         cantidad={cantidad}
         setCantidad={setCantidad}
-        // discount={discount}
         pricing={pricing}
       />
 
       {product.inspiracion.usarInspiracion && (
-        <section className="bg-slate-900 w-screen flex justify-center">
-          <InfoSection
-            titulo="Inspiración"
-            descripcion={product.inspiracion.contenido?.resena || ""}
-            alt={product.inspiracion.contenido?.imagen?.alt}
-            url={product.inspiracion.contenido?.imagen?.url}
-            className="w-full lg:w-mx"
-          />
-        </section>
+        <InfoSection
+          titulo="Inspiración"
+          descripcion={product.inspiracion.contenido?.resena || ""}
+          alt={product.inspiracion.contenido?.imagen?.alt}
+          url={product.inspiracion.contenido?.imagen?.url}
+          className=""
+        />
       )}
 
       {product.detalles?.usarDetalles && (
-        <section className="bg-color-bg-surface-1-defaul w-screen flex justify-center">
-          <InfoSection
-            titulo="Detalles"
-            descripcion={product.detalles?.contenido?.texto || ""}
-            alt={product.detalles?.contenido?.imagen?.alt || ""}
-            url={product.detalles?.contenido?.imagen?.url || ""}
-            labelType={"light"}
-            className="w-full lg:w-mx flex-row-reverse"
-          />
-        </section>
+        <InfoSection
+          titulo="Detalles"
+          descripcion={product.detalles?.contenido?.texto || ""}
+          alt={product.detalles?.contenido?.imagen?.alt || ""}
+          url={product.detalles?.contenido?.imagen?.url || ""}
+          labelType={product.inspiracion.usarInspiracion ? "light" : "dark"}
+          className={product.inspiracion.usarInspiracion ? "lg:flex-row-reverse" : ""}
+        />
       )}
 
       {product.movimiento?.usarMovimiento && (
-        <section className="bg-slate-900 w-screen flex justify-center">
-          <InfoSection
-            titulo="Movimiento"
-            descripcion={product.movimiento?.contenido?.descripcion || ""}
-            subTitulo={product.movimiento?.tipoDeMovimiento || ""}
-            alt={product.movimiento?.contenido?.imagen?.alt || ""}
-            url={product.movimiento?.contenido?.imagen?.url || ""}
-            className="w-full lg:w-mx"
-          />
-        </section>
+        <InfoSection
+          titulo="Movimiento"
+          descripcion={product.movimiento?.contenido?.descripcion || ""}
+          subTitulo={product.movimiento?.tipoDeMovimiento || ""}
+          alt={product.movimiento?.contenido?.imagen?.alt || ""}
+          url={product.movimiento?.contenido?.imagen?.url || ""}
+          labelType={
+            product.inspiracion.usarInspiracion &&
+            !product.detalles?.usarDetalles
+              ? "light"
+              : !product.inspiracion.usarInspiracion &&
+                product.detalles?.usarDetalles
+              ? "light"
+              : "dark"
+          }
+          className={product.inspiracion.usarInspiracion &&
+            !product.detalles?.usarDetalles
+              ? "lg:flex-row-reverse"
+              : !product.inspiracion.usarInspiracion &&
+                product.detalles?.usarDetalles
+              ? "lg:flex-row-reverse"
+              : ""}
+        />
       )}
 
-      <section className="bg-color-bg-surface-1-defaul w-screen flex justify-center">
-        <InfoSection
-          labelType={"light"}
-          titulo="Inspiración"
-          DesciptionComp={
-            <DetallesProducto
-              theme="light"
-              detalles={{
-                caja: {
-                  cristal: product.caja.cristal,
-                  "Diámetro de la caja": product.caja.diametro + "mm",
-                  "Material de la caja": product.caja.material,
-                },
-                especificaciones: {
-                  "Tipo de reloj": product.especificaciones.tipoDeReloj,
-                  "Estilo de reloj": product.especificaciones.estiloDeReloj,
-                  "Resistencia al agua": product.especificaciones.resistenciaAlAgua,
-                  material: product.especificaciones.material,
-                  ...(product.especificaciones.funciones
-                    ? {
+      <InfoSection
+        labelType={!product.inspiracion.usarInspiracion &&
+          !product.detalles?.usarDetalles &&
+          !product.movimiento?.usarMovimiento
+            ? "dark"
+            : product.inspiracion.usarInspiracion &&
+              product.detalles?.usarDetalles &&
+              !product.movimiento?.usarMovimiento
+            ? "dark"
+            : product.inspiracion.usarInspiracion &&
+              !product.detalles?.usarDetalles &&
+              product.movimiento?.usarMovimiento
+            ? "dark"
+            : !product.inspiracion.usarInspiracion &&
+              product.detalles?.usarDetalles &&
+              product.movimiento?.usarMovimiento
+            ? "dark"
+            : "light"}
+        titulo="Inspiración"
+        DescriptionComp={
+          <DetallesProducto
+            theme={!product.inspiracion.usarInspiracion &&
+              !product.detalles?.usarDetalles &&
+              !product.movimiento?.usarMovimiento
+                ? "dark"
+                : product.inspiracion.usarInspiracion &&
+                  product.detalles?.usarDetalles &&
+                  !product.movimiento?.usarMovimiento
+                ? "dark"
+                : product.inspiracion.usarInspiracion &&
+                  !product.detalles?.usarDetalles &&
+                  product.movimiento?.usarMovimiento
+                ? "dark"
+                : !product.inspiracion.usarInspiracion &&
+                  product.detalles?.usarDetalles &&
+                  product.movimiento?.usarMovimiento
+                ? "dark"
+                : "light"}
+            detalles={{
+              caja: {
+                cristal: product.caja.cristal,
+                "Diámetro de la caja": product.caja.diametro + "mm",
+                "Material de la caja": product.caja.material,
+              },
+              especificaciones: {
+                "Tipo de reloj": product.especificaciones.tipoDeReloj,
+                "Estilo de reloj": product.especificaciones.estiloDeReloj,
+                "Resistencia al agua":
+                  product.especificaciones.resistenciaAlAgua,
+                material: product.especificaciones.material,
+                ...(product.especificaciones.funciones
+                  ? {
                       funciones: product.especificaciones.funciones.map(
                         (funcion) => `${funcion.titulo}: ${funcion.descripcion}`
                       ),
                     }
-                    : {}),
-                },
-                garantia: {
-                  meses: product.garantia.meses + "",
-                  descripción: product.garantia.descripcion || "",
-                },
-              }}
-            />
-          }
-          ImageComp={
+                  : {}),
+              },
+              garantia: {
+                meses: product.garantia.meses + "",
+                descripción: product.garantia.descripcion || "",
+              },
+            }}
+          />
+        }
+        ImageComp={
+          product.banners ? (
             <ProductSlide
               imagesProduct={
                 (product.banners &&
                   product.banners.map(
-                    element =>
-                    ({
-                      url: element.imagen?.url,
-                      alt: element.imagen?.alt,
-                    } as ProductImage)
+                    (element) =>
+                      ({
+                        url: element.imagen?.url,
+                        alt: element.imagen?.alt,
+                      } as ProductImage)
                   )) ||
                 []
               }
-              className="max-h-[377px] w-full"
+              className="w-full h-[60vw] max-h-[350px]"
               isLink={false}
             />
-          }
-          className="lg:max-w-mx w-full text-slate-900 flex-row-reverse"
-        />
-      </section>
+          ) : null
+        }
+        className={!product.inspiracion.usarInspiracion &&
+          !product.detalles?.usarDetalles &&
+          !product.movimiento?.usarMovimiento
+            ? ""
+            : product.inspiracion.usarInspiracion &&
+              product.detalles?.usarDetalles &&
+              !product.movimiento?.usarMovimiento
+            ? ""
+            : product.inspiracion.usarInspiracion &&
+              !product.detalles?.usarDetalles &&
+              product.movimiento?.usarMovimiento
+            ? ""
+            : !product.inspiracion.usarInspiracion &&
+              product.detalles?.usarDetalles &&
+              product.movimiento?.usarMovimiento
+            ? ""
+            : "lg:flex-row-reverse"}
+      />
+
       <section className="px-4 py-6 lg:hidden">
         <NuestrasComprasIncluyen />
       </section>

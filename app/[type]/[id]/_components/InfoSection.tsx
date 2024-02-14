@@ -31,7 +31,7 @@ type InfoProps = {
 
 const InfoSection = (props: InfoProps) => {
   return (
-    <section className={cn(infoVariants({ labelType: props.labelType }),"w-screen flex justify-center lg:px-12")}>
+    <section className={cn(infoVariants({ labelType: props.labelType }),"w-screen flex justify-center lg:px-20")}>
       <section
         className={cn(
           "lg:max-w-mx w-full flex flex-col lg:flex-row items-center lg:justify-center gap-8 pt-8 lg:pb-8",

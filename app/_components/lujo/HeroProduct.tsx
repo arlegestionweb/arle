@@ -49,7 +49,7 @@ const HeroProduct = ({
       <GalleryProduct
         className="col-start-1 col-span-6"
         imagesProduct={images}
-        orientation={isPerfumeLujo(product) ? "horizontal" : "vertical"}
+        orientation={!isReloj(product) ? "horizontal" : "vertical"}
       />
 
       <section className="relative row-start-1 col-start-7 col-span-6 flex flex-col">
@@ -73,7 +73,12 @@ const HeroProduct = ({
           <h1 className="text-2xl text-gray-600 font-jomolhari leading-none ">
             {isPerfumeLujo(product) ? product.titulo : product.modelo}
           </h1>
-          {isGafa(product) && product.descripcion && (
+          {(isGafa(product) && product.descripcion) && (
+            <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 ">
+              {product.descripcion}
+            </p>
+          )}
+          {(isReloj(product) && product.descripcion) && (
             <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 ">
               {product.descripcion}
             </p>
