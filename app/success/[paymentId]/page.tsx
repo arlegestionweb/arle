@@ -5,12 +5,15 @@ import SendInvoice from "./_components/SendInvoice";
 import React, { Suspense } from "react";
 import ProductCard from "@/app/_components/cart/ProductCard";
 
-const Page = async ({ params }: {
+const Page = async ({ params, searchParams }: {
   params: {
-    paymentId: string;
+    paymentId: string
   }
+  searchParams: { [key: string]: string | string[] | undefined }
 }) => {
-  console.log("in success page", {params})
+  console.log("in success page", { params })
+
+  const paramError = searchParams.error;
 
   const sanityOrder = await getOrderById(params.paymentId);
 
@@ -22,13 +25,20 @@ const Page = async ({ params }: {
   // });
 
 
-  console.log({sanityOrder})
+  console.log({ sanityOrder })
   if (!sanityOrder) return <div>no sanity order found</div>;
 
 
   return (
     <Main extraClasses="bg-white">
       <RemoveCartItems cartId={sanityOrder._id} />
+      {paramError && (
+        <>
+          <h1>Error: {paramError} </h1>
+          <p>haz click aqui para         <SendInvoice order={sanityOrder} />
+          </p>
+        </>
+      )}
       <h1>PEDIDO EXITOSO</h1>
       <h2>Gracias por tu compra</h2>
       <h3>Detalles de tu pedido:</h3>
@@ -46,13 +56,13 @@ const Page = async ({ params }: {
       <p>Total: {sanityOrder.amounts.total}</p>
       <h3>Productos:</h3>
       {/* <Suspense fallback="loading"> */}
-        <ul>
-          {sanityOrder.items.map((item) => {
-            const {product} = item;
+      <ul>
+        {sanityOrder.items.map((item) => {
+          const { product } = item;
 
-            const variant = product.variantes.find(variante => variante.codigoDeReferencia === item.variantId)
+          const variant = product.variantes.find(variante => variante.codigoDeReferencia === item.variantId)
 
-            const image =
+          const image =
             product._type === "relojesLujo" ||
               product._type === "relojesPremium" ||
               product._type === "gafasLujo" ||
@@ -60,7 +70,7 @@ const Page = async ({ params }: {
               // @ts-ignore
               ? variant.imagenes[0]
               : product.imagenes[0];
-        
+
           const productTitle =
             product._type === "relojesLujo" ||
               product._type === "relojesPremium" ||
@@ -68,22 +78,20 @@ const Page = async ({ params }: {
               product._type === "gafasPremium"
               ? product.modelo
               : product.titulo;
-        
 
-            return (
-              <React.Fragment key={item.variantId}>
-                {productTitle}
-                <ProductCard key={item.variantId} item={item} image={image} productTitle={productTitle} product={product} />
-              </React.Fragment>
-            )
-          }
-          )}
-        </ul>
+
+          return (
+            <React.Fragment key={item.variantId}>
+              {productTitle}
+              <ProductCard key={item.variantId} item={item} image={image} productTitle={productTitle} product={product} />
+            </React.Fragment>
+          )
+        }
+        )}
+      </ul>
       {/* </Suspense> */}
-      <Suspense fallback="loading....">
 
-        <SendInvoice order={sanityOrder} />
-      </Suspense>
+      <SendInvoice order={sanityOrder} />
     </Main>
   );
 }
