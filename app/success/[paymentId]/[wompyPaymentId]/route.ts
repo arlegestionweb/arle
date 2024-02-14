@@ -1,19 +1,18 @@
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { sendInvoiceEmail } from "../actions";
 
-
 export const GET = async (
   req: Request,
   { params }: { params: { paymentId: string; wompyPaymentId: string } }
 ) => {
+  if (!req || !req.url) return Response.json({ message: "no req" });
 
   const url = req.url;
   // const { searchParams } = new URL(req.url);
-  const {wompyPaymentId} = params; 
+  const { wompyPaymentId } = params;
 
   const wompyQueryUrl = `https://${process.env.WOMPI_ENV}.wompi.co/v1/transactions/${wompyPaymentId}`;
 
-  const localUrl = req.url.split("api")[0];
   try {
     const wompyResponse = await fetch(wompyQueryUrl);
 
@@ -26,7 +25,7 @@ export const GET = async (
         wompyPaymentId,
         urlString: new URL(req.url).toString(),
         url,
-        req
+        req,
       });
     }
 
@@ -47,10 +46,15 @@ export const GET = async (
         .set(newSanityOrder)
         .commit();
 
-      const responseUrl = `${localUrl}`;
-
+      const urlSegments = req.url.split("/");
+      urlSegments?.pop();
+      const responseUrl = urlSegments?.join("/");
       const { data, error } = await sendInvoiceEmail(newSanityOrder);
-      console.log("after running sendInvoice Email", { data, error, responseUrl });
+      console.log("after running sendInvoice Email", {
+        data,
+        error,
+        responseUrl,
+      });
 
       if (error || !data) {
         Response.json({
@@ -66,14 +70,14 @@ export const GET = async (
     }
 
     return Response.json({
-      url: `${localUrl.split("/success")[0]}/error-procesando-pago`,
+      url: `${req.url.split("/success")[0]}/error-procesando-pago`,
       wompyJson,
-      wompyQueryUrl
+      wompyQueryUrl,
     });
   } catch (error) {
     console.error({ error });
     return Response.json({
-      url: `${localUrl.split("/success")[0]}/error-procesando-pago`,
+      url: `${req.url.split("/success")[0]}/error-procesando-pago`,
       error,
       wompyQueryUrl,
       inCatch: true,
