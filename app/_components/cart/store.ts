@@ -46,6 +46,7 @@ type TCartActions = {
   removeAllOfOneItem: (item: TCartItem) => void;
   clearCart: () => void;
   getCartSubtotal: () => number;
+  getCartTotalBeforeShipping: () => number;
   getCartTotal: () => number;
   getDiscountAmount: () => number;
   toggleCart: () => void;
@@ -54,7 +55,7 @@ type TCartActions = {
   setItemAddedToCart: (item?: TCartItem) => void;
   getCartTotalWithoutDiscountsOrTax: () => number;
   getCartTax: () => number;
-
+  getShippingCost: () => number;
 };
 
 type TCartStore = TCartState & TCartActions;
@@ -244,7 +245,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     return total;
   },
   
-  getCartTotal: () => {
+  getCartTotalBeforeShipping: () => {
     const items: TCartItem[] = get().items;
     let total = 0;
 
@@ -254,6 +255,21 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     return total;
   },
   
-  
+  getShippingCost: () => {
+    const total = get().getCartTotalBeforeShipping();
+
+    if (total >= 250000) {
+      return 0;
+    }
+    return 15000;
+  },
+  getCartTotal: () => {
+    const total = get().getCartTotalBeforeShipping();
+    const discount = get().getDiscountAmount();
+    // const tax = get().getCartTax();
+    const shipping = get().getShippingCost();
+
+    return total - discount + shipping;
+  }
   
 }));
