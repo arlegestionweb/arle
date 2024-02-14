@@ -37,6 +37,8 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
             {order.items.map((item) => {
               const { product } = item;
               console.log({product})
+
+
               const variant = product.variantes.find(variante => variante.codigoDeReferencia === item.variantId)
 
               const image =
