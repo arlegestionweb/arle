@@ -18,6 +18,9 @@ const Page = async ({ params }: {
   //      productId: item.productId,
 
   // });
+
+
+  console.log({sanityOrder})
   if (!sanityOrder) return null;
 
 
