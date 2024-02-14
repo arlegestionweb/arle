@@ -39,6 +39,7 @@ export const zodOrderSchema = z.object({
   shipping: z.object({
     price: z.number(),
     addressObject: zodAddressSchema,
+    status: z.string(),
   }),
   items: z.array(zodCartItem),
 });

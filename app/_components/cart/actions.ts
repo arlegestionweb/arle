@@ -7,27 +7,28 @@ import { TCartItem, zodCartItem } from "./store";
 import { nanoid } from "nanoid";
 import { TOrderSchema, zodOrderSchema } from "@/sanity/queries/orders";
 
+const zodOrderSchemaWithProductReference = zodOrderSchema.merge(
+  z.object({
+    items: z.array(
+      zodCartItem.merge(
+        z.object({
+          productId: z
+            .string()
+            .transform((refId) => ({ _type: "reference", _ref: refId })),
+          _key: z.string(),
+        })
+      )
+    ),
+  })
+);
 
-
-
-const zodOrderSchemaWithProductReference = zodOrderSchema.merge(z.object({
-  items: z.array(zodCartItem.merge(z.object({
-    productId: z.string().transform(refId => ({_type: "reference", _ref: refId })),
-    _key: z.string()
-  })))
-}))
-
-
-export const createInvoice = async function (
-  currentState: any,
-  formData: FormData
-) {
+export const createInvoice = async function (_: unknown, formData: FormData) {
   // console.log(currentState, formData)
-  
+
   if (!formData || !formData.get("reference")) {
     return null;
   }
-  
+
   // console.log("id", formData.get("reference"));
 
   const now = DateTime.now().toISO();
@@ -61,6 +62,7 @@ export const createInvoice = async function (
         address: formData.get("direccion") as string,
         department: formData.get("departamento") as string,
       },
+      status: "in_process",
     },
     amounts: {
       subtotal: Number(formData.get("subtotal")),
@@ -70,18 +72,23 @@ export const createInvoice = async function (
       total: Number(formData.get("total")),
     },
     status: "PENDING",
-    items: (JSON.parse(formData.get("items") as string)).map((item: TCartItem) => ({
-      ...item,
-      _key: nanoid()
-    })),
+    items: JSON.parse(formData.get("items") as string).map(
+      (item: TCartItem) => ({
+        ...item,
+        _key: nanoid(),
+      })
+    ),
   };
 
-  const parsedFormDataWithProductReference = zodOrderSchemaWithProductReference.safeParse(rawFormData);
-
+  const parsedFormDataWithProductReference =
+    zodOrderSchemaWithProductReference.safeParse(rawFormData);
 
   if (!parsedFormDataWithProductReference.success) {
     console.error(parsedFormDataWithProductReference.error);
-    return { status: 400, error: parsedFormDataWithProductReference.error.message };
+    return {
+      status: 400,
+      error: parsedFormDataWithProductReference.error.message,
+    };
   }
 
   const sanityCreateOrder = await sanityWriteClient.createOrReplace({

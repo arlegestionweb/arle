@@ -18,7 +18,6 @@ async function Page({
 
   
   const wompyJson = await wompyResponse.json();
-  console.log({wompyJson })
 
   if (wompyJson.error) {
     return redirect(`/payment-error?error=${wompyJson.error}`);
