@@ -43,19 +43,21 @@ export const zodOrderSchema = z.object({
   items: z.array(zodCartItem),
 });
 
+const zodEmailOrderItemSchema = zodCartItem.merge(
+  z.object({
+    productId: z.object({
+      _type: z.literal("reference"),
+      _ref: z.string(),
+    }),
+    product: zodProduct,
+  })
+);
+
+export type TEmailOrderItemSchema = z.infer<typeof zodEmailOrderItemSchema>;
+
 const zodSanityOrderSchema = zodOrderSchema.merge(
   z.object({
-    items: z.array(
-      zodCartItem.merge(
-        z.object({
-          productId: z.object({
-            _type: z.literal("reference"),
-            _ref: z.string(),
-          }),
-          product: zodProduct,
-        })
-      )
-    ),
+    items: z.array(zodEmailOrderItemSchema),
   })
 );
 

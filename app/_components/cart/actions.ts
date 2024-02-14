@@ -88,6 +88,5 @@ export const createInvoice = async function (
     ...parsedFormDataWithProductReference.data,
   });
 
-  console.log({ sanityCreateOrder });
   return parsedFormDataWithProductReference.data;
 };
