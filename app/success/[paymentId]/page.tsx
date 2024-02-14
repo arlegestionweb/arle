@@ -7,12 +7,12 @@ import ProductCard from "@/app/_components/cart/ProductCard";
 
 const Page = async ({ params }: {
   params: {
-    id: string;
+    paymentId: string;
   }
 }) => {
   console.log("in success page", {params})
 
-  const sanityOrder = await getOrderById(params.id);
+  const sanityOrder = await getOrderById(params.paymentId);
 
 
   // const items = sanityOrder.items.map((item) => {
