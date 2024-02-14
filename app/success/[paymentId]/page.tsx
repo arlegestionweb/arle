@@ -35,8 +35,8 @@ const Page = async ({ params, searchParams }: {
       {paramError && (
         <>
           <h1>Error: {paramError} </h1>
-          <p>haz click aqui para         <SendInvoice order={sanityOrder} />
-          </p>
+          <div>haz click aqui para         <SendInvoice order={sanityOrder} />
+          </div>
         </>
       )}
       <h1>PEDIDO EXITOSO</h1>
