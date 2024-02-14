@@ -25,7 +25,7 @@ async function Page({
   }
 
   if (wompyJson.data.status === "APPROVED") {
-    const responseUrl = `/success/${wompyPaymentId}`;
+    const responseUrl = `/success/${params.paymentId}/${wompyPaymentId}`;
     return redirect(responseUrl);
   }
 
