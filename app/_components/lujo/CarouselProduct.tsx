@@ -50,12 +50,12 @@ const CarouselProduct = ({
   
   return (
     <div className={cn("relative w-fit",  className)}>
-      {isHorizontal && imagesProduct.length > 4 && <button
+      {imagesProduct.length > 4 && <button
         onClick={prevImages}
-        className="absolute z-20 -left-[35px] top-1/2 transform -translate-y-1/2 w-7 h-7 p-[7px] opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
+        className={cn("absolute z-20  w-7 h-7 p-[7px] opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex", isHorizontal ? "-left-[35px] top-1/2 transform -translate-y-1/2" : "rotate-90 -top-3")}>
         <IoIosArrowBack />
       </button>}
-      <div className={cn("flex space-x-3 lg:space-x-0 lg:gap-y-2 lg:flex-col lg:justify-start lg:items-center", isHorizontal && "overflow-hidden flex-row gap-2 lg:flex-row h-full")}>
+      <div className={cn("flex space-x-3 md:space-x-0 md:gap-y-2 md:flex-col md:justify-start md:items-center", isHorizontal && "overflow-hidden flex-row gap-2 lg:flex-row h-full")}>
 
         {visibleImages.map((img, idx) => (
           <div
@@ -73,9 +73,10 @@ const CarouselProduct = ({
           </div>
         ))}
       </div>
-      {isHorizontal && imagesProduct.length > 4 && <button
+      {imagesProduct.length > 4 && 
+        <button
         onClick={nextImages}
-        className="absolute -right-[35px] top-1/2 transform -translate-y-1/2 w-7 h-7 p-[7px] opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex">
+        className={cn("absolute z-20 w-7 h-7 p-[7px] opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex",isHorizontal ? " -right-[35px] top-1/2 transform -translate-y-1/2 " : "rotate-90 -bottom-3")}>
         <IoIosArrowForward />
       </button>}
     </div>
