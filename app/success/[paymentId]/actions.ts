@@ -1,8 +1,8 @@
 "use server";
 
-import { EmailTemplate } from "@/app/success/[id]/_components/email-template";
 import { TFrontEndOrderSchema } from "@/sanity/queries/orders";
 import { Resend } from "resend";
+import { EmailTemplate } from "./_components/email-template";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
