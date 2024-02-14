@@ -4,7 +4,6 @@ import { relojLujoSchema, relojPremiumSchema } from "../zodSchemas/reloj";
 import { gafasLujoSchema, gafasPremiumSchema } from "../zodSchemas/gafas";
 import { perfumeLujoSchema, perfumePremiumSchema } from "../zodSchemas/perfume";
 import { zodTimedDiscountsSchema } from "../zodSchemas/general";
-import { recommendedProductsSchema, zodProduct } from "../listingQueries";
 
 type TProductType =
   | "relojesLujo"
@@ -337,7 +336,6 @@ export const productQuery: Record<TProductType, string> = {
       },
     },
     "inspiracion": ${inspiracionQuery},    
-    "variantes": ${variantesDeGafaQueryString},
     modelo,
     coleccionDeMarca,
     "slug": slug.current,

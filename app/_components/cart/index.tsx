@@ -34,7 +34,8 @@ const Cart = ({
     id,
     getCartTotalWithoutDiscountsOrTax,
     isAddedToCartModalOpen,
-    getCartTax
+    getCartTax,
+    getShippingCost
   } = useCartStore((state) => state);
 
   const [formState, formAction] = useFormState(createInvoice, null);
@@ -224,11 +225,11 @@ const Cart = ({
               <span>${numberToColombianPriceString(getCartTax()) || 0}</span>
             </label>
             <label className="flex w-full justify-between">
-              <input type="number" hidden name="shipping" value={0} />
+              <input type="number" hidden name="shipping" value={getShippingCost()} />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 Envío
               </h5>
-              <span>Gratis</span>
+              <span>{getShippingCost() === 0 ? "Gratis" : `$${numberToColombianPriceString(getShippingCost())}`}</span>
             </label>
             <div className="self-stretch h-px bg-stone-300" />
 

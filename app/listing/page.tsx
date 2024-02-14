@@ -16,7 +16,6 @@ import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { unstable_noStore as noStore } from "next/cache";
 import Main from "../_components/Main";
 import { Metadata } from "next";
-import { zodHomeSectionSchema } from "@/sanity/queries/pages/homepageQuery";
 import { Suspense } from "react";
 
 // export const revalidate = 10; // revalidate at most every hour
