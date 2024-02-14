@@ -1,6 +1,7 @@
+import Main from "@/app/_components/Main";
 
 
-function Page({
+async function Page({
   params,
   searchParams,
 }: {
@@ -12,12 +13,15 @@ function Page({
 
   const wompyQueryUrl = `https://${process.env.WOMPI_ENV}.wompi.co/v1/transactions/${wompyPaymentId}`;
 
+  const wompyResponse = await fetch(wompyQueryUrl);
+
+  console.log({ wompyResponse })
   return (
-    <main>
+    <Main>
 
       <h1>{JSON.stringify(wompyPaymentId)}</h1>
       <h1>{JSON.stringify(wompyQueryUrl)}</h1>
-    </main>
+    </Main>
   )
 }
 
