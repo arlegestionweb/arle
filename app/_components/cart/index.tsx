@@ -177,7 +177,7 @@ const Cart = ({
               <WompiPayButton
                 amount={getCartTotal()}
                 reference={payment_reference}
-                redirectUrl={`${localUrl}/success/${payment_reference}/api`}
+                redirectUrl={`${localUrl}/success/${payment_reference}/is-payment-successful`}
               />
             </div>
           </div>
