@@ -25,7 +25,7 @@ async function Page({
   }
 
   if (wompyJson.data.status === "APPROVED") {
-    const responseUrl = `/success/${wompyPaymentId}`;
+    const responseUrl = `/success/${params.paymentId}/${wompyPaymentId}`;
     return redirect(responseUrl);
   }
 
@@ -40,20 +40,3 @@ async function Page({
 }
 
 export default Page;
-
-
-// "use client"
-
-// import { useSearchParams } from "next/navigation";
-
-// function Page({
-//   params,
-// }: {
-//   params: { paymentId: string }
-// }) {
-
-//   const searchParams = useSearchParams();
-//   return <h1>{JSON.stringify(searchParams)}</h1>
-// }
-
-// export default Page;
