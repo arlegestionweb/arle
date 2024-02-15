@@ -35,6 +35,7 @@ export const perfumePremiumSchema = defineType({
       name: "descripcion",
       title: "Descripción",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
     variantesDePerfumesSchema,
     defineField({

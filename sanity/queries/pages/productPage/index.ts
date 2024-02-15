@@ -53,18 +53,17 @@ const bannersQuery = `
 
 const variantesDeGafaQueryString = `
   variantes [] {
-    mostrarUnidadesDispobibles,
+    mostrarUnidadesDisponibles,
     "colorDeLaMontura": colorDeLaMontura -> {
       nombre,
       "color": color.hex
     },
-    etiqueta,
+    tag,
     "colorDeLaVarilla": colorDeLaVarilla -> {
       nombre,
       "color": color.hex
     },
     codigoDeReferencia,
-    registroInvima,
     precio,
     precioConDescuento,
     unidadesDisponibles,
@@ -125,9 +124,9 @@ export const productQuery: Record<TProductType, string> = {
         "url": asset->url,
       },
       unidadesDisponibles,
+      mostrarUnidadesDisponibles,
       codigoDeReferencia,
-      registroInvima,
-      etiqueta,
+      tag,
       "colorCaja": colorCaja -> {
         nombre,
         "color": color.hex
@@ -170,9 +169,9 @@ export const productQuery: Record<TProductType, string> = {
         "url": asset->url,
       },
       codigoDeReferencia,
-      registroInvima,
-      etiqueta,
+      tag,
       unidadesDisponibles,
+      mostrarUnidadesDisponibles,
       "colorCaja": colorCaja -> { 
         nombre, 
         "color": color.hex
@@ -184,6 +183,7 @@ export const productQuery: Record<TProductType, string> = {
     },
     _id,
     modelo,
+    descripcion,
     "slug": slug.current,
     ${garantiaQuery},
     _type,
@@ -191,6 +191,10 @@ export const productQuery: Record<TProductType, string> = {
     "detallesReloj": detallesReloj {
       "tipoDeReloj": tipoDeReloj -> titulo,
       "estiloDeReloj": estiloDeReloj -> titulo,
+      "funciones": funciones [] -> {
+        titulo,
+        descripcion
+      },
       resistenciaAlAgua,
       "material": material -> nombre,
       "tipoDeMovimiento": tipoDeMovimiento -> titulo,
@@ -211,8 +215,9 @@ export const productQuery: Record<TProductType, string> = {
       codigoDeReferencia,
       unidadesDisponibles,
       registroInvima,
+      tag,
       precioConDescuento,
-      mostrarUnidadesDispobibles,
+      mostrarUnidadesDisponibles,
       tamano,
       precio
     },
@@ -273,11 +278,12 @@ export const productQuery: Record<TProductType, string> = {
     "marca": marca->titulo,
     "variantes": variantes[]{
       tamano,
-      etiqueta,
+      tag,
       precio,
       codigoDeReferencia,
       registroInvima,
       unidadesDisponibles,
+      mostrarUnidadesDisponibles,
     },
     parteDeUnSet,
     descripcion,
@@ -304,17 +310,15 @@ export const productQuery: Record<TProductType, string> = {
         }
       }
     },
-    "monturaDetalles":  {
+    "monturaDetalles": monturaDetalles {
       usarDetalles,
-     "detalles": detalles {
         "contenido": contenido {
           texto,
           "imagen": imagen {
             alt,
             "url": asset->url,
           }
-        }
-      },
+        },
     },
     ${bannersQuery},
     "especificaciones": especificaciones {
@@ -335,31 +339,6 @@ export const productQuery: Record<TProductType, string> = {
     "inspiracion": ${inspiracionQuery},    
     "variantes": ${variantesDeGafaQueryString},
     modelo,
-    "variantes": variantes [] {
-      "colorDeLaMontura": colorDeLaMontura -> {
-        nombre,
-        "color": color.hex
-      },
-      "colorDeLaVarilla": colorDeLaVarilla -> {
-        nombre,
-        "color": color.hex
-      },
-      "colorDelLente": colorDelLente -> {
-        nombre,
-        "color": color.hex
-      },
-      precio,
-      precioConDescuento,
-      etiqueta,
-      codigoDeReferencia,
-      registroInvima,
-      mostrarUnidadesDispobibles,
-      unidadesDisponibles,
-      "imagenes": imagenes[]{
-        alt,
-        "url": asset->url,
-      }, 
-    },
     coleccionDeMarca,
     "slug": slug.current,
   }`,
@@ -386,11 +365,10 @@ export const productQuery: Record<TProductType, string> = {
         "url": asset->url,
       },
       codigoDeReferencia,
-      registroInvima,
       unidadesDisponibles,
       precio,
-      etiqueta,
-      mostrarUnidadesDispobibles
+      tag,
+      mostrarUnidadesDisponibles
     },
     modelo,
     "slug": slug.current, 
@@ -399,7 +377,7 @@ export const productQuery: Record<TProductType, string> = {
     "detalles": detalles {
       "tipoDeGafa": tipoDeGafa -> titulo,
       "estiloDeGafa": estiloDeGafa -> titulo,
-      "lente": lente {
+        "lente": lente {
         "tipo": tipo -> titulo,
         "material": material -> titulo,
       },

@@ -78,7 +78,7 @@ const AddedToCartModal = () => {
       <section className="w-screen pointer-events-none h-screen fixed top-0 left-0 z-[101] grid place-content-center">
         <div className="w-[598px] z-[102] h-[354px] pointer-events-auto px-8 py-5 bg-white shadow flex-col justify-start items-start gap-2.5 inline-flex relative">
           <header className="flex w-full items-center justify-between">
-            <Image src="/arleMini.png" width={50} height={50} alt="logo" />
+            <Image className="w-12 h-12" src="/arleMini.png" width={50} height={50} alt="logo" />
             <h1 className="mx-auto text-zinc-800 text-2xl font-semibold font-crimson leading-7">
               Agregado al Carrito con éxito!
             </h1>{" "}

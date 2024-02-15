@@ -21,11 +21,6 @@ const GalleryProduct = ({
   const [index, setIndex] = useState(0);
 
   const thumbnailElement = imagesProduct
-    .filter((img, idx) => {
-      if (idx < 6) {
-        return img;
-      }
-    })
     .map((img, idx) => {
       if (imagesProduct.length > 1) {
         return (
@@ -35,9 +30,10 @@ const GalleryProduct = ({
             <Image
               src={img.url}
               alt={img.alt || "perfume"}
-              fill
+              width={80}
+              height={80}
               onClick={() => setIndex(idx)}
-              className="object-cover fit object-center min-h-20"
+              className="object-contain h-full w-full cursor-pointer"
             />
           </section>
         );
@@ -47,26 +43,27 @@ const GalleryProduct = ({
   return (
     <section
       className={cn(
-        "flex flex-col items-center",
-        orientation == "vertical" && "lg:flex-row-reverse items-start gap-2",
+        "flex flex-col items-center lg:mt-8",
+        orientation == "vertical" && "md:flex-row-reverse gap-2 md:px-20 md:mb-4 justify-center md:items-start md:pt-4",
         className
       )}>
-      <div className={"relative w-full h-[377px] lg:h-[569px]"}>
+      <div className={cn("relative w-full aspect-square max-h-[370px] md:h-[377px] lg:h-[569px]", orientation == "vertical" && "md:w-1/2 lg:w-full")}>
         <Image
           alt={imagesProduct[index].alt || ""}
           src={imagesProduct[index].url}
-          fill
-          className="object-cover object-center"
+          width={800}
+          height={800}
+          className="object-contain object-center h-full w-full"
         />
       </div>
-      <div className="no-scrollbar flex lg:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">
+      <div className=" no-scrollbar flex max-w-[430px] justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">
         {thumbnailElement}
       </div>
       {imagesProduct.length != 1 && (
         <CarouselProduct
           setProduct={setIndex}
           imagesProduct={imagesProduct}
-          className={cn("hidden my-2 md:justify-center justify-start md:flex h-20", orientation == "vertical" && "lg:h-full lg:gap-2")}
+          className={cn("hidden my-2 md:justify-center justify-start md:flex h-20", orientation == "vertical" && "md:h-full lg:h-auto md:gap-2")}
           isHorizontal={orientation != "vertical"}
         />
       )}

@@ -34,7 +34,7 @@ const ProductViewer = ({ product, className, selectedVariant }: ProductViewerPro
       />
       <ProductGrid
         product={imagenes}
-        className="hidden lg:block"
+        className="hidden lg:flex basis-full max-h-[650px]"
       />
     </>
   );
@@ -50,25 +50,60 @@ const ProductGrid = ({
   }[];
   className?: string;
 }) => {
-  return (
-    <section className={cn("relative col-span-6 pb-7", className)}>
-      <div className={cn("grid grid-cols-[repeat(2,minmax(200px,1fr))] overflow-y-scroll no-scrollbar overflow-hidden w-full gap-[10px] justify-start h-auto ", product.length > 4 && "h-[1155px]")}>
-        {product.length > 4 && (
-          <div className="absolute right-[0px] top-[calc(1155px-85px)] max-w-[100%] w-[100%] z-10 h-[85px] bg-gradient-to-b from-transparent to-[#00000080] opacity-70"></div>
-        )}
 
-        {product.map((image,index) => (
+  const splitArrayIntoEvenOdd = (array: typeof product): [typeof product, typeof product] => {
+    const evenItems: typeof product = [];
+    const oddItems: typeof product = [];
+  
+    array.forEach((item, index) => {
+      if (index % 2 === 0) {
+        evenItems.push(item);
+      } else {
+        oddItems.push(item);
+      }
+    });
+  
+    return [evenItems, oddItems];
+  };
+  
+  const [evenImages, oddImages] = splitArrayIntoEvenOdd(product);
+
+  return (
+    <section className={cn("relative ", className)}>
+      <div className={"flex overflow-y-scroll no-scrollbar overflow-hidden w-full gap-2"}>
+        <section className="basis-full flex flex-col gap-2">
+        {evenImages.map(image => (
           <div
-            key={image.alt+index}
-            className="relative w-full h-[377px]">
+          key={image.alt}
+          className="relative">
             <Image
               src={image.url}
               alt={image.alt}
-              fill
-              className={`object-cover object-center`}
-            />
+              height={900}
+              width={900}
+              className={`object-contain w-full object-center`}
+              />
           </div>
         ))}
+        </section>
+        <section className="basis-full flex flex-col gap-2">
+        {oddImages.map(image => (
+          <div
+          key={image.alt}
+          className="relative">
+            <Image
+              src={image.url}
+              alt={image.alt}
+              height={900}
+              width={900}
+              className={`object-contain w-full object-center`}
+              />
+          </div>
+        ))}
+        </section>
+        {product.length > 4 && (
+          <div className="absolute bottom-0 h-20 w-full z-10 bg-gradient-to-b from-transparent to-[#00000080] opacity-25"></div>
+        )}
       </div>
     </section>
   );

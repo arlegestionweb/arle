@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { AiOutlineCloseCircle } from "react-icons/ai";
 import Button from "@/app/_components/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/app/_lib/utils";
@@ -10,6 +9,7 @@ import type { TGafaFilters, TPerfumeFilters, TRelojFilters } from ".";
 import PerfumeFilters from "./PerfumeFilters";
 import GafaFilters from "./GafaFilters.tsx";
 import { useClickOutside } from "@/app/_lib/hooks";
+import { IoCloseSharp } from "react-icons/io5";
 
 type TypeSearchParams = {
   [key: string]: string | string[] | undefined;
@@ -89,21 +89,24 @@ const FilterMenu = ({
 
   return (
     <div
-      className={`${isFilterOpen ? "w-screen" : "w-0"
-        } fixed z-50 top-[60px] left-0 transition-all h-screen bg-black bg-opacity-50 flex`}
+      className={`${isFilterOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+    } fixed mt-[50px] md:mt-[53px] z-[78] top-0 left-0 transition-all duration-500 w-screen h-full bg-black bg-opacity-50 backdrop-blur-md`}
     >
       <aside
-        // ref={menuRef}
-        className={`${isFilterOpen ? "" : "hidden"
-          } w-[80vw] max-w-[400px] max-h-[calc(100vh-60px)] bg-white flex-col relative overflow-y-scroll`}
+        className={`${isFilterOpen ? "left-0" : "-left-[400px]"
+      } w-screen fixed top-0 z-[80] max-w-[400px] h-[calc(100vh-50px)] flex flex-col bg-white transition-all duration-300 ease-out overflow-hidden`}
       >
-        <form onSubmit={onFormSubmit} ref={formRef}>
-          <header className="flex justify-end p-4">
-            <AiOutlineCloseCircle
-              onClick={toggleFilter}
-              className="cursor-pointer text-3xl"
-            />
+          <header className="flex justify-between items-center px-6 min-h-[64px] border-b border-gray-300">
+          <h1 className=" capitalize text-arle-blue text-base font-semibold font-inter cursor-default">
+              Filtros
+            </h1>
+          <IoCloseSharp
+            className="cursor-pointer w-5 h-5"
+            onClick={toggleFilter}
+          />
           </header>
+        <form className="w-full h-[calc(100vh-114px)] flex flex-col justify-between" onSubmit={onFormSubmit} ref={formRef}>
+          <section className="w-full flex flex-col justify-start overflow-y-scroll no-scrollbar">
           {!searchParams.get("type") && (
             <AllProductFilters
               marcas={marcas}
@@ -113,33 +116,34 @@ const FilterMenu = ({
 
           {searchParams.get("type")?.includes("reloj") && (
             <RelojFilters
-              marcas={marcas}
-              coleccionesDeMarca={coleccionesDeMarca}
-              relojFilters={relojFilters}
+            marcas={marcas}
+            coleccionesDeMarca={coleccionesDeMarca}
+            relojFilters={relojFilters}
             />
-          )}
+            )}
           {searchParams.get("type")?.includes("gafa") && (
             <GafaFilters
-              coleccionesDeMarca={coleccionesDeMarca}
-              marcas={marcas}
-              gafaFilters={gafaFilters}
+            coleccionesDeMarca={coleccionesDeMarca}
+            marcas={marcas}
+            gafaFilters={gafaFilters}
             />
-          )}
+            )}
           {searchParams.get("type")?.includes("perfume") && (
             <PerfumeFilters
-              marcas={marcas}
-              coleccionesDeMarca={coleccionesDeMarca}
-              perfumeFilters={perfumeFilters}
+            marcas={marcas}
+            coleccionesDeMarca={coleccionesDeMarca}
+            perfumeFilters={perfumeFilters}
             />
-          )}
+            )}
+          </section>
 
-          <footer className="flex justify-evenly py-5">
-            <Button type="submit">Aplicar Filtros</Button>
+          <footer className=" w-screen max-w-[400px] border-t border-gray-300 bottom-0 flex justify-end gap-4 px-6 py-5">
             {areFiltersActive && (
               <Link href="/listing" onClick={toggleFilter}>
-                <Button>Quitar Filtros</Button>
+                <Button labelType={"gray"}>Reestablecer</Button>
               </Link>
             )}
+            <Button type="submit" labelType={"dark"} >Aplicar</Button>
           </footer>
         </form>
       </aside>

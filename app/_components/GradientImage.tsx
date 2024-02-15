@@ -17,7 +17,7 @@ function GradientImage({src, alt, layout, imageClassName, containerclassName, ch
         src={src}
         alt={alt}
         fill
-        className={`object-cover ${imageClassName}`}
+        className={`object-cover h-full w-full ${imageClassName}`}
       />
       {/* Gradient */}
       <div className="w-full h-full left-0 bottom-0 absolute bg-gradient-to-t from-black to-transparent opacity-90" />

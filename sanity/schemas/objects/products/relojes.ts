@@ -60,13 +60,7 @@ const varianteDeRelojes = defineField({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "registroInvima",
-      title: "Registro Invima",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "mostrarUnidadesDispobibles",
+      name: "mostrarUnidadesDisponibles",
       title: "Mostrar unidades disponibles",
       type: "boolean",
       initialValue: false,
@@ -127,6 +121,7 @@ export const movimientoObjSchema = defineField({
           name: "descripcion",
           title: "Descripción",
           type: "text",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "imagen",

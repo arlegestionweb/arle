@@ -8,6 +8,7 @@ export const familiasOlfativasSchema = defineType({
   title: "Familias Olfativas",
   type: "document",
   icon: GiNoseSide,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "nombre",
@@ -51,6 +52,7 @@ export const notasOlfativasProdSchema = defineField({
       name: "notasDeBase",
       title: "Notas de Base",
       type: "array",
+      validation: (Rule) => Rule.required(),
       of: [
         defineArrayMember({
           type: "reference",
@@ -62,6 +64,7 @@ export const notasOlfativasProdSchema = defineField({
       name: "notasDeCorazon",
       title: "Notas de Corazón",
       type: "array",
+      validation: (Rule) => Rule.required(),
       of: [
         defineArrayMember({
           type: "reference",
@@ -77,6 +80,7 @@ export const concentracionSchema = defineType({
   title: "Concentración",
   type: "document",
   icon: FaTemperatureHalf,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "nombre",
@@ -90,6 +94,7 @@ export const notasOlfativasSchema = defineType({
   title: "Notas Olfativas",
   type: "document",
   icon: GiNoseFront,
+  validation: (Rule) => Rule.required(),
   fields: [
     defineField({
       name: "nombre",

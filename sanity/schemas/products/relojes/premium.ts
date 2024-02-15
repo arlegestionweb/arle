@@ -33,6 +33,7 @@ export const relojesPremiumSchema = defineType({
       group: "general",
       title: "Descripción",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
     variantesDeRelojesSchema,
     garantiaSchema,

@@ -9,27 +9,28 @@ interface BurgerProps {
 
 const Burger = ({ openNav, closeNav, isNavOpen, barColor }: BurgerProps) => {
   return (
-    <div className="flex justify-center items-center" onClick={() => {
-      if (isNavOpen) {
-        closeNav && closeNav();
-      } else {
-        openNav && openNav();
-      }
-    }}>
-      <div className="relative grid place-content-center z-50 gap-2  cursor-pointer ">
+    <div
+      className="flex justify-center items-center"
+      onClick={() => {
+        if (isNavOpen) {
+          closeNav && closeNav();
+        } else {
+          openNav && openNav();
+        }
+      }}
+    >
+      <div className="relative grid place-content-center z-50 gap-[7px]  cursor-pointer ">
         <Bar
-          rotateZ={!isNavOpen ? "rotate-0" : "rotate-45 translate-y-3"}
           barColor={barColor}
-          width="w-7"
+          width={isNavOpen ? "w-6 translate-x-20" : "w-6"}
         />
         <Bar
-          width={isNavOpen ? "w-0" : "w-7"}
+          width={isNavOpen ? "w-6 translate-x-20" : "w-6"}
           barColor={barColor}
         />
         <Bar
-          rotateZ={!isNavOpen ? "rotate-0" : "-rotate-45 -translate-y-2"}
           barColor={barColor}
-          width="w-7"
+          width={isNavOpen ? "w-6 translate-x-20" : "w-6"}
         />
       </div>
     </div>
@@ -50,7 +51,7 @@ const Bar = ({
 }: BarProps) => {
   return (
     <div
-      className={`${width} ${rotateZ} transition-all h-[2px]  ${barColor} rounded-md`}
+      className={`${width} ${rotateZ} transition-all duration-1000 h-[2px]  ${barColor} rounded-md`}
     />
   );
 };

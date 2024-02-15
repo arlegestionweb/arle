@@ -21,9 +21,9 @@ const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
   return (
     <nav className={className}>
       <section
-        className={`w-full flex fixed z-30 top-0 h-[60px] px-8 justify-center bg-background border-b border-zinc-200`}
+        className={`w-full flex fixed z-30 top-0 h-[53px] px-8 justify-center bg-background border-b border-zinc-200`}
       >
-        <section className="w-full flex h-full py-3 justify-between max-w-screen-xl">
+        <section className="w-full flex h-full justify-between items-center max-w-screen-xl">
 
         <Link href={"/"} className="h-fit self-center">
           <Image src={"/ArleBasicLogo.svg"} width={80} height={30} alt="logo" />
@@ -34,7 +34,7 @@ const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
         <section className="flex gap-5 ">
           <Link href={'/'} className=" px-2 justify-center items-center gap-2 flex">
             <div className="justify-center items-center gap-2.5 flex">
-              <div className="text-black text-base font-medium leading-normal">Home</div>
+              <div className="text-gray-700 font-inter text-base font-medium">Home</div>
             </div>
           </Link> 
           
@@ -43,8 +43,8 @@ const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
             className="px-3 py-1.5 relative bg-color-bg-surface-0-default justify-center items-center gap-2 flex"
             onClick={() => toggleCart()}
           >
-            <LuShoppingCart className="w-[18px] h-[18px]" />
-            <span className="text-neutral-600 text-base font-medium leading-normal">
+            <LuShoppingCart className="w-[18px] h-[18px] stroke-gray-600" />
+            <span className="text-gray-600 text-base font-medium">
               Carrito
             </span>
             <RedDot active={items.length > 0} />

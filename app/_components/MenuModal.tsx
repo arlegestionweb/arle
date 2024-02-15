@@ -14,8 +14,8 @@ const MenuModal = ({ isMenuOpen, children, closeMenu, side = "left" }: {
 
   return (
     <div
-      className={`${isMenuOpen ? "w-screen" : "w-0"
-        } fixed z-[100] top-[0px] ${sideClass} ${side}-0 transition-all h-screen bg-black bg-opacity-50 flex flex-col overflow-hidden`}
+      className={`${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        } fixed z-[100] top-[0px] left-0 items-end transition-all duration-300 w-screen h-screen bg-black bg-opacity-50 backdrop-blur-sm flex flex-col overflow-hidden`}
     >
       {children}
     </div>

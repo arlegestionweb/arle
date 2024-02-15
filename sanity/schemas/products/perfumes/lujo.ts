@@ -106,6 +106,7 @@ export const perfumeLujoSchema = defineType({
       title: "País de Origen",
       type: "reference",
       group: "detalles",
+      validation: (Rule) => Rule.required(),
       to: [{ type: "paisDeOrigen" }],
     }),
     variantesDePerfumesSchema,

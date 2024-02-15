@@ -7,6 +7,14 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      'xs': '450px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+    },
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -25,15 +33,16 @@ const config: Config = {
         "color-bg-surface-0-default": "#f5f5f5",
         beige: "#EDE7DE",
         "arle-blue": "#101432",
-        "guidelines-on-color-beige": "#CBBBA0",
+        "arle-beige": "#CBBBA0",
       },
       fontFamily: {
-        inter: "var(--font-inter)",
-        lora: "var(--font-lora)",
-        raleway: "var(--font-raleway)",
+        crimson: "var(--crimson-pro)",
         tajawal: "var(--font-tajawal)",
+        inter: "var(--font-inter)",
         kanit: "var(--font-kanit)",
-        crimson: "var(--crimson-text)",
+        raleway: "var(--font-raleway)",
+        jomolhari: "var(--font-jomolhari)",
+        play: "var(--font-play)",
       },
       borderRadius: {
         lg: `var(--radius)`,

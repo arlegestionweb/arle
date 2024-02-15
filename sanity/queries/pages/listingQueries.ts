@@ -153,6 +153,8 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
+
+    // console.log(result.perfumes[0].variantes[0].tag)
     
     const parsedResult = zodListPage.safeParse(result);
 
@@ -215,6 +217,7 @@ export const getRecommendedProducts = async () => {
           ${productQuery.gafasPremium}
       }  
     }`);
+
 
     const parsedResult = recommendedProductsSchema.safeParse(result);
 

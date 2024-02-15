@@ -37,7 +37,7 @@ const Banner = ({ content, className }: BannerProps) => {
   return (
     <section
       className={cn(
-        "max-w-screen h-[70vh] pt-[60px] md:pt-0 overflow-hidden relative group",
+        "max-w-screen h-[85vh] md:h-[75vh] overflow-hidden relative group",
         className
       )}>
       <section
@@ -51,7 +51,7 @@ const Banner = ({ content, className }: BannerProps) => {
                 src={banner.imagen.url}
                 alt={banner.imagen.alt}
                 layout="fill"
-                imageClassName="fit object-cover object-top"
+                imageClassName="object-cover object-top"
                 containerclassName={`snap-center snap-always ${
                   index === 1 && "snap-mandatory"
                 } min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`}>
@@ -59,14 +59,18 @@ const Banner = ({ content, className }: BannerProps) => {
             )}
           </React.Fragment>
         ))}
-                <section className="absolute bottom-20 w-full z-10 self-stretch flex-col justify-center items-center gap-2.5 flex">
-                  <h2 className="self-stretch text-center text-white text-[32px] font-semibold font-lora uppercase leading-[38.40px]">
+                <section className="absolute bottom-20 w-full z-10 flex justify-center default-paddings pointer-events-none">
+                  <section className="w-full flex flex-col justify-center items-start gap-4 max-w-screen-xl">
+                  <h1 className=" text-white lux-title text-2xl xs:text-3xl sm:text-4xl lg:text-[40px] max-w-sm sm:max-w-lg">
                     {content.titulo}
-                  </h2>
-                  <p className="text-center text-white text-2xl font-light font-lora leading-[28.80px]">
+                  </h1>
+                  <h2 className=" text-white normal-subtitle">
                     {content.subtitulo}
-                  </p>
-                  <Link className="text-zinc-800 text-lg font-medium leading-[27px] px-20 py-[8.50px] bg-color-bg-surface-1-default" href="/listing" >Explora todos los productos</Link>
+                  </h2>
+                  {content.buttonText && (
+                  <Link className="light-button pointer-events-auto" href="/listing">{content.buttonText}</Link>
+                  )}
+                  </section>
                 </section>
       </section>
 

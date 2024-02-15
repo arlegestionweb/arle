@@ -13,10 +13,9 @@ const gafaVariantSchema = z.object({
   colorDeLaVarilla: zodColorSchema,
   precio: z.string(),
   precioConDescuento: z.string().optional().nullable(),
-  etiqueta: z.string().optional().nullable(),
+  tag: z.string().optional().nullable(),
   codigoDeReferencia: z.string(),
-  registroInvima: z.string(),
-  mostrarUnidadesDispobibles: z.boolean().optional().nullable(),
+  mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   unidadesDisponibles: z.number(),
   imagenes: z.array(imageSchema),
 });
@@ -58,11 +57,9 @@ export const gafasLujoSchema = z.object({
   modelo: z.string(),
   slug: z.string(),
   genero: z.string(),
-  detalles: z
-    .object({
+  detalles: z.object({
       usarDetalles: z.boolean().optional().nullable(),
-      contenido: z
-        .object({
+      contenido: z.object({
           texto: z.string().optional().nullable(),
           imagen: imageSchema.optional().nullable(),
         })
@@ -73,14 +70,13 @@ export const gafasLujoSchema = z.object({
     .nullable(),
   monturaDetalles: z.object({
     usarDetalles: z.boolean().optional().nullable(),
-    contenido: z
-      .object({
+    contenido: z.object({
         texto: z.string().optional().nullable(),
         imagen: imageSchema.optional().nullable(),
       })
       .optional()
       .nullable(),
-  }),
+  }).optional().nullable(),
   coleccionDeMarca: coleccionDeMarcaSchema,
 
 });
@@ -110,6 +106,7 @@ export const gafasPremiumSchema = z.object({
   }),
   garantia: z.object({
     meses: z.number(),
+    descripcion: z.string().optional().nullable()
   }),
   coleccionDeMarca: coleccionDeMarcaSchema,
 });

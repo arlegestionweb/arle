@@ -15,6 +15,7 @@ export type THomeSection = z.infer<typeof zodHomeSectionSchema>;
 const zodHeroSchema = z.object({
   titulo: z.string(),
   subtitulo: z.string(),
+  buttonText: z.string().optional().nullable(),
   banners: z.array(
     z.object({
       imagen: imageSchema,
@@ -56,6 +57,7 @@ const homepageQueryString = `*[_type == "homepage"][0]{
   "hero": hero{
     titulo,
     subtitulo,
+    buttonText,
     "banners": banners1[] {
       "imagen": imagen{
         alt,

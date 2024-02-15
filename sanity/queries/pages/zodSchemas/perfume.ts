@@ -25,9 +25,9 @@ const perfumeVariantSchema = z.object({
   precioConDescuento: z.string().optional().nullable(),
   codigoDeReferencia: z.string(),
   registroInvima: z.string(),
-  mostrarUnidadesDispobibles: z.boolean().optional().nullable(),
+  mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   unidadesDisponibles: z.number(),
-  etiqueta: z.string().optional().nullable(),
+  tag: z.string().optional().nullable(),
 });
 
 export type TPerfumeVariant = z.infer<typeof perfumeVariantSchema>;
