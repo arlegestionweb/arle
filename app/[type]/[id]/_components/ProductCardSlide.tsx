@@ -17,7 +17,7 @@ export const ProductCardSlide = ({
   return (
     <section className="max-w-mx px-0 min-[1024px]:px-10 min-[1280px]:px-0 w-screen py-0 md:py-4 pl-8 lg:flex lg:flex-col">
       {" "}
-      <h3 className="text-zinc-800 text-[28px] font-semibold font-crimson leading-loose">
+      <h3 className="text-zinc-800 text-3xl font-jomolhari leading-loose">
         {nameSection}
       </h3>
       {products && products.length > 0 && (

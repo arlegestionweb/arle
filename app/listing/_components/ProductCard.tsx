@@ -84,7 +84,7 @@ const ProductoCard = ({
 
   return (
     <>
-      {selectedVariant.unidadesDisponibles === 0 ? (
+      {selectedVariant.unidadesDisponibles <= 0 ? (
         <Labels
           label={"Agotado"}
           className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
