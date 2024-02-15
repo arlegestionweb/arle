@@ -93,17 +93,17 @@ const ProductSlide = ({
                     src={image.url}
                     width={250}
                     height={250}
-                    className={`object-contain h-full w-full fit object-center`}
+                    className={`absolute object-contain h-full w-full object-center`}
                   />
                 </Link>
               ) : (
-                <div>
+                <div className="w-full h-full">
                   <Image
                     alt={image.alt || "product"}
                     src={image.url}
                     width={250}
                     height={250}
-                    className={`object-contain h-full w-full fit object-center`}
+                    className={`absolute object-contain h-full w-full object-center`}
                   />
                 </div>
               )}

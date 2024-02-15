@@ -56,7 +56,7 @@ const ModalContent = ({
           <ul className="flex flex-col gap-[15px] ">
             {items.map((item) => (
               <li
-                className="cursor-pointer items-center flex gap-2"
+                className="cursor-pointer items-center flex gap-2 group"
                 key={item.name}
                 onClick={() => {
                   if (currentScreen === 2) {
@@ -74,7 +74,7 @@ const ModalContent = ({
                 }}
               >
                 {currentScreen === 2 && <GoArrowUpRight className="w-5 h-5" />}
-                <h3 className="capitalize text-gray-800 text-base font-normal font-tajawal leading-tight underline-offset-2 hover:underline hover:text-gray-600">
+                <h3 className="capitalize text-gray-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
                   {item.name === "perfume" ? "perfumes" : item.name}
                 </h3>
               </li>
@@ -82,11 +82,11 @@ const ModalContent = ({
             <li className="">
               <Link
                 href={linkToAll}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 group"
                 onClick={() => setIsMenu(false)}
               >
                 <GoArrowUpRight className="w-5 h-5" />
-                <h3 className="capitalize text-gray-800 text-base font-normal font-tajawal leading-tight underline-offset-2 hover:underline hover:text-gray-600">
+                <h3 className="capitalize text-gray-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
                   ver todos
                 </h3>
               </Link>
@@ -99,15 +99,25 @@ const ModalContent = ({
         )}
       </section>
       {bottomSection && (
-        <section className="p-6 flex flex-col gap-6">
+        <section className="p-6 flex flex-col gap-4">
           <Link
             href={"/sobre-nosotros"}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 group"
             onClick={() => setIsMenu(false)}
           >
             <GoArrowUpRight className="w-5 h-5" />
-            <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight underline-offset-2 hover:underline hover:text-gray-600">
+            <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
               Acerca de ARLÉ
+            </p>
+          </Link>
+          <Link
+            href={"/"}
+            className="flex items-center gap-2 group"
+            onClick={() => setIsMenu(false)}
+          >
+            <GoArrowUpRight className="w-5 h-5" />
+            <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
+              Estado de Compra
             </p>
           </Link>
           {marca && (
