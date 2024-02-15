@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Inter, Raleway, Tajawal, Kanit, Crimson_Text, Jomolhari, Play } from "next/font/google";
+import { Inter, Tajawal, Raleway, Kanit, Crimson_Text, Jomolhari, Play } from "next/font/google";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/Footer";
 import Cart from "./_components/cart";
@@ -73,7 +73,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${raleway.variable} ${tajawal.variable} ${kanit.variable} ${crimson.variable} ${jomolhari.variable} ${play.variable} overflow-x-hidden no-scrollbar`}
+        className={`${inter.variable} ${tajawal.variable} ${raleway.variable} ${kanit.variable} ${crimson.variable} ${jomolhari.variable} ${play.variable} overflow-x-hidden no-scrollbar`}
       >
         <Navbar
           marca={

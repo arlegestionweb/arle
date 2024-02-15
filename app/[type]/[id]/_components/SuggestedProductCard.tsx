@@ -61,7 +61,7 @@ const CardLayout = ({
       discountType: "none",
       originalPrice: 1999,
       productId: producto._id,
-      variantId: selectedVariant.registroInvima,
+      variantId: selectedVariant.codigoDeReferencia,
       price: colombianPriceStringToNumber(selectedVariant.precio),
       quantity,
       productType: producto._type,
