@@ -40,7 +40,7 @@ const InfoSection = (props: InfoProps) => {
       >
         <section className="default-paddings lg:px-0 w-full lg:w-1/2 lg:h-full flex flex-col justify-center items-center gap-2">
           {!props.DescriptionComp ? (
-            <section className="w-full flex flex-col gap-2">
+            <section className="w-full flex flex-col gap-3">
               <h2 className="w-full text-3xl font-jomolhari leading-none">
                 {props.titulo}
               </h2>
@@ -64,7 +64,7 @@ const InfoSection = (props: InfoProps) => {
               src={props.url || ""}
               height={500}
               width={500}
-              className="object-contain"
+              className="object-contain w-full h-full"
             />
           </div>
         ) : props.ImageComp && (

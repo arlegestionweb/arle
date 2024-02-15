@@ -143,7 +143,7 @@ const CardLayout = ({
 
   return (
     <>
-      <section className="w-full  overflow-hidden">
+      <section className="h-full w-full overflow-hidden">
         {(isPerfume(product) && product.imagenes.length > 1) ||
         (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
         (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
@@ -159,7 +159,7 @@ const CardLayout = ({
             className=" h-[180px] sm:h-[250px]"
           />
         ) : (
-          <Link href={product.slug}>
+          <Link href={product.slug} className="h-full w-full">
             <Image
               src={
                 isPerfume(product)
@@ -177,7 +177,7 @@ const CardLayout = ({
               }
               width={288}
               height={288}
-              className="object-contain h-[180px] sm:h-[250px] w-full"
+              className="object-contain h-full sm:h-[250px] w-full"
             />
           </Link>
         )}

@@ -84,16 +84,16 @@ const ProductSlide = ({
                 `relative h-full w-full`,
                 `snap-center snap-always ${
                   index === 1 && "snap-mandatory"
-                } min-w-full flex-col justify-end items-center gap-2.5 inline-flex`
+                } min-w-full h-full flex-col justify-end items-center gap-2.5 inline-flex`
               )}>
               {isLink ? (
-                <Link href={slug || ""}>
+                <Link href={slug || ""} className="w-full h-full">
                   <Image
                     alt={image.alt || "product"}
                     src={image.url}
                     width={250}
                     height={250}
-                    className={`object-contain fit object-center`}
+                    className={`object-contain h-full w-full fit object-center`}
                   />
                 </Link>
               ) : (
@@ -103,7 +103,7 @@ const ProductSlide = ({
                     src={image.url}
                     width={250}
                     height={250}
-                    className={`object-contain fit object-center`}
+                    className={`object-contain h-full w-full fit object-center`}
                   />
                 </div>
               )}
@@ -127,7 +127,7 @@ const ProductSlide = ({
                     src={product.imagen?.url || ""}
                     width={250}
                     height={250}
-                    className={`object-contain fit object-center`}
+                    className={`object-contain w-full h-full fit object-center`}
                   />
                 </div>
               ) : (

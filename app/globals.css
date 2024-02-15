@@ -67,10 +67,10 @@
     @apply px-4 xs:px-8 sm:px-14 md:px-20;
   }
   .light-button{
-    @apply py-1.5 text-gray-800 text-base font-inter font-medium bg-white w-full max-w-sm text-center hover:underline hover:bg-slate-200;
+    @apply py-1.5 text-gray-800 text-base font-inter font-medium bg-white w-full max-w-sm text-center hover:underline underline-offset-2 hover:bg-slate-100;
   }
   .dark-button{
-    @apply py-1.5 text-gray-200 text-base font-inter font-medium bg-black w-full max-w-sm text-center hover:underline hover:bg-gray-800;
+    @apply py-1.5 text-gray-200 text-base font-inter font-medium bg-black w-full max-w-sm text-center hover:underline underline-offset-2  hover:bg-gray-900;
   }
 }
 

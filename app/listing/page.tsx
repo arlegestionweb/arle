@@ -861,8 +861,8 @@ const Listing = async ({
           colecciones={parsedCollections.success ? parsedCollections.data : []}
         />
       ) : (
-        <h2 className="text-3xl font-bold capitalize">
-          Coleccion {coleccionSeleccionada}
+        <h2 className="text-2xl md:text-3xl w-full pt-3 font-jomolhari font-normal text-center capitalize">
+          Colección: {coleccionSeleccionada}
         </h2>
       )}
       <section className="bg-white flex flex-col items-center">

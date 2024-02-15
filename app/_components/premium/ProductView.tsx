@@ -81,7 +81,7 @@ const ProductGrid = ({
               alt={image.alt}
               height={900}
               width={900}
-              className={`object-contain object-center`}
+              className={`object-contain w-full object-center`}
               />
           </div>
         ))}
@@ -96,7 +96,7 @@ const ProductGrid = ({
               alt={image.alt}
               height={900}
               width={900}
-              className={`object-contain object-center`}
+              className={`object-contain w-full object-center`}
               />
           </div>
         ))}

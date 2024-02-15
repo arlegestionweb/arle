@@ -17,21 +17,24 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
             key={coleccion.titulo}
             className="w-[120px]"
           >
-            <Link href={`/listing?coleccion=${coleccion.titulo}`} >
+            <Link href={`/listing?coleccion=${coleccion.titulo}`} className="group" >
               {coleccion.imagen && (
-                <div className="relative w-[120px] h-[120px] flex items-center justify-center">
-                  <Image fill src="ArleCircle.svg" alt="circulo Arle"/>
+                <div className="relative w-[120px] h-[120px] flex items-center justify-center overflow-hidden">
+                  <Image height={120}
+                    width={120} className="absolute z-10 w-full h-full" src="ArleCircle.svg" alt="circulo Arle"/>
+                    <div className="w-[110px] h-[110px] overflow-hidden rounded-full absolute justify-center items-center flex z-0">
                   <Image
                     src={coleccion.imagen.url}
                     alt={coleccion.imagen.alt || ""}
                     height={110}
                     width={110}
-                    className="object-cover rounded-full "
+                    className="object-cover group-hover:w-[130px] group-hover:h-[130px] transition-all duration-500 z-0 w-[110px] h-[110px] rounded-full "
                     />
+                    </div>
                     
                 </div>
               )}
-            <p className="text-center mt-1.5 text-gray-600 text-md md:text-xl font-normal font-tajawal truncate leading-none">
+            <p className="text-center mt-1.5 text-gray-600 text-md md:text-xl font-normal font-tajawal truncate leading-none group-hover:text-gray-500">
               {coleccion.titulo}
             </p>
             </Link>
