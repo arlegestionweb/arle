@@ -72,10 +72,7 @@ const Page = async ({ params, searchParams }: {
 
 
           return (
-            <React.Fragment key={item.variantId}>
-              {productTitle}
-              <ProductCard key={item.variantId} item={item} image={image} productTitle={productTitle} product={product} />
-            </React.Fragment>
+            <ProductCard key={item.variantId} item={item} image={image} productTitle={productTitle} product={product} />
           )
         }
         )}

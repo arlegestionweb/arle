@@ -446,6 +446,38 @@ export const getProductById = async (id: string, productType: TProductType) => {
   };
 };
 
+const zodPorudctWithVariants = z.object({
+  _id: z.string(),
+  variantes: z.array(
+    z.object({
+      unidadesDisponibles: z.number(),
+      codigoDeReferencia: z.string(),
+    })
+  ),
+});
 
+const zodProductsWithVariants = z.array(zodPorudctWithVariants);
 
+export const getProductsByIds = async (
+  products: { _id: string; _type: TProductType }[]
+) => {
+  const result = await Promise.all(
+    products.map(async (product) => {
+      const productWithVariants = await sanityClient.fetch(
+        `*[_id == "${product._id}"][0]{_id, "variantes": variantes[]{unidadesDisponibles, codigoDeReferencia}}`
+      );
+      // console.log({ productWithVariants });
+      return productWithVariants;
+    })
+  );
 
+  const parsedResult = zodProductsWithVariants.safeParse(result);
+
+  // console.log({ result, variantes: result[0].variantes[0] });
+
+  if (!parsedResult.success) {
+    return console.error(parsedResult.error.message);
+  }
+
+  return parsedResult.data;
+};

@@ -5,7 +5,7 @@ import { successAction as sendInvoice } from "../actions";
 const SendInvoice = ({order}: {
   order: TFrontEndOrderSchema;
 }) => {
-  console.log({order})
+  // console.log({order})
   return (
     <form action={sendInvoice}>
       <input type="text" hidden name="order" value={JSON.stringify(order)} readOnly />

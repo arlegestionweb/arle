@@ -10,7 +10,7 @@ const ProductCard = ({ image, productTitle, product, item }:
     item: { originalPrice: number, price: number, quantity: number },
   }) => {
   return (
-    <>
+    <li>
       {image && (
         <Image
           src={image?.url}
@@ -36,7 +36,7 @@ const ProductCard = ({ image, productTitle, product, item }:
 
 
       </section>
-    </>
+    </li>
   );
 }
 

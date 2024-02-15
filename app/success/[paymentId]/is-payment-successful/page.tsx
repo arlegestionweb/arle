@@ -1,5 +1,7 @@
-import Main from "@/app/_components/Main";
+import { fetchWithRetry } from "@/app/_lib/utils";
 import { redirect } from "next/navigation";
+
+
 
 
 async function Page({
@@ -14,7 +16,8 @@ async function Page({
 
   const wompyQueryUrl = `https://${process.env.WOMPI_ENV}.wompi.co/v1/transactions/${wompyPaymentId}`;
 
-  const wompyResponse = await fetch(wompyQueryUrl);
+
+  const wompyResponse = await fetchWithRetry(wompyQueryUrl);
 
   
   const wompyJson = await wompyResponse.json();
