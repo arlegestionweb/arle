@@ -2,6 +2,7 @@ import SearchInput from "../SearchInput";
 import Link from "next/link";
 import { GoArrowUpRight, GoChevronLeft } from "react-icons/go";
 import { useRouter } from "next/navigation";
+import Spinner from "../../Spinner";
 
 type ModalContentProps = {
   marca?: string | null;
@@ -40,16 +41,16 @@ const ModalContent = ({
           subtitle === "perfumes" ? "perfume" : subtitle?.toLowerCase()
         }`;
   return (
-    <aside
-      className={`w-screen max-w-[400px] flex-col relative overflow-y-scroll no-scrollbar transition-all`}
+    <section
+      className={`w-screen max-w-[400px] h-full flex-col flex relative no-scrollbar transition-all`}
     >
-      <section className="py-[18px] px-6 flex flex-col gap-[12px]">
+      <section className="py-[18px] px-6 flex w-full flex-col gap-[12px]">
         {search && (
-        <div className="md:hidden pb-4">
-          <SearchInput className="w-full" onSearch={() => setIsMenu(false)} />
-        </div>
+          <div className="md:hidden pb-4">
+            <SearchInput className="w-full" onSearch={() => setIsMenu(false)} />
+          </div>
         )}
-        <h2 className="text-zinc-800 text-lg  font-medium font-tajawal leading-snug capitalize cursor-default pb-4">
+        <h2 className="text-zinc-800 text-lg font-medium font-tajawal leading-snug capitalize cursor-default pb-4">
           {subtitle === "perfume" ? "perfumes" : subtitle}
         </h2>
         {items.length > 0 ? (
@@ -93,33 +94,11 @@ const ModalContent = ({
             </li>
           </ul>
         ) : (
-          <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight">
-            Cargando...
-          </p>
+          <Spinner />
         )}
       </section>
       {bottomSection && (
-        <section className="p-6 flex flex-col gap-4">
-          <Link
-            href={"/sobre-nosotros"}
-            className="flex items-center gap-2 group"
-            onClick={() => setIsMenu(false)}
-          >
-            <GoArrowUpRight className="w-5 h-5" />
-            <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
-              Acerca de ARLÉ
-            </p>
-          </Link>
-          <Link
-            href={"/"}
-            className="flex items-center gap-2 group"
-            onClick={() => setIsMenu(false)}
-          >
-            <GoArrowUpRight className="w-5 h-5" />
-            <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
-              Estado de Compra
-            </p>
-          </Link>
+        <section className="pb-6 px-6 w-full basis-full flex flex-col gap-4">
           {marca && (
             <Link
               href={`/listing?marcas=${marca}`}
@@ -131,9 +110,32 @@ const ModalContent = ({
               </p>
             </Link>
           )}
+
+          <footer className="flex flex-col w-full basis-full justify-end gap-4">
+            <Link
+              href={"/sobre-nosotros"}
+              className="flex items-center gap-2 group"
+              onClick={() => setIsMenu(false)}
+            >
+              <GoArrowUpRight className="w-5 h-5" />
+              <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
+                Acerca de ARLÉ
+              </p>
+            </Link>
+            <Link
+              href={"/"}
+              className="flex items-center gap-2 group"
+              onClick={() => setIsMenu(false)}
+            >
+              <GoArrowUpRight className="w-5 h-5" />
+              <p className="text-zinc-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
+                Estado de Compra
+              </p>
+            </Link>
+          </footer>
         </section>
       )}
-    </aside>
+    </section>
   );
 };
 

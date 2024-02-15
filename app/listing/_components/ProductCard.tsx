@@ -236,7 +236,7 @@ const CardLayout = ({
         />
       </section>
       <Button
-        disabled={selectedVariant.unidadesDisponibles === 0 ? true : false}
+        disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false}
         onClick={() => addToCart(product, selectedVariant)}
         labelType={"dark"}
         className="flex justify-center items-center gap-2 button-float"

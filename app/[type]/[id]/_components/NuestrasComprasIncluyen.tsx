@@ -12,7 +12,7 @@ const NuestrasComprasIncluyen = ({
   };
 }) => {
   return (
-    <section className="pt-4 pointer-events-none">
+    <section className="pt-7 pointer-events-none">
       <h2 className="text-gray-600 text-xl w-full font-semibold font-tajawal leading-none mb-1">
         Nuestras compras online incluyen:
       </h2>
