@@ -23,7 +23,7 @@ import { TPricing } from "@/app/[type]/[id]/_components/Product";
 import { TTimedDiscount } from "@/sanity/queries/pages/zodSchemas/general";
 import { TVarianSelectorProps } from "@/app/_components/types/card";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
-import { isGafaLujo } from "@/sanity/queries/pages/types";
+import { isGafaLujo, isPerfumeLujo, isPerfumePremium, isRelojLujo } from "@/sanity/queries/pages/types";
 
 const ProductoCard = ({
   producto,
@@ -189,24 +189,33 @@ const CardLayout = ({
             {product.marca}
           </h2>
           <h3 className="text-md md:text-lg md:leading-none font-medium text-gray-700 leading-none">
-            {isPerfume(product)
-              ? product.titulo
+            {isPerfumePremium(product)
+              ? `${product.parteDeUnSet ? "Set " :""}${product.titulo} - ${product.detalles.concentracion}`
+              : isPerfumeLujo(product)
+              ? `${product.parteDeUnSet ? "Set " :""}${product.titulo} - ${product.concentracion}`
               : isReloj(product)
               ? product.modelo
               : product.modelo}
           </h3>
           {isPerfume(product) && (
-            <p className="text-sm leading-none text-gray-600">
-              {product.genero}{" "}
-              {product.variantes.length === 1 &&
-                ` | ${"tamano" in selectedVariant && selectedVariant.tamano}ml`}
+            <p className="text-sm leading-none capitalize text-gray-600">
+              {`${"tamano" in selectedVariant && selectedVariant.tamano}ml | `}
+              {product.genero}
             </p>
           )}
           {isGafa(product) && (
-            <p className="text-sm leading-none text-gray-600">
+            <p className="text-sm leading-none capitalize text-gray-600">
               {isGafaLujo(product)
                 ? product.especificaciones.tipoDeGafa
                 : product.detalles.tipoDeGafa}
+              {` | ${product.genero}`}
+            </p>
+          )}
+          {isReloj(product) && (
+            <p className="text-sm leading-none capitalize text-gray-600">
+              {isRelojLujo(product)
+                ? product.movimiento?.tipoDeMovimiento
+                : product.detallesReloj.tipoDeMovimiento}
               {` | ${product.genero}`}
             </p>
           )}
@@ -227,13 +236,7 @@ const CardLayout = ({
         />
       </section>
       <Button
-        disabled={
-          selectedVariant.tag === "Agotado"
-            ? true
-            : selectedVariant.unidadesDisponibles === 0
-            ? true
-            : false
-        }
+        disabled={selectedVariant.unidadesDisponibles === 0 ? true : false}
         onClick={() => addToCart(product, selectedVariant)}
         labelType={"dark"}
         className="flex justify-center items-center gap-2 button-float"

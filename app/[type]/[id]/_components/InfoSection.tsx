@@ -34,18 +34,18 @@ const InfoSection = (props: InfoProps) => {
     <section className={cn(infoVariants({ labelType: props.labelType }),"w-screen flex justify-center lg:px-20")}>
       <section
         className={cn(
-          "lg:max-w-mx w-full flex flex-col lg:flex-row items-center lg:justify-center gap-8 pt-8 lg:pb-8",
+          "lg:max-w-mx w-full flex flex-col lg:flex-row items-center lg:justify-center gap-2 pt-8 lg:pb-8",
           props.className
         )}
       >
         <section className="default-paddings lg:px-0 w-full lg:w-1/2 lg:h-full flex flex-col justify-center items-center gap-2">
           {!props.DescriptionComp ? (
-            <section className="w-full flex flex-col gap-4">
+            <section className="w-full flex flex-col gap-2">
               <h2 className="w-full text-3xl font-jomolhari leading-none">
                 {props.titulo}
               </h2>
               {props.subTitulo && (
-                <h3 className="w-full text-2xl font-jomolhari leading-none">
+                <h3 className="w-full text-2xl font-jomolhari opacity-80 leading-none font-light">
                   {props.subTitulo}
                 </h3>
               )}
@@ -62,7 +62,8 @@ const InfoSection = (props: InfoProps) => {
             <Image
               alt={props.alt || ""}
               src={props.url || ""}
-              fill
+              height={500}
+              width={500}
               className="object-contain"
             />
           </div>

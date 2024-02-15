@@ -43,7 +43,6 @@ const HeroProduct = ({
   setCantidad,
   pricing,
 }: HeroProductProps) => {
-  console.log(selectedVariant.mostrarUnidadesDisponibles, selectedVariant.unidadesDisponibles)
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 row-auto w-full lg:max-w-screen-xl lg:py-8">
       {/* Product view */}
@@ -84,11 +83,11 @@ const HeroProduct = ({
             )
           )}
 
-          <h1 className="text-gray-800 text-4xl font-jomolhari leading-none w-full">
+          <h1 className="text-gray-800 text-4xl font-jomolhari capitalize leading-none w-full">
             {product.marca}
           </h1>
-          <h1 className="text-2xl text-gray-600 font-jomolhari leading-none ">
-            {isPerfumeLujo(product) ? product.titulo : product.modelo}
+          <h1 className="text-2xl text-gray-600 font-jomolhari capitalize leading-none ">
+            {isPerfumeLujo(product) ? `${product.parteDeUnSet ? "Set " :""}${product.titulo}` : product.modelo}
           </h1>
           {isGafa(product) && product.descripcion && (
             <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 ">
@@ -102,7 +101,7 @@ const HeroProduct = ({
           )}
           {isPerfumeLujo(product) && (
             <h2 className="text-gray-600 text-xl font-normal font-tajawal leading-none mt-0.5">
-              {product.concentracion}
+              {product.concentracion} - {"tamano" in selectedVariant && selectedVariant.tamano}ml
             </h2>
           )}
           <p className="text-zinc-500 text-sm md:text-base font-normal font-tajawal leading-none md:leading-none">

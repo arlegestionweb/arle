@@ -52,10 +52,16 @@
     @apply hover:-translate-y-0.5 hover:shadow-[0_2px_5px_-1px_rgba(0,0,0,0.5)] active:translate-y-0 active:shadow-none disabled:hover:translate-y-0 disabled:hover:shadow-none;
   }
   .section-title{
-    @apply font-jomolhari font-normal tracking-wide cursor-default text-3xl
+    @apply font-jomolhari font-normal tracking-wide cursor-default text-3xl;
   }
   .section-text{
-    @apply text-lg font-light font-tajawal leading-tight
+    @apply text-lg font-light font-tajawal leading-tight;
+  }
+  .content-title{
+    @apply font-tajawal font-semibold leading-tight text-gray-500 text-base lg:text-lg lg:leading-tight;
+  }
+  .content-text{
+    @apply font-tajawal leading-tight text-base font-light text-gray-600 lg:text-lg lg:leading-tight;
   }
   .default-paddings{
     @apply px-4 xs:px-8 sm:px-14 md:px-20;

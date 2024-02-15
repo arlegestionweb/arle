@@ -134,7 +134,7 @@ const RelojLujo = ({
                 "Estilo de reloj": product.especificaciones.estiloDeReloj,
                 "Resistencia al agua":
                   product.especificaciones.resistenciaAlAgua,
-                material: product.especificaciones.material,
+                materialDelPulso: product.especificaciones.material,
                 ...(product.especificaciones.funciones
                   ? {
                       funciones: product.especificaciones.funciones.map(
@@ -143,7 +143,13 @@ const RelojLujo = ({
                     }
                   : {}),
               },
-              garantia: {
+              colores: {
+                colorDelPulso: selectedVariant.colorPulso.nombre || "",
+                colorDelTablero: selectedVariant.colorTablero.nombre || "",
+                colorDeLaCaja: selectedVariant.colorCaja.nombre || "",
+
+              },
+              garantía: {
                 meses: product.garantia.meses + "",
                 descripción: product.garantia.descripcion || "",
               },

@@ -24,7 +24,7 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
   const selectedMarca = searchParams.get("marcas");
 
 
-  if (pathname.includes("listing") || pathname === "/") 
+  if (pathname.includes("listing") || pathname === "/" ) 
   return (
     <section className="bg-gray-100 hidden md:flex mt-[53px] md:h-[36px] px-8 items-center justify-center">
       <section className="py-0 gap-2 -ml-5 w-full h-full flex items-center max-w-screen-xl">

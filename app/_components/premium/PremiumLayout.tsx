@@ -17,6 +17,7 @@ import {
 import Precio from "../Precio";
 import { TPricing } from "@/app/[type]/[id]/_components/Product";
 import { GoChevronLeft } from "react-icons/go";
+import { isPerfume } from "@/sanity/queries/pages/listingQueries";
 
 type PremiumLayoutProps = {
   product: TGafaPremium | TRelojPremium | TPerfumePremium;
@@ -36,15 +37,15 @@ const PremiumLayout = ({
     : [product.modelo];
   return (
     <section className="default-paddings w-full flex justify-center lg:py-8">
-      <section className="w-full max-w-screen-xl lg:grid lg:grid-cols-12 gap-8 min-h-screen row-auto ">
+      <section className="w-full max-w-screen-xl flex flex-col lg:flex-row-reverse lg:items-center gap-8 ">
         <ProductViewer
           product={product}
-          className="col-start-8 col-span-1"
+          className=""
           selectedVariant={selectedVariant}
         />
 
-        <section className="col-span-6 pb-5 lg:pb-0 col-start-1 row-start-1 flex flex-col w-full relative">
-          <header className="flex flex-col gap-2">
+        <section className="py-5 lg:py-0 flex flex-col w-full basis-full relative grow-0 shrink items-center">
+          <header className="flex flex-col gap-2 w-full">
             <button
               className="flex items-center -ml-1 group"
               onClick={() => window.history.back()}
@@ -74,12 +75,17 @@ const PremiumLayout = ({
               )
             )}
 
-            <h1 className="text-zinc-800 text-3xl lg:text-4xl font-bold font-play">
+            <h1 className="text-zinc-800 text-3xl lg:text-4xl font-bold font-play capitalize">
               {product.marca}
             </h1>
-            <h1 className="text-2xl text-gray-600 font-bold font-play -mt-2 mb-2">
-              {modelo}
+            <h1 className="text-2xl text-gray-600 font-bold font-play -mt-2 mb-2 capitalize">
+              {isPerfume(product) && product.parteDeUnSet && "Set - "}{modelo}
             </h1>
+            {isPerfumePremium(product) && (
+              <h2 className="text-xl -mt-3 mb-2 text-gray-600 font-normal font-play">
+              {product.detalles.concentracion} - {"tamano" in selectedVariant && selectedVariant.tamano}ml
+              </h2>
+              )}
             <span className="text-zinc-500 text-sm md:text-base md:leading-none font-normal font-tajawal leading-none">
               Código: {selectedVariant.codigoDeReferencia}
             </span>

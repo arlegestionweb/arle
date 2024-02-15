@@ -91,7 +91,8 @@ const ProductSlide = ({
                   <Image
                     alt={image.alt || "product"}
                     src={image.url}
-                    fill
+                    width={250}
+                    height={250}
                     className={`object-contain fit object-center`}
                   />
                 </Link>
@@ -100,7 +101,8 @@ const ProductSlide = ({
                   <Image
                     alt={image.alt || "product"}
                     src={image.url}
-                    fill
+                    width={250}
+                    height={250}
                     className={`object-contain fit object-center`}
                   />
                 </div>
@@ -123,7 +125,8 @@ const ProductSlide = ({
                   <Image
                     alt={product.imagen?.alt || "product"}
                     src={product.imagen?.url || ""}
-                    fill
+                    width={250}
+                    height={250}
                     className={`object-contain fit object-center`}
                   />
                 </div>

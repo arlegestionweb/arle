@@ -30,7 +30,8 @@ const GalleryProduct = ({
             <Image
               src={img.url}
               alt={img.alt || "perfume"}
-              fill
+              width={800}
+              height={800}
               onClick={() => setIndex(idx)}
               className="object-contain min-h-20 cursor-pointer"
             />
@@ -50,7 +51,8 @@ const GalleryProduct = ({
         <Image
           alt={imagesProduct[index].alt || ""}
           src={imagesProduct[index].url}
-          fill
+          width={200}
+          height={200}
           className="object-contain object-center"
         />
       </div>

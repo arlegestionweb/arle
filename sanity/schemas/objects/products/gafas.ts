@@ -95,12 +95,6 @@ const varianteDeGafa = defineField({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "registroInvima",
-      title: "Registro Invima",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: "mostrarUnidadesDisponibles",
       title: "Mostrar unidades disponibles",
       type: "boolean",

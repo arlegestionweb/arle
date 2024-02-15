@@ -1,18 +1,22 @@
+import { cn } from "@/app/_lib/utils";
+
 type TSeccionEspecificacionesProps = {
   title: string;
   paragraph: string;
+  dontCapitalize?: boolean;
 };
 
 const SeccionEspecificaciones = ({
   title,
   paragraph,
+  dontCapitalize
 }: TSeccionEspecificacionesProps) => {
   return (
     <div className="flex flex-col">
-      <h3 className="text-neutral-600 text-lg font-bold font-tajawal leading-snug">
+      <h3 className="content-title">
         {title}
       </h3>
-      <p>{paragraph}</p>
+      <p className={dontCapitalize ? "content-text" : "content-text capitalize"}>{paragraph}</p>
     </div>
   );
 };

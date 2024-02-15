@@ -67,8 +67,18 @@ const PerfumeLujo = ({
                 notasDeSalida: product.notasOlfativas.notasDeSalida || "",
                 familiaOlfativa: product.notasOlfativas.familiaOlfativa || "",
                 notasDeCorazon: product.notasOlfativas.notasDeCorazon || "",
+                ingredientes: product.ingredientes?.join(", ") || ""
               },
-              ingredientes: product.ingredientes || [],
+              ingredientes:{
+                ingredientes: product.ingredientes?.join(", ") || "",
+              },
+              especificaciones: {
+                género: product.genero || "",
+                tamaño: selectedVariant.tamano.toString()+"ml" || "",
+                concentración: product.concentracion || "",
+                paísDeOrigen: product.paisDeOrigen || "",
+                registroInvima: selectedVariant.registroInvima || "",
+              }
             }}
           />
         }

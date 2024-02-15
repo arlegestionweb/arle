@@ -60,8 +60,8 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
         <Image
           src={image?.url}
           alt={image?.alt}
-          width={50}
-          height={50}
+          width={100}
+          height={100}
           className="object-cover h-20 w-20"
         />
       )}

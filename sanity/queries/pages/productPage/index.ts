@@ -64,7 +64,6 @@ const variantesDeGafaQueryString = `
       "color": color.hex
     },
     codigoDeReferencia,
-    registroInvima,
     precio,
     precioConDescuento,
     unidadesDisponibles,
@@ -127,7 +126,6 @@ export const productQuery: Record<TProductType, string> = {
       unidadesDisponibles,
       mostrarUnidadesDisponibles,
       codigoDeReferencia,
-      registroInvima,
       tag,
       "colorCaja": colorCaja -> {
         nombre,
@@ -171,7 +169,6 @@ export const productQuery: Record<TProductType, string> = {
         "url": asset->url,
       },
       codigoDeReferencia,
-      registroInvima,
       tag,
       unidadesDisponibles,
       mostrarUnidadesDisponibles,
@@ -186,6 +183,7 @@ export const productQuery: Record<TProductType, string> = {
     },
     _id,
     modelo,
+    descripcion,
     "slug": slug.current,
     ${garantiaQuery},
     _type,
@@ -193,6 +191,10 @@ export const productQuery: Record<TProductType, string> = {
     "detallesReloj": detallesReloj {
       "tipoDeReloj": tipoDeReloj -> titulo,
       "estiloDeReloj": estiloDeReloj -> titulo,
+      "funciones": funciones [] -> {
+        titulo,
+        descripcion
+      },
       resistenciaAlAgua,
       "material": material -> nombre,
       "tipoDeMovimiento": tipoDeMovimiento -> titulo,
@@ -363,7 +365,6 @@ export const productQuery: Record<TProductType, string> = {
         "url": asset->url,
       },
       codigoDeReferencia,
-      registroInvima,
       unidadesDisponibles,
       precio,
       tag,

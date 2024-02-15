@@ -22,6 +22,11 @@ const detallesRelojSchema = z.object({
   tipoDeReloj: z.string(),
   estiloDeReloj: z.string(),
   resistenciaAlAgua: z.string(),
+  funciones: z.array(
+    z.object({
+      titulo: z.string(),
+      descripcion: z.string().optional().nullable(),
+    })).optional().nullable(),
   material: z.string(),
   tipoDeMovimiento: z.string(),
   caja: zodCajaSchema,
@@ -35,7 +40,6 @@ export const relojVariantSchema = z.object({
   unidadesDisponibles: z.number(),
   mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   codigoDeReferencia: z.string(),
-  registroInvima: z.string(),
   tag: z.string().nullable().optional(),
   colorCaja: zodColorSchema,
   colorPulso: zodColorSchema,
@@ -94,7 +98,7 @@ export const relojPremiumSchema = z.object({
   _id: z.string(),
   marca: z.string(),
   modelo: z.string(),
-  descripcion: z.string().nullable().optional(),
+  descripcion: z.string(),
   variantes: z.array(relojVariantSchema),
   garantia: garantiaSchema,
   detallesReloj: detallesRelojSchema,

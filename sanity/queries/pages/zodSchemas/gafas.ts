@@ -15,7 +15,6 @@ const gafaVariantSchema = z.object({
   precioConDescuento: z.string().optional().nullable(),
   tag: z.string().optional().nullable(),
   codigoDeReferencia: z.string(),
-  registroInvima: z.string(),
   mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   unidadesDisponibles: z.number(),
   imagenes: z.array(imageSchema),
@@ -107,6 +106,7 @@ export const gafasPremiumSchema = z.object({
   }),
   garantia: z.object({
     meses: z.number(),
+    descripcion: z.string().optional().nullable()
   }),
   coleccionDeMarca: coleccionDeMarcaSchema,
 });

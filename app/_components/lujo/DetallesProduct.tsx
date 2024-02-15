@@ -38,7 +38,7 @@ const DetallesProducto = ({
               key={detalle + index + Math.random()}
               onClick={() => handleSectionChange(detalle)}
               className={cn(
-                `px-4 py-2 border-b-2  whitespace-nowrap cursor-pointer`,
+                `px-4 py-1 border-b-2  whitespace-nowrap cursor-pointer`,
                 theme == "dark" ? "border-zinc-700" : "border-zinc-200",
                 activeSection === detalle &&
                   `${theme == "dark" ? "border-white" : "border-slate-800"}`
@@ -80,7 +80,7 @@ const DetallesProducto = ({
                 <>
                   {Object.keys(detalles[detalle]).map(object => (
                     <section key={index + object + Math.random()}>
-                      <div className="pb-5">
+                      <div className="pb-3">
                         <h4 className="w-full text-lg font-bold font-tajawal leading-snug">
                           {convertirCamelCaseATitulo(object)}
                         </h4>

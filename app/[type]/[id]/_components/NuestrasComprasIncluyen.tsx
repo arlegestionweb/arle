@@ -25,7 +25,7 @@ const NuestrasComprasIncluyen = ({
         {garantia ? (
           <ItemComprasIncluyen
             title={`Garantía de ${garantia.meses} meses`}
-            description="Para nuestros productos"
+            description="Para este producto."
             icon={<LuShieldCheck className=" w-5 h-5" />}
           />
         ) : (

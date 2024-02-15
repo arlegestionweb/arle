@@ -19,9 +19,9 @@ export type TProductLujo = z.infer<typeof zodProductLujo>;
 
 
 // export const isPerfume = (product: TProduct): product is TPerfume => product.type.includes("perfume"); 
-export const isPerfumePremium = (product: TProductPremium): product is TPerfumePremium => product._type.includes("perfumePremium"); 
+export const isPerfumePremium = (product: TProduct): product is TPerfumePremium => product._type.includes("perfumePremium"); 
 
-export const isPerfumeLujo = (product: TProductLujo): product is TPerfumeLujo => product._type.includes("perfumeLujo"); 
+export const isPerfumeLujo = (product: TProduct): product is TPerfumeLujo => product._type.includes("perfumeLujo"); 
 
 export const isGafaLujo = (product: TProduct): product is TGafaLujo => product._type.includes("gafasLujo"); 
 
