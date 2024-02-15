@@ -20,11 +20,11 @@ export const successAction = async (formData: FormData) => {
 };
 
 export const sendInvoiceEmail = async (order: TFrontEndOrderSchema) => {
-  console.log("sending email to", order.customer.email);
-  console.log({ items: order.items });
+  // console.log("sending email to", order.customer.email);
+  // console.log({ items: order.items });
 
   const fetchProduct = async (item: TEmailOrderItemSchema) => {
-    console.log("fetching product", item);
+    // console.log("fetching product", item);
     if (!item.product) {
       const {product} = await getProductById(
         item.productId._ref,
@@ -37,7 +37,7 @@ export const sendInvoiceEmail = async (order: TFrontEndOrderSchema) => {
 
   const newItems = await Promise.all(order.items.map(fetchProduct));
 
-  console.log({ newItems });
+  // console.log({ newItems });
 
   const newOrder = { ...order, items: newItems };
   try {
@@ -47,7 +47,7 @@ export const sendInvoiceEmail = async (order: TFrontEndOrderSchema) => {
       subject: "Factura de tu compra",
       react: EmailTemplate({ order: newOrder }) as React.ReactElement,
     });
-    console.log({ data, error });
+    // console.log({ data, error });
     if (error) {
       return { error: error };
     }

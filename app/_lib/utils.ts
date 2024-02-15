@@ -89,3 +89,19 @@ export function convertirCamelCaseATitulo(detalle: string): string {
       .replace(/([A-Z]+)/g, " $1")
       .replace(/([A-Z][a-z])/g, " $1");
 }
+
+
+export async function fetchWithRetry(url: string, maxRetries = 3): Promise<Response> {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Network response was not ok');
+    return response;
+  } catch (error) {
+    if (maxRetries === 1) throw new Error('Maximum retry attempts exceeded');
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(fetchWithRetry(url, maxRetries - 1));
+      }, 2000); // wait for 2 seconds before retrying
+    });
+  }
+}
