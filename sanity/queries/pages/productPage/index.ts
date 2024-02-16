@@ -339,7 +339,48 @@ export const productQuery: Record<TProductType, string> = {
     modelo,
     coleccionDeMarca,
     "slug": slug.current,
+    "variantes": variantes[] {
+      "colorDelLente": colorDelLente -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaVarilla": colorDeLaVarilla -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaMontura": colorDeLaMontura -> {
+        nombre,
+        "color": color.hex
+      },
+      "imagenes": imagenes[] {
+        alt,
+        "url": asset->url,
+      },
+      codigoDeReferencia,
+      unidadesDisponibles,
+      precio,
+      tag,
+      mostrarUnidadesDisponibles
+    },
+    modelo,
+    "slug": slug.current, 
+    genero,
+    descripcion,
+    "detalles": detalles {
+      "tipoDeGafa": tipoDeGafa -> titulo,
+      "estiloDeGafa": estiloDeGafa -> titulo,
+        "lente": lente {
+        "tipo": tipo -> titulo,
+        "material": material -> titulo,
+      },
+      "montura": montura {
+        "formaDeLaMontura": formaDeLaMontura -> titulo,
+        "materialMontura": materialMontura -> titulo,
+        "materialVarilla": materialVarilla -> titulo,
+      }
+    },
   }`,
+  
   gafasPremium: `{
     "date": _createdAt,
     _type,
