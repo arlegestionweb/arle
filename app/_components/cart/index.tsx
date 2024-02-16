@@ -2,7 +2,6 @@
 import ProductItem from "./ProductItem";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import Button from "../Button";
-import { ChevronLeftIcon } from "@sanity/icons";
 import { usePathname } from "next/navigation";
 
 import AddedToCartModal from "./AddedToCartModal";
@@ -12,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useCartStore } from "./store";
 import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
+import { GoChevronLeft } from "react-icons/go";
 
 
 const Cart = ({
@@ -41,23 +41,24 @@ const Cart = ({
   if (!isCartOpen) return null;
 
   return (
-    <section className="bg-white z-[60] overflow-y-scroll w-screen h-screen fixed top-0 left-0 flex flex-col md:flex-row ">
-      <button
-        className="absolute top-10 left-8 flex items-center"
-        onClick={toggleCart}
-      >
-        <ChevronLeftIcon className="w-8 h-8" />
-        <span className="text-black text-sm font-medium font-inter leading-[21px]">
-          Regresar
-        </span>
-      </button>
+    <section className="bg-white z-[60] overflow-y-scroll w-screen h-screen fixed top-0 left-0 flex flex-col md:flex-row no-scrollbar">
       <section className="md:flex-1 pt-16 p-10">
-        <h2 className="grow shrink basis-0 text-zinc-800 text-[32px] font-semibold font-crimson leading-9">
+      <button
+            className="flex items-center -ml-1 group"
+            onClick={toggleCart}
+          >
+            <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />
+            <span className="text-gray-700 text-base font-normal font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-500">
+              Volver
+            </span>
+          </button>
+        <h2 className="grow shrink basis-0 text-zinc-800 text-[32px] font-jomolhari">
           Carrito de compras
         </h2>
         <ShippingForm />
       </section>
-      <section className="bg-neutral-100 md:flex-1 px-12 py-[122px] flex flex-col gap-5 md:max-h-screen md:overflow-y-scroll">
+        {/* <h4 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">Código de descuento</h4> */}
+      <section className="bg-neutral-100 md:flex-1 px-12 py-[122px] flex flex-col gap-5 md:max-h-screen md:overflow-y-scroll no-scrollbar">
         {items.length === 0 ? (
           <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
             No hay productos en el carrito
@@ -74,9 +75,8 @@ const Cart = ({
             </ul>
           </>
         )}
-        {/* <h4 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">Código de descuento</h4> */}
 
-        <section className="flex flex-col gap-2">
+        <section className="flex flex-col items-end gap-2">
           {showDiscountCode && (
             <CodigoDeDescuento />
           )}
@@ -118,7 +118,7 @@ const Cart = ({
           <Button
             // onClick={() => addToCart(product, selectedVariant)}
             labelType={"dark"}
-            className="flex justify-center items-center gap-2"
+            className="flex justify-center items-center gap-2 w-full max-w-sm button-float"
           >
             <span className="font-inter text-base font-medium leading-6">
               $ Ir a pagar

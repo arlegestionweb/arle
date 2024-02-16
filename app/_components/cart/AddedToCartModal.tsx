@@ -95,7 +95,7 @@ const AddedToCartModal = () => {
       <section className="w-screen pointer-events-none h-screen fixed top-0 left-0 z-[106] 
       flex justify-center items-center default-paddings">
         <div className="w-full max-w-screen-sm z-[102] pointer-events-auto px-6 pt-4 pb-3 bg-white flex-col justify-start items-start gap-2.5 relative">
-          <header className="flex w-full items-center justify-between">
+          <header className="flex w-full items-center justify-between pb-3">
             <h1 className="mx-auto text-gray-800 text-lg md:text-xl font-jomolhari">
               Agregado al Carrito!
             </h1>{" "}
@@ -111,7 +111,7 @@ const AddedToCartModal = () => {
                 alt={image?.alt}
                 width={180}
                 height={180}
-                className="object-cover w-[180px] h-[171px]"
+                className="object-contain w-[150px] h-[150px]"
               />
             )}
             <section className="w-full flex flex-col self-center gap-1 justify-start font-tajawal">
@@ -185,7 +185,7 @@ const AddedToCartModal = () => {
               </section>
             </section>
           </section>
-          <footer className=" w-full flex flex-col items-center">
+          <footer className=" w-full flex flex-col items-center pt-3">
             <div className=" w-full flex flex-col sm:flex-row justify-center gap-2 sm:gap-6 pb-3 border-b border-gray-200">
               <Button
                 className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float"

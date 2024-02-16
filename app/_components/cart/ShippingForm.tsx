@@ -1,27 +1,24 @@
 const ShippingForm = () => {
   const availableCountries = ["Colombia"];
   return (
-    <form className="flex flex-col gap-4">
+    <form className="flex flex-col gap-3 py-6">
       <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
         Información de envío
       </h3>
 
       <InputComponent
         name="nombre"
-        placeholder="Daniel Guillermo Bustidas"
         title="Nombre completo"
       />
 
       <InputComponent
         name="identificacion"
-        placeholder="123456789"
         title="Identificación"
         type="id"
       />
 
       <InputComponent
         name="telefono"
-        placeholder="3001234567"
         title="Teléfono"
         type="number"
       />
@@ -62,7 +59,7 @@ type TInputComponent =
       name: string;
       type?: "text" | "number" | "id" | "email";
       title?: string;
-      placeholder: string;
+      placeholder?: string;
       options?: string[];
     }
   | {
@@ -84,15 +81,15 @@ const InputComponent = ({
     return (
       <label
         htmlFor={name}
-        className="text-zinc-800 text-lg font-medium font-tajawal leading-snug flex flex-col"
+        className=" flex flex-col"
       >
-        <h4>{title || name}</h4>
+        <h4 className="text-zinc-800 text-lg font-medium font-tajawal leading-snug">{title || name}</h4>
         <input
-          className="w-full h-9 px-3 py-1.5 bg-white rounded border border-stone-300 focus:outline-none focus:border-black"
+          className="w-full focus-visible:outline-arle-blue h-9 px-3 bg-white rounded border border-stone-300"
           type={type}
           name={name}
           id={name}
-          placeholder={placeholder}
+          placeholder={placeholder || ""}
         />
       </label>
     );
@@ -115,7 +112,7 @@ const InputComponent = ({
           </select>
 
           <input
-            className="w-full h-9 px-3 bg-white rounded-tr rounded-br border border-stone-300"
+            className="w-full focus-visible:outline-arle-blue h-9 px-3 bg-white rounded border border-stone-300"
             type="number"
             name={name}
             id={name}
@@ -128,11 +125,11 @@ const InputComponent = ({
     return (
       <label
         htmlFor={name}
-        className="text-zinc-800 text-lg font-medium font-tajawal leading-snug flex flex-col"
+        className="flex flex-col"
       >
-        <h4>{title || name}</h4>
+        <h4 className="text-zinc-800 text-lg font-medium font-tajawal leading-snug ">{title || name}</h4>
         <select
-          className="w-full h-9 px-3 py-1.5 bg-white rounded border border-stone-300 focus:outline-none focus:border-black"
+          className="w-full focus-visible:outline-arle-blue h-9 px-3 bg-white rounded border border-stone-300"
           name={name}
           id={name}
         >
