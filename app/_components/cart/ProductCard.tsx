@@ -9,7 +9,7 @@ const ProductCard = ({ image, productTitle, product, item }:
     item: { originalPrice: number, price: number, quantity: number },
   }) => {
   return (
-    <li>
+    <li key={image?.url}>
       {image && (
         <Image
           src={image?.url}
