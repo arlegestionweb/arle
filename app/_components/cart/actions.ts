@@ -26,7 +26,7 @@ export const createInvoice = async function (_: unknown, formData: FormData) {
   // console.log(currentState, formData)
 
   if (!formData || !formData.get("reference")) {
-    return null;
+    return { error: "No reference provided", status: 400 };
   }
 
   // console.log("id", formData.get("reference"));
@@ -91,9 +91,17 @@ export const createInvoice = async function (_: unknown, formData: FormData) {
     };
   }
 
-  const sanityCreateOrder = await sanityWriteClient.createOrReplace({
-    ...parsedFormDataWithProductReference.data,
-  });
+  try {
+    await sanityWriteClient.createOrReplace({
+      ...parsedFormDataWithProductReference.data,
+    });
+  } catch (error) {
+    console.error(error);
+    return {
+      status: 500,
+      error: "Failed to create invoice",
+    };
+  }
 
-  return parsedFormDataWithProductReference.data;
+  return {data: parsedFormDataWithProductReference.data, status: 200, error: null};
 };
