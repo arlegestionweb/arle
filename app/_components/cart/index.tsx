@@ -47,9 +47,7 @@ const Cart = ({
   useHideBodyOverflow(isCartOpen);
 
   const closeWompi = () => {
-    // formAction()
     setIsWompipaymentOpen(false);
-
   }
 
   useClickOutside(wompiRef, closeWompi);
