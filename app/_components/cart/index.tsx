@@ -12,11 +12,10 @@ import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
 import { GoChevronLeft } from "react-icons/go";
 import { createInvoice } from "./actions";
-// @ts-ignore
 import { useFormState } from 'react-dom';
 import MenuModal from "../MenuModal";
 import WompiPayButton from "./WompiPayButton";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 
 const Cart = ({
@@ -38,6 +37,8 @@ const Cart = ({
     getShippingCost
   } = useCartStore((state) => state);
 
+  const [isWompipaymentOpen, setIsWompipaymentOpen] = useState(false);
+
   const [formState, formAction] = useFormState(createInvoice, null);
 
 
@@ -46,7 +47,9 @@ const Cart = ({
   useHideBodyOverflow(isCartOpen);
 
   const closeWompi = () => {
-    formAction()
+    // formAction()
+    setIsWompipaymentOpen(false);
+
   }
 
   useClickOutside(wompiRef, closeWompi);
@@ -177,10 +180,10 @@ const Cart = ({
             )}
           </section>
         </section>
-     
+
       </form>
       {formState && !formState?.error && (
-        <MenuModal isMenuOpen={!!formState}>
+        <MenuModal isMenuOpen={!!isWompipaymentOpen}>
           <div className=" relative z-10 h-full w-full grid place-content-center " >
             <div ref={wompiRef}>
 
