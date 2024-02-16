@@ -171,7 +171,7 @@ const Cart = ({
                 <div className=" relative z-10 h-full w-full grid place-content-center " >
                   <div ref={wompiRef}>
 
-                    <WompiPayButton amount={getCartTotal()} reference={payment_reference} redirectUrl={`http://localhost:3000/success/${payment_reference}/api`} />
+                    <WompiPayButton amount={getCartTotal()} reference={payment_reference} redirectUrl={`${localUrl}/success/${payment_reference}/api`} />
                   </div>
                 </div>
               </MenuModal>
