@@ -59,7 +59,7 @@ const BotonDeCantidad = ({
   return (
     <button
       onClick={onClick}
-      className="h-full px-2 bg-zinc-200 flex justify-center items-center "
+      className="h-full px-2 bg-gray-200 flex justify-center items-center "
     >
       {children}
     </button>

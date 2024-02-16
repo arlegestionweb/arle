@@ -41,9 +41,9 @@ const OpenCloseFilterButton = ({
       onClick={onClick}
       className="cursor-pointer w-7 h-7 p-[7px] bg-neutral-100 grid place-content-center text-3xl relative"
     >
-      {isOpen && <Line />}
+      {!isOpen && <Line />}
       <Line
-        vertical={isOpen}
+        vertical={!isOpen}
         classNames="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
       />
     </div>

@@ -87,10 +87,10 @@ const Menu = ({
           isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         } fixed z-[100] top-0 left-0 transition-all duration-500 w-screen h-screen bg-black bg-opacity-50 backdrop-blur-md`}
       />
-      <div
+      <section
         className={`${
           isMenuOpen ? "right-0" : "-right-[400px]"
-        } w-screen fixed top-0 z-[102] max-w-[400px] h-screen flex flex-col bg-white transition-all duration-[350ms] ease-out overflow-hidden`}
+        } w-screen fixed top-0 z-[102] max-w-[400px] bottom-0 flex flex-col bg-white transition-all duration-[350ms] ease-out overflow-hidden`}
         ref={menuRef}
       >
         <header className="w-full h-16 border-b border-gray-300 px-4 flex items-center justify-between">
@@ -111,7 +111,7 @@ const Menu = ({
             onClick={() => setIsMenu(false)}
           />
         </header>
-        <div className={`flex overflow-x-hidden h-full mb-16 w-full`}>
+        <div className={`flex overflow-x-hidden basis-full w-full h-full`}>
           <div
             style={{
               transform: `translateX(-${currentScreen * 100}%)`,
@@ -170,7 +170,7 @@ const Menu = ({
             />
           </div>
         </div>
-        <footer className="fixed bottom-0 w-screen max-w-[400px] h-16 border-t border-stone-300 flex items-center justify-center">
+        <footer className=" w-screen max-w-[400px] h-16 border-t border-stone-300 flex items-center justify-center">
           {currentScreen === 2 ? (
             <Image
               className="opacity-80"
@@ -189,7 +189,7 @@ const Menu = ({
             />
           )}
         </footer>
-      </div>
+      </section>
     </>
   );
 };

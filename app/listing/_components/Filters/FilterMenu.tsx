@@ -90,11 +90,11 @@ const FilterMenu = ({
   return (
     <div
       className={`${isFilterOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-    } fixed mt-[50px] md:mt-[53px] z-[78] top-0 left-0 transition-all duration-500 w-screen h-full bg-black bg-opacity-50 backdrop-blur-md`}
+    } fixed z-[78] top-0 left-0 transition-all duration-500 w-screen h-full bg-black bg-opacity-50 backdrop-blur-md`}
     >
       <aside
         className={`${isFilterOpen ? "left-0" : "-left-[400px]"
-      } w-screen fixed top-0 z-[80] max-w-[400px] h-[calc(100vh-50px)] flex flex-col bg-white transition-all duration-300 ease-out overflow-hidden`}
+      } w-screen fixed top-0 z-[80] mt-[50px] md:mt-[53px] bottom-0 max-w-[400px] flex flex-col bg-white transition-all duration-300 ease-out overflow-hidden`}
       >
           <header className="flex justify-between items-center px-6 min-h-[64px] border-b border-gray-300">
           <h1 className=" capitalize text-arle-blue text-base font-semibold font-inter cursor-default">
@@ -105,14 +105,16 @@ const FilterMenu = ({
             onClick={toggleFilter}
           />
           </header>
-        <form className="w-full h-[calc(100vh-114px)] flex flex-col justify-between" onSubmit={onFormSubmit} ref={formRef}>
-          <section className="w-full flex flex-col justify-start overflow-y-scroll no-scrollbar">
+        <form className="w-full h-full flex flex-col justify-between" onSubmit={onFormSubmit} ref={formRef}>
+          <section className="w-full basis-full flex-flex-col">
+            <section className="flex flex-col justify-start overflow-y-scroll no-scrollbar">
+
           {!searchParams.get("type") && (
             <AllProductFilters
-              marcas={marcas}
-              coleccionesDeMarca={coleccionesDeMarca}
+            marcas={marcas}
+            coleccionesDeMarca={coleccionesDeMarca}
             />
-          )}
+            )}
 
           {searchParams.get("type")?.includes("reloj") && (
             <RelojFilters
@@ -136,8 +138,9 @@ const FilterMenu = ({
             />
             )}
           </section>
+          </section>
 
-          <footer className=" w-screen max-w-[400px] border-t border-gray-300 bottom-0 flex justify-end gap-4 px-6 py-5">
+          <footer className=" w-screen max-w-[400px] border-t border-gray-300 flex justify-end gap-4 px-6 py-4">
             {areFiltersActive && (
               <Link href="/listing" onClick={toggleFilter}>
                 <Button labelType={"gray"}>Reestablecer</Button>
