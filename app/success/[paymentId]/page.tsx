@@ -1,18 +1,20 @@
 import Main from "@/app/_components/Main";
 import { getOrderById } from "@/sanity/queries/orders";
 import RemoveCartItems from "./_components/RemoveCartItems";
-import SendInvoice from "./_components/SendInvoice";
 import React from "react";
 import ProductCard from "@/app/_components/cart/ProductCard";
 
-const Page = async ({ params, searchParams }: {
+const Page = async ({ 
+  params, 
+  // searchParams 
+}: {
   params: {
     paymentId: string
   }
-  searchParams: { [key: string]: string | string[] | undefined }
+  // searchParams: { [key: string]: string | string[] | undefined }
 }) => {
 
-  const paramError = searchParams.error;
+  // const paramError = searchParams.error;
 
   const sanityOrder = await getOrderById(params.paymentId);
 
@@ -22,14 +24,14 @@ const Page = async ({ params, searchParams }: {
   return (
     <Main extraClasses="bg-white md:pt-[60px] px-10 pb-10">
       <RemoveCartItems cartId={sanityOrder._id} />
-      {paramError && (
+      {/* {paramError && (
         <>
           <h1>Hubo un error enviando tu factura </h1>
           <p>haz click aqui para intentarlo de nuevo
           </p>
           <SendInvoice order={sanityOrder} />
         </>
-      )}
+      )} */}
       <h1>PEDIDO EXITOSO</h1>
       <h2>Gracias por tu compra</h2>
       <h3>Detalles de tu pedido:</h3>
@@ -46,7 +48,6 @@ const Page = async ({ params, searchParams }: {
       <p>Envío: {sanityOrder.amounts.shipping}</p>
       <p>Total: {sanityOrder.amounts.total}</p>
       <h3>Productos:</h3>
-      {/* <Suspense fallback="loading"> */}
       <ul>
         {sanityOrder.items.map((item) => {
           const { product } = item;
@@ -77,9 +78,7 @@ const Page = async ({ params, searchParams }: {
         }
         )}
       </ul>
-      {/* </Suspense> */}
 
-      <SendInvoice order={sanityOrder} />
     </Main>
   );
 }
