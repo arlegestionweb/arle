@@ -1,13 +1,16 @@
 "use server";
 
-import { TEmailOrderItemSchema, TFrontEndOrderSchema } from "@/sanity/queries/orders";
+import {
+  TEmailOrderItemSchema,
+  TFrontEndOrderSchema,
+} from "@/sanity/queries/orders";
 import { Resend } from "resend";
 import { EmailTemplate } from "./_components/email-template";
 import { getProductById } from "@/sanity/queries/pages/productPage";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const successAction = async (formData: FormData) => {
+export const successAction = async (_: unknown, formData: FormData) => {
   const order = JSON.parse(
     formData.get("order") as string
   ) as TFrontEndOrderSchema;
@@ -16,7 +19,7 @@ export const successAction = async (formData: FormData) => {
   if (error) {
     return { error: error };
   }
-  return { data: data };
+  return { data: data, error: null };
 };
 
 export const sendInvoiceEmail = async (order: TFrontEndOrderSchema) => {
@@ -26,7 +29,7 @@ export const sendInvoiceEmail = async (order: TFrontEndOrderSchema) => {
   const fetchProduct = async (item: TEmailOrderItemSchema) => {
     // console.log("fetching product", item);
     if (!item.product) {
-      const {product} = await getProductById(
+      const { product } = await getProductById(
         item.productId._ref,
         item.productType
       );
@@ -52,7 +55,7 @@ export const sendInvoiceEmail = async (order: TFrontEndOrderSchema) => {
       return { error: error };
     }
 
-    return { data: data };
+    return { data: data, error: null };
   } catch (error) {
     return { error: error };
   }
