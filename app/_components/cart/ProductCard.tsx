@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Precio from "../Precio";
-import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 
 const ProductCard = ({ image, productTitle, product, item }:
   {
