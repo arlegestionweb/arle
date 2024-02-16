@@ -170,7 +170,7 @@ const Menu = ({
             />
           </div>
         </div>
-        <footer className=" w-screen max-w-[400px] py-2 border-t border-stone-300 flex items-center justify-center">
+        <footer className=" w-screen max-w-[400px] h-16 border-t border-stone-300 flex items-center justify-center">
           {currentScreen === 2 ? (
             <Image
               className="opacity-80"
