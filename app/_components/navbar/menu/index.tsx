@@ -90,7 +90,7 @@ const Menu = ({
       <div
         className={`${
           isMenuOpen ? "right-0" : "-right-[400px]"
-        } w-screen fixed top-0 z-[102] max-w-[400px] h-screen flex flex-col bg-white transition-all duration-[350ms] ease-out overflow-hidden`}
+        } w-screen fixed top-0 z-[102] max-w-[400px] bottom-0 flex flex-col bg-white transition-all duration-[350ms] ease-out overflow-hidden`}
         ref={menuRef}
       >
         <header className="w-full h-16 border-b border-gray-300 px-4 flex items-center justify-between">
