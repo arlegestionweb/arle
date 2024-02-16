@@ -2,13 +2,13 @@ import Main from "@/app/_components/Main";
 import { getOrderById } from "@/sanity/queries/orders";
 import React from "react";
 import ProductCard from "@/app/_components/cart/ProductCard";
-import SendInvoice from "@/app/success/[paymentId]/_components/SendInvoice";
 
-const Page = async ({ params, searchParams }: {
+const Page = async ({ 
+  params, 
+}: {
   params: {
     paymentId: string
   }
-  searchParams: { [key: string]: string | string[] | undefined }
 }) => {
 
   const sanityOrder = await getOrderById(params.paymentId);
@@ -67,7 +67,6 @@ const Page = async ({ params, searchParams }: {
         )}
       </ul>
 
-      <SendInvoice order={sanityOrder} />
     </Main>
   );
 }
