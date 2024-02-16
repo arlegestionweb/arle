@@ -2,7 +2,7 @@ import Main from "@/app/_components/Main";
 import { getOrderById } from "@/sanity/queries/orders";
 import RemoveCartItems from "./_components/RemoveCartItems";
 import SendInvoice from "./_components/SendInvoice";
-import React, { Suspense } from "react";
+import React from "react";
 import ProductCard from "@/app/_components/cart/ProductCard";
 
 const Page = async ({ params, searchParams }: {

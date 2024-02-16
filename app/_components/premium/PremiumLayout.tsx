@@ -7,11 +7,6 @@ import {
 import ProductViewer from "./ProductView";
 import Labels from "../Labels";
 import {
-  colombianPriceStringToNumber,
-  numberToColombianPriceString,
-} from "@/utils/helpers";
-import {
-  TTimedDiscount,
   TVariant,
 } from "@/sanity/queries/pages/zodSchemas/general";
 import Precio from "../Precio";

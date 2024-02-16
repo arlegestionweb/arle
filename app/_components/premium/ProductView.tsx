@@ -8,7 +8,6 @@ import ProductSlide from "../ProductSlide";
 import { cn } from "@/app/_lib/utils";
 import React from "react";
 import Image from "next/image";
-import { isPerfume } from "@/sanity/queries/pages/listingQueries";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";

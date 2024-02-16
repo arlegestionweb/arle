@@ -1,6 +1,5 @@
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { sendInvoiceEmail } from "../actions";
-import { TCartItem } from "@/app/_components/cart/store";
 import { getProductsByIds } from "@/sanity/queries/pages/productPage";
 import { TProductType } from "@/app/_components/navbar/menu";
 import { fetchWithRetry } from "@/app/_lib/utils";
