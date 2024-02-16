@@ -164,18 +164,18 @@ const Cart = ({
                 $ Ir a pagar
               </span>
             </Button>
-            {formState && formState.error ? (
+            {/* {formState && formState.error ? (
               <p className="text-red-500 text-sm">{JSON.parse(formState.error)[0].message}</p>
             ) : (
               <MenuModal isMenuOpen={!!formState}>
                 <div className=" relative z-10 h-full w-full grid place-content-center " >
                   <div ref={wompiRef}>
 
-                    <WompiPayButton amount={getCartTotal()} reference={payment_reference} redirectUrl={`${localUrl}/success/${payment_reference}/api`} />
+                    <WompiPayButton amount={getCartTotal()} reference={payment_reference} redirectUrl={`${localUrl}/success/${payment_reference}/is-payment-successful`} />
                   </div>
                 </div>
               </MenuModal>
-            )}
+            )} */}
           </section>
         </section>
 
@@ -184,7 +184,6 @@ const Cart = ({
         <MenuModal isMenuOpen={!!isWompipaymentOpen}>
           <div className=" relative z-10 h-full w-full grid place-content-center " >
             <div ref={wompiRef}>
-
               <WompiPayButton
                 amount={getCartTotal()}
                 reference={payment_reference}
