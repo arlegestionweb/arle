@@ -90,11 +90,11 @@ const FilterMenu = ({
   return (
     <div
       className={`${isFilterOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-    } fixed mt-[50px] md:mt-[53px] z-[78] top-0 left-0 transition-all duration-500 w-screen h-full bg-black bg-opacity-50 backdrop-blur-md`}
+    } fixed mt-[50px] md:mt-[0px] z-[78] top-0 left-0 transition-all duration-500 w-screen h-full bg-black bg-opacity-50 backdrop-blur-md`}
     >
       <aside
         className={`${isFilterOpen ? "left-0" : "-left-[400px]"
-      } w-screen fixed bottom-[50px] z-[80] max-w-[400px] h-[calc(100vh-50px)] flex flex-col bg-white transition-all duration-300 ease-out overflow-hidden`}
+      } w-screen fixed top-0 z-[80] mt-[50px] md:mt-[53px] max-w-[400px] h-full flex flex-col bg-white transition-all duration-300 ease-out overflow-hidden`}
       >
           <header className="flex justify-between items-center px-6 min-h-[64px] border-b border-gray-300">
           <h1 className=" capitalize text-arle-blue text-base font-semibold font-inter cursor-default">
