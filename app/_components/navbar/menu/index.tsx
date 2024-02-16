@@ -111,7 +111,7 @@ const Menu = ({
             onClick={() => setIsMenu(false)}
           />
         </header>
-        <div className={`flex overflow-x-hidden basis-full mb-16 w-full`}>
+        <div className={`flex overflow-x-hidden basis-full w-full h-full`}>
           <div
             style={{
               transform: `translateX(-${currentScreen * 100}%)`,

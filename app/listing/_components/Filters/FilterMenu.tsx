@@ -105,14 +105,16 @@ const FilterMenu = ({
             onClick={toggleFilter}
           />
           </header>
-        <form className="w-full h-[calc(100vh-114px)] flex flex-col justify-between" onSubmit={onFormSubmit} ref={formRef}>
-          <section className="w-full flex flex-col justify-start overflow-y-scroll no-scrollbar">
+        <form className="w-full h-full flex flex-col justify-between" onSubmit={onFormSubmit} ref={formRef}>
+          <section className="w-full basis-full flex-flex-col">
+            <section className="flex flex-col justify-start overflow-y-scroll no-scrollbar">
+
           {!searchParams.get("type") && (
             <AllProductFilters
-              marcas={marcas}
-              coleccionesDeMarca={coleccionesDeMarca}
+            marcas={marcas}
+            coleccionesDeMarca={coleccionesDeMarca}
             />
-          )}
+            )}
 
           {searchParams.get("type")?.includes("reloj") && (
             <RelojFilters
@@ -136,8 +138,9 @@ const FilterMenu = ({
             />
             )}
           </section>
+          </section>
 
-          <footer className=" w-screen max-w-[400px] border-t border-gray-300 flex justify-end gap-4 px-6 py-5">
+          <footer className=" w-screen max-w-[400px] border-t border-gray-300 flex justify-end gap-4 px-6 py-4">
             {areFiltersActive && (
               <Link href="/listing" onClick={toggleFilter}>
                 <Button labelType={"gray"}>Reestablecer</Button>
