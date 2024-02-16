@@ -6,7 +6,6 @@ import Image from "next/image";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { IoMdClose } from "react-icons/io";
 import { TCartItem, useCartStore } from "./store";
-import Precio from "../Precio";
 import ProductCard from "./ProductCard";
 
 const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, withoutQuantity?: boolean }) => {

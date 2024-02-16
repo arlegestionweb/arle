@@ -13,7 +13,7 @@ import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
 import { createInvoice } from "./actions";
 // @ts-ignore
-import { useFormState, experimental_useFormStatus as useFormStatus } from 'react-dom';
+import { useFormState } from 'react-dom';
 import MenuModal from "../MenuModal";
 import WompiPayButton from "./WompiPayButton";
 import { useRef } from "react";

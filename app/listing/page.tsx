@@ -5,7 +5,6 @@ import {
 } from "@/sanity/queries/pages/listingQueries";
 import Productos from "./_components/Productos";
 import Colecciones from "../_components/Colecciones";
-// import Banner from "../_components/homepage/Banner";
 import Filters, { TSortingOption } from "./_components/Filters/index";
 import { getAllColeccionesDeMarca, getAllMarcas } from "../_lib/utils";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
@@ -16,9 +15,7 @@ import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { unstable_noStore as noStore } from "next/cache";
 import Main from "../_components/Main";
 import { Metadata } from "next";
-import { Suspense } from "react";
 
-// export const revalidate = 10; // revalidate at most every hour
 
 const sortingFunctions: Record<
   TSortingOption["value"],
@@ -836,8 +833,6 @@ const Listing = async ({
     ) as string[],
   };
 
-  // console.log({ relojes, relojFilters });
-
   const coleccionesDeMarca = getAllColeccionesDeMarca(filteredProducts);
 
   const sortedProducts = [...filteredProducts]?.sort(
@@ -855,29 +850,17 @@ const Listing = async ({
           className="h-full max-w-[1350px] w-full"
         />
       </div>
-
-      {!coleccionSeleccionada ? (
-        <Colecciones
-          colecciones={parsedCollections.success ? parsedCollections.data : []}
-        />
-      ) : (
-        <h2 className="text-2xl md:text-3xl w-full pt-3 font-jomolhari font-normal text-center capitalize">
-          Colección: {coleccionSeleccionada}
-        </h2>
-      )}
+        {!coleccionSeleccionada ? (
+          <Colecciones
+            colecciones={parsedCollections.success ? parsedCollections.data : []}
+          />
+        ) : (
+          <h2 className="text-2xl md:text-3xl w-full pt-3 font-jomolhari font-normal text-center capitalize">
+            Colección: {coleccionSeleccionada}
+          </h2>
+        )}
       <section className="bg-white flex flex-col items-center">
         <section className="max-w-screen-xl w-full py-2 px-4 md:px-8 flex">
-          <Filters
-            areFiltersActive={areFiltersActive}
-            marcas={marcas}
-            coleccionesDeMarca={coleccionesDeMarca}
-            relojFilters={relojFilters}
-            perfumeFilters={perfumeFilters}
-            gafaFilters={gafasFilters}
-          />
-      {/* <section className="bg-color-bg-surface-1-default flex flex-col items-center">
-        <section className="max-w-mx w-full py-4 px-4 md:px-9 flex">
-          <Suspense>
             <Filters
               areFiltersActive={areFiltersActive}
               marcas={marcas}
@@ -886,16 +869,16 @@ const Listing = async ({
               perfumeFilters={perfumeFilters}
               gafaFilters={gafasFilters}
             />
-          </Suspense> */}
+       
         </section>
+          <section className="max-w-screen-xl w-full pb-6 px-4 md:px-9">
+            {filteredProducts && filteredProducts.length > 0 ? (
 
-        <section className="max-w-screen-xl w-full pb-6 px-4 md:px-9">
-          {filteredProducts && filteredProducts.length > 0 ? (
-            <Productos productos={sortedProducts} />
-          ) : (
-            <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
-          )}
-        </section>
+              <Productos productos={sortedProducts} />
+            ) : (
+              <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
+            )}
+          </section>
       </section>
     </Main>
   );

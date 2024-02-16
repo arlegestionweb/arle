@@ -5,7 +5,6 @@ import { useCartStore } from "./store";
 import { getProductById } from "@/sanity/queries/pages/productPage";
 import Image from "next/image";
 import { IoMdClose } from "react-icons/io";
-import { numberToColombianPriceString } from "@/utils/helpers";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { FiTrash2 } from "react-icons/fi";
 import Button from "../Button";
