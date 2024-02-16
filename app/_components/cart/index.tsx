@@ -65,7 +65,7 @@ const Cart = ({
 
   const localUrl = window.location.href.split("/listing")[0];
 
-  // console.log({ localUrl })
+  console.log({ formState })
 
   return (
     <>
@@ -156,6 +156,7 @@ const Cart = ({
               <span>{id}</span>
             </label>
             <Button
+              type="submit"
               // onClick={() => addToCart(product, selectedVariant)}
               labelType={"dark"}
               className="flex justify-center items-center gap-2 w-full max-w-sm button-float"
@@ -164,7 +165,7 @@ const Cart = ({
                 $ Ir a pagar
               </span>
             </Button>
-            {/* {formState && formState.error ? (
+            {formState && formState.error ? (
               <p className="text-red-500 text-sm">{JSON.parse(formState.error)[0].message}</p>
             ) : (
               <MenuModal isMenuOpen={!!formState}>
@@ -175,24 +176,12 @@ const Cart = ({
                   </div>
                 </div>
               </MenuModal>
-            )} */}
+            )}
           </section>
         </section>
 
       </form>
-      {formState && !formState?.error && (
-        <MenuModal isMenuOpen={!!isWompipaymentOpen}>
-          <div className=" relative z-10 h-full w-full grid place-content-center " >
-            <div ref={wompiRef}>
-              <WompiPayButton
-                amount={getCartTotal()}
-                reference={payment_reference}
-                redirectUrl={`${localUrl}/success/${payment_reference}/is-payment-successful`}
-              />
-            </div>
-          </div>
-        </MenuModal>
-      )};
+  
     </>
 
   )
