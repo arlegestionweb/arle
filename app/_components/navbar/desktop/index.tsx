@@ -16,7 +16,7 @@ type NavDesktopProps = {
 
 const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const { isCartOpen, toggleCart, items } = useCartStore();
+  const { toggleCart, items } = useCartStore();
 
   return (
     <nav className={className}>

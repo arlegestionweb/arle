@@ -23,7 +23,6 @@ const ModalContent = ({
   selectedItems,
   currentScreen,
   setIsMenu,
-  isMenuOpen,
   items,
   setSelectedItems,
   subtitle,
