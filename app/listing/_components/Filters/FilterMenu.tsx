@@ -137,7 +137,7 @@ const FilterMenu = ({
             )}
           </section>
 
-          <footer className=" w-screen max-w-[400px] border-t border-gray-300 bottom-0 flex justify-end gap-4 px-6 py-5">
+          <footer className=" w-screen max-w-[400px] border-t border-gray-300 flex justify-end gap-4 px-6 py-5">
             {areFiltersActive && (
               <Link href="/listing" onClick={toggleFilter}>
                 <Button labelType={"gray"}>Reestablecer</Button>
