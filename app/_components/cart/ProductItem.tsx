@@ -133,7 +133,6 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
                 dontUseMin
               />
             )}
-            {product.variantes[variantIndex].unidadesDisponibles}
           </section>
           <Precio
             fullPrice={item.originalPrice}

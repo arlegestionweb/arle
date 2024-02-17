@@ -1,5 +1,5 @@
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
-import { sendInvoiceEmail } from "../actions";
+import { sendAdminInvoiceEmail, sendClientInvoiceEmail } from "../actions";
 import { getProductsByIds } from "@/sanity/queries/pages/productPage";
 import { TProductType } from "@/app/_components/navbar/menu";
 import { fetchWithRetry } from "@/app/_lib/utils";
@@ -114,13 +114,14 @@ export const GET = async (
         const urlSegments = req.url.split("/");
         urlSegments?.pop();
         const responseUrl = urlSegments?.join("/");
-        const { data, error } = await sendInvoiceEmail(newSanityOrder);
+        const { data, error } = await sendClientInvoiceEmail(newSanityOrder);
+        const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(newSanityOrder);
 
         if (error || !data) {
           return Response.redirect(`${responseUrl}?error=error-sending-email`);
         }
-        revalidatePath("/listing")
-        revalidatePath("/[type]/[id]/page")
+        revalidatePath("/listing", "page")
+        revalidatePath("/[type]/[id]/page", "page")
         return Response.redirect(responseUrl);
     }
 
