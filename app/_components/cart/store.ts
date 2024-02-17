@@ -145,7 +145,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
         newItems = state.items.map((i, index) =>
           index !== existingItemIndex
             ? i
-            : { ...i, quantity: i.quantity + item.quantity }
+            : { ...i, quantity: i.quantity + 1 }
         );
       } else {
         // Item is not in the cart, add it
