@@ -3,6 +3,7 @@ import { sendInvoiceEmail } from "../actions";
 import { getProductsByIds } from "@/sanity/queries/pages/productPage";
 import { TProductType } from "@/app/_components/navbar/menu";
 import { fetchWithRetry } from "@/app/_lib/utils";
+import { revalidatePath } from "next/cache";
 
 export const GET = async (
   req: Request,
@@ -118,7 +119,8 @@ export const GET = async (
         if (error || !data) {
           return Response.redirect(`${responseUrl}?error=error-sending-email`);
         }
-
+        revalidatePath("/listing")
+        revalidatePath("/[type]/[id]/page")
         return Response.redirect(responseUrl);
     }
 
