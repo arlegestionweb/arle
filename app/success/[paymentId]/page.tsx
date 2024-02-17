@@ -73,7 +73,7 @@ const Page = async ({
 
 
           return (
-            <ProductCard key={item.variantId} item={item} image={image} productTitle={productTitle} product={product} />
+            <ProductCard key={`${item.productId}-${item.variantId}`} item={item} image={image} productTitle={productTitle} product={product} />
           )
         }
         )}

@@ -1,8 +1,9 @@
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
-import { sendInvoiceEmail } from "../actions";
+import { sendAdminInvoiceEmail, sendClientInvoiceEmail } from "../actions";
 import { getProductsByIds } from "@/sanity/queries/pages/productPage";
 import { TProductType } from "@/app/_components/navbar/menu";
 import { fetchWithRetry } from "@/app/_lib/utils";
+import { revalidatePath } from "next/cache";
 
 export const GET = async (
   req: Request,
@@ -45,78 +46,83 @@ export const GET = async (
         status: "PAID",
         wompiReference: wompyJson.data.id,
       };
+      // return Response.json(newSanityOrder);
 
-      // console.log({ newSanityOrder, item: newSanityOrder.items[0] });
+      //   // console.log({ newSanityOrder, item: newSanityOrder.items[0] });
 
-      const updateSanityOrder = await sanityWriteClient
-        .patch(newSanityOrder._id)
-        .set(newSanityOrder)
-        .commit();
+        const updateSanityOrder = await sanityWriteClient
+          .patch(newSanityOrder._id)
+          .set(newSanityOrder)
+          .commit();
 
-      const cartItemProducts = newSanityOrder.items.map(
-        (item: {
-          productId: { _ref: string };
-          productType: TProductType;
-          variantId: string;
-        }) => {
-          return {
-            _id: item.productId._ref,
-            _type: item.productType,
-            variantId: item.variantId,
-          };
-        }
-      );
-
-      const productsToUpdate = await getProductsByIds(cartItemProducts);
-
-      if (!productsToUpdate) {
-        return Response.json({
-          url: `${req.url.split("/success")[0]}/error-procesando-pago`,
-          wompyJson,
-          wompyQueryUrl,
-        });
-      }
-
-      // console.log({ productsToUpdate, variante: productsToUpdate[0].variantes });
-      for (const product of cartItemProducts) {
-        const productToUpdate = productsToUpdate.find(
-          (p) => p._id === product._id
+        const cartItemProducts = newSanityOrder.items.map(
+          (item: {
+            productId: { _ref: string };
+            productType: TProductType;
+            variantId: string;
+            quantity: number;
+          }) => {
+            return {
+              _id: item.productId._ref,
+              _type: item.productType,
+              variantId: item.variantId,
+              quantity: item.quantity,
+            };
+          }
         );
 
-        if (productToUpdate) {
-          const variantToUpdate = productToUpdate.variantes.find(
-            (v) => v.codigoDeReferencia === product.variantId
+        const productsToUpdate = await getProductsByIds(cartItemProducts);
+
+        if (!productsToUpdate) {
+          return Response.json({
+            url: `${req.url.split("/success")[0]}/error-procesando-pago`,
+            wompyJson,
+            wompyQueryUrl,
+          });
+        }
+
+        // console.log({ productsToUpdate, variante: productsToUpdate[0].variantes });
+        for (const product of cartItemProducts) {
+          const productToUpdate = productsToUpdate.find(
+            (p) => p._id === product._id
           );
 
-          if (!variantToUpdate) {
-            return Response.json({
-              url: `${req.url.split("/success")[0]}/error-procesando-pago`,
-              wompyJson,
-              wompyQueryUrl,
-              error: "variant not found"
-            });
+          if (productToUpdate) {
+            const variantToUpdate = productToUpdate.variantes.find(
+              (v) => v.codigoDeReferencia === product.variantId
+            );
+
+            if (!variantToUpdate) {
+              return Response.json({
+                url: `${req.url.split("/success")[0]}/error-procesando-pago`,
+                wompyJson,
+                wompyQueryUrl,
+                error: "variant not found"
+              });
+            }
+
+            const newVariantInfo = {...variantToUpdate, unidadesDisponibles: variantToUpdate.unidadesDisponibles - product.quantity};
+
+            const variantIndex = productToUpdate.variantes.indexOf(variantToUpdate);
+            // console.log("here", { newVariantInfo, variantIndex, oldVariant: productToUpdate.variantes[variantIndex] });
+            const updateProduct = await sanityWriteClient
+              .patch(productToUpdate._id)
+              .set({ [`variantes[${variantIndex}].unidadesDisponibles`]: newVariantInfo.unidadesDisponibles })
+              .commit();
           }
-          
-          const newVariantInfo = {...variantToUpdate, unidadesDisponibles: variantToUpdate.unidadesDisponibles - 1};
-          
-          const variantIndex = productToUpdate.variantes.indexOf(variantToUpdate);
-          // console.log("here", { newVariantInfo, variantIndex, oldVariant: productToUpdate.variantes[variantIndex] });
-          const updateProduct = await sanityWriteClient
-            .patch(productToUpdate._id)
-            .set({ [`variantes[${variantIndex}].unidadesDisponibles`]: newVariantInfo.unidadesDisponibles })
-            .commit();
         }
-      }
-      const urlSegments = req.url.split("/");
-      urlSegments?.pop();
-      const responseUrl = urlSegments?.join("/");
-      const { data, error } = await sendInvoiceEmail(newSanityOrder);
+        const urlSegments = req.url.split("/");
+        urlSegments?.pop();
+        const responseUrl = urlSegments?.join("/");
+        const { data, error } = await sendClientInvoiceEmail(newSanityOrder);
+        const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(newSanityOrder);
 
-      if (error || !data) {
-        return Response.redirect(`${responseUrl}?error=error-sending-email`);
-      }
-
-      return Response.redirect(responseUrl);
+        if (error || !data) {
+          return Response.redirect(`${responseUrl}?error=error-sending-email`);
+        }
+        revalidatePath("/listing", "page")
+        revalidatePath("/[type]/[id]/page", "page")
+        return Response.redirect(responseUrl);
     }
 
     return Response.json({

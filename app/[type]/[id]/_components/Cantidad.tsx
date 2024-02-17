@@ -1,6 +1,5 @@
 "use client";
 
-import { responsiveTextFont } from "@sanity/ui";
 import { ComponentPropsWithoutRef, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
