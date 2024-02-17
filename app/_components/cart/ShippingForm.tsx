@@ -10,51 +10,56 @@ const ShippingForm = () => {
 
       <InputComponent
         name="name"
-        placeholder="Daniel Guillermo Bustidas"
-        title="Nombre completo"
+        title="Nombres y Apellidos"
+        autocomplete="name"
       />
 
       <InputComponent
         name="id"
-        placeholder="123456789"
         title="Identificación"
         type="id"
+        autocomplete="legal-id"
       />
 
       <InputComponent
         name="phone"
-        placeholder="3001234567"
         title="Teléfono"
         type="number"
+        autocomplete="tel"
       />
 
       <InputComponent
         name="email"
         placeholder="email@ejemplo.com.co"
-        title="Nombre completo"
+        title="Correo electrónico"
         type="email"
+        autocomplete="email"
       />
 
       <InputComponent
         name="pais"
         type="select"
+        autocomplete="country-name"
         options={availableCountries}
         title="País"
       />
 
       <div className="flex justify-between gap-2">
-        <InputComponent name="ciudad" placeholder="Cali" title="Ciudad" />
+        <InputComponent 
+        name="ciudad" 
+        title="Ciudad" />
+
         <InputComponent
           name="codigoPostal"
-          placeholder="760002"
           title="Código Postal"
+          autocomplete="postal-code"
         />
       </div>
-        <InputComponent name="departamento" placeholder="Valle del Cauca" title="Departamento" />
+        <InputComponent name="departamento" title="Departamento" />
       <InputComponent
         name="direccion"
-        placeholder="Cra. 98 #16-200"
         title="Dirección de envío"
+        autocomplete="street-address"
       />
     </section>
   );
@@ -62,6 +67,7 @@ const ShippingForm = () => {
 
 type TInputComponent =
   | {
+      autocomplete?: string;
       name: string;
       type?: "text" | "number" | "id" | "email";
       title?: string;
@@ -69,6 +75,7 @@ type TInputComponent =
       options?: string[];
     }
   | {
+    autocomplete?: string;
     name: string;
     type?: "select";
     title?: string;
@@ -77,6 +84,7 @@ type TInputComponent =
   };
 
 const InputComponent = ({
+  autocomplete,
   name,
   type = "text",
   title,
@@ -92,6 +100,7 @@ const InputComponent = ({
         <h4 className="text-zinc-800 text-lg font-medium font-tajawal leading-snug">{title || name}</h4>
         <input
           className="w-full focus-visible:outline-arle-blue h-9 px-3 bg-white rounded border border-stone-300"
+          autoComplete={autocomplete || ""}
           type={type}
           name={name}
           id={name}
@@ -119,6 +128,7 @@ const InputComponent = ({
 
           <input
             className="w-full focus-visible:outline-arle-blue h-9 px-3 bg-white rounded border border-stone-300"
+            autoComplete={autocomplete}
             type="number"
             name={name}
             id={name}

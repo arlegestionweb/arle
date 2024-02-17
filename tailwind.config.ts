@@ -78,6 +78,17 @@ const config: Config = {
           "0%": { opacity: "0.4" },
           "100%": { opacity: "0" },
         },
+        vote: {
+          '0%, 100%': {
+            transform: 'rotate(0deg)',
+          },
+          '25%': {
+            transform: 'rotate(-30deg)',
+          },
+          '75%': {
+            transform: 'rotate(30deg)',
+          },
+        },
       },
       animation: {
         "slide-in": "slide-in 0.2s ease-out",
@@ -86,7 +97,9 @@ const config: Config = {
         "slide-out-right": "slide-out-right 0.2s ease-out",
         "fade-in": "fade-in 0.2s ease-out",
         "fade-out": "fade-out 0.2s ease-out",
+        vote: 'vote 1s ease-in-out',
       },
+      
     },
   },
   plugins: [
