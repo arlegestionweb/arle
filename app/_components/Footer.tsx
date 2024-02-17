@@ -67,7 +67,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
                 <Link href="/listing?type=gafa">Gafas</Link>
               </li>
               <li>
-                <Link className="section-text underline-offset-2 hover:underline flex gap-1" href="">
+                <Link className="section-text underline-offset-2 hover:underline flex gap-1" href="/estadodecompra">
                 <GoArrowUpRight className="w-5 h-5 -mt-0.5" />
                   Estado de compra
                 </Link>

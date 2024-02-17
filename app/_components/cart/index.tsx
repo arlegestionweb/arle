@@ -12,17 +12,16 @@ import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
 import { GoChevronLeft } from "react-icons/go";
 import { createInvoice } from "./actions";
-import { useFormState } from 'react-dom';
+import { useFormState } from "react-dom";
 import MenuModal from "../MenuModal";
 import WompiPayButton from "./WompiPayButton";
 import { useRef, useState } from "react";
+import Spinner from "../Spinner";
+import Image from "next/image";
+import { MdOutlinePayments } from "react-icons/md";
+import { IoMdClose } from "react-icons/io";
 
-
-const Cart = ({
-  showDiscountCode = false,
-}: {
-  showDiscountCode: boolean;
-}) => {
+const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
   const pathname = usePathname();
   const {
     items,
@@ -34,13 +33,12 @@ const Cart = ({
     getCartTotalWithoutDiscountsOrTax,
     isAddedToCartModalOpen,
     getCartTax,
-    getShippingCost
+    getShippingCost,
   } = useCartStore((state) => state);
 
   const [isWompipaymentOpen, setIsWompipaymentOpen] = useState(false);
 
   const [formState, formAction] = useFormState(createInvoice, null);
-
 
   const wompiRef = useRef(null);
 
@@ -48,10 +46,9 @@ const Cart = ({
 
   const closeWompi = () => {
     setIsWompipaymentOpen(false);
-  }
+  };
 
   useClickOutside(wompiRef, closeWompi);
-
 
   if (pathname.includes("/admin")) return null;
 
@@ -65,12 +62,15 @@ const Cart = ({
 
   const localUrl = window.location.href.split("/listing")[0];
 
-  console.log({ formState })
+  console.log({ formState });
 
   return (
     <>
-      <form className="bg-white z-[60] overflow-y-scroll w-screen h-screen fixed top-0 left-0 flex flex-col md:flex-row no-scrollbar" action={formAction}>
-        <section className="md:flex-1 pt-16 px-5">
+      <form
+        className="bg-white z-[60] overflow-y-scroll w-screen h-screen fixed top-0 left-0 flex flex-col md:flex-row no-scrollbar"
+        action={formAction}
+      >
+        <section className="md:flex-1 pt-16 px-5 lg:px-10">
           <button
             className="flex items-center -ml-1 group"
             onClick={toggleCart}
@@ -105,25 +105,50 @@ const Cart = ({
           )}
 
           <section className="flex flex-col items-end gap-2">
-            {showDiscountCode && (
-              <CodigoDeDescuento />
-            )}
+            {showDiscountCode && <CodigoDeDescuento />}
 
             <div className="flex w-full justify-between">
-              <input type="text" value={JSON.stringify(items)} name="items" hidden />
-              <input hidden name="reference" value={payment_reference} type="text" />
-              <input hidden name="subtotal" value={getCartTotalWithoutDiscountsOrTax()} type="number" />
+              <input
+                type="text"
+                value={JSON.stringify(items)}
+                name="items"
+                hidden
+              />
+              <input
+                hidden
+                name="reference"
+                value={payment_reference}
+                type="text"
+              />
+              <input
+                hidden
+                name="subtotal"
+                value={getCartTotalWithoutDiscountsOrTax()}
+                type="number"
+              />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 Subtotal
               </h5>
-              <span>${numberToColombianPriceString(getCartTotalWithoutDiscountsOrTax())}</span>
+              <span>
+                $
+                {numberToColombianPriceString(
+                  getCartTotalWithoutDiscountsOrTax()
+                )}
+              </span>
             </div>
             <label className="flex w-full justify-between">
-              <input hidden name="discount" value={getDiscountAmount()} type="number" />
+              <input
+                hidden
+                name="discount"
+                value={getDiscountAmount()}
+                type="number"
+              />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 Descuento
               </h5>
-              <span>${numberToColombianPriceString(getDiscountAmount()) || 0}</span>
+              <span>
+                ${numberToColombianPriceString(getDiscountAmount()) || 0}
+              </span>
             </label>
             <label className="flex w-full justify-between">
               <input type="number" hidden name="tax" value={getCartTax()} />
@@ -149,7 +174,6 @@ const Cart = ({
               <span>${numberToColombianPriceString(getCartTotal())}</span>
             </label>
             <label className="flex w-full justify-between">
-              {/* <input hidden type="text" name="cartId" value={id} /> */}
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 id
               </h5>
@@ -157,35 +181,117 @@ const Cart = ({
             </label>
             <Button
               type="submit"
-              // onClick={() => addToCart(product, selectedVariant)}
               labelType={"dark"}
+              onClick={() => setIsWompipaymentOpen(true)}
               className="flex justify-center items-center gap-2 w-full max-w-sm button-float"
             >
+              <MdOutlinePayments className="text-base" />
               <span className="font-inter text-base font-medium leading-6">
-                $ Ir a pagar
+                Ir a pagar
               </span>
             </Button>
             {formState && formState.error ? (
-              <p className="text-red-500 text-sm">{JSON.parse(formState.error)[0].message}</p>
+              <p className="text-red-500 text-sm">
+                {JSON.parse(formState.error)[0].message}
+              </p>
             ) : (
-              <MenuModal isMenuOpen={!!formState}>
-                <div className=" relative z-10 h-full w-full grid place-content-center " >
-                  <div ref={wompiRef}>
-
-                    <WompiPayButton amount={getCartTotal()} reference={payment_reference} redirectUrl={`${localUrl}/success/${payment_reference}/is-payment-successful`} />
-                  </div>
-                </div>
-              </MenuModal>
+              isWompipaymentOpen && (
+                <MenuModal isMenuOpen={true}>
+                  <section className=" relative z-10 h-full w-full flex items-center justify-center default-paddings">
+                    <section
+                      ref={wompiRef}
+                      className="w-full max-w-screen-xs z-[102] pointer-events-auto px-8 pt-4 pb-3 bg-white flex flex-col items-center justify-center gap-4 "
+                    >
+                      <header className="flex w-full justify-center relative">
+                        <h2 className="leading-none text-xl md:text-2xl md:leading-none font-bold font-tajawal text-gray-800">
+                          Confirma tus datos
+                        </h2>
+                        <IoMdClose
+                          className="text-lg cursor-pointer absolute right-0"
+                          onClick={() => setIsWompipaymentOpen(false)}
+                        />
+                      </header>
+                      {formState?.data ? (
+                        <div className="w-full flex flex-col gap-3 font-tajawal">
+                          <div className="flex w-full justify-between border-b border-stone-200">
+                            <p>Nombre:</p>
+                            <p>{formState?.data?.customer.name}</p>
+                          </div>
+                          <div className="flex w-full justify-between border-b border-stone-200">
+                            <p>
+                              {formState?.data?.customer.id.type.toUpperCase()}:{" "}
+                            </p>
+                            <p>{formState?.data?.customer.id.number}</p>
+                          </div>
+                          <div className="flex w-full justify-between border-b border-stone-200">
+                            <p>Correo electrónico: </p>
+                            <p>{formState?.data?.customer.email}</p>
+                          </div>
+                          <div className="flex w-full justify-between border-b border-stone-200">
+                            <p>Teléfono:</p>
+                            <p> {formState?.data?.customer.phone}</p>
+                          </div>
+                          <div className="flex w-full justify-between border-b border-stone-200">
+                            <p>Dirección: </p>
+                            <p>
+                              {formState?.data?.customer.addressObject?.address}
+                            </p>
+                          </div>
+                          <div className="flex w-full justify-between border-b border-stone-200">
+                            <p>Código Postal:</p>
+                            <p>
+                              {
+                                formState?.data?.customer.addressObject
+                                  ?.postalCode
+                              }
+                            </p>
+                          </div>
+                          <div className="flex w-full justify-end border-b border-stone-200">
+                            <p>
+                              {formState?.data?.customer.addressObject?.city} -{" "}
+                              {
+                                formState?.data?.customer.addressObject
+                                  ?.department
+                              }{" "}
+                              /{" "}
+                              {formState?.data?.customer.addressObject?.country}
+                            </p>
+                          </div>
+                          <div className="flex w-full justify-between border-b border-stone-200">
+                            <p>Total a pagar: </p>
+                            <p>
+                              ${numberToColombianPriceString(getCartTotal())}
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        <Spinner />
+                      )}
+                      <WompiPayButton
+                        disabled={formState?.data ? false : true}
+                        amount={getCartTotal()}
+                        reference={payment_reference}
+                        redirectUrl={`${localUrl}/success/${payment_reference}/is-payment-successful`}
+                      />
+                      <footer>
+                        <Image
+                          className="w-[5.5rem] h-10 pt-2"
+                          src="/arleBasicLogo.svg"
+                          width={100}
+                          height={100}
+                          alt="isoLogo"
+                        />
+                      </footer>
+                    </section>
+                  </section>
+                </MenuModal>
+              )
             )}
           </section>
         </section>
-
       </form>
-  
     </>
-
-  )
+  );
 };
 
 export default Cart;
-

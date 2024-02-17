@@ -125,7 +125,7 @@ const ModalContent = ({
               </p>
             </Link>
             <Link
-              href={"/"}
+              href={"/estadodecompra"}
               className="flex items-center gap-2 group"
               onClick={() => setIsMenu(false)}
             >

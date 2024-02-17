@@ -122,7 +122,7 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
           {"Código: "}
           {variant.codigoDeReferencia}
         </p>
-        <section className="flex justify-between w-full gap-1">
+        <section className="flex flex-col w-full gap-1">
           <section className="flex items-center gap-5">
             {!withoutQuantity && (
               <Cantidad

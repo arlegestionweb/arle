@@ -82,7 +82,7 @@ const RelojPremium = ({
           product={product}
           quantity={cantidad}
           selectedVariant={selectedVariant}
-          className="lg:hidden"
+          className="lg:hidden mt-6"
         />
       </PremiumLayout>
     </>
