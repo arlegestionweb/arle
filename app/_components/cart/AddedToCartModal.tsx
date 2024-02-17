@@ -164,6 +164,7 @@ const AddedToCartModal = () => {
                       removeItem(itemAddedToCart);
                     }}
                     max={product.variantes[variantIndex].unidadesDisponibles}
+                    // dontUseMin
                   />
                   <div className="w-7 h-7 bg-gray-200 border rounded border-stone-300 justify-center items-center flex">
                     <FiTrash2 className="text-sm text-gray-700" />
