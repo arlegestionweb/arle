@@ -130,6 +130,7 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
                 anadirACantidad={() => addItem(item)}
                 restarACantidad={() => removeItem(item)}
                 max={product.variantes[variantIndex].unidadesDisponibles}
+                dontUseMin
               />
             )}
             {product.variantes[variantIndex].unidadesDisponibles}
