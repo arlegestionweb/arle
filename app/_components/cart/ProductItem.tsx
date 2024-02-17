@@ -129,8 +129,10 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
                 cantidad={item.quantity}
                 anadirACantidad={() => addItem(item)}
                 restarACantidad={() => removeItem(item)}
+                max={product.variantes[variantIndex].unidadesDisponibles}
               />
             )}
+            {product.variantes[variantIndex].unidadesDisponibles}
           </section>
           <Precio
             fullPrice={item.originalPrice}
