@@ -60,9 +60,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
 
   // const error = formState?.error && JSON.parse(formState.error)[0].message
 
-  const localUrl = window.location.href.split("/listing")[0];
-
-  console.log({ formState });
+  const localUrl = window.location.href.split(pathname)[0]
 
   return (
     <>
