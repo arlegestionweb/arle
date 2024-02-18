@@ -26,7 +26,6 @@ const RelojPremium = ({
   setCantidad,
   pricing,
 }: TRelojPremiumProps) => {
-  console.log(product.descripcion);
   return (
     <>
       <PremiumLayout
