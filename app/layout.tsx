@@ -77,7 +77,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <PlausibleProvider domain={isProduction ? "arle.co" : "beta.arle.co"} />
+        {/* <PlausibleProvider domain={isProduction ? "arle.co" : "beta.arle.co"} /> */}
+        <script defer data-domain={isProduction ? "arle.co" : "beta.arle.co"} src="https://plausible.io/js/script.js"></script>
+
       </head>
 
       <body
