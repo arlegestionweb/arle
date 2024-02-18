@@ -28,7 +28,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
     isCartOpen,
     toggleCart,
     getCartTotal,
-    getDiscountAmount,
+    getProductDiscountAmount,
     id,
     getCartTotalWithoutDiscountsOrTax,
     isAddedToCartModalOpen,
@@ -60,9 +60,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
 
   // const error = formState?.error && JSON.parse(formState.error)[0].message
 
-  const localUrl = window.location.href.split("/listing")[0];
-
-  console.log({ formState });
+  const localUrl = window.location.href.split(pathname)[0];
 
   return (
     <>
@@ -113,14 +111,17 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                 value={JSON.stringify(items)}
                 name="items"
                 hidden
+                readOnly
               />
               <input
+                readOnly
                 hidden
                 name="reference"
                 value={payment_reference}
                 type="text"
               />
               <input
+                readOnly
                 hidden
                 name="subtotal"
                 value={getCartTotalWithoutDiscountsOrTax()}
@@ -140,25 +141,38 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
               <input
                 hidden
                 name="discount"
-                value={getDiscountAmount()}
+                value={getProductDiscountAmount()}
                 type="number"
+                readOnly
               />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 Descuento
               </h5>
               <span>
-                ${numberToColombianPriceString(getDiscountAmount()) || 0}
+                ${numberToColombianPriceString(getProductDiscountAmount()) || 0}
               </span>
             </label>
             <label className="flex w-full justify-between">
-              <input type="number" hidden name="tax" value={getCartTax()} />
+              <input
+                type="number"
+                hidden
+                name="tax"
+                value={getCartTax()}
+                readOnly
+              />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 IVA
               </h5>
               <span>${numberToColombianPriceString(getCartTax()) || 0}</span>
             </label>
             <label className="flex w-full justify-between">
-              <input type="number" hidden name="shipping" value={0} />
+              <input
+                type="number"
+                hidden
+                name="shipping"
+                readOnly
+                value={0}
+              />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 Envío
               </h5>
@@ -167,7 +181,13 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
             <div className="self-stretch h-px bg-stone-300" />
 
             <label className="flex w-full justify-between">
-              <input hidden type="number" name="total" value={getCartTotal()} />
+              <input
+                readOnly
+                hidden
+                type="number"
+                name="total"
+                value={getCartTotal()}
+              />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 Total
               </h5>
@@ -295,3 +315,6 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
 };
 
 export default Cart;
+
+
+
