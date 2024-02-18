@@ -29,6 +29,7 @@ const sedesQuery = `*[_type == "nuestrasSedes"] [0] {
 
 const nuestrasSedesQuery = `*[_type == "nuestrasSedes"] [0] {
   titulo,
+  subtitulo,
   ${sedeQuery},
 }`;
 
@@ -62,6 +63,7 @@ const sedeByTitleSchema = z.object({
 
 const nuestrasSedesSchema = z.object({
   titulo: z.string(),
+  subtitulo: z.string(),
   sedes: z.array(sedeSchema),
 });
 

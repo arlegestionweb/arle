@@ -10,6 +10,13 @@ export const nuestrasSedesSchema = defineType({
       name: "titulo",
       title: "Título",
       type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "subtitulo",
+      title: "Subtítulo",
+      type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "sedes",
