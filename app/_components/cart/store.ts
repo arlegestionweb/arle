@@ -48,7 +48,7 @@ type TCartActions = {
   getCartSubtotal: () => number;
   getCartTotalBeforeShipping: () => number;
   getCartTotal: () => number;
-  getDiscountAmount: () => number;
+  getProductDiscountAmount: () => number;
   toggleCart: () => void;
   applyDiscountCode: (code: string, discount: number) => void;
   toggleAddedToCartModal: () => void;
@@ -102,7 +102,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
       return { ...state, discountCode: { code, discount } };
     }),
-  getDiscountAmount: () => {
+  getProductDiscountAmount: () => {
     const items: TCartItem[] = get().items;
     // let total = 0;
 
@@ -265,11 +265,11 @@ export const useCartStore = create<TCartStore>((set, get) => ({
   },
   getCartTotal: () => {
     const total = get().getCartTotalBeforeShipping();
-    const discount = get().getDiscountAmount();
+    // const discount = get().getDiscountAmount();
     // const tax = get().getCartTax();
     const shipping = get().getShippingCost();
 
-    return total - discount + shipping;
+    return total + shipping;
   }
   
 }));
