@@ -1,5 +1,6 @@
 import { TFrontEndOrderSchema } from "@/sanity/queries/orders";
 import { Html, Body, Text, Heading, Container, Tailwind } from "@react-email/components";
+import { DateTime } from "luxon";
 
 
 type EmailTemplateProps = {
@@ -10,6 +11,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   order,
 }) => {
   // console.log("items in email-template", order.items, Array.isArray(order.items))
+  DateTime.fromSQL(order.orderDate);
   return (
 
     <Tailwind>
@@ -17,13 +19,13 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
       <Html>
         <Body>
           <Container>
-            <Heading className="bg-red-400 text-orange-600" style={{ backgroundColor: "#3a1439" }}>{new Date().toISOString()}</Heading>
+            <Heading className=" text-gray-800 text-xl" style={{ backgroundColor: "#3a1439" }}>{new Date().toISOString()}</Heading>
             <Heading>PEDIDO EXITOSO</Heading>
             <Heading>Gracias por tu compra</Heading>
             <Heading>Detalles de tu pedido:</Heading>
-            <Text>Id: {order._id}</Text>
-            <Text>Fecha: {order.orderDate}</Text>
-            <Text>Estado: {order.status}</Text>
+            <Text>Código de Compra: {order._id}</Text>
+            <Text>Fecha: {DateTime.now().toLocaleString(DateTime.DATE_MED)}</Text>
+            <Text>Estado: En Proceso</Text>
             <Text>Cliente: {order.customer.name}</Text>
             <Text>Email: {order.customer.email}</Text>
             <Text>Teléfono: {order.customer.phone}</Text>
@@ -50,7 +52,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
 
 
               return (
-                <Container key={item.variantId + item.productId} className="flex bg-yellow-200">
+                <Container key={item.variantId + item.productId} className="flex flex-col">
                   <Text>Producto: {item.productId._ref}</Text>
                   <Text>Producto: {item.productType}</Text>
                   <Text>Precio: {item.price}</Text>
