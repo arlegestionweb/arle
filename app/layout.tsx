@@ -72,13 +72,13 @@ export default async function RootLayout({
   const siteSettings = await getSiteSettings();
   const nuestrasSedes = await getNuestrasSedesContent();
 
-  const isProduction = process.env.NODE_ENV === "production";
+  const url = process.env.NEXT_PUBLIC_SITE_URL
 
   return (
     <html lang="en">
       <head>
         {/* <PlausibleProvider domain={isProduction ? "arle.co" : "beta.arle.co"} /> */}
-        <script defer data-domain={isProduction ? "arle.co" : "beta.arle.co"} src="https://plausible.io/js/script.js"></script>
+        <script defer data-domain={url} src="https://plausible.io/js/script.js"></script>
 
       </head>
 
