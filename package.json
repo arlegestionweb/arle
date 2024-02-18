@@ -26,6 +26,7 @@
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "next": "14.0.4",
+    "next-plausible": "^3.12.0",
     "next-sanity": "^5.5.10",
     "next-sanity-image": "^6.1.1",
     "postcss": "8.4.28",
