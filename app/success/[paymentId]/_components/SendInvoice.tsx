@@ -10,7 +10,6 @@ const SendInvoice = ({order}: {
   // console.log({order})
   const [formState, formAction] = useFormState(sendInvoice, null);
 
-  console.log({formState})
   return (
     <form action={formAction}>
       <input type="text" hidden name="order" value={JSON.stringify(order)} readOnly />

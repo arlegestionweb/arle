@@ -104,7 +104,7 @@ const CardLayout = ({
         )}
       </section>
 
-      <section className=" flex-1 justify-end font-tajawal flex flex-col gap-1">
+      <section className="mt-2 flex-1 justify-end font-tajawal flex flex-col gap-1">
         <Link href={product.slug} className="flex flex-col gap-0.5">
           <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize">
             {product.marca}

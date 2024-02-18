@@ -78,7 +78,7 @@ const GafaPremium = ({
 
         <AddToCart
           pricing={pricing}
-          className="lg:hidden"
+          className="lg:hidden mt-6"
           product={product}
           quantity={cantidad}
           selectedVariant={selectedVariant}
