@@ -8,15 +8,15 @@ import { LuShoppingCart } from "react-icons/lu";
 import { MdOutlinePayments } from "react-icons/md";
 
 type PropsAddToCart = {
-  className?:string;
+  className?: string;
   product: TProduct;
   selectedVariant: TVariant;
   quantity: number;
   pricing: TPricing;
 }
 
-const AddToCart = ({className, pricing, product, quantity, selectedVariant}:PropsAddToCart) => {
-  
+const AddToCart = ({ className, pricing, product, quantity, selectedVariant }: PropsAddToCart) => {
+
 
   const price = pricing.finalPrice;
 
@@ -35,12 +35,12 @@ const AddToCart = ({className, pricing, product, quantity, selectedVariant}:Prop
 
   return (
     <div className={cn("w-[90vw] max-w-lg lg:max-w-none flex flex-col gap-2.5 sticky bottom-5 items-center bg-white shadow py-2 px-2 z-50", className)}>
-      <Button disabled = {selectedVariant.unidadesDisponibles <= 0 ? true : false} onClick={() => addToCart(product, selectedVariant, quantity)} className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float">
-      <LuShoppingCart className="text-base"/>
+      <Button disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false} onClick={() => addToCart(product, selectedVariant, quantity)} className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float">
+        <LuShoppingCart className="text-base" />
         Añadir al Carrito
       </Button>
-      <Button disabled = {selectedVariant.unidadesDisponibles <= 0 ? true : false} labelType={"dark"} className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float">
-      <MdOutlinePayments className="text-base"/> Compra Rápida
+      <Button disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false} labelType={"dark"} className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float">
+        <MdOutlinePayments className="text-base" /> Compra Rápida
       </Button>
     </div>
   );

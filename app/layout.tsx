@@ -8,6 +8,8 @@ import {
   getSiteSettingsMetadata,
 } from "@/sanity/queries/siteSettings";
 import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQueries";
+import PlausibleProvider from 'next-plausible'
+
 
 const jomolhari = Jomolhari({
   weight: ["400"],
@@ -16,7 +18,7 @@ const jomolhari = Jomolhari({
 })
 
 const crimson = Crimson_Text({
-  weight: [ "400", "600", "700"],
+  weight: ["400", "600", "700"],
   subsets: ["latin"],
   variable: "--crimson-pro",
 });
@@ -70,8 +72,14 @@ export default async function RootLayout({
   const siteSettings = await getSiteSettings();
   const nuestrasSedes = await getNuestrasSedesContent();
 
+  const isProduction = process.env.NODE_ENV === "production";
+
   return (
     <html lang="en">
+      <head>
+        <PlausibleProvider domain={isProduction ? "arle.co" : "beta.arle.co"} />
+      </head>
+
       <body
         className={`${inter.variable} ${tajawal.variable} ${raleway.variable} ${kanit.variable} ${crimson.variable} ${jomolhari.variable} ${play.variable} overflow-x-hidden no-scrollbar`}
       >
