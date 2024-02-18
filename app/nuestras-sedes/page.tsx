@@ -5,6 +5,7 @@ import Link from "next/link";
 import { toKebabCase } from "@/utils/helpers";
 import Main from "../_components/Main";
 import { Metadata } from "next";
+import AboutSubMenu from "../_components/AboutSubMenu";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,8 @@ const Page = async () => {
   const uniqueCitiesArray = Array.from(uniqueCities);
 
   return (
-    <Main extraClasses="bg-white h-screen md:h-[calc(100vh-110px)] flex flex-col overflow-hidden">
+    <Main extraClasses="bg-white md:pt-[53px] h-screen md:h-[calc(100vh-110px)] flex flex-col overflow-hidden">
+      <AboutSubMenu />
       <section className="flex w-full overflow-y-scroll scrollbar-width-thin">
         <section className="relative pb-8 flex flex-col w-full h-fit overflow-hidden items-center">
           <section className="relative w-full z-10 h-[200px] md:h-[250px] overflow-hidden flex items-end justify-center pb-5 bg-[#E5E8ED]">

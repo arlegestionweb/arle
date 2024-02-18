@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Main from "../_components/Main";
 import { Metadata } from "next";
+import AboutSubMenu from "../_components/AboutSubMenu";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,8 @@ const Page = async () => {
   const pageContent = await getTrabajaConNosotrosContent();
 
   return (
-    <Main extraClasses="min-h-screen bg-white">
+    <Main extraClasses="min-h-screen bg-white md:pt-[53px]">
+      <AboutSubMenu />
       <Image className="w-full h-[200px] md:h-[300px] 2xl:h-[350px] object-cover" width={1000} height={500} alt={pageContent?.imagen?.alt || ""} src={pageContent?.imagen?.url || ""} />
       <section className="flex w-full bg-[#E5E8ED] justify-center">
         <section className="py-6 px-8 sm:px-14 lg:py-14 gap-5 flex flex-col max-w-screen-lg w-full">

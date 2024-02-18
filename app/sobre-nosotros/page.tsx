@@ -2,6 +2,7 @@ import { getSobreNosotrosContent } from "@/sanity/queries/pages/sobreNosotrosQue
 import Image from "next/image";
 import Main from "../_components/Main";
 import { Metadata } from "next";
+import AboutSubMenu from "../_components/AboutSubMenu";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,8 @@ const Page = async () => {
   }
 
   return (
-    <Main>
+    <Main extraClasses="md:pt-[60px]">
+      <AboutSubMenu />
       {pageContent?.whyWeDoWhatWeDo?.on &&
         <section className="md:h-[40vh] xl:h-[50vh] flex flex-col md:flex-row items-center bg-white">
           <section className="h-[350px] flex relative w-full md:h-full md:w-[50vw] md:max-w-[50%]">
