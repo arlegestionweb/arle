@@ -150,7 +150,22 @@ export const ordersSchema = defineType({
             ],
             layout: 'radio',
           },
-        })
+        }),
+        defineField({
+          name: "shippingDate",
+          title: "Fecha de envío",
+          type: "datetime",
+        }),
+        defineField({
+          name: "deliveryDate",
+          title: "Fecha de entrega",
+          type: "datetime",
+        }),
+        defineField({
+          name: "trackingNumber",
+          title: "Número de guía Servientrega",
+          type: "string",
+        }),
       ],
     }),
 
@@ -237,6 +252,7 @@ export const ordersSchema = defineType({
       title: "Referencia Wompi",
       type: "string",
     }),
+ 
   ],
   preview: {
     select: {
