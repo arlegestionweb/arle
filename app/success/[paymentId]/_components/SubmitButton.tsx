@@ -36,7 +36,6 @@ const SubmitButton = ({ children }: {
   children: React.ReactNode
 }) => {
   const { pending, data } = useFormStatus();
-  console.log("in button", { pending, data })
   return (
     <button type="submit" aria-disabled={pending || !!data} className='disabled:bg-red-800 disabled:text-yellow-300'>
       {children}
