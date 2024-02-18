@@ -152,16 +152,6 @@ export const ordersSchema = defineType({
           },
         }),
         defineField({
-          name: "shippingDate",
-          title: "Fecha de envío",
-          type: "datetime",
-        }),
-        defineField({
-          name: "deliveryDate",
-          title: "Fecha de entrega",
-          type: "datetime",
-        }),
-        defineField({
           name: "trackingNumber",
           title: "Número de guía Servientrega",
           type: "string",
