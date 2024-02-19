@@ -22,7 +22,7 @@ const ImageModal = ({ images, index, isImageOpen, closeImage }: Props) => {
     <div 
       className={`${
         isImageOpen ? "opacity-100 top-0 bottom-0" : "top-[100vh] -bottom-[100vh] opacity-0 pointer-events-none"
-      } fixed z-[120] mt-[50px] left-0 top-0 right-0 bottom-0 transition-all duration-500 bg-black bg-opacity-50 backdrop-blur-md flex items-center justify-center p-20`}
+      } fixed z-[120] mt-[50px] left-0 top-0 right-0 bottom-0 transition-all duration-500 bg-black bg-opacity-50 backdrop-blur-md flex items-center justify-center p-5 md:p-10 lg:p-20`}
     >
         <div className="absolute top-0 bottom-0 right-0 left-0" onClick={() => closeImage()}>
         </div>
