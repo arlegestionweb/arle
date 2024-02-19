@@ -17,12 +17,12 @@ const jobsQuery = `
     findUsIn,
     text,
     title,
-    city,
+    "ciudad": ciudad -> titulo,
     map,
     direccion,
   },
   titulo,
-  areaLaboral
+  areaLaboral,
   experience,
   salary,
   "skills": skills [],
@@ -59,7 +59,7 @@ const sedeSchema = z.object({
   findUsIn: z.string(),
   text: z.string(),
   title: z.string(),
-  city: z.string(),
+  ciudad: z.string(),
   map: z.string(),
   direccion: z.string(),
 });
@@ -97,6 +97,7 @@ const trabajaConNosotrosSchema = z.object({
 export const getTrabajaConNosotrosContent = async () => {
   try {
     const data = await sanityClient.fetch(trabajaConNosotrosQuery);
+
     const validatedData = trabajaConNosotrosSchema.safeParse(data);
     
     if (!validatedData.success) {

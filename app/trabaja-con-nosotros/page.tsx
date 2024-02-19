@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import AboutSubMenu from "../_components/AboutSubMenu";
 import { PiSuitcaseSimple } from "react-icons/pi";
 import { IoLocationOutline } from "react-icons/io5";
+// import Dropdown from "./_components/Dropdown";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +18,11 @@ export const metadata: Metadata = {
 const Page = async () => {
   const pageContent = await getTrabajaConNosotrosContent();
 
+  const areasLaborales = Array.from(new Set(pageContent?.jobs?.map((job) => job?.areaLaboral)));
+
+  const sedes = Array.from(new Set(pageContent?.jobs?.map((job) => job?.sede?.nombre)));
+
+  // console.log({areasLaborales, sedes});
   return (
     <Main extraClasses="min-h-screen bg-white md:mt-[53px]">
       <AboutSubMenu />
@@ -32,6 +38,7 @@ const Page = async () => {
           <h1 className="about-title">{pageContent?.titulo}</h1>
           <h3 className="about-text -mt-2">{pageContent?.descripcion}</h3>
           <aside className="flex gap-4 flex-wrap">
+            {/* <Dropdown items={areasLaborales} /> */}
             <button className="text-sm sm:text-base border flex items-center border-gray-700 py-0.5 px-8 gap-2">
               {" "}
               <PiSuitcaseSimple className="text-lg sm:text-xl" /> Área laboral:
@@ -53,7 +60,7 @@ const Page = async () => {
               {item?.titulo}
             </h2>
             <p className="font-tajawal font-light text-md  leading-none text-gray-600">{`Modalidad: ${item?.modality}`}</p>
-            <p className="font-tajawal font-light text-md  leading-none text-gray-600">{`Sede: ${item?.sede?.nombre} - ${item?.sede?.city}`}</p>
+            <p className="font-tajawal font-light text-md  leading-none text-gray-600">{`Sede: ${item?.sede?.nombre} - ${item?.sede?.ciudad}`}</p>
             <Link
               className="dark-button"
               href={`/trabaja-con-nosotros/${toKebabCase(item?.titulo)}`}
