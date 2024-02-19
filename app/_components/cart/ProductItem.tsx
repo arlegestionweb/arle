@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import {
   TProduct,
@@ -7,7 +8,6 @@ import {
 } from "@/sanity/queries/pages/listingQueries";
 import { getProductById } from "@/sanity/queries/pages/productPage";
 import Image from "next/image";
-import { numberToColombianPriceString } from "@/utils/helpers";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { IoMdClose } from "react-icons/io";
 import { TCartItem, useCartStore } from "./store";
@@ -19,9 +19,10 @@ import {
   isRelojLujo,
 } from "@/sanity/queries/pages/types";
 
-const ProductItem = ({ item }: { item: TCartItem }) => {
+const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, withoutQuantity?: boolean }) => {
   const [product, setProduct] = useState<TProduct | null>(null);
   const { addItem, removeItem, removeAllOfOneItem } = useCartStore();
+
   useEffect(() => {
     const getProduct = async () => {
       const { product } = await getProductById(
@@ -47,17 +48,17 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
 
   const image =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.variantes[variantIndex].imagenes[0]
       : product.imagenes[0];
 
   const productTitle =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.modelo
       : product.titulo;
 
@@ -85,16 +86,14 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
         </h2>
         <h3 className="text-md mb-1 md:text-lg md:leading-none font-medium text-gray-700 leading-none">
           {isPerfumePremium(product)
-            ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${
-                product.detalles.concentracion
-              }`
+            ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.detalles.concentracion
+            }`
             : isPerfumeLujo(product)
-            ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${
-                product.concentracion
+              ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.concentracion
               }`
-            : isReloj(product)
-            ? product.modelo
-            : product.modelo}
+              : isReloj(product)
+                ? product.modelo
+                : product.modelo}
         </h3>
         {isPerfume(product) && (
           <p className="text-sm leading-none capitalize text-gray-600">
@@ -123,13 +122,17 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
           {"Código: "}
           {variant.codigoDeReferencia}
         </p>
-        <section className="flex justify-between w-full gap-1">
+        <section className="flex flex-col w-full gap-1">
           <section className="flex items-center gap-5">
-            <Cantidad
-              cantidad={item.quantity}
-              anadirACantidad={() => addItem(item)}
-              restarACantidad={() => removeItem(item)}
-            />
+            {!withoutQuantity && (
+              <Cantidad
+                cantidad={item.quantity}
+                anadirACantidad={() => addItem(item)}
+                restarACantidad={() => removeItem(item)}
+                max={product.variantes[variantIndex].unidadesDisponibles}
+                dontUseMin
+              />
+            )}
           </section>
           <Precio
             fullPrice={item.originalPrice}
@@ -141,7 +144,7 @@ const ProductItem = ({ item }: { item: TCartItem }) => {
           />
         </section>
       </section>
-    </li>
+    </li >
   );
 };
 

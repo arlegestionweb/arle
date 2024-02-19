@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import RedDot from "@/app/_components/RedDot";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { cn } from "@/app/_lib/utils";
 

@@ -1,6 +1,6 @@
 "use client";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { cn } from "@/app/_lib/utils";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import SuggestedProductCard from "./SuggestedProductCard";
@@ -80,8 +80,6 @@ const SlideDesktop = ({ products, columns, className }: SlideProps) => {
   }, [products.length, columns]);
 
   useEffect(()=>{
-    console.log(1);
-    
     setHasNext(determineHasNext());
   },[products.length, determineHasNext])
 

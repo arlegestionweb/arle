@@ -1,25 +1,35 @@
+import { customAlphabet } from 'nanoid';
+import { z } from "zod";
 import { create } from "zustand";
 
 
 const TAX = 0.19;
 
-export type TCartItem = {
-  productId: string;
-  variantId: string;
-  price: number;
-  quantity: number;
-  productType:
-    | "perfumePremium"
-    | "perfumeLujo"
-    | "relojesPremium"
-    | "relojesLujo"
-    | "gafasPremium"
-    | "gafasLujo";
-    discountType: "none" | "timedDiscount" | "discountedPrice";
-    originalPrice: number;
-};
+export const zodCartItem = z.object({
+  productId: z.string(),
+  variantId: z.string(),
+  price: z.number(),
+  quantity: z.number(),
+  productType: z.union([
+    z.literal("perfumePremium"),
+    z.literal("perfumeLujo"),
+    z.literal("relojesPremium"),
+    z.literal("relojesLujo"),
+    z.literal("gafasPremium"),
+    z.literal("gafasLujo"),
+  ]),
+  discountType: z.union([
+    z.literal("none"),
+    z.literal("timedDiscount"),
+    z.literal("discountedPrice"),
+  ]),
+  originalPrice: z.number(),
+});
+
+export type TCartItem = z.infer<typeof zodCartItem>;
 
 type TCartState = {
+  id: string;
   isCartOpen: boolean;
   items: TCartItem[];
   discountCode: {
@@ -36,19 +46,49 @@ type TCartActions = {
   removeAllOfOneItem: (item: TCartItem) => void;
   clearCart: () => void;
   getCartSubtotal: () => number;
+  getCartTotalBeforeShipping: () => number;
   getCartTotal: () => number;
-  getDiscountAmount: () => number;
+  getProductDiscountAmount: () => number;
   toggleCart: () => void;
   applyDiscountCode: (code: string, discount: number) => void;
   toggleAddedToCartModal: () => void;
   setItemAddedToCart: (item?: TCartItem) => void;
   getCartTotalWithoutDiscountsOrTax: () => number;
   getCartTax: () => number;
+  getShippingCost: () => number;
 };
 
 type TCartStore = TCartState & TCartActions;
 
+const getCartIdFromLocalStorage = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem("cartId");
+  }
+};
+
+// Function to set the cart ID in localStorage
+const setCartIdInLocalStorage = (id: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem("cartId", id);
+  }
+};
+
+const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const nanoid = customAlphabet(alphabet, 21);
+
+const id = nanoid();
+
+// Get the existing cart ID from localStorage, or generate a new one if it doesn't exist
+let cartId = getCartIdFromLocalStorage();
+if (!cartId) {
+  cartId = id;
+  setCartIdInLocalStorage(cartId);
+}
+
+
+
 export const useCartStore = create<TCartStore>((set, get) => ({
+  id: cartId!,
   isAddedToCartModalOpen: false,
   toggleAddedToCartModal: () =>
     set((state) => ({ isAddedToCartModalOpen: !state.isAddedToCartModalOpen })),
@@ -62,7 +102,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
       return { ...state, discountCode: { code, discount } };
     }),
-  getDiscountAmount: () => {
+  getProductDiscountAmount: () => {
     const items: TCartItem[] = get().items;
     // let total = 0;
 
@@ -105,7 +145,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
         newItems = state.items.map((i, index) =>
           index !== existingItemIndex
             ? i
-            : { ...i, quantity: i.quantity + item.quantity }
+            : { ...i, quantity: i.quantity + 1 }
         );
       } else {
         // Item is not in the cart, add it
@@ -123,7 +163,10 @@ export const useCartStore = create<TCartStore>((set, get) => ({
   clearCart: () =>
     set(() => {
       localStorage.removeItem("cart");
-      return { items: [] };
+      const newCartId = nanoid();
+      localStorage.setItem("cartId", newCartId );
+
+      return { items: [], id: newCartId };
     }),
  
 
@@ -202,7 +245,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     return total;
   },
   
-  getCartTotal: () => {
+  getCartTotalBeforeShipping: () => {
     const items: TCartItem[] = get().items;
     let total = 0;
 
@@ -212,6 +255,21 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     return total;
   },
   
-  
+  getShippingCost: () => {
+    const total = get().getCartTotalBeforeShipping();
+
+    if (total >= 250000) {
+      return 0;
+    }
+    return 15000;
+  },
+  getCartTotal: () => {
+    const total = get().getCartTotalBeforeShipping();
+    // const discount = get().getDiscountAmount();
+    // const tax = get().getCartTax();
+    const shipping = get().getShippingCost();
+
+    return total + shipping;
+  }
   
 }));

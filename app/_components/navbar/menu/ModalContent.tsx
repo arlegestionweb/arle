@@ -1,8 +1,9 @@
 import SearchInput from "../SearchInput";
 import Link from "next/link";
-import { GoArrowUpRight, GoChevronLeft } from "react-icons/go";
+import { GoArrowUpRight } from "react-icons/go";
 import { useRouter } from "next/navigation";
 import Spinner from "../../Spinner";
+import { Suspense } from "react";
 
 type ModalContentProps = {
   marca?: string | null;
@@ -36,9 +37,8 @@ const ModalContent = ({
     currentScreen === 0
       ? "/listing"
       : currentScreen === 2
-      ? `/listing?type=${productType}&genero=${gender}`
-      : `/listing?type=${
-          subtitle === "perfumes" ? "perfume" : subtitle?.toLowerCase()
+        ? `/listing?type=${productType}&genero=${gender}`
+        : `/listing?type=${subtitle === "perfumes" ? "perfume" : subtitle?.toLowerCase()
         }`;
   return (
     <section
@@ -46,9 +46,11 @@ const ModalContent = ({
     >
       <section className="py-[18px] px-6 flex w-full flex-col gap-[12px]">
         {search && (
-          <div className="md:hidden pb-4">
-            <SearchInput className="w-full" onSearch={() => setIsMenu(false)} />
-          </div>
+          <Suspense>
+            <div className="md:hidden pb-4">
+              <SearchInput className="w-full" onSearch={() => setIsMenu(false)} />
+            </div>
+          </Suspense>
         )}
         <h2 className="text-zinc-800 text-lg font-medium font-tajawal leading-snug capitalize cursor-default pb-4">
           {subtitle === "perfume" ? "perfumes" : subtitle}
@@ -123,7 +125,7 @@ const ModalContent = ({
               </p>
             </Link>
             <Link
-              href={"/"}
+              href={"/estadodecompra"}
               className="flex items-center gap-2 group"
               onClick={() => setIsMenu(false)}
             >

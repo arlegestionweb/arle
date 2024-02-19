@@ -26,7 +26,6 @@ const RelojPremium = ({
   setCantidad,
   pricing,
 }: TRelojPremiumProps) => {
-  console.log(product.descripcion);
   return (
     <>
       <PremiumLayout
@@ -46,6 +45,7 @@ const RelojPremium = ({
             cantidad={cantidad}
             anadirACantidad={() => setCantidad(cantidad + 1)}
             restarACantidad={() => setCantidad(cantidad - 1)}
+            max={selectedVariant.unidadesDisponibles}
           />
         </section>
         <AddToCart
@@ -81,7 +81,7 @@ const RelojPremium = ({
           product={product}
           quantity={cantidad}
           selectedVariant={selectedVariant}
-          className="lg:hidden"
+          className="lg:hidden mt-6"
         />
       </PremiumLayout>
     </>

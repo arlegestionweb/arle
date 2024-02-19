@@ -4,7 +4,6 @@ import { relojLujoSchema, relojPremiumSchema } from "../zodSchemas/reloj";
 import { gafasLujoSchema, gafasPremiumSchema } from "../zodSchemas/gafas";
 import { perfumeLujoSchema, perfumePremiumSchema } from "../zodSchemas/perfume";
 import { zodTimedDiscountsSchema } from "../zodSchemas/general";
-import { recommendedProductsSchema, zodProduct } from "../listingQueries";
 
 type TProductType =
   | "relojesLujo"
@@ -337,11 +336,51 @@ export const productQuery: Record<TProductType, string> = {
       },
     },
     "inspiracion": ${inspiracionQuery},    
-    "variantes": ${variantesDeGafaQueryString},
     modelo,
     coleccionDeMarca,
     "slug": slug.current,
+    "variantes": variantes[] {
+      "colorDelLente": colorDelLente -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaVarilla": colorDeLaVarilla -> {
+        nombre,
+        "color": color.hex
+      },
+      "colorDeLaMontura": colorDeLaMontura -> {
+        nombre,
+        "color": color.hex
+      },
+      "imagenes": imagenes[] {
+        alt,
+        "url": asset->url,
+      },
+      codigoDeReferencia,
+      unidadesDisponibles,
+      precio,
+      tag,
+      mostrarUnidadesDisponibles
+    },
+    modelo,
+    "slug": slug.current, 
+    genero,
+    descripcion,
+    "detalles": detalles {
+      "tipoDeGafa": tipoDeGafa -> titulo,
+      "estiloDeGafa": estiloDeGafa -> titulo,
+        "lente": lente {
+        "tipo": tipo -> titulo,
+        "material": material -> titulo,
+      },
+      "montura": montura {
+        "formaDeLaMontura": formaDeLaMontura -> titulo,
+        "materialMontura": materialMontura -> titulo,
+        "materialVarilla": materialVarilla -> titulo,
+      }
+    },
   }`,
+  
   gafasPremium: `{
     "date": _createdAt,
     _type,
@@ -448,6 +487,38 @@ export const getProductById = async (id: string, productType: TProductType) => {
   };
 };
 
+const zodPorudctWithVariants = z.object({
+  _id: z.string(),
+  variantes: z.array(
+    z.object({
+      unidadesDisponibles: z.number(),
+      codigoDeReferencia: z.string(),
+    })
+  ),
+});
 
+const zodProductsWithVariants = z.array(zodPorudctWithVariants);
 
+export const getProductsByIds = async (
+  products: { _id: string; _type: TProductType }[]
+) => {
+  const result = await Promise.all(
+    products.map(async (product) => {
+      const productWithVariants = await sanityClient.fetch(
+        `*[_id == "${product._id}"][0]{_id, "variantes": variantes[]{unidadesDisponibles, codigoDeReferencia}}`
+      );
+      // console.log({ productWithVariants });
+      return productWithVariants;
+    })
+  );
 
+  const parsedResult = zodProductsWithVariants.safeParse(result);
+
+  // console.log({ result, variantes: result[0].variantes[0] });
+
+  if (!parsedResult.success) {
+    return console.error(parsedResult.error.message);
+  }
+
+  return parsedResult.data;
+};

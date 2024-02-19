@@ -132,6 +132,7 @@ const HeroProduct = ({
             cantidad={cantidad}
             anadirACantidad={() => setCantidad(cantidad + 1)}
             restarACantidad={() => setCantidad(cantidad - 1)}
+            max={selectedVariant.unidadesDisponibles}
           />
         </section>
 

@@ -46,6 +46,7 @@ const GafaPremium = ({
             cantidad={cantidad}
             anadirACantidad={() => setCantidad(cantidad + 1)}
             restarACantidad={() => setCantidad(cantidad - 1)}
+            max={selectedVariant.unidadesDisponibles}
           />
         </section>
         <AddToCart
@@ -77,7 +78,7 @@ const GafaPremium = ({
 
         <AddToCart
           pricing={pricing}
-          className="lg:hidden"
+          className="lg:hidden mt-6"
           product={product}
           quantity={cantidad}
           selectedVariant={selectedVariant}
