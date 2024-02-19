@@ -40,7 +40,7 @@ const Page = async ({ params }: { params: { job: string } }) => {
         <section className="flex flex-col text-gray-600 gap-1.5">
           <p className="about-text flex gap-2">
             <IoLocationOutline className="text-lg" />
-            {`Sede: ${trabajo.sede.nombre} - ${trabajo.sede.city}`}
+            {`Sede: ${trabajo.sede.nombre} - ${trabajo.sede.ciudad}`}
           </p>
           <p className="about-text flex gap-2"><PiSuitcaseSimple className="text-lg" />{`Experiencia: ${trabajo.experience}`}</p>
           <p className="about-text flex gap-2"><MdChecklistRtl className="text-lg"/>{`Habilidades: ${trabajo.skills}`}</p>
