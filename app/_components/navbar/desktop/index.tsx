@@ -8,6 +8,7 @@ import RedDot from "../../RedDot";
 import { useCartStore } from "../../cart/store";
 import { LuShoppingCart } from "react-icons/lu";
 import Menu from "../menu";
+import ArleBasicLogo from "../../ArleBasicLogo";
 
 type NavDesktopProps = {
   className?: string;
@@ -25,7 +26,9 @@ const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
       >
         <section className="w-full flex h-full justify-between items-center max-w-screen-xl">
           <Link href={"/"} className="h-fit self-center">
-            <Image src={"/ArleBasicLogo.svg"} width={80} height={30} alt="logo" />
+          <div className="w-[85px]">
+          <ArleBasicLogo />
+        </div>
           </Link>
           <Suspense>
             <SearchInput />

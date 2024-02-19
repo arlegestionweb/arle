@@ -22,6 +22,7 @@ import {
   isPerfumePremium,
   isRelojLujo,
 } from "@/sanity/queries/pages/types";
+import ArleBasicLogo from "../ArleBasicLogo";
 
 const AddedToCartModal = () => {
   const [product, setProduct] = useState<TProduct | null>(null);
@@ -66,17 +67,17 @@ const AddedToCartModal = () => {
 
   const image =
     product._type === "relojesLujo" ||
-      product._type === "relojesPremium" ||
-      product._type === "gafasLujo" ||
-      product._type === "gafasPremium"
+    product._type === "relojesPremium" ||
+    product._type === "gafasLujo" ||
+    product._type === "gafasPremium"
       ? product.variantes[variantIndex].imagenes[0]
       : product.imagenes[0];
 
   const productTitle =
     product._type === "relojesLujo" ||
-      product._type === "relojesPremium" ||
-      product._type === "gafasLujo" ||
-      product._type === "gafasPremium"
+    product._type === "relojesPremium" ||
+    product._type === "gafasLujo" ||
+    product._type === "gafasPremium"
       ? product.modelo
       : product.titulo;
   return (
@@ -85,13 +86,16 @@ const AddedToCartModal = () => {
         onClick={() => {
           toggleAddedToCartModal();
         }}
-        className={`${isAddedToCartModalOpen
-          ? "opacity-100"
-          : "opacity-0 pointer-events-none"
-          } fixed z-[105] top-[0px] left-0 items-end w-screen h-screen bg-black bg-opacity-50 backdrop-blur-sm flex flex-col overflow-hidden`}
+        className={`${
+          isAddedToCartModalOpen
+            ? "opacity-100"
+            : "opacity-0 pointer-events-none"
+        } fixed z-[105] top-[0px] left-0 items-end w-screen h-screen bg-black bg-opacity-50 backdrop-blur-sm flex flex-col overflow-hidden`}
       />
-      <section className="w-screen pointer-events-none h-screen fixed top-0 left-0 z-[106] 
-      flex justify-center items-center default-paddings">
+      <section
+        className="w-screen pointer-events-none h-screen fixed top-0 left-0 z-[106] 
+      flex justify-center items-center default-paddings"
+      >
         <div className="w-full max-w-screen-sm z-[102] pointer-events-auto px-6 pt-4 pb-3 bg-white flex-col justify-start items-start gap-2.5 relative">
           <header className="flex w-full items-center justify-between pb-3">
             <h1 className="mx-auto text-gray-800 text-lg md:text-xl font-jomolhari">
@@ -118,14 +122,16 @@ const AddedToCartModal = () => {
               </h2>
               <h3 className="text-md mb-1 md:text-lg md:leading-none font-medium text-gray-700 leading-none">
                 {isPerfumePremium(product)
-                  ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.detalles.concentracion
-                  }`
-                  : isPerfumeLujo(product)
-                    ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.concentracion
+                  ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${
+                      product.detalles.concentracion
                     }`
-                    : isReloj(product)
-                      ? product.modelo
-                      : product.modelo}
+                  : isPerfumeLujo(product)
+                  ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${
+                      product.concentracion
+                    }`
+                  : isReloj(product)
+                  ? product.modelo
+                  : product.modelo}
               </h3>
               {isPerfume(product) && (
                 <p className="text-sm leading-none capitalize text-gray-600">
@@ -149,7 +155,10 @@ const AddedToCartModal = () => {
                   {` | ${product.genero}`}
                 </p>
               )}
-              <p className="text-sm leading-none capitalize text-gray-600">{"Código: "}{variant.codigoDeReferencia}</p>
+              <p className="text-sm leading-none capitalize text-gray-600">
+                {"Código: "}
+                {variant.codigoDeReferencia}
+              </p>
               <section className="flex flex-col w-full gap-1">
                 <section className="flex items-center gap-5">
                   <Cantidad
@@ -206,13 +215,9 @@ const AddedToCartModal = () => {
                 <FaArrowRight className="text-base" />
               </Button>
             </div>
-            <Image
-              className="w-[5.5rem] h-10 pt-2"
-              src="/arleBasicLogo.svg"
-              width={100}
-              height={100}
-              alt="isoLogo"
-            />
+            <div className="w-[5.5rem]">
+              <ArleBasicLogo />
+            </div>
           </footer>
         </div>
       </section>
