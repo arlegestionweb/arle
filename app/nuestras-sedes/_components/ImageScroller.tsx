@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { GiCardJackClubs } from "react-icons/gi";
+import { useLayoutEffect, useRef, useState } from "react";
 
 interface MyImage {
   url: string;
@@ -14,7 +13,6 @@ const ImageScroller = ({ images }: Props) => {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const [scroll, setScroll] = useState<number>(0);
-  const [width, setWidth] = useState<number>(0);
   const [imageWidth, setImageWidth] = useState<number>(0);
 
   const selectedImage = Math.round(
@@ -38,7 +36,6 @@ const ImageScroller = ({ images }: Props) => {
   const handleWidth = () => {
     const carRef = carouselRef.current;
     if (window.innerWidth) {
-      setWidth(window.innerWidth);
       carRef && setImageWidth(carRef.clientHeight)
     }
   };
@@ -50,13 +47,6 @@ const ImageScroller = ({ images }: Props) => {
       window.removeEventListener("resize", handleWidth);
     };
   }, []);
-
-  // useEffect(() => {
-  //   if(width>450){
-  //     setPercentage(0.6);
-  //     console.log("yes or not")
-  //   } else setPercentage(0.4);
-  // }, [width])
 
   if (!images) return null;
 
