@@ -1,12 +1,11 @@
 "use client";
+import ImageModal from "@/app/_components/ImageModal";
+import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
 
-interface MyImage {
-  url: string;
-}
-interface Props {
-  images: MyImage[];
+type Props = {
+  images: TImages;
 }
 
 const ImageScroller = ({ images }: Props) => {
@@ -14,6 +13,8 @@ const ImageScroller = ({ images }: Props) => {
 
   const [scroll, setScroll] = useState<number>(0);
   const [imageWidth, setImageWidth] = useState<number>(0);
+  const [isImageOpen, setImageOpen] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
 
   const selectedImage = Math.round(
     ((scroll - (imageWidth/2) + 2.3 )/ (imageWidth)
@@ -56,18 +57,23 @@ const ImageScroller = ({ images }: Props) => {
       className={`w-full flex overflow-x-auto scrollbar-hide snap-mandatory snap-x`}
     >
       <section className="flex"> 
+      <ImageModal images={images} index={imageIndex} isImageOpen={isImageOpen} closeImage={()=>setImageOpen(false)}  />
       <span className="px-[calc(100vw/4)]" />
       { images.map((item, i) => (
         <section 
         key={i + item.url}
         className={`w-[60vw] xs:w-[50vw] sm:w-[40vw] md:w-[30vw] lg:w-[20vw] aspect-square flex`}>
         <Image
-          onClick={() =>
+          onClick={() =>{
             carouselRef?.current?.scrollTo({ left: i * imageWidth + (imageWidth/2) + 2.3 ,
-              behavior: "smooth"})
-            }
-            className={`h-full snap-center object-cover scale-75 transition-all w-full] ${
-              selectedImage === i ? "scale-100 cursor-default" : "cursor-pointer"
+              behavior: "smooth"});
+              if(selectedImage === i){
+                setImageIndex(i)
+                setImageOpen(true);
+              }
+          }}
+            className={`h-full snap-center object-cover scale-75 transition-all w-full ${
+              selectedImage === i ? "scale-95 cursor-zoom-in" : "cursor-pointer"
             }`}
             width={500}
             height={500}

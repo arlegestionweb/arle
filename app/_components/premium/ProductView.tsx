@@ -6,11 +6,13 @@ import {
 } from "@/sanity/queries/pages/types";
 import ProductSlide from "../ProductSlide";
 import { cn } from "@/app/_lib/utils";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
+import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
+import ImageModal from "../ImageModal";
 
 type ProductViewerProps = {
   product: TGafaPremium | TRelojPremium | TPerfumePremium;
@@ -32,7 +34,7 @@ const ProductViewer = ({ product, className, selectedVariant }: ProductViewerPro
         isLink={false}
       />
       <ProductGrid
-        product={imagenes}
+        imagenes={imagenes}
         className="hidden lg:flex basis-full max-h-[650px]"
       />
     </>
@@ -40,19 +42,16 @@ const ProductViewer = ({ product, className, selectedVariant }: ProductViewerPro
 };
 
 const ProductGrid = ({
-  product,
+  imagenes,
   className,
 }: {
-  product: {
-    alt: string;
-    url: string;
-  }[];
+  imagenes: TImages;
   className?: string;
 }) => {
 
-  const splitArrayIntoEvenOdd = (array: typeof product): [typeof product, typeof product] => {
-    const evenItems: typeof product = [];
-    const oddItems: typeof product = [];
+  const splitArrayIntoEvenOdd = (array: typeof imagenes): [typeof imagenes, typeof imagenes] => {
+    const evenItems: typeof imagenes = [];
+    const oddItems: typeof imagenes = [];
   
     array.forEach((item, index) => {
       if (index % 2 === 0) {
@@ -65,14 +64,21 @@ const ProductGrid = ({
     return [evenItems, oddItems];
   };
   
-  const [evenImages, oddImages] = splitArrayIntoEvenOdd(product);
+  const [evenImages, oddImages] = splitArrayIntoEvenOdd(imagenes);
+  const [isImageOpen, setImageOpen] = useState(false);
+  const [index, setIndex] = useState(0);
 
   return (
     <section className={cn("relative ", className)}>
       <div className={"flex overflow-y-scroll no-scrollbar overflow-hidden w-full gap-2"}>
         <section className="basis-full flex flex-col gap-2">
-        {evenImages.map(image => (
+          <ImageModal closeImage={()=>setImageOpen(false)} images={imagenes}  index={index} isImageOpen={isImageOpen} />
+        {evenImages.map((image, i) => (
           <div
+          onClick={()=>{
+            setIndex(i*2)
+            setImageOpen(true);
+          }}
           key={image.alt}
           className="relative">
             <Image
@@ -80,14 +86,18 @@ const ProductGrid = ({
               alt={image.alt}
               height={900}
               width={900}
-              className={`object-contain w-full object-center`}
+              className={`object-contain w-full object-center cursor-zoom-in`}
               />
           </div>
         ))}
         </section>
         <section className="basis-full flex flex-col gap-2">
-        {oddImages.map(image => (
+        {oddImages.map((image, i) => (
           <div
+          onClick={()=>{
+            setIndex(i*2+1)
+            setImageOpen(true);
+          }}
           key={image.alt}
           className="relative">
             <Image
@@ -95,12 +105,12 @@ const ProductGrid = ({
               alt={image.alt}
               height={900}
               width={900}
-              className={`object-contain w-full object-center`}
+              className={`object-contain w-full object-center cursor-zoom-in`}
               />
           </div>
         ))}
         </section>
-        {product.length > 4 && (
+        {imagenes.length > 4 && (
           <div className="absolute bottom-0 h-20 w-full z-10 bg-gradient-to-b from-transparent to-[#00000080] opacity-25"></div>
         )}
       </div>

@@ -151,20 +151,16 @@ const GafaLujo = ({
         ImageComp={
           product.banners ? (
             <ProductSlide
-              imagesProduct={
-                (product.banners &&
-                  product.banners.map(
-                    (element) =>
-                      ({
-                        url: element.imagen?.url,
-                        alt: element.imagen?.alt,
-                      } as ProductImage)
-                  )) ||
-                []
-              }
+              imagesProduct={(product.banners &&
+                product.banners.map(
+                  (element) => ({
+                    url: element.imagen?.url,
+                    alt: element.imagen?.alt,
+                  } as ProductImage)
+                )) ||
+                []}
               className="w-full h-[60vw] max-h-[350px]"
-              isLink={false}
-            />
+              isLink={false}       />
           ) : (
             null
           )

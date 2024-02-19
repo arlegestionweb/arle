@@ -3,6 +3,8 @@ import { cn } from "@/app/_lib/utils";
 import Image from "next/image";
 import React, { useState } from "react";
 import CarouselProduct from "./CarouselProduct";
+import ImageModal from "../ImageModal";
+import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 
 type GalleryProductProps = {
   imagesProduct: {
@@ -19,35 +21,50 @@ const GalleryProduct = ({
   orientation = "horizontal",
 }: GalleryProductProps) => {
   const [index, setIndex] = useState(0);
+  const [isImageOpen, setImageOpen] = useState(false);
 
-  const thumbnailElement = imagesProduct
-    .map((img, idx) => {
-      if (imagesProduct.length > 1) {
-        return (
-          <section
-            key={`${img.url}-${idx}`}
-            className="relative min-w-[80px] w-20 h-20 mr-3">
-            <Image
-              src={img.url}
-              alt={img.alt || "perfume"}
-              width={80}
-              height={80}
-              onClick={() => setIndex(idx)}
-              className="object-contain h-full w-full cursor-pointer"
-            />
-          </section>
-        );
-      }
-    });
+  const thumbnailElement = imagesProduct.map((img, idx) => {
+    if (imagesProduct.length > 1) {
+      return (
+        <section
+          key={`${img.url}-${idx}`}
+          className="relative min-w-[80px] w-20 h-20 mr-3"
+        >
+          <Image
+            src={img.url}
+            alt={img.alt || "perfume"}
+            width={80}
+            height={80}
+            onClick={() => setIndex(idx)}
+            className="object-contain h-full w-full cursor-pointer"
+          />
+        </section>
+      );
+    }
+  });
 
   return (
     <section
       className={cn(
         "flex flex-col items-center lg:mt-8",
-        orientation == "vertical" && "md:flex-row-reverse gap-2 md:px-20 md:mb-4 justify-center md:items-start md:pt-4",
+        orientation == "vertical" &&
+          "md:flex-row-reverse gap-2 md:px-20 md:mb-4 justify-center md:items-start md:pt-4",
         className
-      )}>
-      <div className={cn("relative w-full aspect-square max-h-[370px] md:h-[377px] lg:h-[569px]", orientation == "vertical" && "md:w-1/2 lg:w-full")}>
+      )}
+    >
+      <ImageModal
+        closeImage={() => setImageOpen(false)}
+        images={imagesProduct as TImages}
+        index={index}
+        isImageOpen={isImageOpen}
+      />
+      <div
+        onClick={() => setImageOpen(true)}
+        className={cn(
+          "relative w-full aspect-square max-h-[370px] md:h-[377px] lg:h-[569px] cursor-zoom-in",
+          orientation == "vertical" && "md:w-1/2 lg:w-full"
+        )}
+      >
         <Image
           alt={imagesProduct[index].alt || ""}
           src={imagesProduct[index].url}
@@ -63,7 +80,10 @@ const GalleryProduct = ({
         <CarouselProduct
           setProduct={setIndex}
           imagesProduct={imagesProduct}
-          className={cn("hidden my-2 md:justify-center justify-start md:flex h-20", orientation == "vertical" && "md:h-full lg:h-auto md:gap-2")}
+          className={cn(
+            "hidden my-2 md:justify-center justify-start md:flex h-20",
+            orientation == "vertical" && "md:h-full lg:h-auto md:gap-2"
+          )}
           isHorizontal={orientation != "vertical"}
         />
       )}
