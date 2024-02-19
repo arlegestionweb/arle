@@ -23,10 +23,10 @@ const AboutSubMenu = () => {
 
 
   return (
-    <nav className="h-[53px] bg-white w-full overflow-x-scroll pl-8">
-      <ul className="flex items-center gap-2 w-fit border-b-2 border-b-gray-400">
+    <nav className="h-[36px] bg-gray-100 px-2 xs:default-paddings w-full overflow-x-scroll scrollbar-hide flex justify-center">
+      <ul className="flex items-center h-full w-full max-w-screen-xl ">
         {menuItems.map((item, index) => (
-          <li key={index} className={`mb-[-2px] whitespace-nowrap ${pathname === item.href ? "border-b-2 border-black text-black" : "text-gray-400"}`}>
+          <li key={index} className={` font-inter text-xs xs:text-sm font-medium hover:text-gray-500 whitespace-nowrap tracking-tight px-1.5 ${pathname === item.href ? "border-b-2 border-gray-800 text-gray-800" : "border-b-2 border-gray-400 text-gray-400"}`}>
             <Link href={item.href}>
               {item.title}
             </Link>

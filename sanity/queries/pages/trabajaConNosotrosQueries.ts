@@ -22,6 +22,7 @@ const jobsQuery = `
     direccion,
   },
   titulo,
+  areaLaboral
   experience,
   salary,
   "skills": skills [],
@@ -75,6 +76,7 @@ const jobSchema = z.object({
   aboutJob: z.array(baseBlockSchema),
   sede: sedeSchema,
   titulo: z.string(),
+  areaLaboral: z.string(),
   experience: z.string(),
   salary: z.string(),
   skills: z.array(z.string()),

@@ -44,7 +44,7 @@ const Cart = ({
     <section className="bg-white z-[60] overflow-y-scroll w-screen h-screen fixed top-0 left-0 flex flex-col md:flex-row no-scrollbar">
       <section className="md:flex-1 pt-16 px-5">
       <button
-            className="flex items-center -ml-1 group"
+            className="flex items-center -ml-1 mb-3 group"
             onClick={toggleCart}
           >
             <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />

@@ -63,6 +63,29 @@
   .content-text{
     @apply font-tajawal leading-tight text-base font-light text-gray-600 lg:text-lg lg:leading-tight;
   }
+  .about-title{
+    @apply font-jomolhari tracking-tight leading-snug text-2xl xs:text-3xl text-gray-800
+  }
+  .about-text{
+    @apply font-tajawal leading-tight font-normal text-gray-600 text-base sm:text-lg sm:leading-tight
+  }
+  .about-title-white{
+    @apply font-jomolhari tracking-tight leading-snug text-2xl xs:text-3xl text-gray-200
+  }
+  .about-text-white{
+    @apply font-tajawal leading-tight font-normal text-gray-300 text-base sm:text-lg sm:leading-tight
+  }
+  .portable-text{
+    h1{
+      @apply font-bold text-2xl text-gray-800
+    }
+    h2{
+      @apply font-semibold text-xl text-gray-700
+    }
+    p{
+      @apply font-normal text-base text-gray-700
+    }
+  }
   .default-paddings{
     @apply px-4 xs:px-8 sm:px-14 md:px-20;
   }
