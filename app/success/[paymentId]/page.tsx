@@ -7,8 +7,8 @@ import SuccessIcon from "@/app/_components/SuccessIcon";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import Link from "next/link";
 
-const Page = async ({ 
-  params, 
+const Page = async ({
+  params,
   // searchParams 
 }: {
   params: {
@@ -41,30 +41,18 @@ const Page = async ({
 
       <section className="flex flex-col gap-1 max-w-screen-xs text-sm md:text-base">
 
-      <h2 className="font-tajawal font-medium text-xl md:text-2xl text-gray-800">Gracias por confiar en Arlé.</h2>
-      <p>Tu pago ha sido efectuado por un total de ${numberToColombianPriceString(sanityOrder.amounts.total)}.</p>
-      <h2>Nuestro equipo está preparando tu pedido.</h2>
-      <p>Te enviaremos un correo electrónico con la factura.</p>
-      <p>Tu Código de Compra es: <p className="font-bold">{sanityOrder._id}</p></p>
-      <p>Para consultar el estado de tu compra ingresa tu Código de Compra en el siguiente link: <Link href="/estadodecompra" className="underline"> www.arle.co/estadodecompra</Link> o haz click <Link href={`/orders/${sanityOrder._id}`} className="text-blue-800 hover:underline">aquí</Link>.</p>
-      <Link href="/listing" className="mt-4 dark-button button-float">Finalizar</Link>
+        <h2 className="font-tajawal font-medium text-xl md:text-2xl text-gray-800">Gracias por confiar en Arlé.</h2>
+        <p>Tu pago ha sido efectuado por un total de ${numberToColombianPriceString(sanityOrder.amounts.total)}.</p>
+        <h2>Nuestro equipo está preparando tu pedido.</h2>
+        <p>Te enviaremos un correo electrónico con la factura.</p>
+        <p>Tu Código de Compra es: <span className="font-bold">{sanityOrder._id}</span></p>
+        <p>Para consultar el estado de tu compra ingresa tu Código de Compra en el siguiente link:
+          <Link href="/estadodecompra" className="underline mr-1"> www.arle.co/estadodecompra</Link>
+          o haz click <Link href={`/orders/${sanityOrder._id}`} className="text-blue-800 hover:underline">aquí</Link>.
+        </p>
+        <Link href="/listing" className="mt-4 dark-button button-float">Finalizar</Link>
 
       </section>
-
-      {/* <p>Fecha: {sanityOrder.orderDate}</p>
-      <p>Estado: {sanityOrder.status}</p>
-      <p>Cliente: {sanityOrder.customer.name}</p>
-      <p>Email: {sanityOrder.customer.email}</p>
-      <p>Teléfono: {sanityOrder.customer.phone}</p>
-      <p>Dirección: {sanityOrder.customer.addressObject?.address}</p>
-      <p>Subtotal: {sanityOrder.amounts.subtotal}</p>
-      <p>Descuento: {sanityOrder.amounts.discount}</p>
-      <p>Impuestos: {sanityOrder.amounts.taxes}</p>
-      <p>Envío: {sanityOrder.amounts.shipping}</p>
-      <p>Total: {sanityOrder.amounts.total}</p>
-      <h3>Productos:</h3> */}
-      
-
     </Main>
   );
 }

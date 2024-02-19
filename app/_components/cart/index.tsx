@@ -60,7 +60,9 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
 
   // const error = formState?.error && JSON.parse(formState.error)[0].message
 
-  const localUrl = window.location.href.split(pathname)[0];
+  const urlSegments = window.location.href.split("/");
+
+  const baseUrl = `${urlSegments[0]}//${urlSegments[2]}`
 
   return (
     <>
@@ -193,12 +195,12 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
               </h5>
               <span>${numberToColombianPriceString(getCartTotal())}</span>
             </label>
-            <label className="flex w-full justify-between">
+            {/* <label className="flex w-full justify-between">
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 id
               </h5>
               <span>{id}</span>
-            </label>
+            </label> */}
             <Button
               type="submit"
               labelType={"dark"}
@@ -291,7 +293,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                         disabled={formState?.data ? false : true}
                         amount={getCartTotal()}
                         reference={payment_reference}
-                        redirectUrl={`${localUrl}/success/${payment_reference}/is-payment-successful`}
+                        redirectUrl={`${baseUrl}/success/${payment_reference}/is-payment-successful`}
                       />
                       <footer>
                         <Image
