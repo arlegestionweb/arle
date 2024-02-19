@@ -20,6 +20,7 @@ import Spinner from "../Spinner";
 import Image from "next/image";
 import { MdOutlinePayments } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
+import ArleBasicLogo from "../ArleBasicLogo";
 
 const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
   const pathname = usePathname();
@@ -296,13 +297,9 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                         redirectUrl={`${baseUrl}/success/${payment_reference}/is-payment-successful`}
                       />
                       <footer>
-                        <Image
-                          className="w-[5.5rem] h-10 pt-2"
-                          src="/arleBasicLogo.svg"
-                          width={100}
-                          height={100}
-                          alt="isoLogo"
-                        />
+                        <div className="w-[5.5rem]">
+                        <ArleBasicLogo />
+                        </div>
                       </footer>
                     </section>
                   </section>

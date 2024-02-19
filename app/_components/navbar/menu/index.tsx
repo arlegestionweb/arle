@@ -5,6 +5,7 @@ import ModalContent from "./ModalContent";
 import { getBrandsByProductTypeAndGender } from "@/sanity/queries/menu";
 import Image from "next/image";
 import { IoCloseSharp } from "react-icons/io5";
+import ArleBasicLogo from "../../ArleBasicLogo";
 
 export type TProductType = "perfume" | "reloj" | "gafa";
 
@@ -168,13 +169,9 @@ const Menu = ({
         </div>
         <footer className=" w-screen max-w-[400px] h-16 border-t border-stone-300 flex items-center justify-center">
           {currentScreen === 2 ? (
-            <Image
-              className="opacity-80"
-              src="/ArleBasicLogo.svg"
-              alt="IsoLogo de Arlé"
-              width={100}
-              height={30}
-            />
+            <div className="w-[5.5rem]">
+            <ArleBasicLogo />
+          </div>
           ) : (
             <Image
               className="opacity-80"
