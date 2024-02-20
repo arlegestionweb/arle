@@ -101,6 +101,20 @@ export const sedeSchema = defineType({
           name: "image",
           title: "Imagen",
           type: "image",
+          options: {
+            collapsible: false,
+          },
+        
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Texto Alternativo",
+              description: "Para buscadores de internet (SEO)",
+              type: "string",
+              hidden: ({ parent }) => !parent,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
         }),
       ],
     }),

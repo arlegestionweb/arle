@@ -13,6 +13,7 @@ const sedeQuery = `
   schedule,
   local,
   "imagenes": imagenes [] {
+    alt,
     "url": asset -> url
   },
   "video": video {
@@ -34,6 +35,7 @@ const nuestrasSedesQuery = `*[_type == "nuestrasSedes"] [0] {
 }`;
 
 const imagenSchema = z.object({
+  alt: z.string(),
   url: z.string(),
 });
 

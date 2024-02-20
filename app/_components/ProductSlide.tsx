@@ -4,6 +4,8 @@ import { cn } from "@/app/_lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import ProductVideo from "./ProductVideo";
+import ImageModal from "./ImageModal";
+import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 
 export type ProductImage = {
   url: string;
@@ -47,6 +49,9 @@ const ProductSlide = ({
   const [scrollPosition, setScrollPosition] = useState(0);
   const productRef = useRef<HTMLElement>(null);
 
+  const [isImageOpen, setImageOpen] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
+
   const handleScroll = (event: any) => {
     const element = event.target as HTMLElement;
     const scrollValue = element.scrollLeft;
@@ -76,6 +81,7 @@ const ProductSlide = ({
         className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
         onScroll={handleScroll}
         ref={productRef}>
+          <ImageModal closeImage={()=>setImageOpen(false)} images={imagesProduct as TImages} index={imageIndex} isImageOpen={isImageOpen} />
         {imagesProduct &&
           imagesProduct.map((image, index) => (
             <div
@@ -97,7 +103,10 @@ const ProductSlide = ({
                   />
                 </Link>
               ) : (
-                <div className="w-full h-full">
+                <div onClick={()=>{
+                  setImageIndex(index);
+                  setImageOpen(true);
+                }} className="w-full h-full cursor-zoom-in">
                   <Image
                     alt={image.alt || "product"}
                     src={image.url}

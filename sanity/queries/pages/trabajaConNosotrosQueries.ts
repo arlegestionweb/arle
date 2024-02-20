@@ -10,6 +10,7 @@ const jobsQuery = `
     schedule,
     local,
     "imagenes": imagenes [] {
+      alt,
       "url": asset -> url,
     },
     whatsapp,
@@ -50,10 +51,14 @@ const imagenSchema = z.object({
   url: z.string(),
 });
 
+const imagenesSchema = z.array(imagenSchema)
+
+export type TImages = z.infer<typeof imagenesSchema>;
+
 const sedeSchema = z.object({
   schedule: z.string(),
   local: z.string(),
-  imagenes: z.array(z.object({ url: z.string() })),
+  imagenes: imagenesSchema,
   whatsapp: z.string(),
   nombre: z.string(),
   findUsIn: z.string(),

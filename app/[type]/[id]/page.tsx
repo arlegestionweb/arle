@@ -4,7 +4,6 @@ import { unstable_noStore as noStore } from 'next/cache';
 import Main from "@/app/_components/Main";
 import { getRecommendedProducts } from "@/sanity/queries/pages/listingQueries";
 
-
 export type TParams = {
   type:
   | "perfumeLujo"
