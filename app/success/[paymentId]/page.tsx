@@ -2,7 +2,6 @@ import Main from "@/app/_components/Main";
 import { getOrderById } from "@/sanity/queries/orders";
 import RemoveCartItems from "./_components/RemoveCartItems";
 import React from "react";
-import ProductCard from "@/app/_components/cart/ProductCard";
 import SuccessIcon from "@/app/_components/SuccessIcon";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import Link from "next/link";

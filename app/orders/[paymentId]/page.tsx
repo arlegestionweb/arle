@@ -1,4 +1,3 @@
-"use client";
 import Main from "@/app/_components/Main";
 import { getOrderById } from "@/sanity/queries/orders";
 import React from "react";
@@ -7,8 +6,8 @@ import SuccessIcon from "@/app/_components/SuccessIcon";
 import Link from "next/link";
 import { DateTime } from "luxon";
 import { numberToColombianPriceString } from "@/utils/helpers";
-import { FaBoxesPacking } from "react-icons/fa6";
-import { GoChevronLeft } from "react-icons/go";
+import BackButton from "@/app/_components/BackButton";
+import { unstable_noStore } from "next/cache";
 
 const Page = async ({
   params,
@@ -17,6 +16,7 @@ const Page = async ({
     paymentId: string;
   };
 }) => {
+  unstable_noStore()
   const sanityOrder = await getOrderById(params.paymentId);
 
   const orderStatus: Record<string, string> = {
@@ -56,15 +56,8 @@ const Page = async ({
   return (
     <Main extraClasses="bg-white md:mt-[53px] default-paddings pb-10 min-h-screen flex justify-center">
       <section className="w-full max-w-screen-sm flex flex-col gap-2 pt-20">
-        <button
-          className="flex items-center -ml-1 group"
-          onClick={() => window.history.back()}
-        >
-          <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />
-          <span className="text-gray-700 text-base font-normal font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-500">
-            Volver
-          </span>
-        </button>
+
+        <BackButton />
         <div className="flex gap-2 font-tajawal items-center">
           <h1 className="text-gray-800 text-xl md:text-2xl font-bold ">
             Orden N°.

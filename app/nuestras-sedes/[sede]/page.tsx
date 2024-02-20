@@ -48,7 +48,7 @@ const Page = async ({params}: { params: { sede: string }}) => {
 					<article className="p-12 bg-arle-blue md:bg-transparent w-full md:w-[50%] flex flex-col justify-center gap-5 text-white md:text-black">
 						<h1 className="about-title-white md:about-title">Atención Personalizada</h1>
 						<p className="about-text-white md:about-text">Agenda una cita para que obtengas una atención personalizada en esta sede.</p>
-						<Link href="https://wa.me/573160700015?text=Hola,%20estoy%20interesad@%20en%20recibir%20una%20asesoría%20personalizada%20con%20Arlé!" className="light-button md:dark-button">Agendar</Link>
+						<Link href="https://wa.me/573160700015?text=Hola,%20estoy%20interesad@%20en%20recibir%20una%20asesoría%20personalizada%20con%20Arlé!" target="_blank" className="light-button md:dark-button">Agendar</Link>
 					</article>
 					<article className="w-full md:w-[50%] flex flex-col p-12 gap-5">
 						<h1 className="about-title">Excelente Ubicación</h1>

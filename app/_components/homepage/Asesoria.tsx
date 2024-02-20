@@ -26,7 +26,7 @@ const Asesoria = ({content}: PageProps) => {
 						<li key={i + beneficio}><h3 className="text-gray-700 section-text">{beneficio}</h3></li>
 						))}
 				</ul>
-				<Link href="https://wa.me/573160700015?text=Hola,%20estoy%20interesad@%20en%20recibir%20una%20asesoría%20personalizada%20con%20Arlé!" className="dark-button">Quiero una asesoría</Link>
+				<Link href="https://wa.me/573160700015?text=Hola,%20estoy%20interesad@%20en%20recibir%20una%20asesoría%20personalizada%20con%20Arlé!" target="_blank" className="dark-button">Quiero una asesoría</Link>
 			</section>
 		</section>
 	)

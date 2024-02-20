@@ -89,7 +89,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
                 <Link href="/trabaja-con-nosotros">Trabaja con Nosotros</Link>
               </li>
               <li>
-                <Link className="section-text underline-offset-2 hover:underline flex gap-1" href="https://wa.me/573160700015?text=Hola,%20estoy%20interesad@%20en%20recibir%20una%20asesoría%20personalizada%20con%20Arlé!">
+                <Link className="section-text underline-offset-2 hover:underline flex gap-1" href="https://wa.me/573160700015?text=Hola,%20estoy%20interesad@%20en%20recibir%20una%20asesoría%20personalizada%20con%20Arlé!" target="_blank">
                 <GoArrowUpRight className="w-5 h-5 -mt-0.5" />
                   Recibe una Asesoría
                 </Link>
