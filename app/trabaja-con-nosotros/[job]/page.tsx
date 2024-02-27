@@ -7,7 +7,6 @@ import { GoChevronLeft } from "react-icons/go";
 import { IoLocationOutline } from "react-icons/io5";
 import { PiCoins, PiSuitcaseSimple } from "react-icons/pi";
 import { MdChecklistRtl } from "react-icons/md";
-import { CiCalendarDate } from "react-icons/ci";
 import { FaRegClock } from "react-icons/fa6";
 
 export const dynamic = "force-dynamic";

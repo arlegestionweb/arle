@@ -1,8 +1,16 @@
 import { useEffect, RefObject, MouseEvent } from 'react';
 
-export const useClickOutside = (ref: RefObject<HTMLElement>, callback: () => void) => {
+export const useClickOutside = (
+  ref: RefObject<HTMLElement>,
+  callback: () => void,
+  ignoreRef?: RefObject<HTMLElement>
+) => {
   const handleClickOutside = (event: MouseEvent) => {
-    if (ref.current && !ref.current.contains(event.target as Node)) {
+    if (
+      ref.current &&
+      !ref.current.contains(event.target as Node) &&
+      !(ignoreRef?.current?.contains(event.target as Node))
+    ) {
       callback();
     }
   };
@@ -13,9 +21,8 @@ export const useClickOutside = (ref: RefObject<HTMLElement>, callback: () => voi
     return () => {
       document.removeEventListener('mousedown', handleClickOutside as unknown as EventListener);
     };
-  }, [ref, callback]);
+  }, [ref, callback, ignoreRef]);
 };
-
 
 export const useHideBodyOverflow = (isOverflowHidden: boolean) => {
   useEffect(() => {
