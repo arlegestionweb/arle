@@ -89,9 +89,9 @@ const AboutArle = ({ sobre }: AboutArleProps) => {
           </div>
         </section>
 
-        <div className="flex absolute z-20 bottom-9 m-auto left-0 right-0 justify-center py-2">
+        <ul className="flex absolute z-20 bottom-9 m-auto left-0 right-0 justify-center py-2">
           {sobre.imagenes.map((banner, index) => (
-            <div
+            <li
               key={index}
               className={`w-2.5 h-2.5 rounded-full mx-1.5 cursor-pointer ${
                 index === scrollPosition
@@ -101,7 +101,7 @@ const AboutArle = ({ sobre }: AboutArleProps) => {
               onClick={() => changeScrollPosition(index)}
             />
           ))}
-        </div>
+        </ul>
       </section>
     </section>
   );

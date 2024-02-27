@@ -1,10 +1,10 @@
 import Main from "@/app/_components/Main";
 import { TLegalSchema, getSiteSettings } from "@/sanity/queries/siteSettings";
 import { PortableText } from "@portabletext/react";
-import { unstable_noStore } from "next/cache";
+import { unstable_noStore as noStore } from "next/cache";
 
 const Page = async ({ params }: { params: { type: keyof TLegalSchema } }) => {
-  unstable_noStore();
+  noStore();
 
   const siteSettings = await getSiteSettings();
 
