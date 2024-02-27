@@ -7,23 +7,24 @@ const ShippingForm = () => {
       <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
         Información de envío
       </h3>
+      <p className="-mt-4 font-tajawal font-light text-base text-gray-600">(*) Campo requerido</p>
 
       <InputComponent
         name="name"
-        title="Nombres y Apellidos"
+        title="Nombres y Apellidos *"
         autocomplete="name"
       />
 
       <InputComponent
         name="id"
-        title="Identificación"
+        title="Identificación *"
         type="id"
         autocomplete="legal-id"
       />
 
       <InputComponent
         name="phone"
-        title="Teléfono"
+        title="Teléfono *"
         type="number"
         autocomplete="tel"
       />
@@ -31,7 +32,7 @@ const ShippingForm = () => {
       <InputComponent
         name="email"
         placeholder="email@ejemplo.com.co"
-        title="Correo electrónico"
+        title="Correo electrónico *"
         type="email"
         autocomplete="email"
       />
@@ -47,7 +48,7 @@ const ShippingForm = () => {
       <div className="flex justify-between gap-2">
         <InputComponent 
         name="ciudad" 
-        title="Ciudad" />
+        title="Ciudad *" />
 
         <InputComponent
           name="codigoPostal"
@@ -55,10 +56,10 @@ const ShippingForm = () => {
           autocomplete="postal-code"
         />
       </div>
-        <InputComponent name="departamento" title="Departamento" />
+        <InputComponent name="departamento" title="Departamento *" />
       <InputComponent
         name="direccion"
-        title="Dirección de envío"
+        title="Dirección de envío *"
         autocomplete="street-address"
       />
     </section>

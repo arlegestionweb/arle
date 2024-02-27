@@ -9,7 +9,7 @@ const InputButton = () => {
     setValue(event.currentTarget.value);
   };
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col gap-4">
       <input
         className="w-full font-sans focus-visible:outline-arle-blue h-9 px-3 bg-white rounded border border-stone-300 max-w-xl"
         type="text"

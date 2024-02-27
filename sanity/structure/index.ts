@@ -29,8 +29,8 @@ export default (S: StructureBuilder) => {
       productos(S),
       S.divider(),
       siteSettingsListItem,
-      S.divider(),
-      adminVentas,
+      // S.divider(),
+      // adminVentas,
       S.divider(),
       ...S.documentTypeListItems().filter(hiddenDocTypes),
     ]);

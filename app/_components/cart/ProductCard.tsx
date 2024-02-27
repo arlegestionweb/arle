@@ -1,26 +1,44 @@
 import Image from "next/image";
-import { isGafaLujo, isPerfumeLujo, isPerfumePremium, isRelojLujo } from "@/sanity/queries/pages/types";
-import { TProduct, isGafa, isPerfume, isReloj } from "@/sanity/queries/pages/listingQueries";
+import {
+  isGafaLujo,
+  isPerfumeLujo,
+  isPerfumePremium,
+  isRelojLujo,
+} from "@/sanity/queries/pages/types";
+import {
+  TProduct,
+  isGafa,
+  isPerfume,
+  isReloj,
+} from "@/sanity/queries/pages/listingQueries";
 import Link from "next/link";
 
-const ProductCard = ({ product, item }:
-  {
-    product: TProduct
-    item: { originalPrice: number, price: number, quantity: number, variantId: string},
-  }) => {
-    const image =
+const ProductCard = ({
+  product,
+  item,
+}: {
+  product: TProduct;
+  item: {
+    originalPrice: number;
+    price: number;
+    quantity: number;
+    variantId: string;
+  };
+}) => {
+  const image =
     product._type === "relojesLujo" ||
-      product._type === "relojesPremium" ||
-      product._type === "gafasLujo" ||
-      product._type === "gafasPremium"
+    product._type === "relojesPremium" ||
+    product._type === "gafasLujo" ||
+    product._type === "gafasPremium"
       ? product.variantes[0].imagenes[0]
       : product.imagenes[0];
 
+  const variant = product.variantes.find(
+    (variante) => variante.codigoDeReferencia === item.variantId
+  );
 
-      const variant = product.variantes.find(variante => variante.codigoDeReferencia === item.variantId)
-          
   return (
-    <li key={image?.url} className="flex items-center">
+    <li key={image?.url} className="flex items-center gap-4">
       {image && (
         <Image
           src={image?.url}
@@ -44,19 +62,21 @@ const ProductCard = ({ product, item }:
           dontDisplayPaymentOptions
         /> */}
 
-<h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize">
+        <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize">
           {product.marca}
         </h2>
         <h3 className="text-md mb-1 md:text-lg md:leading-none font-medium text-gray-700 leading-none">
           {isPerfumePremium(product)
-            ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.detalles.concentracion
-            }`
-            : isPerfumeLujo(product)
-              ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.concentracion
+            ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${
+                product.detalles.concentracion
               }`
-              : isReloj(product)
-                ? product.modelo
-                : product.modelo}
+            : isPerfumeLujo(product)
+            ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${
+                product.concentracion
+              }`
+            : isReloj(product)
+            ? product.modelo
+            : product.modelo}
         </h3>
         {isPerfume(product) && variant && (
           <p className="text-sm leading-none capitalize text-gray-600">
@@ -81,17 +101,21 @@ const ProductCard = ({ product, item }:
           </p>
         )}
 
-        {variant && 
-        <p className="text-sm leading-none capitalize text-gray-600">
-          {"Código: "}
-          {variant.codigoDeReferencia}
-        </p>}
-        <Link href={product.slug} className="mt-2 font-sans py-1 max-w-[200px] text-xs dark-button button-float">Ver Producto</Link>
-
-
+        {variant && (
+          <p className="text-sm leading-none capitalize text-gray-600">
+            {"Código: "}
+            {variant.codigoDeReferencia}
+          </p>
+        )}
+        <Link
+          href={product.slug}
+          className="mt-2 font-sans py-1 max-w-[200px] text-xs dark-button button-float"
+        >
+          Ver Producto
+        </Link>
       </section>
     </li>
   );
-}
+};
 
 export default ProductCard;

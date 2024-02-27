@@ -10,7 +10,7 @@ const zodAddressSchema = z.object({
   country: z.string().min(1, "El país es requerido"),
   address: z.string().min(1, "La dirección es requerida"),
   department: z.string().min(1, "El departamento es requerido"),
-  postalCode: z.string().min(1, "El código postal es requerido"),
+  postalCode: z.string().optional().nullable(),
   city: z.string().min(1, "La ciudad es requerida"),
 });
 
@@ -40,6 +40,8 @@ export const zodOrderSchema = z.object({
     price: z.number(),
     addressObject: zodAddressSchema,
     status: z.string(),
+    trackingNumber: z.string().optional().nullable(),
+    trackingLink: z.string().optional().nullable(),
   }),
   items: z.array(zodCartItem),
 });

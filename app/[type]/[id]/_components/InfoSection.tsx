@@ -34,13 +34,13 @@ const InfoSection = (props: InfoProps) => {
     <section className={cn(infoVariants({ labelType: props.labelType }),"w-screen flex justify-center lg:px-20")}>
       <section
         className={cn(
-          "lg:max-w-mx w-full flex flex-col lg:flex-row items-center lg:justify-center gap-2 pt-8 lg:pb-8",
+          "lg:max-w-mx w-full flex flex-col lg:flex-row items-center lg:justify-center gap-6 pt-8 lg:pb-8",
           props.className
         )}
       >
-        <section className="default-paddings lg:px-0 w-full lg:w-1/2 lg:h-full flex flex-col justify-center items-center gap-2">
+        <section className="default-paddings lg:px-0 w-full lg:w-1/2 lg:h-full flex flex-col justify-center items-center">
           {!props.DescriptionComp ? (
-            <section className="w-full flex flex-col gap-3">
+            <section className="w-full flex flex-col gap-4">
               <h2 className="w-full text-3xl font-jomolhari leading-none">
                 {props.titulo}
               </h2>
