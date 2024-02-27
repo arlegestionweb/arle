@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ReactNode } from "react";
+import { ComponentPropsWithRef, ReactNode } from "react";
 import RedDot from "./RedDot";
 import { cn } from "../_lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
@@ -17,10 +17,9 @@ const buttonsVariants = cva("px-6 py-1 relative font-inter font-normal text-base
   },
 });
 
-type ButtonProps = ComponentPropsWithoutRef<"button"> &
+type ButtonProps = ComponentPropsWithRef<"button"> &
   VariantProps<typeof buttonsVariants> & {
     children: ReactNode;
-    onClick?: () => void;
     className?: string;
     active?: boolean;
   };

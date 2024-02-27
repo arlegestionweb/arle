@@ -2,14 +2,14 @@
 
 import Button from "@/app/_components/Button";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { FiFilter } from "react-icons/fi";
 import { LuSettings2 } from "react-icons/lu";
 
 import FilterMenu from "./FilterMenu";
-import Link from "next/link";
 import { createUrl, makeNewParams } from "@/app/_lib/utils";
 import BreadCrumbs, { TBreadCrumb } from "./BreadCrumbs";
+import Dropdown, { TDropdownOption } from "@/app/_components/Dropdown";
 
 
 type TColor = {
@@ -55,10 +55,6 @@ type FiltersProps = {
   gafaFilters: TGafaFilters;
 }
 
-export type TSortingOption = {
-  label: string;
-  value: "recientes" | "precio_mayor_menor" | "price_menor_mayor"
-}
 
 const Filters = ({
   areFiltersActive,
@@ -92,7 +88,7 @@ const Filters = ({
 
   const breadCrumbs: TBreadCrumb[] = []
 
-  const paramOrder = ['type','linea', 'genero', 'marcas']; // the order in which the params should be displayed in the breadcrumbs
+  const paramOrder = ['type', 'linea', 'genero', 'marcas']; // the order in which the params should be displayed in the breadcrumbs
 
   Object.keys(allParams).forEach((key) => {
     allParams[key].forEach((value: string, index: number) => {
@@ -112,33 +108,33 @@ const Filters = ({
     });
   });
   const sortingOptions: TSortingOption[] = [
-    { label: "Recientes", value: "recientes" },
-    { label: "Mayor precio", value: "precio_mayor_menor" },
-    { label: "Menor precio", value: "price_menor_mayor" },
+    { label: "Recientes", value: "recientes", href: createUrl("/listing", makeNewParams("sort", "recientes", searchParams)) },
+    { label: "Mayor precio", value: "precio_mayor_menor", href: createUrl("/listing", makeNewParams("sort", "precio_mayor_menor", searchParams)) },
+    { label: "Menor precio", value: "price_menor_mayor", href: createUrl("/listing", makeNewParams("sort", "price_menor_mayor", searchParams)) },
   ];
 
   return (
     <>
-        <section className="flex flex-col md:flex-row gap-1 pb-2.5 md:gap-3 w-full md:pb-4">
-          <section className="flex items-center gap-3 ">
-            <Button
-              className="flex items-center gap-1"
-              active={areFiltersActive}
-              onClick={toggleFilter}
-              type="button"
-              labelType={"lightSmall"}
-            >
-              <FiFilter className="h-3 w-3" width={14} height={14}/>
-              Filtros
-            </Button>
-            <Button className="flex items-center gap-1 relative text-ellipsis whitespace-nowrap" labelType={"lightSmall"} type="button" onClick={toggleSorting} >
-              <LuSettings2 className="h-3 w-3" width={14} height={14}/> 
-              Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recientes"}
-              <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
-            </Button>
-          </section>
-          <BreadCrumbs breadCrumbs={breadCrumbs} />
+      <section className="flex flex-col md:flex-row gap-1 pb-2.5 md:gap-3 w-full md:pb-4">
+        <section className="flex items-center gap-3 ">
+          <Button
+            className="flex items-center gap-1"
+            active={areFiltersActive}
+            onClick={toggleFilter}
+            type="button"
+            labelType={"lightSmall"}
+          >
+            <FiFilter className="h-3 w-3" width={14} height={14} />
+            Filtros
+          </Button>
+          <Button className="flex items-center gap-1 relative text-ellipsis whitespace-nowrap" labelType={"lightSmall"} type="button" onClick={toggleSorting} >
+            <LuSettings2 className="h-3 w-3" width={14} height={14} />
+            Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recientes"}
+            <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
+          </Button>
         </section>
+        <BreadCrumbs breadCrumbs={breadCrumbs} />
+      </section>
       <FilterMenu
         areFiltersActive={areFiltersActive}
         isFilterOpen={isFilterOpen}
@@ -157,45 +153,6 @@ const Filters = ({
 export default Filters;
 
 
-const Dropdown = ({ options, isOpen, onClose }: {
-  options: TSortingOption[];
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  const searchParams = useSearchParams();
-  const dropdownRef = useRef<HTMLUListElement | null>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && event.target instanceof Node && dropdownRef.current.contains(event.target)) {
-        return;
-      }
-      onClose();
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen]);
-
-
-  if (!isOpen) return null;
-
-  return (
-    <ul ref={dropdownRef} className="absolute top-full translate-y-1 left-0 min-w-full w-fit text-left flex flex-col z-30 bg-white border border-black">
-      {options.map((option) => {
-        return (
-          <li key={option.value} className="hover:bg-slate-100 px-2 w-fit min-w-full">
-            <Link href={createUrl("/listing", makeNewParams("sort", option.value, searchParams))} scroll={false}>
-              <p className="whitespace-nowrap">
-                {option.label}
-              </p>
-            </Link>
-          </li>
-        )
-      })}
-    </ul>
-  )
+export type TSortingOption = TDropdownOption & {
+  value: "recientes" | "precio_mayor_menor" | "price_menor_mayor";
 }
