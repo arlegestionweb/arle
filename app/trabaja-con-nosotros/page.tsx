@@ -5,10 +5,8 @@ import Link from "next/link";
 import Main from "../_components/Main";
 import { Metadata } from "next";
 import AboutSubMenu from "../_components/AboutSubMenu";
-import { IoLocationOutline } from "react-icons/io5";
-import Dropdown, { TDropdownOption } from "../_components/Dropdown";
+import { TDropdownOption } from "../_components/Dropdown";
 import WorkWithUsFilters from "./_components/WorkWithUsFilters";
-import { createUrl, makeNewParams } from "../_lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +38,6 @@ const Page = async ({searchParams}: {
   }
 
 
-  // console.log({areaLaboralParam, sedeParam})
   const areasLaborales: TDropdownOption[] = jobs
     .map((job) => ({
       label: job?.areaLaboral,
@@ -50,9 +47,6 @@ const Page = async ({searchParams}: {
     .filter((option, index, self) =>
       index === self.findIndex((t) => t.label === option.label && t.value === option.value)
     );
-
-  // const sedes: TDropdownOption[] = Array.from(new Set(pageContent?.jobs?.map((job) => job?.sede?.nombre)));
-
 
   const sedes: TDropdownOption[] = jobs
     .map((job) => ({
@@ -64,7 +58,6 @@ const Page = async ({searchParams}: {
       index === self.findIndex((t) => t.label === option.label && t.value === option.value)
     );
 
-  // const filteredJobs = 
   return (
     <Main extraClasses="min-h-screen bg-white md:mt-[53px]">
       <AboutSubMenu />
@@ -102,8 +95,6 @@ const Page = async ({searchParams}: {
           </li>
         ))}
       </ul>
-
-      {/* <Link href={}> </Link> */}
     </Main>
   );
 };
