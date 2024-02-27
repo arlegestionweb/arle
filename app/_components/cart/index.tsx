@@ -15,7 +15,7 @@ import { createInvoice } from "./actions";
 import { useFormState } from "react-dom";
 import MenuModal from "../MenuModal";
 import WompiPayButton from "./WompiPayButton";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Spinner from "../Spinner";
 import Image from "next/image";
 import { MdOutlinePayments } from "react-icons/md";
@@ -64,6 +64,8 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
   const urlSegments = window.location.href.split("/");
 
   const baseUrl = `${urlSegments[0]}//${urlSegments[2]}`
+
+  if(formState && formState.status === 200 && !isWompipaymentOpen) setIsWompipaymentOpen(true);
 
   return (
     <>
@@ -205,7 +207,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
             <Button
               type="submit"
               labelType={"dark"}
-              onClick={() => setIsWompipaymentOpen(true)}
+              // onClick={() => formState && formState.data && setIsWompipaymentOpen(true)}
               className="flex justify-center items-center gap-2 w-full max-w-sm button-float"
             >
               <MdOutlinePayments className="text-base" />
@@ -231,7 +233,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                         </h2>
                         <IoMdClose
                           className="text-lg cursor-pointer absolute right-0"
-                          onClick={() => setIsWompipaymentOpen(false)}
+                          onClick={() => setIsWompipaymentOpen(false) }
                         />
                       </header>
                       {formState?.data ? (
@@ -265,7 +267,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                             <p>
                               {
                                 formState?.data?.customer.addressObject
-                                  ?.postalCode
+                                  ?.postalCode || ""
                               }
                             </p>
                           </div>

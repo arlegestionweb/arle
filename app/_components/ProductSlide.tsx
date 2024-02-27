@@ -81,7 +81,9 @@ const ProductSlide = ({
         className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
         onScroll={handleScroll}
         ref={productRef}>
+          { imagesProduct as TImages && (
           <ImageModal closeImage={()=>setImageOpen(false)} images={imagesProduct as TImages} index={imageIndex} isImageOpen={isImageOpen} />
+          )}
         {imagesProduct &&
           imagesProduct.map((image, index) => (
             <div

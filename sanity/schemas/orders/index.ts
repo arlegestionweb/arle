@@ -43,21 +43,39 @@ export const ordersSchema = defineType({
   title: "Órdenes",
   type: "document",
   icon: IoCash,
+  groups: [
+    {
+      name: "general",
+      title: "Información General",
+    },
+    {
+      name: "envio",
+      title: "Envío",
+      default: true,
+    },
+    {
+      name: "productos",
+      title: "Productos",
+    }
+  ],
   fields: [
     defineField({
       name: "orderDate",
       title: "Fecha de la orden",
       type: "datetime",
+      group: "general",
     }),
     defineField({
       name: "status",
       title: "Estado",
       type: "string",
+      group: "general",
     }),
     defineField({
       name: "customer",
       title: "Cliente",
       type: "object",
+      group: "general",
       fields: [
         defineField({
           name: "name",
@@ -98,6 +116,7 @@ export const ordersSchema = defineType({
       name: "amounts",
       title: "Cantidades",
       type: "object",
+      group: "general",
       fields: [
         defineField({
           name: "subtotal",
@@ -130,6 +149,7 @@ export const ordersSchema = defineType({
       name: "shipping",
       title: "Envío",
       type: "object",
+      group: "envio",
       fields: [
         defineField({
           name: "price",
@@ -153,8 +173,13 @@ export const ordersSchema = defineType({
         }),
         defineField({
           name: "trackingNumber",
-          title: "Número de guía Servientrega",
+          title: "Número de guía del envío",
           type: "string",
+        }),
+        defineField({
+          name: "trackingLink",
+          title: "Link de Transportadora",
+          type: "url",
         }),
       ],
     }),
@@ -163,6 +188,7 @@ export const ordersSchema = defineType({
       name: "items",
       title: "Items",
       type: "array",
+      group: "productos",
       of: [
         defineField({
           name: "orderItem",
@@ -241,6 +267,7 @@ export const ordersSchema = defineType({
       name: "wompiReference",
       title: "Referencia Wompi",
       type: "string",
+      group: "general",
     }),
  
   ],
