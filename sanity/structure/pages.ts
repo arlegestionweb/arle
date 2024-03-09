@@ -1,5 +1,5 @@
 import { BookIcon } from "@sanity/icons";
-import { type StructureBuilder } from "sanity/desk";
+import { type StructureBuilder } from "sanity/structure";
 import { homeSchema } from "../schemas/pages/homeSchema";
 import { listingSchema } from "../schemas/pages/listingSchema";
 import { BsCollection } from "react-icons/bs";

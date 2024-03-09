@@ -1,5 +1,5 @@
 import { siteSettings } from "../schemas/siteSettings";
-import { type StructureBuilder } from "sanity/desk";
+import { type StructureBuilder } from "sanity/structure";
 import { MdPointOfSale } from "react-icons/md";
 import productos from "./productos";
 import pages from "./pages";
