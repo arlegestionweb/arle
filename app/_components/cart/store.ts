@@ -62,14 +62,14 @@ type TCartStore = TCartState & TCartActions;
 
 const getCartIdFromLocalStorage = () => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem("cartId");
+    return localStorage.getItem("arle-cartId");
   }
 };
 
 // Function to set the cart ID in localStorage
 const setCartIdInLocalStorage = (id: string) => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem("cartId", id);
+    localStorage.setItem("arle-cartId", id);
   }
 };
 
@@ -124,8 +124,8 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     // return 0;
   },
   items:
-    typeof window !== "undefined" && localStorage.getItem("cart")
-      ? JSON.parse(localStorage.getItem("cart")!)
+    typeof window !== "undefined" && localStorage.getItem("arle-cart")
+      ? JSON.parse(localStorage.getItem("arle-cart")!)
       : [],
 
   addItem: (item: TCartItem) =>
@@ -153,7 +153,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       }
 
       if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
+        localStorage.setItem("arle-cart", JSON.stringify(newItems));
       }
 
       const inCart = get().isCartOpen;
@@ -162,9 +162,9 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     }),
   clearCart: () =>
     set(() => {
-      localStorage.removeItem("cart");
+      localStorage.removeItem("arle-cart");
       const newCartId = nanoid();
-      localStorage.setItem("cartId", newCartId );
+      localStorage.setItem("arle-cartId", newCartId );
 
       return { items: [], id: newCartId };
     }),
@@ -195,7 +195,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       }
 
       if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
+        localStorage.setItem("arle-cart", JSON.stringify(newItems));
       }
 
       return { items: newItems };
@@ -208,7 +208,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
 
       if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
+        localStorage.setItem("arle-cart", JSON.stringify(newItems));
       }
 
       return { items: newItems };

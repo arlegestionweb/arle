@@ -43,7 +43,7 @@ export type TVariant = TPerfumeVariant | TRelojVariant | TVarianteGafa;
 const zodTimedDiscount = z.object({
   texto: z.string(),
   productos: z.array(z.string()),
-  porcentaje: z.string(),
+  porcentaje: z.number(),
   duracion: z.object({
     inicio: z.string(),
     fin: z.string(),
