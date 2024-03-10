@@ -4,6 +4,7 @@ import Link from "next/link";
 import { GoArrowUpRight, GoChevronLeft } from "react-icons/go";
 import Button from "../../Button";
 import { useRouter } from "next/navigation";
+import { Suspense } from "react";
 
 type ModalContentProps = {
   setIsMenu: (arg0: boolean) => void;
@@ -48,7 +49,9 @@ const ModalContent = ({ selectedItems, currentScreen, setIsMenu, isMenuOpen, tit
       </header>
       <section className="py-[18px] px-4 flex flex-col gap-[12px]">
         <div className="md:hidden">
-          <SearchInput className="w-full" onSearch={() => setIsMenu(false)} />
+          <Suspense>
+            <SearchInput className="w-full" onSearch={() => setIsMenu(false)} />
+          </Suspense>
         </div>
         <h2 className="text-zinc-800 text-lg  font-semibold font-tajawal leading-snug capitalize">{subtitle === "perfume" ? "perfumes" : subtitle}</h2>
         {items.length > 0 ? (

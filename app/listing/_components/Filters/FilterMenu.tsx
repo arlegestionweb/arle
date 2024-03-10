@@ -3,7 +3,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import Button from "@/app/_components/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/app/_lib/utils";
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 import AllProductFilters from "./AllProductFilters";
 import RelojFilters from "./RelojFilters";
 import type { TGafaFilters, TPerfumeFilters, TRelojFilters } from ".";
@@ -105,10 +105,12 @@ const FilterMenu = ({
             />
           </header>
           {!searchParams.get("type") && (
-            <AllProductFilters
-              marcas={marcas}
-              coleccionesDeMarca={coleccionesDeMarca}
-            />
+            <Suspense>
+              <AllProductFilters
+                marcas={marcas}
+                coleccionesDeMarca={coleccionesDeMarca}
+              />
+            </Suspense>
           )}
 
           {searchParams.get("type")?.includes("reloj") && (
