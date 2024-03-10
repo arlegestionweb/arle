@@ -154,6 +154,7 @@ export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
     
+    // console.log({relojes: result.relojes[3]})
     const parsedResult = zodListPage.safeParse(result);
 
     if (!parsedResult.success) {

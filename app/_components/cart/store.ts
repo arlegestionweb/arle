@@ -1,6 +1,5 @@
 import { create } from "zustand";
 
-
 const TAX = 0.19;
 
 export type TCartItem = {
@@ -15,8 +14,8 @@ export type TCartItem = {
     | "relojesLujo"
     | "gafasPremium"
     | "gafasLujo";
-    discountType: "none" | "timedDiscount" | "discountedPrice";
-    originalPrice: number;
+  discountType: "none" | "timedDiscount" | "discountedPrice";
+  originalPrice: number;
 };
 
 type TCartState = {
@@ -73,8 +72,8 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       const totalDiscountForItem = discountAmountPerItem * item.quantity;
       totalDiscount += totalDiscountForItem;
     }
-  
-    return totalDiscount;    // const discountCode = get().discountCode;
+
+    return totalDiscount; // const discountCode = get().discountCode;
 
     // if (discountCode) {
     //   const discountAmount = total * (discountCode.discount / 100);
@@ -118,14 +117,17 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
       const inCart = get().isCartOpen;
 
-      return { items: newItems, isAddedToCartModalOpen: inCart ? false : true, itemAddedToCart: item };
+      return {
+        items: newItems,
+        isAddedToCartModalOpen: inCart ? false : true,
+        itemAddedToCart: item,
+      };
     }),
   clearCart: () =>
     set(() => {
       localStorage.removeItem("cart");
       return { items: [] };
     }),
- 
 
   removeItem: (item: TCartItem) =>
     set((state: TCartState) => {
@@ -152,7 +154,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       }
 
       if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
+        localStorage.setItem("arle-cart", JSON.stringify(newItems));
       }
 
       return { items: newItems };
@@ -163,9 +165,8 @@ export const useCartStore = create<TCartStore>((set, get) => ({
         (i) => i.productId !== item.productId || i.variantId !== item.variantId
       );
 
-
       if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
+        localStorage.setItem("arle-cart", JSON.stringify(newItems));
       }
 
       return { items: newItems };
@@ -183,15 +184,15 @@ export const useCartStore = create<TCartStore>((set, get) => ({
   },
   getCartTotalWithoutDiscountsOrTax: () => {
     const items: TCartItem[] = get().items;
-  let total = 0;
+    let total = 0;
 
-  items.forEach((item) => (total += item.originalPrice * item.quantity));
+    items.forEach((item) => (total += item.originalPrice * item.quantity));
 
-  const tax = get().getCartTax();
-  const totalWithoutTax = +(total - tax).toFixed(0);
+    const tax = get().getCartTax();
+    const totalWithoutTax = +(total - tax).toFixed(0);
+    console.log({tax, price: items[0]})
 
-  return totalWithoutTax;
-
+    return totalWithoutTax;
   },
   getCartSubtotal: () => {
     const items: TCartItem[] = get().items;
@@ -201,17 +202,13 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
     return total;
   },
-  
+
   getCartTotal: () => {
     const items: TCartItem[] = get().items;
     let total = 0;
 
     items.forEach((item) => (total += item.price * item.quantity));
 
-
     return total;
   },
-  
-  
-  
 }));

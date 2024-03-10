@@ -64,7 +64,6 @@ const variantesDeGafaQueryString = `
       "color": color.hex
     },
     codigoDeReferencia,
-    registroInvima,
     precio,
     precioConDescuento,
     unidadesDisponibles,
@@ -126,7 +125,6 @@ export const productQuery: Record<TProductType, string> = {
       },
       unidadesDisponibles,
       codigoDeReferencia,
-      registroInvima,
       etiqueta,
       "colorCaja": colorCaja -> {
         nombre,
@@ -170,7 +168,6 @@ export const productQuery: Record<TProductType, string> = {
         "url": asset->url,
       },
       codigoDeReferencia,
-      registroInvima,
       etiqueta,
       unidadesDisponibles,
       "colorCaja": colorCaja -> { 
@@ -352,7 +349,6 @@ export const productQuery: Record<TProductType, string> = {
       precioConDescuento,
       etiqueta,
       codigoDeReferencia,
-      registroInvima,
       mostrarUnidadesDispobibles,
       unidadesDisponibles,
       "imagenes": imagenes[]{
@@ -386,7 +382,6 @@ export const productQuery: Record<TProductType, string> = {
         "url": asset->url,
       },
       codigoDeReferencia,
-      registroInvima,
       unidadesDisponibles,
       precio,
       etiqueta,

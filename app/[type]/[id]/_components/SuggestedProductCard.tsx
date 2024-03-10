@@ -20,9 +20,12 @@ import { useState } from "react";
 
 const SuggestedProductCard = ({ producto }: { producto: TProduct }) => {
   const [selectedVariant, setSelectedVariant] = useState<TVariant>(
-    producto.variantes[0]
+    producto.variantes && producto.variantes[0]
   );
 
+  if (!selectedVariant) {
+    return null;
+  }
 
   return (
     <>
@@ -53,21 +56,21 @@ const CardLayout = ({
 }) => {
   const { addItem } = useCartStore();
 
-  const addToCart = (
-    producto: TProduct,
-    selectedVariant: TVariant,
-    quantity: number = 1
-  ) => {
-    addItem({
-      discountType: "none",
-      originalPrice: 1999,
-      productId: producto._id,
-      variantId: selectedVariant.registroInvima,
-      price: colombianPriceStringToNumber(selectedVariant.precio),
-      quantity,
-      productType: producto._type,
-    });
-  };
+  // const addToCart = (
+  //   producto: TProduct,
+  //   selectedVariant: TVariant,
+  //   quantity: number = 1
+  // ) => {
+  //   addItem({
+  //     discountType: "none",
+  //     originalPrice: 1999,
+  //     productId: producto._id,
+  //     variantId: selectedVariant.codigoDeReferencia,
+  //     price: colombianPriceStringToNumber(selectedVariant.precio),
+  //     quantity,
+  //     productType: producto._type,
+  //   });
+  // };
 
   return (
     <>

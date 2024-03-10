@@ -23,7 +23,7 @@ const AddToCart = ({className, pricing, product, quantity, selectedVariant}:Prop
   const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
     addItem({
       productId: producto._id,
-      variantId: selectedVariant.registroInvima,
+      variantId: selectedVariant.codigoDeReferencia,
       price: price,
       quantity,
       productType: producto._type,
