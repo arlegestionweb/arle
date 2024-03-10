@@ -1,6 +1,6 @@
 import { perfumeLujoSchema } from "../schemas/products/perfumes/lujo";
 import { TbPerfume } from "react-icons/tb";
-import { type StructureBuilder } from "sanity/desk";
+import { type StructureBuilder } from "sanity/structure";
 import { perfumePremiumSchema } from "../schemas/products/perfumes/premium";
 import { GiDelicatePerfume, GiPocketWatch } from "react-icons/gi";
 import { PiSunglassesFill, PiSunglassesBold } from "react-icons/pi";
