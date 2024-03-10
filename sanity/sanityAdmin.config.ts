@@ -13,7 +13,7 @@ export const sanityAdminConfig = {
   title: "Arlé Contenidos",
   apiVersion: "2021-10-21",
   basePath: "/admin",
-  plugins: [
+plugins: [
     structureTool({
       structure
     }),
