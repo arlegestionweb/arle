@@ -1,9 +1,9 @@
 import { defineConfig } from "sanity";
 // import {visionTool} from "@sanity/vision"
+import {deskTool} from "sanity/desk"
 import structure from "./structure"
 import { schemaTypes } from "./schemas/schemaTypes";
 import { colorInput } from "@sanity/color-input";
-import { structureTool } from "sanity/structure";
 
 
 export const sanityAdminConfig = {
@@ -14,7 +14,7 @@ export const sanityAdminConfig = {
   apiVersion: "2021-10-21",
   basePath: "/admin",
   plugins: [
-    structureTool({
+    deskTool({
       structure
     }),
     colorInput(),
