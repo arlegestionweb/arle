@@ -159,6 +159,7 @@ export const productQuery: Record<TProductType, string> = {
     "date": _createdAt,
     "variantes": variantes[]{
       precio,
+      precioConDescuento,
       "colorTablero": colorTablero -> { 
         nombre, 
         "color": color.hex
@@ -276,6 +277,7 @@ export const productQuery: Record<TProductType, string> = {
     },
     "marca": marca->titulo,
     "variantes": variantes[]{
+      precioConDescuento,
       tamano,
       tag,
       precio,
@@ -335,8 +337,6 @@ export const productQuery: Record<TProductType, string> = {
         "tipo": tipo -> titulo,
       },
     },
-    "inspiracion": ${inspiracionQuery},    
-    modelo,
     coleccionDeMarca,
     "slug": slug.current,
     "variantes": variantes[] {
@@ -358,6 +358,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       codigoDeReferencia,
       unidadesDisponibles,
+      precioConDescuento,
       precio,
       tag,
       mostrarUnidadesDisponibles
@@ -406,6 +407,7 @@ export const productQuery: Record<TProductType, string> = {
       codigoDeReferencia,
       unidadesDisponibles,
       precio,
+      precioConDescuento,
       tag,
       mostrarUnidadesDisponibles
     },
