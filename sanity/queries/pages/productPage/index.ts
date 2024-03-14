@@ -205,7 +205,8 @@ export const productQuery: Record<TProductType, string> = {
       },
     },
     "genero": detallesReloj.genero,
-    coleccionDeMarca
+    coleccionDeMarca,
+    mostrarCredito
   }`,
   perfumeLujo: `{
     "date": _createdAt,
@@ -383,6 +384,7 @@ export const productQuery: Record<TProductType, string> = {
   }`,
   
   gafasPremium: `{
+    mostrarCredito,
     "date": _createdAt,
     _type,
     "marca": marca->titulo,

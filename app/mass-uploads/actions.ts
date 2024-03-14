@@ -1,6 +1,6 @@
 "use server";
 
-const EMAIL = "julian.m.bustos@gmail.com";
+const EMAIL = "email@gmail.com";
 const PASSWORD = "password";
 
 export const validateUser = async (

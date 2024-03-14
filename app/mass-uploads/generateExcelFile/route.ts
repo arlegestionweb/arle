@@ -6,40 +6,137 @@ import { columnLetterToNumber, incrementColumnLetter } from "@/utils/helpers";
 import { convertirCamelCaseATitulo } from "@/app/_lib/utils";
 import * as ExcelJS from "exceljs";
 
-function getNestedKeys(
-  obj: Record<string, any>,
-  prefix: string = ""
-): string[] {
+type NestedKey = {
+  path: string[];
+  reference: boolean;
+  options: any[];
+  boolean?: boolean;
+};
+
+function getNestedKeys2(obj: any, path: string[] = []): NestedKey[] {
   return Object.entries(obj).reduce(
-    (keys: string[], [key, value]: [string, any]) => {
-      const newKey = `${prefix}${key}`;
-      if (
-        typeof value === "object" &&
-        value !== null &&
-        !Array.isArray(value)
-      ) {
-        return [...keys, ...getNestedKeys(value, `${newKey}.`)];
+    (result: NestedKey[], [key, value]: [string, any]) => {
+      const newPath = path.concat(key);
+      if (typeof value !== "object" || value === null || Array.isArray(value)) {
+        if (obj.boolean) {
+          result.push({
+            path: newPath,
+            reference: value?.reference || false,
+            options: value?.options || [],
+            boolean: true,
+          });
+        } else if (obj.reference) {
+          if (!result.find((item) => item.path.includes(path[0]))) {
+            result.push({
+              path: newPath,
+              reference: obj?.reference || false,
+              options: obj?.options || [],
+            });
+          }
+        } else {
+          result.push({
+            path: newPath,
+            reference: value?.reference || false,
+            options: value?.options || [],
+          });
+        }
+      } else {
+        result.push(...getNestedKeys2(value, newPath));
       }
-      return [...keys, newKey];
+      return result;
     },
     []
   );
 }
 // const ExcelJS = require('exceljs');
-
-async function createWorkbook(docKeys: string[], file: string) {
+async function createWorkbook2(docKeys: NestedKey[], file: string) {
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("My Sheet");
-
+  const optionsSheet = workbook.addWorksheet("Options");
   let columnLetter = "A";
-
-  docKeys.forEach((key) => {
-    const parts = key.split(".");
-    parts.forEach((part, index) => {
+  docKeys.forEach((docKey) => {
+    docKey.path.forEach((part, index) => {
       let cell = sheet.getCell(`${columnLetter}${index + 1}`);
-      cell.value = convertirCamelCaseATitulo(part);
-      cell.font = { bold: true };
+
+      if (
+        convertirCamelCaseATitulo(part) !== "Reference" &&
+        convertirCamelCaseATitulo(part) !== "Boolean" &&
+        convertirCamelCaseATitulo(part) !== "Nombre"
+      ) {
+        cell.value = convertirCamelCaseATitulo(part);
+        cell.font = { bold: true };
+      }
+
+      if (docKey.path[0] === "genero") {
+        const options = ["mujer", "hombre", "unisex"];
+
+        options.forEach((option, index) => {
+          optionsSheet.getCell(`${columnLetter}${index + 1}`).value = option;
+        });
+
+        const range = `Options!$${columnLetter}$1:$${columnLetter}$${options.length}`;
+
+        for (let i = 6; i <= 106; i++) {
+          const cell = sheet.getCell(`${columnLetter}${i}`);
+          cell.dataValidation = {
+            type: "list",
+            formulae: [range],
+            // allowBlank: true, // Allow empty cells (optional)
+          };
+        }
+      }
+
+      if (docKey.boolean && index === docKey.path.length - 1) {
+        const options = ["si", "no"];
+
+        options.forEach((option, index) => {
+          optionsSheet.getCell(`${columnLetter}${index + 1}`).value = option;
+        });
+
+        const range = `Options!$${columnLetter}$1:$${columnLetter}$${options.length}`;
+        for (let i = 6; i <= 106; i++) {
+          const cell = sheet.getCell(`${columnLetter}${i}`);
+          cell.dataValidation = {
+            type: "list",
+            formulae: [range],
+            // allowBlank: true, // Allow empty cells (optional)
+          };
+        }
+      }
+
+      // If the docKey has the 'reference' flag, add options to the cell
+      if (docKey.reference && index === docKey.path.length - 1) {
+        // Add the options to the options sheet
+        docKey.options
+          .sort((optionA, optionB) =>
+            optionA.nombre.localeCompare(optionB.nombre)
+          )
+          .forEach((option, index) => {
+            optionsSheet.getCell(`${columnLetter}${index + 1}`).value =
+              option.nombre;
+          });
+
+        // Set data validation on the entire column
+        // sheet.getColumn(columnLetter).eachCell((cell) => {
+        //   cell.dataValidation = {
+        //     type: "list",
+        //     formulae: [range],
+        //     allowBlank: true, // Allow empty cells (optional)
+        //   };
+        // });
+        const range = `Options!$${columnLetter}$1:$${columnLetter}$${docKey.options.length}`;
+        // optionColumnLetter = incrementColumnLetter(optionColumnLetter);
+        for (let i = 6; i <= 106; i++) {
+          const cell = sheet.getCell(`${columnLetter}${i}`);
+          cell.dataValidation = {
+            type: "list",
+            formulae: [range],
+            // allowBlank: true, // Allow empty cells (optional)
+          };
+        }
+      }
     });
+    // optionColumnLetter = incrementColumnLetter(optionColumnLetter);
     columnLetter = incrementColumnLetter(columnLetter);
   });
 
@@ -88,364 +185,19 @@ async function createWorkbook(docKeys: string[], file: string) {
   return await workbook.xlsx.writeFile(`./${file}.xlsx`);
 }
 
-// export const productQuery: Record<string, string> = {
-//   relojesLujo: `{
-//     "date": _createdAt,
-//     genero,
-//     mostrarCredito,
-//     "marca": marca->titulo,
-//     _type,
-//     _id,
-//     "detalles": detalles {
-//       usarDetalles,
-//       "contenido": contenido {
-//         texto,
-//         "imagen": imagen {
-//           alt,
-//           "url": asset->url,
-//         }
-//       }
-//     },
-//     "especificaciones": especificaciones {
-//       "tipoDeReloj": tipoDeReloj -> titulo,
-//       "estiloDeReloj": estiloDeReloj -> titulo,
-//       resistenciaAlAgua,
-//       "funciones": funciones [] -> {
-//         titulo,
-//         descripcion
-//       },
-//       "material": material -> nombre
-//     },
-//     "variantes": variantes[]{
-//       precioConDescuento,
-//       precio,
-//       "colorTablero": colorTablero -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       "imagenes": imagenes[]{
-//         alt,
-//         "url": asset->url,
-//       },
-//       unidadesDisponibles,
-//       mostrarUnidadesDisponibles,
-//       codigoDeReferencia,
-//       tag,
-//       "colorCaja": colorCaja -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       "colorPulso": colorPulso -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       "colorTablero": colorTablero -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       _type,
-//     },
-//     "inspiracion": ${inspiracionQuery},
-//     modelo,
-//     ${garantiaQuery},
-//     ${movimientoQuery},
-//     "caja": caja {
-//       diametro,
-//       "material": material -> nombre,
-//       "cristal": cristal -> titulo
-//     },
-//     coleccionDeMarca,
-//     descripcion,
-//     ${bannersQuery},
-//     "slug": slug.current,
-//   }
-// `,
-//   relojesPremium: `{
-//     "date": _createdAt,
-//     "variantes": variantes[]{
-//       precio,
-//       "colorTablero": colorTablero -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       "imagenes": imagenes[]{
-//         alt,
-//         "url": asset->url,
-//       },
-//       codigoDeReferencia,
-//       tag,
-//       unidadesDisponibles,
-//       mostrarUnidadesDisponibles,
-//       "colorCaja": colorCaja -> {
-//         nombre,
-//         "color": color.hex
-//        },
-//       "colorPulso": colorPulso -> {
-//         nombre,
-//         "color": color.hex
-//       }
-//     },
-//     _id,
-//     modelo,
-//     descripcion,
-//     "slug": slug.current,
-//     ${garantiaQuery},
-//     _type,
-//     "marca": marca->titulo,
-//     "detallesReloj": detallesReloj {
-//       "tipoDeReloj": tipoDeReloj -> titulo,
-//       "estiloDeReloj": estiloDeReloj -> titulo,
-//       "funciones": funciones [] -> {
-//         titulo,
-//         descripcion
-//       },
-//       resistenciaAlAgua,
-//       "material": material -> nombre,
-//       "tipoDeMovimiento": tipoDeMovimiento -> titulo,
-//       "caja": caja {
-//         diametro,
-//         "material": material -> nombre,
-//         "cristal": cristal -> titulo
-//       },
-//     },
-//     "genero": detallesReloj.genero,
-//     coleccionDeMarca
-//   }`,
-//   perfumeLujo: `{
-//     "date": _createdAt,
-//     titulo,
-//     "inspiracion": ${inspiracionQuery},
-//     "variantes": variantes[] {
-//       codigoDeReferencia,
-//       unidadesDisponibles,
-//       registroInvima,
-//       tag,
-//       precioConDescuento,
-//       mostrarUnidadesDisponibles,
-//       tamano,
-//       precio
-//     },
-//     genero,
-//     _type,
-//     "slug": slug.current,
-//     _id,
-//     parteDeUnSet,
-//     "concentracion": concentracion -> nombre,
-//     "imagenes": imagenes[]{
-//         alt,
-//         "url": asset->url,
-//       },
-//     "notasOlfativas": notasOlfativas {
-//       "notasDeBase": notasDeBase [] -> nombre,
-//       "notasDeSalida": notasDeSalida [] -> nombre,
-//       "familiaOlfativa": familiaOlfativa -> nombre,
-//       "notasDeCorazon": notasDeCorazon [] -> nombre
-//     },
-//     "ingredientes": ingredientes [] -> nombre,
-//     mostrarCredito,
-//     "marca": marca -> titulo,
-//     "descripcion": descripcion {
-//       texto,
-//       "imagen": imagen {
-//         ...,
-//         alt,
-//         "url": asset->url,
-//       }
-//     },
-//     "paisDeOrigen": paisDeOrigen -> nombre,
-//    ${bannersQuery},
-//    coleccionDeMarca
-//   }`,
-//   perfumePremium: `{
-//     "date": _createdAt,
-//     "slug": slug.current,
-//     "detalles": detalles {
-//       "concentracion": concentracion -> nombre,
-//       resenaCorta,
-//       "notasOlfativas": notasOlfativas {
-//         "notasDeBase": notasDeBase [] -> nombre,
-//         "notasDeSalida": notasDeSalida [] -> nombre,
-//         "familiaOlfativa": familiaOlfativa -> nombre,
-//         "notasDeCorazon": notasDeCorazon [] -> nombre
-//       },
-
-//     },
-//     "genero": detalles.genero,
-//     _id,
-//     titulo,
-//     _type,
-//     mostrarCredito,
-//     "imagenes": imagenes[]{
-//       alt,
-//       "url": asset->url,
-//     },
-//     "marca": marca->titulo,
-//     "variantes": variantes[]{
-//       tamano,
-//       tag,
-//       precio,
-//       precioConDescuento,
-//       codigoDeReferencia,
-//       registroInvima,
-//       unidadesDisponibles,
-//       mostrarUnidadesDisponibles,
-//     },
-//     parteDeUnSet,
-//     descripcion,
-//     coleccionDeMarca
-//   }`,
-//   gafasLujo: `{
-//     "date": _createdAt,
-//     _id,
-//     _type,
-//     "marca": marca->titulo,
-//     modelo,
-//     descripcion,
-//     genero,
-//     mostrarCredito,
-//     ${garantiaQuery},
-//     "inspiracion": ${inspiracionQuery},
-//     "detalles": detalles {
-//       usarDetalles,
-//       "contenido": contenido {
-//         texto,
-//         "imagen": imagen {
-//           alt,
-//           "url": asset->url,
-//         }
-//       }
-//     },
-//     "monturaDetalles": monturaDetalles {
-//       usarDetalles,
-//         "contenido": contenido {
-//           texto,
-//           "imagen": imagen {
-//             alt,
-//             "url": asset->url,
-//           }
-//         },
-//     },
-//     ${bannersQuery},
-//     "especificaciones": especificaciones {
-//       "paisDeOrigen": paisDeOrigen -> nombre,
-//       queIncluye,
-//       "tipoDeGafa": tipoDeGafa -> titulo,
-//       "estiloDeGafa": estiloDeGafa -> titulo,
-//       "montura": montura {
-//         "formaDeLaMontura": formaDeLaMontura -> titulo,
-//         "materialMontura": materialMontura -> titulo,
-//         "materialVarilla": materialVarilla -> titulo,
-//       },
-//       "lente": lente {
-//         "material": material -> titulo,
-//         "tipo": tipo -> titulo,
-//       },
-//     },
-//     modelo,
-//     coleccionDeMarca,
-//     "slug": slug.current,
-//     "variantes": variantes[] {
-//       "colorDelLente": colorDelLente -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       "colorDeLaVarilla": colorDeLaVarilla -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       "colorDeLaMontura": colorDeLaMontura -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       "imagenes": imagenes[] {
-//         alt,
-//         "url": asset->url,
-//       },
-//       codigoDeReferencia,
-//       unidadesDisponibles,
-//       precio,
-//       tag,
-//       mostrarUnidadesDisponibles
-//     },
-//     modelo,
-//     "slug": slug.current,
-//     genero,
-//     descripcion,
-//     "detalles": detalles {
-//       "tipoDeGafa": tipoDeGafa -> titulo,
-//       "estiloDeGafa": estiloDeGafa -> titulo,
-//         "lente": lente {
-//         "tipo": tipo -> titulo,
-//         "material": material -> titulo,
-//       },
-//       "montura": montura {
-//         "formaDeLaMontura": formaDeLaMontura -> titulo,
-//         "materialMontura": materialMontura -> titulo,
-//         "materialVarilla": materialVarilla -> titulo,
-//       }
-//     },
-//   }`,
-
-//   gafasPremium: `{
-//     "date": _createdAt,
-//     _type,
-//     "marca": marca->titulo,
-//     _id,
-//     "variantes": variantes[] {
-//       "colorDelLente": colorDelLente -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       "colorDeLaVarilla": colorDeLaVarilla -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       "colorDeLaMontura": colorDeLaMontura -> {
-//         nombre,
-//         "color": color.hex
-//       },
-//       "imagenes": imagenes[] {
-//         alt,
-//         "url": asset->url,
-//       },
-//       codigoDeReferencia,
-//       unidadesDisponibles,
-//       precio,
-//       tag,
-//       mostrarUnidadesDisponibles
-//     },
-//     modelo,
-//     "slug": slug.current,
-//     genero,
-//     descripcion,
-//     "detalles": detalles {
-//       "tipoDeGafa": tipoDeGafa -> titulo,
-//       "estiloDeGafa": estiloDeGafa -> titulo,
-//         "lente": lente {
-//         "tipo": tipo -> titulo,
-//         "material": material -> titulo,
-//       },
-//       "montura": montura {
-//         "formaDeLaMontura": formaDeLaMontura -> titulo,
-//         "materialMontura": materialMontura -> titulo,
-//         "materialVarilla": materialVarilla -> titulo,
-//       }
-//     },
-//     ${garantiaQuery}
-//   }`,
-// };
-
 const productQueryString: Record<string, string> = {
   perfumeLujo: `
     "codigoDeProducto": _id,
     titulo,
     "inspiracion": {
-      usarInspiracion,
-      "contenido": contenido {
-        resena,
-        "imagen": imagen {
-          alt,
-          "url": asset->url,
+      "usarInspiracion":  {
+        "boolean": true,
+      },
+      "contenido":  {
+        "resena": contenido.resena,
+        "imagen":  {
+          "alt": contenido.imagen.alt,
+          "url": contenido.imagen.asset->url,
         }
       }
     },
@@ -455,23 +207,36 @@ const productQueryString: Record<string, string> = {
       registroInvima,
       tag,
       precioConDescuento,
-      mostrarUnidadesDisponibles,
+      "mostrarUnidadesDisponibles": {
+        "boolean": true,
+      },
       tamano,
       precio
     },
     genero,
-    'slug': slug.current,
-    parteDeUnSet,
-    "concentracion": concentracion -> nombre,
+    "parteDeUnSet": {
+      "boolean": true,
+    },
+    "concentracion": concentracion -> {
+      "reference": true,
+      nombre,
+      "options": *[_type == "concentracion"] {nombre}
+    },
     "notasOlfativas": notasOlfativas {
       "notasDeBase": notasDeBase [] -> nombre,
       "notasDeSalida": notasDeSalida [] -> nombre,
-      "familiaOlfativa": familiaOlfativa -> nombre,
+      "familiaOlfativa": familiaOlfativa -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "familiasOlfativas"] {nombre}
+      },
       "notasDeCorazon": notasDeCorazon [] -> nombre
     },
     "ingredientes": ingredientes [] -> nombre,
-    mostrarCredito,
-    "marca": marca -> titulo,
+    "mostrarCredito": {
+      "boolean": true,
+    },
+    "marca": marca -> {"nombre": titulo, "reference": true, "options": *[_type == "marca"] {"nombre": titulo}},
     "descripcion": descripcion {
       texto,
       "imagen": imagen {
@@ -479,27 +244,40 @@ const productQueryString: Record<string, string> = {
         "url": asset->url,
       }
     },
-    'paisDeOrigen': paisDeOrigen -> nombre, 
+    'paisDeOrigen': paisDeOrigen -> {
+      nombre,
+      "reference": true,
+      "options": *[_type == "paisDeOrigen"] {nombre}
+    }, 
     coleccionDeMarca
     `,
   perfumePremium: `
     "codigoDeProducto": _id,
-    'slug': slug.current,
     descripcion,
     "detalles": detalles {
       genero,
-      "concentracion": concentracion -> nombre,
+      "concentracion": concentracion -> {
+        "reference": true,
+        nombre,
+        "options": *[_type == "concentracion"] {nombre}
+      },
       resenaCorta,
       "notasOlfativas": notasOlfativas {
         "notasDeBase": notasDeBase [] -> nombre,
         "notasDeSalida": notasDeSalida [] -> nombre,
-        "familiaOlfativa": familiaOlfativa -> nombre,
+        "familiaOlfativa": familiaOlfativa -> {
+          nombre,
+          "reference": true,
+          "options": *[_type == "familiasOlfativas"] {nombre}
+        },
         "notasDeCorazon": notasDeCorazon [] -> nombre
-      }
+      },
     },
     titulo,
-    mostrarCredito,
-    'marca': marca -> nombre,
+    "mostrarCredito": {
+      "boolean": true,
+    },
+    "marca": marca -> {"nombre": titulo, "reference": true, "options": *[_type == "marca"] {"nombre": titulo}},
     'variante': variantes[0]{
       tamano,
       tag,
@@ -507,112 +285,226 @@ const productQueryString: Record<string, string> = {
       codigoDeReferencia,
       registroInvima,
       unidadesDisponibles,
-      mostrarUnidadesDisponibles,
+      "mostrarUnidadesDisponibles": {
+        "boolean": true,
+      },
       precioConDescuento
     },
-    parteDeUnSet,
+    "parteDeUnSet": {
+      "boolean": true,
+    },
+    'paisDeOrigen': paisDeOrigen -> {
+      nombre,
+      "reference": true,
+      "options": *[_type == "paisDeOrigen"] {nombre}
+    }, 
     coleccionDeMarca
     `,
   gafasLujo: `
     "codigoDeProducto": _id,
-    'marca': marca -> titulo,
+    "marca": marca -> {
+      "nombre": titulo, 
+      "reference": true, 
+      "options": *[_type == "marca"] {"nombre": titulo}
+    },
     modelo,
     descripcion,
     genero,
-    mostrarCredito,
+    "mostrarCredito": {
+      "boolean": true
+    },
     "garantia": garantia { 
       meses, 
       descripcion
     },
     "inspiracion": inspiracion {
-      usarInspiracion,
-      "contenido": contenido {
-        resena,
-        "imagen": imagen {
-          alt,
-          "url": asset->url,
+      "usarInspiracion":  {
+        "boolean": true,
+      },
+      "contenido":  {
+        "resena": contenido.resena,
+        "imagen":  {
+          "alt": contenido.imagen.alt,
+          "url": contenido.imagen.asset->url,
         }
       }
     },
     "detalles": detalles {
-      usarDetalles,
-      "contenido": contenido {
-        texto,
-        "imagen": imagen {
-          alt,
-          "url": asset->url,
+      "usarDetalles":  {
+        "boolean": true,
+      },
+      "contenido":  {
+        "resena": contenido.resena,
+        "imagen":  {
+          "alt": contenido.imagen.alt,
+          "url": contenido.imagen.asset->url,
         }
       }
     },
     "monturaDetalles": monturaDetalles {
-      usarDetalles,
-        "contenido": contenido {
-          texto,
-          "imagen": imagen {
-            alt,
-            "url": asset->url,
-          }
-        },
+      "usarDetalles":  {
+        "boolean": true,
+      },
+      "contenido":  {
+        "resena": contenido.resena,
+        "imagen":  {
+          "alt": contenido.imagen.alt,
+          "url": contenido.imagen.asset->url
+        }
+      }
     },
     "especificaciones": especificaciones {
-      "paisDeOrigen": paisDeOrigen -> nombre,
+      'paisDeOrigen': paisDeOrigen -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "paisDeOrigen"] {nombre}
+      }, 
       queIncluye,
-      "tipoDeGafa": tipoDeGafa -> titulo,
-      "estiloDeGafa": estiloDeGafa -> titulo,
+      "tipoDeGafa": tipoDeGafa -> {
+        "nombre": titulo,
+        "reference": true,
+        "options": *[_type == "tipoDeGafa"] {"nombre": titulo}
+      },
+      "estiloDeGafa": estiloDeGafa -> {
+        "nombre": titulo,
+        "reference": true,
+        "options": *[_type == "estiloDeGafa"] {"nombre": titulo}
+      },
       "montura": montura {
-        "formaDeLaMontura": formaDeLaMontura -> titulo,
-        "materialMontura": materialMontura -> titulo,
-        "materialVarilla": materialVarilla -> titulo,
+        "formaDeLaMontura": formaDeLaMontura -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "formaDeLaMontura"] {"nombre": titulo}
+        },
+        "materialMontura": materialMontura -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "materialDelMarco"] {"nombre": titulo}
+        },
+        "materialVarilla": materialVarilla -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "materialDeLaVarilla"] {"nombre": titulo}
+        },
       },
       "lente": lente {
-        "material": material -> titulo,
-        "tipo": tipo -> titulo,
+        "material": material -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "materialDelLente"] {"nombre": titulo}
+        },
+        "tipo": tipo -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "tipoDeLente"] {"nombre": titulo}
+        },
       },
     },
     coleccionDeMarca,
-    'slug': slug.current,
     'variante': variantes[0] {
       codigoDeReferencia,
-      "colorDelLente": colorDelLente -> nombre,
-      "colorDeLaVarilla": colorDeLaVarilla -> nombre,
-      "colorDeLaMontura": colorDeLaMontura -> nombre,
+      "colorDelLente": colorDelLente -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      },
+      "colorDeLaVarilla": colorDeLaVarilla -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      },
+      "colorDeLaMontura": colorDeLaMontura -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      },
       unidadesDisponibles,
       precio,
       precioConDescuento,
       tag,
-      mostrarUnidadesDispobibles
+      "mostrarUnidadesDisponibles": {
+        "boolean": true,
+      },
     }
   `,
   gafasPremium: `
+  "mostrarCredito": {
+    "boolean": true,
+  },
   "codigoDeProducto": _id,
-    "marca": marca->titulo,
-    "variante": variantes[0] {
-      "colorDelLente": colorDelLente -> nombre,
-      "colorDeLaVarilla": colorDeLaVarilla -> nombre,
-      "colorDeLaMontura": colorDeLaMontura -> nombre,
+  "marca": marca -> {
+    "nombre": titulo, 
+    "reference": true, 
+    "options": *[_type == "marca"] {"nombre": titulo}
+  },
+  "variante": variantes[0] {
+      "colorDelLente": colorDelLente -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      },
+      "colorDeLaVarilla": colorDeLaVarilla -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      },
+      "colorDeLaMontura": colorDeLaMontura -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      },
       precioConDescuento,
       codigoDeReferencia,
       unidadesDisponibles,
       precio,
       tag,
-      mostrarUnidadesDisponibles
+      "mostrarUnidadesDisponibles": {
+        "boolean": true,
+      }
     },
     modelo,
-    "slug": slug.current, 
     genero,
     descripcion,
     "detalles": detalles {
-      "tipoDeGafa": tipoDeGafa -> titulo,
-      "estiloDeGafa": estiloDeGafa -> titulo,
-        "lente": lente {
-        "tipo": tipo -> titulo,
-        "material": material -> titulo,
+      "tipoDeGafa": tipoDeGafa -> {
+        "nombre": titulo,
+        "reference": true,
+        "options": *[_type == "tipoDeGafa"] {"nombre": titulo}
+      },
+      "estiloDeGafa": estiloDeGafa -> {
+        "nombre": titulo,
+        "reference": true,
+        "options": *[_type == "estiloDeGafa"] {"nombre": titulo}
+      },
+      "lente": lente {
+        "material": material -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "materialDelLente"] {"nombre": titulo}
+        },
+        "tipo": tipo -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "tipoDeLente"] {"nombre": titulo}
+        },
       },
       "montura": montura {
-        "formaDeLaMontura": formaDeLaMontura -> titulo,
-        "materialMontura": materialMontura -> titulo,
-        "materialVarilla": materialVarilla -> titulo,
-      }
+        "formaDeLaMontura": formaDeLaMontura -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "formaDeLaMontura"] {"nombre": titulo}
+        },
+        "materialMontura": materialMontura -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "materialDelMarco"] {"nombre": titulo}
+        },
+        "materialVarilla": materialVarilla -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "materialDeLaVarilla"] {"nombre": titulo}
+        },
+      },
     },
     "garantia": garantia { 
       meses, 
@@ -620,116 +512,198 @@ const productQueryString: Record<string, string> = {
     },
   `,
   relojesLujo: `
-  genero,
-  mostrarCredito,
-  "marca": marca -> titulo,
-  "codigoDeProducto": _id,
-  "detalles": detalles {
-    usarDetalles,
-    "contenido": contenido {
-      texto,
-      "imagen": imagen {
-        alt,
-        "url": asset->url
+    "mostrarCredito": {
+      "boolean": true,
+    },
+    genero,
+    "marca": marca -> {
+      "nombre": titulo, 
+      "reference": true, 
+      "options": *[_type == "marca"] {"nombre": titulo}
+    },
+    "codigoDeProducto": _id,
+    "detalles": detalles {
+      "usarDetalles":  {
+        "boolean": true,
+      },
+      "contenido":  {
+        "resena": contenido.resena,
+        "imagen":  {
+          "alt": contenido.imagen.alt,
+          "url": contenido.imagen.asset->url,
+        }
       }
-    }
-  },
-  "especificaciones": especificaciones {
-    "tipoDeReloj": tipoDeReloj -> titulo,
-    "estiloDeReloj": estiloDeReloj -> titulo,
-    resistenciaAlAgua,
-    "funciones": funciones [] -> {
-      titulo,
+    },
+    "especificaciones": especificaciones {
+      "tipoDeReloj": tipoDeReloj -> {
+        "nombre": titulo, 
+        "reference": true,
+        "options": *[_type == "tipoDeReloj"] {"nombre": titulo}
+      },
+      "estiloDeReloj": estiloDeReloj -> {
+        "nombre": titulo, 
+        "reference": true,
+        "options": *[_type == "estiloDeReloj"] {"nombre": titulo}
+      },
+      "resistenciaAlAgua": {
+        "boolean": true,
+      },
+      "funciones": funciones [] -> {
+        "nombre": titulo,
+        descripcion
+      },
+      "materialDelPulso": material -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "materialDelPulso"] {nombre}
+      }
+    },
+    "variante": variantes[0]{
+      precioConDescuento,
+      precio,
+      "colorTablero": colorTablero -> nombre,
+      unidadesDisponibles,
+      "mostrarUnidadesDisponibles": {
+        "boolean": true,
+      },
+      codigoDeReferencia,
+      tag,
+      "colorCaja": colorCaja -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      },
+      "colorPulso": colorPulso -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      },
+      "colorTablero": colorTablero -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      },
+    },
+    "inspiracion": inspiracion {
+      "usarInspiracion":  {
+        "boolean": true,
+      },
+      "contenido":  {
+        "resena": contenido.resena,
+        "imagen":  {
+          "alt": contenido.imagen.alt,
+          "url": contenido.imagen.asset->url,
+        }
+      }
+    },
+    modelo,
+    "garantia": garantia { 
+      meses, 
       descripcion
     },
-    "material": material -> nombre
-  },
-  "variante": variantes[0]{
-    precioConDescuento,
-    precio,
-    "colorTablero": colorTablero -> nombre,
-    unidadesDisponibles,
-    mostrarUnidadesDisponibles,
-    codigoDeReferencia,
-    tag,
-    "colorCaja": colorCaja -> nombre,
-    "colorPulso": colorPulso -> nombre,
-    "colorTablero": colorTablero -> nombre,
-  },
-  "inspiracion": inspiracion {
-    usarInspiracion,
-    "contenido": contenido {
-      resena,
-      "imagen": imagen {
-        alt,
-        "url": asset->url,
+    "movimiento": movimiento {
+      "usarMovimiento": {
+        "boolean": true,
+      },
+      "tipoDeMovimiento": tipoDeMovimiento -> {
+        "nombre": titulo,
+        "reference": true,
+        "options": *[_type == "tipoDeMovimiento"] {"nombre": titulo}
+      },
+      "contenido": contenido {
+        descripcion,
+        "imagen": imagen {
+          alt,
+          "url": asset->url,
+        }
       }
-    }
-  },
-  modelo,
-  "garantia": garantia { 
-    meses, 
-    descripcion
-  },
-  "movimiento": movimiento {
-    usarMovimiento,
-    "tipoDeMovimiento": tipoDeMovimiento -> titulo,
-    "contenido": contenido {
-      descripcion,
-      "imagen": imagen {
-        alt,
-        "url": asset->url,
+    },
+    "caja": caja {
+      diametro,
+      "material": material -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "materialDeCaja"] {nombre}
+      },
+      "cristal": cristal -> {
+        titulo,
+        "reference": true,
+        "options": *[_type == "cristal"] {"nombre": titulo}
       }
-    }
-  },
-  "caja": caja {
-    diametro,
-    "material": material -> nombre,
-    "cristal": cristal -> titulo
-  },
-  coleccionDeMarca,
-  descripcion,
-  "slug": slug.current
+    },
+    coleccionDeMarca,
+    descripcion,
   `,
   relojesPremium: `
     "variante": variantes[0]{
       precio,
       precioConDescuento,
-      "colorTablero": colorTablero -> nombre,
-      "imagenes": imagenes[]{
-        alt,
-        "url": asset->url,
+      "colorTablero": colorTablero -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
       },
       codigoDeReferencia,
       tag,
       unidadesDisponibles,
-      mostrarUnidadesDisponibles,
-      "colorCaja": colorCaja -> nombre,
-      "colorPulso": colorPulso -> nombre
+      "mostrarUnidadesDisponibles": {
+        "boolean": true,
+      },
+      "colorCaja": colorCaja -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      },
+      "colorPulso": colorPulso -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "colores"] {nombre}
+      }
     },
     "codigoDeProducto": _id,
     modelo,
     descripcion,
-    "slug": slug.current,
     "garantia": garantia { 
       meses, 
       descripcion
     },
-    "marca": marca->titulo,
+    "marca": marca -> {
+      "nombre": titulo, 
+      "reference": true, 
+      "options": *[_type == "marca"] {"nombre": titulo}
+    },
     "detallesReloj": detallesReloj {
-      "tipoDeReloj": tipoDeReloj -> titulo,
-      "estiloDeReloj": estiloDeReloj -> titulo,
+      "tipoDeReloj": tipoDeReloj -> {
+        "nombre": titulo, 
+        "reference": true,
+        "options": *[_type == "tipoDeReloj"] {"nombre": titulo}
+      },
+      "estiloDeReloj": estiloDeReloj -> {
+        "nombre": titulo, 
+        "reference": true,
+        "options": *[_type == "estiloDeReloj"] {"nombre": titulo}
+      },
       "funciones": funciones [] -> {
         titulo,
         descripcion
       },
-      resistenciaAlAgua,
+      "resistenciaAlAgua": {
+        "boolean": true,
+      },
       "material": material -> nombre,
       "tipoDeMovimiento": tipoDeMovimiento -> titulo,
       "caja": caja {
         diametro,
-        "material": material -> nombre,
-        "cristal": cristal -> titulo
+        "materialDelPulso": material -> {
+          nombre,
+          "reference": true,
+          "options": *[_type == "materialDelPulso"] {nombre}
+        },
+        "cristal": cristal -> {
+          titulo,
+          "reference": true,
+          "options": *[_type == "cristal"] {"nombre": titulo}
+        }
       },
     },
     "genero": detallesReloj.genero,
@@ -744,7 +718,7 @@ export const GET = async (req: Request) => {
 
     const file = params.get("file");
 
-    console.log({ file });
+    // console.log({ file });
 
     if (!file) {
       return Response.json({ status: 400 });
@@ -761,18 +735,24 @@ export const GET = async (req: Request) => {
         ${queryString}
       }`);
 
-      const docKeys = getNestedKeys(sanityDoc)
-        .sort()
-        .filter((key) => key !== "variante._key" && key !== "variante._type");
+      const docKeys = getNestedKeys2(sanityDoc).sort((a, b) => {
+        return a.path
+          .join(".")
+          .toLowerCase()
+          .localeCompare(b.path.join(".").toLowerCase());
+      });
+
+      // .sort()
+      // .filter((key) => key !== "variante._key" && key !== "variante._type");
 
       console.log({
         docKeys,
         length: docKeys.length,
         prodName: sanityDoc,
+        paths: docKeys.map((key) => key.path),
       });
 
-      await createWorkbook(docKeys, file);
-
+      await createWorkbook2(docKeys, file);
       const filePath = path.resolve(`./${file}.xlsx`);
 
       const fileBuffer = fs.readFileSync(filePath);
