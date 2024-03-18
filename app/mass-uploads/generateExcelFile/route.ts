@@ -192,7 +192,7 @@ async function createWorkbook2(docKeys: NestedKey[], file: string) {
   //     };
   //   }
   // }
-  const filePath = path.resolve(`./public/${file}.xlsx`);
+  const filePath = path.resolve(`./tmp/${file}.xlsx`);
 
   return await workbook.xlsx.writeFile(filePath);
 }
@@ -765,7 +765,7 @@ export const GET = async (req: Request) => {
       });
 
       await createWorkbook2(docKeys, file);
-      const filePath = path.resolve(`./public/${file}.xlsx`);
+      const filePath = path.resolve(`./tmp/${file}.xlsx`);
 
       const fileBuffer = fs.readFileSync(filePath);
 
