@@ -7,46 +7,46 @@ const ValidationForm = () => {
   const [uploadFormState, uploadFormAction] = useFormState(uploadFile, { error: null, success: false, data: [] });
 
 
-  
-  
-  
+
+
+
   const titles = uploadFormState.data?.slice(0, 6)
-  
-  console.log({titles})
+
+  console.log({ titles })
 
 
   if (userFormState.success) {
     return <div className="fixed top-0 z-[100] bg-white text-black w-screen h-screen overflow-scroll flex flex-col gap-5 justify-center">
-      <h1 className="text-black text-2xl">Genere un archivo de excel</h1>
-      {/* <form action={generateExcelFile}> */}
-      <div className="flex gap-2 flex-wrap justify-center">
+      <div className="flex gap-2 items-center flex-col">
+        <h1 className="text-black text-2xl">Genere un archivo de excel</h1>
+        {/* <form action={generateExcelFile}> */}
 
-        <a href="/mass-uploads/generateExcelFile?file=perfumeLujo" className="bg-white text-black border border-black px-10">
+        <a href="/mass-uploads/generateExcelFile?file=perfumeLujo" className="bg-white w-fit text-black border border-black px-10">
           Generar Excel para Perfume de Lujo
         </a>
-        <a href="/mass-uploads/generateExcelFile?file=perfumePremium" className="bg-white text-black border border-black px-10">
+        <a href="/mass-uploads/generateExcelFile?file=perfumePremium" className="bg-white w-fit text-black border border-black px-10">
           Generar Excel para Perfume Premium
         </a>
-        <a href="/mass-uploads/generateExcelFile?file=gafasLujo" className="bg-white text-black border border-black px-10">
+        <a href="/mass-uploads/generateExcelFile?file=gafasLujo" className="bg-white w-fit text-black border border-black px-10">
           Generar Excel para gafas de Lujo
         </a>
-        <a href="/mass-uploads/generateExcelFile?file=gafasPremium" className="bg-white text-black border border-black px-10">
+        <a href="/mass-uploads/generateExcelFile?file=gafasPremium" className="bg-white w-fit text-black border border-black px-10">
           Generar Excel para gafas Premium
         </a>
-        <a href="/mass-uploads/generateExcelFile?file=relojesLujo" className="bg-white text-black border border-black px-10">
+        <a href="/mass-uploads/generateExcelFile?file=relojesLujo" className="bg-white w-fit text-black border border-black px-10">
           Generar Excel para relojes de Lujo
         </a>
-        <a href="/mass-uploads/generateExcelFile?file=relojesPremium" className="bg-white text-black border border-black px-10">
+        <a href="/mass-uploads/generateExcelFile?file=relojesPremium" className="bg-white w-fit text-black border border-black px-10">
           Generar Excel para relojes Premium
         </a>
+        <form action={uploadFormAction}>
+          <input type="file" name="file" />
+          <button type="submit" className="bg-white text-black border border-black px-2">
+            Upload file
+          </button>
+        </form>
       </div>
       {/* </form> */}
-      <form action={uploadFormAction}>
-        <input type="file" name="file" />
-        <button type="submit" className="bg-white text-black border border-black">
-          Upload file
-        </button>
-      </form>
       <Titles titles={titles} />
     </div>
   }
@@ -73,7 +73,7 @@ const ValidationForm = () => {
 
 export default ValidationForm;
 
-const Titles = ({titles}: { titles?: excelData[]; }) => {
+const Titles = ({ titles }: { titles?: excelData[]; }) => {
   return (
     <ul className="flex flex-col justify-center bg-red-400">
       {titles?.map((title, index) => (
