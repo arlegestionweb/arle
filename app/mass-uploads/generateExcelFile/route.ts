@@ -181,7 +181,17 @@ async function createWorkbook2(docKeys: NestedKey[], file: string) {
       columnLetter = incrementColumnLetter(columnLetter);
     }
   }
-
+  // for (let row = 6; row <= 106; row++) {
+  //   for (let col = 1; col <= columnLetterToNumber(columnLetter); col++) {
+  //     const cell = sheet.getCell(row, col);
+  //     cell.border = {
+  //       top: { style: "thin" },
+  //       left: { style: "thin" },
+  //       bottom: { style: "thin" },
+  //       right: { style: "thin" },
+  //     };
+  //   }
+  // }
   return await workbook.xlsx.writeFile(`./${file}.xlsx`);
 }
 
