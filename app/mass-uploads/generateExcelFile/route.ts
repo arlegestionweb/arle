@@ -765,8 +765,10 @@ export const GET = async (req: Request) => {
       });
 
       await createWorkbook2(docKeys, file);
+      
       const filePath = path.resolve(`./tmp/${file}.xlsx`);
-
+      
+      console.log(`File exists: ${fs.existsSync(filePath)}`);
       const fileBuffer = fs.readFileSync(filePath);
 
       // Create a new NextResponse and set the body to the file buffer
