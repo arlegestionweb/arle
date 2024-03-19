@@ -783,15 +783,15 @@ export const GET = async (req: Request) => {
         "Content-Disposition",
         `attachment; filename=${file}.xlsx`
       );
-      setTimeout(() => {
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            console.error(`Error deleting file ${filePath}:`, err);
-          }
+      // setTimeout(() => {
+      //   fs.unlink(filePath, (err) => {
+      //     if (err) {
+      //       console.error(`Error deleting file ${filePath}:`, err);
+      //     }
 
-          console.log(`File ${filePath} deleted`);
-        });
-      }, 60 * 1000); // 60 seconds
+      //     console.log(`File ${filePath} deleted`);
+      //   });
+      // }, 60 * 1000); // 60 seconds
       return response;
     } catch (error) {
       console.error(error);
