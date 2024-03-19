@@ -795,7 +795,7 @@ export const GET = async (req: Request) => {
       return response;
     } catch (error) {
       console.error(error);
-      return Response.json({ status: 500 });
+      return Response.json({ status: 500, error });
     }
   }
 
