@@ -13,6 +13,9 @@ type NestedKey = {
   boolean?: boolean;
 };
 
+export const dynamic = 'force-dynamic' // defaults to auto
+
+
 function getNestedKeys2(obj: any, path: string[] = []): NestedKey[] {
   return Object.entries(obj).reduce(
     (result: NestedKey[], [key, value]: [string, any]) => {
