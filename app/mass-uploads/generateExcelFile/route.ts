@@ -1,10 +1,11 @@
-import fs from "fs";
-import path from "path";
-import { NextResponse } from "next/server";
-import sanityClient from "@/sanity/sanityClient";
+import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { columnLetterToNumber, incrementColumnLetter } from "@/utils/helpers";
 import { convertirCamelCaseATitulo } from "@/app/_lib/utils";
 import * as ExcelJS from "exceljs";
+import { Stream } from 'stream';
+import { NextApiResponse } from 'next';
+import { promisify } from "util";
+
 
 type NestedKey = {
   path: string[];
@@ -13,8 +14,7 @@ type NestedKey = {
   boolean?: boolean;
 };
 
-export const dynamic = 'force-dynamic' // defaults to auto
-
+export const dynamic = "force-dynamic"; // defaults to auto
 
 function getNestedKeys2(obj: any, path: string[] = []): NestedKey[] {
   return Object.entries(obj).reduce(
@@ -119,14 +119,7 @@ async function createWorkbook2(docKeys: NestedKey[], file: string) {
               option.nombre;
           });
 
-        // Set data validation on the entire column
-        // sheet.getColumn(columnLetter).eachCell((cell) => {
-        //   cell.dataValidation = {
-        //     type: "list",
-        //     formulae: [range],
-        //     allowBlank: true, // Allow empty cells (optional)
-        //   };
-        // });
+
         const range = `Options!$${columnLetter}$1:$${columnLetter}$${docKey.options.length}`;
         // optionColumnLetter = incrementColumnLetter(optionColumnLetter);
         for (let i = 6; i <= 106; i++) {
@@ -195,9 +188,8 @@ async function createWorkbook2(docKeys: NestedKey[], file: string) {
   //     };
   //   }
   // }
-  const filePath = `./public/excel/${file}.xlsx`;
 
-  return await workbook.xlsx.writeFile(filePath);
+  return workbook
 }
 
 const productQueryString: Record<string, string> = {
@@ -725,7 +717,7 @@ const productQueryString: Record<string, string> = {
     coleccionDeMarca
   `,
 };
-export const GET = async (req: Request) => {
+export const GET = async (req: Request, res: NextApiResponse) => {
   if (req.method === "GET") {
     const { url } = req;
 
@@ -767,35 +759,31 @@ export const GET = async (req: Request) => {
         paths: docKeys.map((key) => key.path),
       });
 
-      await createWorkbook2(docKeys, file);
+      const workbook = await createWorkbook2(docKeys, file);
+
+
+      const stream = new Stream.PassThrough();
+      await workbook.xlsx.write(stream);
+
+      const getBuffer = promisify(streamToBuffer);
+
+      const buffer = await getBuffer(stream);
+
+      if (!buffer) {
+        throw new Error('Failed to convert stream to buffer');
+      }
       
-      const filePath = `./public/excel/${file}.xlsx`;
+      const asset = await sanityWriteClient.assets.upload('file', new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      }));
+
+      if (!asset) {
+        throw new Error('Failed to upload asset');
+      }
       
-      console.log(`File exists: ${fs.existsSync(filePath)}`);
-      const fileBuffer = fs.readFileSync(filePath);
+      // console.log({ asset });
 
-      // Create a new NextResponse and set the body to the file buffer
-      const response = new NextResponse(fileBuffer);
-
-      // Set headers
-      response.headers.set(
-        "Content-Type",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      );
-      response.headers.set(
-        "Content-Disposition",
-        `attachment; filename=${file}.xlsx`
-      );
-      // setTimeout(() => {
-      //   fs.unlink(filePath, (err) => {
-      //     if (err) {
-      //       console.error(`Error deleting file ${filePath}:`, err);
-      //     }
-
-      //     console.log(`File ${filePath} deleted`);
-      //   });
-      // }, 60 * 1000); // 60 seconds
-      return response;
+      return Response.redirect(asset.url);
     } catch (error) {
       console.error(error);
       return Response.json({ status: 500, error });
@@ -804,3 +792,11 @@ export const GET = async (req: Request) => {
 
   return Response.json({ status: 405 });
 };
+
+
+function streamToBuffer(stream: NodeJS.ReadableStream, callback: (err: Error | null, buffer?: Buffer) => void) {
+  const chunks: any[] = [];
+  stream.on('data', (chunk) => chunks.push(chunk));
+  stream.on('error', callback);
+  stream.on('end', () => callback(null, Buffer.concat(chunks)));
+}
