@@ -12,10 +12,10 @@ const ValidationForm = () => {
 
   const titles = uploadFormState.data?.slice(0, 6)
 
-  console.log({ titles })
-
-
+  
+  
   if (userFormState.success) {
+    console.log({ titles })
     return <div className="fixed top-0 z-[100] bg-white text-black w-screen h-screen overflow-scroll flex flex-col gap-5 justify-center">
       <div className="flex gap-2 items-center flex-col">
         <h1 className="text-black text-2xl">Genere un archivo de excel</h1>

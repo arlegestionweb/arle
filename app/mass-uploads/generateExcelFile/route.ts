@@ -2,24 +2,36 @@ import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { columnLetterToNumber, incrementColumnLetter } from "@/utils/helpers";
 import { convertirCamelCaseATitulo } from "@/app/_lib/utils";
 import * as ExcelJS from "exceljs";
-import { Stream } from 'stream';
-import { NextApiResponse } from 'next';
+import { Stream } from "stream";
+import { NextApiResponse } from "next";
 import { promisify } from "util";
-
 
 type NestedKey = {
   path: string[];
   reference: boolean;
   options: any[];
   boolean?: boolean;
+  array?: boolean;
+  order: number;
 };
 
 export const dynamic = "force-dynamic"; // defaults to auto
 
-function getNestedKeys2(obj: any, path: string[] = []): NestedKey[] {
+function getNestedKeys2(
+  obj: any,
+  path: string[] = [],
+  oldOrder: number = Infinity
+): NestedKey[] {
   return Object.entries(obj).reduce(
     (result: NestedKey[], [key, value]: [string, any]) => {
-      const newPath = path.concat(key);
+      if (key === "order") {
+        return result;
+      }
+
+      const newPath = path.includes(key) ? path : path.concat(key);
+
+      const order = value?.order || oldOrder;
+
       if (typeof value !== "object" || value === null || Array.isArray(value)) {
         if (obj.boolean) {
           result.push({
@@ -27,6 +39,7 @@ function getNestedKeys2(obj: any, path: string[] = []): NestedKey[] {
             reference: value?.reference || false,
             options: value?.options || [],
             boolean: true,
+            order,
           });
         } else if (obj.reference) {
           if (!result.find((item) => item.path.includes(path[0]))) {
@@ -34,17 +47,30 @@ function getNestedKeys2(obj: any, path: string[] = []): NestedKey[] {
               path: newPath,
               reference: obj?.reference || false,
               options: obj?.options || [],
+              order,
             });
+          }
+        } else if (obj.array) {
+          if (!result.find((item) => item.path.includes(path[0]))) {
+            const newObj = {
+              path: newPath,
+              reference: obj?.reference || false,
+              options: obj?.options || [],
+              array: obj?.array || false,
+              order,
+            };
+            result.push(newObj);
           }
         } else {
           result.push({
+            order,
             path: newPath,
             reference: value?.reference || false,
             options: value?.options || [],
           });
         }
       } else {
-        result.push(...getNestedKeys2(value, newPath));
+        result.push(...getNestedKeys2(value, newPath, order));
       }
       return result;
     },
@@ -57,13 +83,19 @@ async function createWorkbook2(docKeys: NestedKey[], file: string) {
   const sheet = workbook.addWorksheet("My Sheet");
   const optionsSheet = workbook.addWorksheet("Options");
   let columnLetter = "A";
+
   docKeys.forEach((docKey) => {
     docKey.path.forEach((part, index) => {
       let cell = sheet.getCell(`${columnLetter}${index + 1}`);
-
+     
+      if (convertirCamelCaseATitulo(part) === "Array") {
+        cell.value =
+          "Encuentra las opciones para este campo en la fila 5 de esta columna, las opciones deben ir en un solo campo separados por comas.";
+      }
       if (
         convertirCamelCaseATitulo(part) !== "Reference" &&
         convertirCamelCaseATitulo(part) !== "Boolean" &&
+        convertirCamelCaseATitulo(part) !== "Array" &&
         convertirCamelCaseATitulo(part) !== "Nombre"
       ) {
         cell.value = convertirCamelCaseATitulo(part);
@@ -87,6 +119,21 @@ async function createWorkbook2(docKeys: NestedKey[], file: string) {
             // allowBlank: true, // Allow empty cells (optional)
           };
         }
+      }
+
+      if (docKey.array) {
+        const options = docKey.options.map((option) => option.nombre);
+
+        options.forEach((option, index) => {
+          optionsSheet.getCell(`${columnLetter}${index + 1}`).value = option;
+        });
+
+        const range = `Options!$${columnLetter}$1:$${columnLetter}$${options.length}`;
+        const cell = sheet.getCell(`${columnLetter}${5}`);
+        cell.dataValidation = {
+          type: "list",
+          formulae: [range],
+        };
       }
 
       if (docKey.boolean && index === docKey.path.length - 1) {
@@ -118,7 +165,6 @@ async function createWorkbook2(docKeys: NestedKey[], file: string) {
             optionsSheet.getCell(`${columnLetter}${index + 1}`).value =
               option.nombre;
           });
-
 
         const range = `Options!$${columnLetter}$1:$${columnLetter}$${docKey.options.length}`;
         // optionColumnLetter = incrementColumnLetter(optionColumnLetter);
@@ -189,13 +235,19 @@ async function createWorkbook2(docKeys: NestedKey[], file: string) {
   //   }
   // }
 
-  return workbook
+  return workbook;
 }
 
 const productQueryString: Record<string, string> = {
   perfumeLujo: `
-    "codigoDeProducto": _id,
-    titulo,
+    "codigoDeProducto": {
+      "order": 1,
+      _id
+    },
+    "titulo": {
+      "order": 2,
+      titulo
+    },
     "inspiracion": {
       "usarInspiracion":  {
         "boolean": true,
@@ -209,16 +261,50 @@ const productQueryString: Record<string, string> = {
       }
     },
     'variante': variantes[0]{
-      codigoDeReferencia,
-      unidadesDisponibles,
-      registroInvima,
-      tag,
-      precioConDescuento,
+      "codigoDeReferencia": {
+        "order": 4,
+        codigoDeReferencia
+      },
+      "unidadesDisponibles": {
+        "order": 5,
+        unidadesDisponibles
+      },
+      "registroInvima": {
+        "order": 6,
+        registroInvima
+      },
+      "tag": {
+        "order": 7,
+        "nombre": "Etiqueta",
+        "reference": true,
+        "options": [
+          {
+            "nombre": "Nuevo"
+          }, 
+          {
+            "nombre": "Mas Vendido"
+          }, 
+          {
+            "nombre": "Super Descuento"
+          }
+        ]
+      },
+      "precioConDescuento": {
+        "order": 8,
+        precioConDescuento
+      },
       "mostrarUnidadesDisponibles": {
         "boolean": true,
+        "order": 9,
       },
-      tamano,
-      precio
+      "tamano": {
+        "order": 10,
+        tamano
+      },
+      "precio": {
+        "order": 3,
+        precio
+      },
     },
     genero,
     "parteDeUnSet": {
@@ -230,20 +316,41 @@ const productQueryString: Record<string, string> = {
       "options": *[_type == "concentracion"] {nombre}
     },
     "notasOlfativas": notasOlfativas {
-      "notasDeBase": notasDeBase [] -> nombre,
-      "notasDeSalida": notasDeSalida [] -> nombre,
+      "notasDeBase": notasDeBase [] -> {
+        nombre,
+        "array": true,
+        "options": *[_type == "notasOlfativas"] {nombre}
+      },
+      "notasDeSalida": notasDeSalida [0] -> {
+        "array": true,
+        nombre,
+        "options": *[_type == "notasOlfativas"] {nombre}
+      },
       "familiaOlfativa": familiaOlfativa -> {
         nombre,
         "reference": true,
         "options": *[_type == "familiasOlfativas"] {nombre}
       },
-      "notasDeCorazon": notasDeCorazon [] -> nombre
+      "notasDeCorazon": notasDeCorazon [0] -> {
+        "array": true,
+        nombre,
+        "options": *[_type == "notasOlfativas"] {nombre}
+      },
     },
-    "ingredientes": ingredientes [] -> nombre,
+    "ingredientes": ingredientes [0] -> {
+      "array": true,
+      nombre,
+      "options": *[_type == "ingrediente"] {nombre}
+    },
     "mostrarCredito": {
       "boolean": true,
     },
-    "marca": marca -> {"nombre": titulo, "reference": true, "options": *[_type == "marca"] {"nombre": titulo}},
+    "marca": marca -> {
+      "order": 12,
+      "nombre": titulo, 
+      "reference": true, 
+      "options": *[_type == "marca"] {"nombre": titulo}
+    },
     "descripcion": descripcion {
       texto,
       "imagen": imagen {
@@ -725,8 +832,6 @@ export const GET = async (req: Request, res: NextApiResponse) => {
 
     const file = params.get("file");
 
-    // console.log({ file });
-
     if (!file) {
       return Response.json({ status: 400 });
     }
@@ -749,18 +854,12 @@ export const GET = async (req: Request, res: NextApiResponse) => {
           .localeCompare(b.path.join(".").toLowerCase());
       });
 
-      // .sort()
-      // .filter((key) => key !== "variante._key" && key !== "variante._type");
-
-      console.log({
-        docKeys,
-        length: docKeys.length,
-        prodName: sanityDoc,
-        paths: docKeys.map((key) => key.path),
+      const sortedDocKeys = docKeys.sort((a, b) => {
+        return a.order - b.order;
       });
 
-      const workbook = await createWorkbook2(docKeys, file);
-
+      console.log({ paths: sortedDocKeys.map((key) => key.path) })
+      const workbook = await createWorkbook2(sortedDocKeys, file);
 
       const stream = new Stream.PassThrough();
       await workbook.xlsx.write(stream);
@@ -770,17 +869,21 @@ export const GET = async (req: Request, res: NextApiResponse) => {
       const buffer = await getBuffer(stream);
 
       if (!buffer) {
-        throw new Error('Failed to convert stream to buffer');
+        throw new Error("Failed to convert stream to buffer");
       }
-      
-      const asset = await sanityWriteClient.assets.upload('file', new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      }));
+
+      const asset = await sanityWriteClient.assets.upload(
+        "file",
+        new Blob([buffer], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }),
+        { filename: `${file}.xlsx` } // Specify the filename here
+      );
 
       if (!asset) {
-        throw new Error('Failed to upload asset');
+        throw new Error("Failed to upload asset");
       }
-      
+
       // console.log({ asset });
 
       return Response.redirect(asset.url);
@@ -793,10 +896,12 @@ export const GET = async (req: Request, res: NextApiResponse) => {
   return Response.json({ status: 405 });
 };
 
-
-function streamToBuffer(stream: NodeJS.ReadableStream, callback: (err: Error | null, buffer?: Buffer) => void) {
+function streamToBuffer(
+  stream: NodeJS.ReadableStream,
+  callback: (err: Error | null, buffer?: Buffer) => void
+) {
   const chunks: any[] = [];
-  stream.on('data', (chunk) => chunks.push(chunk));
-  stream.on('error', callback);
-  stream.on('end', () => callback(null, Buffer.concat(chunks)));
+  stream.on("data", (chunk) => chunks.push(chunk));
+  stream.on("error", callback);
+  stream.on("end", () => callback(null, Buffer.concat(chunks)));
 }

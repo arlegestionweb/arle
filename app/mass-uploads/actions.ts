@@ -68,7 +68,6 @@ export const uploadFile = async (
 
   const fileData = await fs.readFileSync(savedFile);
 
-  console.log({ fileData });
   const workbook = new Workbook();
 
   // Read the Excel file
