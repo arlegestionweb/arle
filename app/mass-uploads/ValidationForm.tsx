@@ -1,16 +1,30 @@
 "use client";
 import { useFormState } from "react-dom";
 import { excelData, uploadFile, validateUser } from "./actions";
+import { camelToTitleCase } from "@/utils/helpers";
+
+
+function getProductTypeFromFileName(fileName: string): string | null {
+  const productTypes = ['perfumeLujo', 'perfumePremium', 'relojesPremium', 'relojesLujo', 'gafasLujo', 'gafasPremium'];
+
+  for (let productType of productTypes) {
+    if (fileName.includes(productType)) {
+      return productType;
+    }
+  }
+
+  return null;
+}
 
 const ValidationForm = () => {
   const [userFormState, formAction] = useFormState(validateUser, { error: null, success: process.env.NODE_ENV === "development" });
-  const [uploadFormState, uploadFormAction] = useFormState(uploadFile, { error: null, success: false, data: [] });
+  const [uploadFormState, uploadFormAction] = useFormState(uploadFile, { error: null, success: false, data: [], fileName: ""});
 
-  const titles = uploadFormState.data?.slice(0, 6)
-  
+  const titles = uploadFormState.data?.slice(0, 3)
+
   if (userFormState.success) {
     console.log({ titles })
-    return <div className="fixed top-0 z-[100] bg-white text-black w-screen h-screen overflow-scroll flex flex-col gap-5 justify-center">
+    return <div className="fixed top-0 z-[100] bg-white text-black w-screen min-h-screen overflow-scroll flex flex-col gap-5 justify-center">
       <div className="flex gap-2 items-center flex-col max-w-lg mx-auto text-center">
         <h1 className="text-black text-2xl">Genere un archivo de excel</h1>
         {/* <form action={generateExcelFile}> */}
@@ -41,7 +55,10 @@ const ValidationForm = () => {
         </form>
       </div>
       {/* </form> */}
-      <Titles titles={titles} />
+      {/* <Titles titles={titles} /> */}
+      {uploadFormState.data && <>Subiendo {camelToTitleCase(getProductTypeFromFileName(uploadFormState.fileName) || "")}</>}
+      {uploadFormState.data && <UploadedData data={uploadFormState.data} />}
+      
     </div>
   }
 
@@ -67,28 +84,101 @@ const ValidationForm = () => {
 
 export default ValidationForm;
 
-const Titles = ({ titles }: { titles?: excelData[]; }) => {
-  return (
-    <ul className="flex flex-col justify-center bg-red-400">
-      {titles?.map((title, index) => (
-        <li key={index} className="m-4 flex flex-wrap p-4 border bg-green-300 border-gray-300 gap-2 rounded shadow-lg w-full">
-          {Array.isArray(title.values) && title.values.map((value, index) => {
-            let displayValue = '';
-            if (value instanceof Date) {
-              displayValue = value.toString();
-            } else if (typeof value === 'number' || typeof value === 'boolean') {
-              displayValue = value.toString();
-            } else if (typeof value === 'string') {
-              displayValue = value;
-            } else if (value === null || value === undefined) {
-              displayValue = '';
-            } else {
-              // Handle other types here
-            }
-            return <p key={index} className="bg-gray-200 min-w-[4ch]">{displayValue}</p>
-          })}
+
+const toCamelCase = (str: string) => {
+  const words = str.split(' ');
+  return [
+    words[0].toLowerCase(),
+    ...words.slice(1).map(word => word[0].toUpperCase() + word.slice(1).toLowerCase())
+  ].join('');
+};
+
+const arrayMessage = toCamelCase('Encuentra las opciones para este campo en la fila 5 de esta columna, las opciones deben ir en un solo campo separados por comas')
+
+const setNestedProperty = (obj: any, path: string, value: any) => {
+  if (path === '') {
+    return value;
+  }
+  const keys = path.split('.');
+  let current = obj;
+  for (let i = 0; i < keys.length; i++) {
+    if (i === keys.length - 1) {
+      current[keys[i]] = value;
+    } else {
+      current[keys[i]] = current[keys[i]] || {};
+      current = current[keys[i]];
+    }
+  }
+};
+
+const UploadedData = ({ data }: { data: excelData[] }) => {
+  const keys = data.slice(0, 4).map(row => row.values);
+
+  const objects = data.slice(4).map(row => {
+    let obj = {};
+    let previousKey = '';
+    if (Array.isArray(row.values)) {
+      row.values.forEach((value, index) => {
+        let key = keys.reduce((acc, curr) => {
+          if (Array.isArray(curr)) {
+            const part = curr[index];
+            return typeof part === 'string' ? `${acc}.${toCamelCase(part)}` : acc;
+          }
+          return acc;
+        }, '').substring(1); // Remove the leading dot
+
+        if (key.includes(arrayMessage)) {
+          const arrayValue = typeof value === 'string' ? value.split(', ') : [];
+          let newKey = key.split(arrayMessage)[0];
+          if (newKey === '') {
+            newKey = previousKey;
+          }
+          obj = setNestedProperty(obj, newKey, arrayValue) || obj;
+        } else {
+          previousKey = key;
+          obj = setNestedProperty(obj, key, value) || obj;
+        }
+      });
+    }
+    return obj;
+  });
+
+  // console.log({ingredientes: objects?[0].ingredientes});
+
+  objects.forEach(moveEmptyKeyValuesToParent);
+  console.log({ objects });
+    return (
+    <>
+     <ul>
+      {objects.map((product, index) => (
+        <li key={index}>
+          <ProductCard product={product} />
         </li>
       ))}
-    </ul>
-  );
+     </ul>
+    </>
+  )
+}
+
+function moveEmptyKeyValuesToParent(obj: any) {
+  for (let key in obj) {
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      if ('' in obj[key]) {
+        obj[key] = obj[key][''];
+      } else {
+        moveEmptyKeyValuesToParent(obj[key]);
+      }
+    }
+  }
+}
+
+
+const ProductCard = ({ product }: { product: any }) => {
+  return (
+    <div className="border border-black p-4">
+      <h1>{product.variante.codigoDeReferencia}</h1>
+      <p>{product.marca}</p>
+      <p>{product.titulo}</p>
+    </div>
+  )
 }

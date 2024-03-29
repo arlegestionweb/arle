@@ -31,13 +31,17 @@ export const validateUser = async (
   }
 };
 
-
 export type excelData = {
   rowNumber: number;
-  values: CellValue[] | { [key: string]: CellValue; };
-}
+  values: CellValue[] | { [key: string]: CellValue };
+};
 export const uploadFile = async (
-  formState: { success: boolean; error: string | null; data: excelData[] | null },
+  formState: {
+    success: boolean;
+    error: string | null;
+    data: excelData[] | null;
+    fileName: string | null;
+  },
   formData: FormData
 ) => {
   console.log("File uploaded");
@@ -48,6 +52,7 @@ export const uploadFile = async (
       success: false,
       error: "No file was uploaded",
       data: null,
+      fileName: null,
     };
   }
 
@@ -61,6 +66,7 @@ export const uploadFile = async (
       success: false,
       error: "The uploaded file is not an Excel file",
       data: null,
+      fileName: null,
     };
   }
 
@@ -89,6 +95,7 @@ export const uploadFile = async (
     success: true,
     error: null,
     data,
+    fileName: file.name,
   };
 };
 
