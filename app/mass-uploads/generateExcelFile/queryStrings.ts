@@ -1,32 +1,25 @@
-const codigoDeProducto = `
-  "codigoDeProducto": {
-    "order": 1,
-    "codigoDeProducto": _id
-  }
-`;
-
 const codigoDeReferencia = `
   "codigoDeReferencia": {
-    "order": 2,
+    "order": 3,
     codigoDeReferencia
   }
 `;
 const titulo = `
   "titulo": {
-    "order": 3,
+    "order": 1,
     titulo
   }
 `;
 const modelo = `
   "modelo": {
-    "order": 3,
+    "order": 1,
     modelo
   }
 `;
 
 const marca = `
   "marca": marca -> {
-    "order": 4,
+    "order": 2,
     "nombre": titulo, 
     "reference": true, 
     "options": *[_type == "marca"] {"nombre": titulo}
