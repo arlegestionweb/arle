@@ -262,7 +262,7 @@ export const GET = async (req: Request, res: NextApiResponse) => {
         ${queryString}
       }`);
 
-      console.log({sanityDoc})
+      // console.log({sanityDoc})
 
       const docKeys = getNestedKeys2(sanityDoc).sort((a, b) => {
         return a.path

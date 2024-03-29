@@ -1,6 +1,61 @@
+const codigoDeProducto = `
+  "codigoDeProducto": {
+    "order": 1,
+    "codigoDeProducto": _id
+  }
+`;
+
+const codigoDeReferencia = `
+  "codigoDeReferencia": {
+    "order": 2,
+    codigoDeReferencia
+  }
+`;
+const titulo = `
+  "titulo": {
+    "order": 3,
+    titulo
+  }
+`;
+const modelo = `
+  "modelo": {
+    "order": 3,
+    modelo
+  }
+`;
+
+const marca = `
+  "marca": marca -> {
+    "order": 4,
+    "nombre": titulo, 
+    "reference": true, 
+    "options": *[_type == "marca"] {"nombre": titulo}
+  }
+`;
+
+const precio = `
+  "precio": {
+    "order": 5,
+    precio
+  }
+`;
+
+const precioConDescuento = `
+"precioConDescuento": {
+  "order": 6,
+  precioConDescuento
+}
+`;
+const unidadesDisponibles = `
+  "unidadesDisponibles": {
+    "order": 7,
+    unidadesDisponibles
+  }
+`;
+
 const notasOlfativas = `
   "notasOlfativas": notasOlfativas {
-    "notasDeBase": notasDeBase [] -> {
+    "notasDeBase": notasDeBase [0] -> {
       nombre,
       "array": true,
       "options": *[_type == "notasOlfativas"] {nombre}
@@ -24,7 +79,7 @@ const notasOlfativas = `
 `;
 
 const tag = `
-  "tag": {
+  "etiqueta": {
     "nombre": "Etiqueta",
     "reference": true,
     "options": [
@@ -41,57 +96,9 @@ const tag = `
   }
 `;
 
-const codigoDeProducto = `
-  "codigoDeProducto": {
-    "order": 1,
-    "codigoDeProducto": _id
-  }
-`;
-
-const titulo = `
-  "titulo": {
-    "order": 3,
-    titulo
-  }
-`;
-const modelo = `
-  "modelo": {
-    "order": 3,
-    modelo
-  }
-`;
-
-const codigoDeReferencia = `
-  "codigoDeReferencia": {
-    "order": 2,
-    codigoDeReferencia
-  }
-`;
-
-const unidadesDisponibles = `
-  "unidadesDisponibles": {
-    "order": 7,
-    unidadesDisponibles
-  }
-`;
-
-const precioConDescuento = `
-  "precioConDescuento": {
-    "order": 6,
-    precioConDescuento
-  }
-`;
-
 const mostrarUnidadesDisponibles = `
   "mostrarUnidadesDisponibles": {
     "boolean": true,
-  }
-`;
-
-const precio = `
-  "precio": {
-    "order": 5,
-    precio
   }
 `;
 
@@ -103,15 +110,6 @@ const paisDeOrigen = `
   }
 `;
 
-const marca = `
-  "marca": marca -> {
-    "order": 4,
-    "nombre": titulo, 
-    "reference": true, 
-    "options": *[_type == "marca"] {"nombre": titulo}
-  }
-`;
-
 const mostrarCredito = `
   "mostrarCredito": {
     "boolean": true,
@@ -119,7 +117,6 @@ const mostrarCredito = `
 `;
 export const productQueryString: Record<string, string> = {
   perfumeLujo: `
-    ${codigoDeProducto},
    ${titulo},
     "inspiracion": {
       "usarInspiracion":  {
@@ -176,7 +173,6 @@ export const productQueryString: Record<string, string> = {
     coleccionDeMarca
     `,
   perfumePremium: `
-    ${codigoDeProducto},
     descripcion,
     "detalles": detalles {
       genero,
@@ -207,11 +203,9 @@ export const productQueryString: Record<string, string> = {
     "parteDeUnSet": {
       "boolean": true,
     },
-    ${paisDeOrigen}, 
     coleccionDeMarca
     `,
   gafasLujo: `
-    ${codigoDeProducto},
     ${marca},
     ${modelo},
     descripcion,
@@ -327,7 +321,6 @@ export const productQueryString: Record<string, string> = {
   `,
   gafasPremium: `
   ${mostrarCredito},
-  ${codigoDeProducto},
   ${marca},
   "variante": variantes[0] {
       "colorDelLente": colorDelLente -> {
@@ -405,7 +398,6 @@ export const productQueryString: Record<string, string> = {
    ${mostrarCredito},
     genero,
     ${marca},
-    ${codigoDeProducto},
     "detalles": detalles {
       "usarDetalles":  {
         "boolean": true,
@@ -429,9 +421,7 @@ export const productQueryString: Record<string, string> = {
         "reference": true,
         "options": *[_type == "estiloDeReloj"] {"nombre": titulo}
       },
-      "resistenciaAlAgua": {
-        "boolean": true,
-      },
+      resistenciaAlAgua,
       "funciones": {
         "nombre": "funciones",
         "array": true,
@@ -546,7 +536,6 @@ export const productQueryString: Record<string, string> = {
         "options": *[_type == "colores"] {nombre}
       }
     },
-    ${codigoDeProducto},
     ${modelo},
     descripcion,
     "garantia": garantia { 
@@ -569,10 +558,8 @@ export const productQueryString: Record<string, string> = {
         "nombre": "funciones",
         "array": true,
         "options": *[_type == "funcionDeReloj"] {"nombre": titulo},
-      },,
-      "resistenciaAlAgua": {
-        "boolean": true,
       },
+      resistenciaAlAgua,
       "material": material -> nombre,
       "tipoDeMovimiento": tipoDeMovimiento -> titulo,
       "caja": caja {

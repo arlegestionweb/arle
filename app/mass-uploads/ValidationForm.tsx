@@ -6,13 +6,7 @@ const ValidationForm = () => {
   const [userFormState, formAction] = useFormState(validateUser, { error: null, success: process.env.NODE_ENV === "development" });
   const [uploadFormState, uploadFormAction] = useFormState(uploadFile, { error: null, success: false, data: [] });
 
-
-
-
-
   const titles = uploadFormState.data?.slice(0, 6)
-
-  
   
   if (userFormState.success) {
     console.log({ titles })
