@@ -2,29 +2,34 @@
 import { useFormState } from "react-dom";
 import { excelData, uploadFile, validateUser } from "./actions";
 import { camelToTitleCase } from "@/utils/helpers";
+import { arrayMessage, moveEmptyKeyValuesToParent, setNestedProperty, toCamelCase } from "./_helpers";
+import ProductCard from "./_components/ProductCard";
+import { z } from "zod";
+
+type TProductTypes = 'perfumeLujo' | 'perfumePremium' | 'relojesPremium' | 'relojesLujo' | 'gafasLujo' | 'gafasPremium';
 
 
-function getProductTypeFromFileName(fileName: string): string | null {
-  const productTypes = ['perfumeLujo', 'perfumePremium', 'relojesPremium', 'relojesLujo', 'gafasLujo', 'gafasPremium'];
+function getProductTypeFromFileName(fileName: string): TProductTypes | null {
+  const productTypes: TProductTypes[] = ['perfumeLujo', 'perfumePremium', 'relojesPremium', 'relojesLujo', 'gafasLujo', 'gafasPremium'];
 
   for (let productType of productTypes) {
     if (fileName.includes(productType)) {
-      return productType;
+      return productType as TProductTypes;
     }
   }
+
 
   return null;
 }
 
 const ValidationForm = () => {
-  const [userFormState, formAction] = useFormState(validateUser, { error: null, success: process.env.NODE_ENV === "development" });
-  const [uploadFormState, uploadFormAction] = useFormState(uploadFile, { error: null, success: false, data: [], fileName: ""});
-
-  const titles = uploadFormState.data?.slice(0, 3)
+  // const [userFormState, formAction] = useFormState(validateUser, { error: null, success: process.env.NODE_ENV === "development" });
+  const [userFormState, formAction] = useFormState(validateUser, { error: null, success: false });
+  const [uploadFormState, uploadFormAction] = useFormState(uploadFile, { error: null, success: false, data: [], fileName: "" });
 
   if (userFormState.success) {
-    console.log({ titles })
-    return <div className="fixed top-0 z-[100] bg-white text-black w-screen min-h-screen overflow-scroll flex flex-col gap-5 justify-center">
+    const productType = getProductTypeFromFileName(uploadFormState.fileName || '');
+    return <div className="fixed top-0 z-[100] bg-white text-black w-screen min-h-screen max-h-[800px] overflow-scroll flex flex-col gap-5 justify-center">
       <div className="flex gap-2 items-center flex-col max-w-lg mx-auto text-center">
         <h1 className="text-black text-2xl">Genere un archivo de excel</h1>
         {/* <form action={generateExcelFile}> */}
@@ -56,9 +61,9 @@ const ValidationForm = () => {
       </div>
       {/* </form> */}
       {/* <Titles titles={titles} /> */}
-      {uploadFormState.data && <>Subiendo {camelToTitleCase(getProductTypeFromFileName(uploadFormState.fileName) || "")}</>}
-      {uploadFormState.data && <UploadedData data={uploadFormState.data} />}
-      
+      {uploadFormState.data && productType && <>Subiendo {camelToTitleCase(productType)}</>}
+      {uploadFormState.data && <UploadedData data={uploadFormState.data} productType={getProductTypeFromFileName(uploadFormState.fileName)} />}
+
     </div>
   }
 
@@ -84,34 +89,60 @@ const ValidationForm = () => {
 
 export default ValidationForm;
 
+const perfumeDeLujoExcelSchema = z.object({
+  titulo: z.string(),
+  marca: z.string(),
+  variante: z.object({
+    codigoDeReferencia: z.string(),
+    precio: z.number(),
+    precioConDescuento: z.number(),
+    registroInvima: z.string(),
+    unidadesDisponibles: z.number(),
+    mostrarUnidadesDisponibles: z.boolean(),
+    tamano: z.number(),
+  }),
+  concentracion: z.string(),
+  descripcion: z.object({
+    imagen: z.object({
+      alt: z.string(),
+      url: z.string().url(),
+    }),
+    texto: z.string(),
+  }),
+  genero: z.string(),
+  ingredientes: z.array(z.string()),
+  inspiracion: z.object({
+    contenido: z.object({
+      imagen: z.object({
+        alt: z.string(),
+        url: z.string().url(),
+      }),
+      resena: z.string(),
+    }),
+    usarInspiracion: z.string(),
+  }),
+  mostrarCredito: z.string(),
+  notasOlfativas: z.object({
+    familiaOlfativa: z.string(),
+    notasDeBase: z.string(),
+    notasDeCorazon: z.array(z.string()),
+    notasDeSalida: z.array(z.string()),
+  }),
+  paisDeOrigen: z.string(),
+  parteDeUnSet: z.string(),
+  "image-1": z.string().url().optional().nullable(),
+  "image-2": z.string().url().optional().nullable(),
+  "image-3": z.string().url().optional().nullable(),
+  "image-4": z.string().url().optional().nullable(),
+  "image-5": z.string().url().optional().nullable(),
+  "image-6": z.string().url().optional().nullable(),
+});
 
-const toCamelCase = (str: string) => {
-  const words = str.split(' ');
-  return [
-    words[0].toLowerCase(),
-    ...words.slice(1).map(word => word[0].toUpperCase() + word.slice(1).toLowerCase())
-  ].join('');
-};
-
-const arrayMessage = toCamelCase('Encuentra las opciones para este campo en la fila 5 de esta columna, las opciones deben ir en un solo campo separados por comas')
-
-const setNestedProperty = (obj: any, path: string, value: any) => {
-  if (path === '') {
-    return value;
+const UploadedData = ({ data, productType }: { data: excelData[]; productType: null | 'perfumeLujo' | 'perfumePremium' | 'relojesPremium' | 'relojesLujo' | 'gafasLujo' | 'gafasPremium' }) => {
+  if (!data || !productType) {
+    return null;
   }
-  const keys = path.split('.');
-  let current = obj;
-  for (let i = 0; i < keys.length; i++) {
-    if (i === keys.length - 1) {
-      current[keys[i]] = value;
-    } else {
-      current[keys[i]] = current[keys[i]] || {};
-      current = current[keys[i]];
-    }
-  }
-};
 
-const UploadedData = ({ data }: { data: excelData[] }) => {
   const keys = data.slice(0, 4).map(row => row.values);
 
   const objects = data.slice(4).map(row => {
@@ -143,42 +174,20 @@ const UploadedData = ({ data }: { data: excelData[] }) => {
     return obj;
   });
 
-  // console.log({ingredientes: objects?[0].ingredientes});
-
   objects.forEach(moveEmptyKeyValuesToParent);
-  console.log({ objects });
-    return (
+  console.log({ objects })
+  return (
     <>
-     <ul>
-      {objects.map((product, index) => (
-        <li key={index}>
-          <ProductCard product={product} />
-        </li>
-      ))}
-     </ul>
+      <ul>
+        {objects.map((product, index) => (
+          <li key={index}>
+            <ProductCard product={product} />
+          </li>
+        ))}
+      </ul>
     </>
   )
 }
 
-function moveEmptyKeyValuesToParent(obj: any) {
-  for (let key in obj) {
-    if (typeof obj[key] === 'object' && obj[key] !== null) {
-      if ('' in obj[key]) {
-        obj[key] = obj[key][''];
-      } else {
-        moveEmptyKeyValuesToParent(obj[key]);
-      }
-    }
-  }
-}
 
 
-const ProductCard = ({ product }: { product: any }) => {
-  return (
-    <div className="border border-black p-4">
-      <h1>{product.variante.codigoDeReferencia}</h1>
-      <p>{product.marca}</p>
-      <p>{product.titulo}</p>
-    </div>
-  )
-}
