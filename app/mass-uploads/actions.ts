@@ -182,50 +182,39 @@ export const saveProductsInSanity = async (
     throw new Error(`Invalid product type: ${productType}`);
   }
 
-
-  const newProducts: TSanityProduct[] = products.reduce(
-    (acc: TSanityProduct[], product) => {
-      const existingProduct = acc.find(
-        (p) => p.marca === product.marca && p.titulo === product.titulo
-      );
-
-      if (existingProduct) {
-        existingProduct.variantes.push(product.variante);
-      } else {
-        acc.push({
-          _type: productType,
-          marca: product.marca,
-          titulo: product.titulo,
-          imagenes: product.imagenes.map((img, i) => {
-            return {
-              alt: `${product.marca} ${product.titulo} - ${i + 1}`,
-              url: img,
-            };
-          }),
-          genero: product.genero,
-          concentracion: product.concentracion,
-          parteDeUnSet: product.parteDeUnSet,
-          descripcion: product.descripcion,
-          inspiracion: product.inspiracion,
-          notasOlfativas: product.notasOlfativas,
-          ingredientes: product.ingredientes,
-          paisDeOrigen: product.paisDeOrigen,
-          variantes: [product.variante],
-          mostrarCredito: product.mostrarCredito,
-        });
-      }
-
-      return acc;
-    },
-    []
-  );
+  const newProducts: TSanityProduct[] = products.map((product) => {
+    return {
+      _type: productType,
+      marca: product.marca,
+      titulo: product.titulo,
+      imagenes: product.imagenes.map((img, i) => {
+        return {
+          alt: `${product.marca} ${product.titulo} - ${i + 1}`,
+          url: img,
+        };
+      }),
+      genero: product.genero,
+      concentracion: product.concentracion,
+      parteDeUnSet: product.parteDeUnSet,
+      descripcion: product.descripcion,
+      inspiracion: product.inspiracion,
+      notasOlfativas: product.notasOlfativas,
+      ingredientes: product.ingredientes,
+      paisDeOrigen: product.paisDeOrigen,
+      variantes: product.variantes,
+      mostrarCredito: product.mostrarCredito,
+      
+    };
+  });
 
   // console.log({ newProducts, variantesLength: newProducts.map(prod => prod.variantes.length) });
 
   // newProducts.forEach(prod => console.log({variantes: prod.variantes}))
-  const productsParser = z.array(zodProducts[productType as keyof typeof zodProducts])
+  const productsParser = z.array(
+    zodProducts[productType as keyof typeof zodProducts]
+  );
 
   const parsedProducts = productsParser.safeParse(newProducts);
 
-  console.log({parsedProducts})
+  console.log({ parsedProducts });
 };

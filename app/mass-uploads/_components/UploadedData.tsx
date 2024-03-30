@@ -9,7 +9,7 @@ const zodSiBoolean = z.string().transform(value => value === 'si');
 const perfumeDeLujoExcelSchema = z.object({
   titulo: z.string(),
   marca: z.string(),
-  variante: z.object({
+  variantes: z.array(z.object({
     codigoDeReferencia: z.string(),
     precio: z.number(),
     precioConDescuento: z.number().optional().nullable(),
@@ -17,7 +17,8 @@ const perfumeDeLujoExcelSchema = z.object({
     unidadesDisponibles: z.number(),
     mostrarUnidadesDisponibles: zodSiBoolean,
     tamano: z.string().or(z.number()),
-  }),
+    etiqueta: z.string().optional().nullable().transform(etiqueta => ({ tag: etiqueta })),
+  })),
   concentracion: z.string(),
   descripcion: z.object({
     imagen: z.object({
@@ -83,8 +84,8 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
   const keys = data.slice(0, 4).map(row => row.values);
 
-  const products = data.slice(4).map(row => {
-    let obj = {};
+  const products = data.slice(4).reduce((acc: any[], row) => {
+    let obj: { marca?: string; titulo?: string; variante?: any; } = {};
     let previousKey = '';
     if (Array.isArray(row.values)) {
       row.values.forEach((value, index) => {
@@ -108,16 +109,33 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           obj = setNestedProperty(obj, key, value) || obj;
         }
       });
+
+      const existingProduct = acc.find(
+        (p) => p.marca === obj.marca && p.titulo === obj.titulo
+      );
+
+      if (existingProduct) {
+        if (Array.isArray(existingProduct.variantes)) {
+          existingProduct.variantes.push(obj.variante);
+        } else {
+          existingProduct.variantes = [obj.variante];
+        }
+      } else {
+        acc.push({
+          ...obj,
+          variantes: [obj.variante],
+        });
+      }
     }
-    return obj;
-  });
+
+    return acc;
+  }, []);
 
   products.forEach(moveEmptyKeyValuesToParent);
 
-
+  // console.log({ products })
   const zodProducts = z.array(productTypes[productType as keyof typeof productTypes]).safeParse(products);
 
-  console.log({ products, zodProducts })
   if (!zodProducts.success) {
     return <div className="fixed top-0 z-[100] bg-white text-black w-screen h-screen flex items-center justify-center">
       <div className="flex flex-col gap-4">
