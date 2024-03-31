@@ -19,6 +19,25 @@ export const imageObjectSchema = defineField({
     }),
   ],
 });
+export const imageUrlObjectSchema = defineField({
+  name: "imageUrlObject",
+  title: "URL de la imagen",
+  type: "object",
+  fields: [
+    defineField({
+      name: "url",
+      title: "URL",
+      type: "url",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "alt",
+      title: "Texto Alternativo",
+      description: "Para buscadores de internet (SEO)",
+      type: "string",
+    }),
+  ],
+});
 export const videoObjectSchema = defineField({
   name: "video",
   title: "Imagen",
@@ -33,6 +52,20 @@ export const videoObjectSchema = defineField({
       title: "Texto Alternativo",
       description: "Para buscadores de internet (SEO)",
       type: "string",
+    }),
+  ],
+});
+
+export const imageUrlSchema = defineField({
+  name: "imageUrl",
+  title: "URL de la imagen",
+  type: "object",
+  fields: [
+    defineField({
+      name: "url",
+      title: "URL",
+      type: "url",
+      // validation: (Rule) => Rule.required().url(),
     }),
   ],
 });
@@ -65,8 +98,8 @@ export const imageArrayForProducts = defineField({
       }
       return true;
     }),
-  of: [imageArrayMemberSchema],
-  options: {
+    of: [imageArrayMemberSchema, imageUrlSchema],
+    options: {
     layout: "grid",
   },
 });

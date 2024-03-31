@@ -48,21 +48,7 @@ const perfumeDeLujoExcelSchema = z.object({
   }),
   paisDeOrigen: z.string(),
   parteDeUnSet: zodSiBoolean,
-  "image-1": z.string().url().optional().nullable(),
-  "image-2": z.string().url().optional().nullable(),
-  "image-3": z.string().url().optional().nullable(),
-  "image-4": z.string().url().optional().nullable(),
-  "image-5": z.string().url().optional().nullable(),
-  "image-6": z.string().url().optional().nullable(),
-}).transform(rawData => {
-  const imagenes: string[] = [];
-  for (let i = 1; i <= 6; i++) {
-    const key = `image-${i}` as keyof typeof rawData;
-    if (rawData[key] && typeof rawData[key] === 'string') {
-      imagenes.push(rawData[key] as string);
-    }
-  }
-  return { ...rawData, imagenes };
+  imagenes: z.array(z.string()),
 });
 const productTypes = {
   perfumeLujo: perfumeDeLujoExcelSchema,
@@ -85,8 +71,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
   const keys = data.slice(0, 4).map(row => row.values);
 
   const products = data.slice(4).reduce((acc: any[], row) => {
-    let obj: { marca?: string; titulo?: string; variante?: any; } = {};
-    let previousKey = '';
+    let obj: { [key: string]: any; marca?: string; titulo?: string; variante?: any; imagenes?: string[] } = {}; let previousKey = '';
     if (Array.isArray(row.values)) {
       row.values.forEach((value, index) => {
         let key = keys.reduce((acc, curr) => {
@@ -109,6 +94,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           obj = setNestedProperty(obj, key, value) || obj;
         }
       });
+      const images = ['image-1', 'image-2', 'image-3', 'image-4', 'image-5', 'image-6'].map(key => obj[key]).filter(Boolean);
 
       const existingProduct = acc.find(
         (p) => p.marca === obj.marca && p.titulo === obj.titulo
@@ -120,10 +106,14 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
         } else {
           existingProduct.variantes = [obj.variante];
         }
+
+        // Add variant images to existing product
+        existingProduct.imagenes = Array.from(new Set([...(existingProduct.imagenes || []), ...images]));
       } else {
         acc.push({
           ...obj,
           variantes: [obj.variante],
+          imagenes: Array.from(new Set(images)),
         });
       }
     }
@@ -133,9 +123,9 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
   products.forEach(moveEmptyKeyValuesToParent);
 
-  // console.log({ products })
   const zodProducts = z.array(productTypes[productType as keyof typeof productTypes]).safeParse(products);
 
+  console.log({ zodProducts, products })
   if (!zodProducts.success) {
     return <div className="fixed top-0 z-[100] bg-white text-black w-screen h-screen flex items-center justify-center">
       <div className="flex flex-col gap-4">

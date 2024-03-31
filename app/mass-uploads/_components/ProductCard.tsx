@@ -8,6 +8,8 @@ const ProductCard = ({ product }: { product: TProductType }) => {
       <p><strong>Modelo: </strong>{product.titulo}</p>
       <p><strong>Variantes: </strong>
         {product.variantes.map((variant) => variant.tamano).join(', ')}
+        <strong> Codigos De Ref: </strong>
+        {product.variantes.map((variant) => variant.codigoDeReferencia).join(', ')}
       </p>
       <p><strong>Imagenes: </strong></p>
       <ul className="flex gap-2">

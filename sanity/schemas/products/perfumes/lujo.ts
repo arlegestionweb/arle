@@ -11,6 +11,10 @@ import {
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
 import { notasOlfativasProdSchema } from ".";
 
+export type TParentWithSubirImagen = {
+  subirImagen?: boolean;
+}
+
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
   title: "Perfumes de Lujo",
@@ -77,10 +81,59 @@ export const perfumeLujoSchema = defineType({
           validation: (Rule) => Rule.required(),
         }),
         defineField({
+          name: "subirImagen",
+          title: "Usar imagen externa?",
+          type: "boolean",
+          initialValue: false,
+        }),
+        defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
-          validation: (Rule) => Rule.required(),
+          hidden: ({ parent }) =>
+            parent && (parent as TParentWithSubirImagen).subirImagen !== false,
+          validation: (Rule) =>
+            Rule.custom((field, context) => {
+              if (
+                (context.parent as TParentWithSubirImagen).subirImagen &&
+                !field
+              ) {
+                return "La imagen es requerida cuando 'Subir imagen' está seleccionado";
+              }
+              return true;
+            }),
+        }),
+        defineField({
+          name: "imagenExterna",
+          description: "Usar imagen de un URL externo",
+          title: "Imagen Externa",
+          type: "object",
+          fields: [
+            defineField({
+              name: "url",
+              title: "URL",
+              type: "url",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "alt",
+              title: "Texto alternativo",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          hidden: ({ parent }) =>
+            parent && (parent as TParentWithSubirImagen).subirImagen === false,
+          validation: (Rule) =>
+            Rule.custom((field, context) => {
+              if (
+                (context.parent as TParentWithSubirImagen).subirImagen &&
+                !field
+              ) {
+                return "La URL es requerida cuando 'Subir imagen' no está seleccionado";
+              }
+              return true;
+            }),
         }),
       ],
     }),
