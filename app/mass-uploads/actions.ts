@@ -511,7 +511,7 @@ export const saveProductsInSanity = async (
 
           const parsedProduct =
             zodPerfumeLujoSchemaWithSanityRefs.safeParse(updatedProduct);
-          console.log("Product found", { parsedProduct });
+          console.log("Product found", { ingredientes: parsedProduct.data.ingredientes });
 
           if (!parsedProduct.success) {
             throw console.log({ errors: parsedProduct.error.errors });
@@ -524,14 +524,14 @@ export const saveProductsInSanity = async (
             throw new Error("The _id property is undefined or null");
           }
 
-          await sanityWriteClient.createOrReplace({
-            ...parsedProduct.data,
-            _id: parsedProduct.data._id,
-          });
+          // await sanityWriteClient.createOrReplace({
+          //   ...parsedProduct.data,
+          //   _id: parsedProduct.data._id,
+          // });
         } else {
           const parsedProduct =
             zodPerfumeLujoSchemaWithSanityRefs.safeParse(newProd);
-          console.log("Product not found", { parsedProduct });
+          console.log("Product not found", { ingredientes: parsedProduct.data.ingredientes });
           if (!parsedProduct.success) {
             throw console.log({
               errors: parsedProduct.error.errors,
@@ -539,7 +539,7 @@ export const saveProductsInSanity = async (
             });
           }
           // console.log("Product not found", { newProd, imagenes: newProd.imagenes });
-          await sanityWriteClient.create(parsedProduct.data);
+          // await sanityWriteClient.create(parsedProduct.data);
         }
       } catch (error) {
         console.log(error);
@@ -597,8 +597,7 @@ const zodPerfumeLujoSchemaWithSanityRefs =
         })
         .transform((data) => ({
           ...data,
-          imagen: {
-            _type: "imagenExterna",
+          imagenExterna: {
             ...data.imagen,
           },
         })),
