@@ -511,7 +511,7 @@ export const saveProductsInSanity = async (
 
           const parsedProduct =
             zodPerfumeLujoSchemaWithSanityRefs.safeParse(updatedProduct);
-          console.log("Product found", { ingredientes: parsedProduct.data.ingredientes });
+          // console.log("Product found", { ingredientes: parsedProduct.data.ingredientes });
 
           if (!parsedProduct.success) {
             throw console.log({ errors: parsedProduct.error.errors });
@@ -531,7 +531,7 @@ export const saveProductsInSanity = async (
         } else {
           const parsedProduct =
             zodPerfumeLujoSchemaWithSanityRefs.safeParse(newProd);
-          console.log("Product not found", { ingredientes: parsedProduct.data.ingredientes });
+          // console.log("Product not found", { ingredientes: parsedProduct.data.ingredientes });
           if (!parsedProduct.success) {
             throw console.log({
               errors: parsedProduct.error.errors,
