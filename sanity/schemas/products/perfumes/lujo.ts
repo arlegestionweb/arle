@@ -10,6 +10,7 @@ import {
 } from "../../objects/products/generales";
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
 import { notasOlfativasProdSchema } from ".";
+import { GiDelicatePerfume } from "react-icons/gi";
 
 export type TParentWithSubirImagen = {
   subirImagen?: boolean;
@@ -19,6 +20,7 @@ export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
   title: "Perfumes de Lujo",
   type: "document",
+  icon: GiDelicatePerfume,
   groups: [
     {
       name: "general",
@@ -147,8 +149,6 @@ export const perfumeLujoSchema = defineType({
       type: "array",
       of: [
         defineArrayMember({
-          name: "ingrediente",
-          title: "Ingrediente",
           type: "reference",
           to: [{ type: "ingrediente" }],
         }),

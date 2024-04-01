@@ -1,5 +1,10 @@
 import { defineArrayMember, defineField } from "sanity";
-import { etiquetaSchema, generoSchema, precioConDescuentoSchema, precioSchema } from "./generales";
+import {
+  etiquetaSchema,
+  generoSchema,
+  precioConDescuentoSchema,
+  precioSchema,
+} from "./generales";
 import { TbPerfume } from "react-icons/tb";
 import { notasOlfativasProdSchema } from "../../products/perfumes";
 
@@ -55,7 +60,7 @@ const variantePerfumeSchema = defineField({
       validation: (Rule) => Rule.required(),
     }),
     precioSchema,
-    precioConDescuentoSchema, 
+    precioConDescuentoSchema,
     defineField({
       name: "codigoDeReferencia",
       title: "Código de referencia",
@@ -78,7 +83,10 @@ const variantePerfumeSchema = defineField({
       name: "unidadesDisponibles",
       title: "Unidades disponibles",
       type: "number",
-      validation: (Rule) => Rule.required().min(0).error('Unidades disponibles no pueden ser menos de 0'),
+      validation: (Rule) =>
+        Rule.required()
+          .min(0)
+          .error("Unidades disponibles no pueden ser menos de 0"),
     }),
     etiquetaSchema,
   ],
@@ -98,7 +106,7 @@ const variantePerfumeSchema = defineField({
       return {
         title: `${title} ml`,
         subtitle: `$ ${subtitle}`,
-        media: TbPerfume
+        media: TbPerfume,
       };
     },
   },
@@ -109,16 +117,16 @@ export const variantesDePerfumesSchema = defineField({
   title: "Variantes",
   type: "array",
   group: "variantes",
-  validation: (Rule) => Rule.custom(variantes => {
-    if (!variantes) return "Debe haber al menos una variante";
-    if (variantes.length === 0) {
-      return "Debe haber al menos una variante";
-    }
-    return true;
-  }),
+  validation: (Rule) =>
+    Rule.custom((variantes) => {
+      if (!variantes) return "Debe haber al menos una variante";
+      if (variantes.length === 0) {
+        return "Debe haber al menos una variante";
+      }
+      return true;
+    }),
   of: [variantePerfumeSchema],
 });
-
 
 export const detallesPerfumeSchema = defineField({
   name: "detalles",
@@ -146,7 +154,7 @@ export const detallesPerfumeSchema = defineField({
       type: "text",
       hidden: ({ document }) => document?._type !== "perfumePremium",
     }),
-    
+
     notasOlfativasProdSchema,
   ],
 });
