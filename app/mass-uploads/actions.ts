@@ -247,6 +247,7 @@ export const saveProductsInSanity = async (
                   _type: "imageUrl";
                   _key: string;
                   url: string;
+                  alt: string;
                 }[];
                 marca: string | { _type: "reference"; _ref: string };
                 concentracion: string | { _type: "reference"; _ref: string };
@@ -286,10 +287,13 @@ export const saveProductsInSanity = async (
               const newProd: TProductWithImageUrl = {
                 ...product,
                 imagenes: product.imagenes.map((img, i) => {
+                  console.log("😎😎", img);
+                  
                   return {
                     _type: "imageUrl",
                     _key: `image-${nanoid()}`,
                     url: img.url,
+                    alt: img.alt
                   };
                 }),
                 marca: product.marca,
@@ -627,7 +631,7 @@ export const saveProductsInSanity = async (
     if (parsedProd.data._id && typeof parsedProd.data._id === "string") {
       if (!savingProducts.has(parsedProd.data._id)) {
         savingProducts.set(parsedProd.data._id, true);
-        console.log("updating product");
+        console.log("updating product", parsedProd.data.imagenes);
         const saveResp = await sanityWriteClient.createOrReplace({
           ...parsedProd.data,
           _id: parsedProd.data._id,
@@ -717,6 +721,7 @@ const zodPerfumeLujoSchemaWithSanityRefs =
           _type: z.literal("imageUrl"),
           _key: z.string(),
           url: z.string().url(),
+          alt: z.string()
         })
       ),
       concentracion: z.object({

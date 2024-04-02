@@ -67,6 +67,12 @@ export const imageUrlSchema = defineField({
       type: "url",
       // validation: (Rule) => Rule.required().url(),
     }),
+    defineField({
+      name: "alt",
+      title: "Alt",
+      type: "string",
+      // validation: (Rule) => Rule.required().url(),
+    }),
   ],
 });
 

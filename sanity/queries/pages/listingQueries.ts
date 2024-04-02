@@ -154,7 +154,8 @@ export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
 
-    // console.log(result.perfumes[0].variantes[0].tag)
+    console.log(result.perfumes.map((perfu:any)=>perfu._type))
+    console.log(result.perfumes[1])
     
     const parsedResult = zodListPage.safeParse(result);
 
