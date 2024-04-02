@@ -118,10 +118,13 @@ const zodPerfumeLujoSchemaSanityReady = z.object({
   concentracion: z.string(),
   parteDeUnSet: z.boolean(),
   descripcion: z.object({
-    imagen: z.object({
-      alt: z.string(),
-      url: z.string().url(),
-    }),
+    imagen: z
+      .object({
+        alt: z.string().optional().nullable(),
+        url: z.string().url().optional().nullable(),
+      })
+      .optional()
+      .nullable(),
     texto: z.string(),
   }),
   inspiracion: z.object({
@@ -199,7 +202,16 @@ export const saveProductsInSanity = async (
       genero: product.genero,
       concentracion: product.concentracion,
       parteDeUnSet: product.parteDeUnSet,
-      descripcion: product.descripcion,
+      descripcion: {
+        ...product.descripcion,
+        imagen:
+          product.descripcion && product.descripcion.imagen
+            ? {
+                url: product.descripcion.imagen.url || null,
+                alt: product.descripcion.imagen.alt || null,
+              }
+            : null,
+      },
       inspiracion: product.inspiracion,
       notasOlfativas: product.notasOlfativas,
       ingredientes: product.ingredientes,
@@ -252,16 +264,17 @@ export const saveProductsInSanity = async (
                 concentracion: string | { _type: "reference"; _ref: string };
                 descripcion: {
                   subirImagen?: boolean;
-                  imagen:
+                  imagen?:
                     | {
                         _type: "imagenObject";
                         url: string;
                         alt: string;
                       }
                     | {
-                        alt: string;
-                        url: string;
-                      };
+                        alt: string | null;
+                        url: string | null;
+                      }
+                    | null;
                   texto: string;
                 };
                 notasOlfativas: {
@@ -297,11 +310,13 @@ export const saveProductsInSanity = async (
                 descripcion: {
                   ...product.descripcion,
                   subirImagen: true,
-                  imagen: {
-                    // _type: "imagenObject",
-                    url: product.descripcion.imagen.url,
-                    alt: product.descripcion.imagen.alt,
-                  },
+                  imagen:
+                    product.descripcion && product.descripcion.imagen
+                      ? {
+                          url: product.descripcion.imagen.url || null,
+                          alt: product.descripcion.imagen.alt || null,
+                        }
+                      : null,
                 },
               };
 
@@ -726,10 +741,13 @@ const zodPerfumeLujoSchemaWithSanityRefs =
       descripcion: z
         .object({
           subirImagen: z.boolean().optional().nullable(),
-          imagen: z.object({
-            url: z.string().url(),
-            alt: z.string(),
-          }),
+          imagen: z
+            .object({
+              url: z.string().url().optional().nullable(),
+              alt: z.string().optional().nullable(),
+            })
+            .optional()
+            .nullable(),
           texto: z.string(),
         })
         .transform((data) => ({
@@ -783,5 +801,3 @@ const zodPerfumeLujoSchemaWithSanityRefs =
 type TPerfumeLujoWithSanityRefs = z.infer<
   typeof zodPerfumeLujoSchemaWithSanityRefs
 >;
-
-

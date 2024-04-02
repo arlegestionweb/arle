@@ -24,7 +24,7 @@ const perfumeDeLujoExcelSchema = z.object({
     imagen: z.object({
       alt: z.string(),
       url: z.string().url(),
-    }),
+    }).optional().nullable(),
     texto: z.string(),
   }),
   genero: z.string(),

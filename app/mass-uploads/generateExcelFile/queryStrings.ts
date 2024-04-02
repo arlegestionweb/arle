@@ -553,15 +553,19 @@ export const productQueryString: Record<string, string> = {
         "options": *[_type == "funcionDeReloj"] {"nombre": titulo},
       },
       resistenciaAlAgua,
-      "material": material -> nombre,
       "tipoDeMovimiento": tipoDeMovimiento -> titulo,
+      "materialDelPulso": material -> {
+        nombre,
+        "reference": true,
+        "options": *[_type == "materialDelPulso"] {nombre}
+      },
       "caja": caja {
-        diametro,
-        "materialDelPulso": material -> {
+        "materialDeLaCaja": material -> {
           nombre,
           "reference": true,
-          "options": *[_type == "materialDelPulso"] {nombre}
+          "options": *[_type == "materialDeCaja"] {nombre}
         },
+        diametro,
         "cristal": cristal -> {
           titulo,
           "reference": true,
