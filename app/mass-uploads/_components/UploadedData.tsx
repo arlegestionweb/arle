@@ -1,7 +1,10 @@
+"use client"
 import { z } from "zod";
 import { excelData, saveProductsInSanity } from "../actions";
 import { arrayMessage, moveEmptyKeyValuesToParent, setNestedProperty, toCamelCase } from "../_helpers";
 import ProductCard from "./ProductCard";
+import { useProductUploadStore } from "./productUploadStore";
+import { useEffect } from "react";
 
 
 const zodSiBoolean = z.string().transform(value => value === 'si');
@@ -48,7 +51,10 @@ const perfumeDeLujoExcelSchema = z.object({
   }),
   paisDeOrigen: z.string(),
   parteDeUnSet: zodSiBoolean,
-  imagenes: z.array(z.string()),
+  imagenes: z.array(z.string().or(z.object({
+    url: z.string().url(),
+    _id: z.string()
+  }))),
 });
 const productTypes = {
   perfumeLujo: perfumeDeLujoExcelSchema,
@@ -63,10 +69,7 @@ export type TProductType = z.infer<typeof productTypes[keyof typeof productTypes
 
 
 const UploadedData = ({ data, productType }: { data: excelData[]; productType: null | 'perfumeLujo' | 'perfumePremium' | 'relojesPremium' | 'relojesLujo' | 'gafasLujo' | 'gafasPremium' }) => {
-  if (!data || !productType) {
-    return null;
-  }
-
+  const { addProducts, products: storeProducts } = useProductUploadStore();
 
   const keys = data.slice(0, 4).map(row => row.values);
 
@@ -123,38 +126,38 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
   products.forEach(moveEmptyKeyValuesToParent);
 
-  const zodProducts = z.array(productTypes[productType as keyof typeof productTypes]).safeParse(products);
 
-  console.log({ zodProducts, products })
-  if (!zodProducts.success) {
-    return <div className="fixed top-0 z-[100] bg-white text-black w-screen h-screen flex items-center justify-center">
-      <div className="flex flex-col gap-4">
-        <h1 className="text-black text-2xl">Errores en la validación del archivo</h1>
-        <ul>
-          {zodProducts.error.errors.map((error, index) => (
-            <li key={index}>
-              <p>{error.message}</p>
-              <p>{JSON.stringify(error)}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+  useEffect(() => {
+    console.log("running useEffect")
+    const zodProds = z.array(productTypes[productType as keyof typeof productTypes]).safeParse(products);
+
+    if (zodProds.success) {
+      console.log("adding prods to store")
+      addProducts(zodProds.data);
+    }
+  }, [data]);
+
+
+  if (!data || !productType) {
+    return null;
   }
 
+  console.log({ storeProducts })
 
   return (
     <section>
       <ul className="flex flex-col gap-2">
-        {zodProducts.data.map((product, index) => (
+        {storeProducts.map((product, index) => (
           <li key={index}>
             <ProductCard product={product} />
           </li>
         ))}
       </ul>
       <button onClick={() => {
-        saveProductsInSanity(zodProducts.data, productType)
-      }}>Guardar</button>
+        saveProductsInSanity(storeProducts, productType)
+      }}>
+        Guardar
+      </button>
     </section>
   )
 }
