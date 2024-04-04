@@ -5,14 +5,18 @@ import structure from "./structure";
 import { schemaTypes } from "./schemas/schemaTypes";
 import { colorInput } from "@sanity/color-input";
 
+
+
+const dataset = process.env.SANITY_DATASET as string || "production";
+
+console.log("process.env.SANITY_PROJECT_ID", {dataset}, process.env.SANITY_DATASET);
+
+
 export const sanityAdminConfig = {
   projectId: process.env.SANITY_PROJECT_ID || "",
-  dataset: process.env.SANITY_DATASET || "",
+  dataset,
   useCdn: process.env.NODE_ENV === "production",
-  api: {
-    projectId: process.env.SANITY_PROJECT_ID || "",
-  },
-  title: "Arlé Contenidos",
+    title: "Arlé Contenidos",
   apiVersion: "2021-10-21",
   basePath: "/admin",
   plugins: [

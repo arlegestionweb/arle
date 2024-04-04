@@ -8,6 +8,7 @@ import { z } from "zod";
 const server = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
   SANITY_PROJECT_ID: z.string(),
+  SANITY_DATASET: z.string(),
 });
 
 /**
@@ -15,6 +16,7 @@ const server = z.object({
  * built with invalid env vars. To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
+  SANITY_DATASET: process.env.SANITY_DATASET,
 });
 
 /**
@@ -25,6 +27,7 @@ const client = z.object({
  */
 const processEnv = {
   SANITY_PROJECT_ID: process.env.SANITY_PROJECT_ID,
+  SANITY_DATASET: process.env.SANITY_DATASET,
   NODE_ENV: process.env.NODE_ENV,
 };
 
