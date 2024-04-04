@@ -108,6 +108,21 @@ async function saveFile(file: File, documentHash: string) {
   return filePath; // Return the file path
 }
 
+const zodImageUploadSchema = z.object({
+  alt: z.string().optional().nullable(),
+  url: z.string().url().optional().nullable(),
+}).or(z.object({
+  url: z.string().url(),
+  _id: z.string(),
+}).transform(({ _id }) => ({
+  _type: 'image',
+  asset: {
+    _ref: _id
+  }
+})));
+
+
+
 const zodPerfumeLujoSchemaSanityReady = z.object({
   _type: z.literal("perfumeLujo"),
   marca: z.string(),
@@ -196,7 +211,7 @@ export const saveProductsInSanity = async (
       imagenes: product.imagenes.map((img, i) => {
         return {
           alt: `${product.marca} ${product.titulo} - ${i + 1}`,
-          url: img,
+          url: typeof img === "string" ? img : img.url,
         };
       }),
       genero: product.genero,
@@ -207,7 +222,10 @@ export const saveProductsInSanity = async (
         imagen:
           product.descripcion && product.descripcion.imagen
             ? {
-                url: product.descripcion.imagen.url || null,
+                url:
+                  typeof product.descripcion.imagen === "string"
+                    ? product.descripcion.imagen
+                    : product.descripcion.imagen.url || null,
                 alt: product.descripcion.imagen.alt || null,
               }
             : null,
