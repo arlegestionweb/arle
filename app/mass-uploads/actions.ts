@@ -74,14 +74,23 @@ export const uploadFile = async (
     };
   }
 
-  const savedFile = await saveFile(file, "documentHash");
+  // const savedFile = await saveFile(file, "documentHash");
 
-  const fileData = await fs.readFileSync(savedFile);
+  // const fileData = await fs.readFileSync(savedFile);
+
+  const savedFile = await sanityWriteClient.assets.upload("file", file);
+
+  const fileData = savedFile.url;
+
+  const response = await fetch(fileData);
+  const arrayBuffer = await response.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
 
   const workbook = new Workbook();
+  await workbook.xlsx.load(buffer);
 
   // Read the Excel file
-  await workbook.xlsx.load(fileData);
+  // await workbook.xlsx.load(fileData);
   // Get the first worksheet
   const worksheet = workbook.worksheets[0];
 
@@ -108,20 +117,24 @@ async function saveFile(file: File, documentHash: string) {
   return filePath; // Return the file path
 }
 
-const zodImageUploadSchema = z.object({
-  alt: z.string().optional().nullable(),
-  url: z.string().url().optional().nullable(),
-}).or(z.object({
-  url: z.string().url(),
-  _id: z.string(),
-}).transform(({ _id }) => ({
-  _type: 'image',
-  asset: {
-    _ref: _id
-  }
-})));
-
-
+const zodImageUploadSchema = z
+  .object({
+    alt: z.string().optional().nullable(),
+    url: z.string().url().optional().nullable(),
+  })
+  .or(
+    z
+      .object({
+        url: z.string().url(),
+        _id: z.string(),
+      })
+      .transform(({ _id }) => ({
+        _type: "image",
+        asset: {
+          _ref: _id,
+        },
+      }))
+  );
 
 const zodPerfumeLujoSchemaSanityReady = z.object({
   _type: z.literal("perfumeLujo"),
