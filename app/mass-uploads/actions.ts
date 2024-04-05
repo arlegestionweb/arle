@@ -119,28 +119,26 @@ async function saveFile(file: File, documentHash: string) {
 
 const zodImageUploadSchema = z
   .object({
+    _type: z.literal("imageUrl"),
+    _key: z.string().optional().nullable(),
     alt: z.string().optional().nullable(),
-    url: z.string().url().optional().nullable(),
+    url: z.string().url(),
   })
   .or(
-    z
-      .object({
-        url: z.string().url(),
-        _id: z.string(),
-      })
-      .transform(({ _id }) => ({
-        _type: "image",
-        asset: {
-          _ref: _id,
-        },
-      }))
+    z.object({
+      _type: z.literal("image"),
+      _key: z.string().optional().nullable(),
+      asset: z.object({
+        _ref: z.string(),
+      }),
+    })
   );
 
 const zodPerfumeLujoSchemaSanityReady = z.object({
   _type: z.literal("perfumeLujo"),
   marca: z.string(),
   titulo: z.string(),
-  imagenes: z.array(imageSchema),
+  imagenes: z.array(zodImageUploadSchema),
   mostrarCredito: z.boolean(),
   genero: z.string(),
   concentracion: z.string(),
@@ -206,6 +204,56 @@ type TSanityProduct = z.infer<(typeof zodProducts)[keyof typeof zodProducts]>;
 function isProductType(key: string): key is keyof typeof zodProducts {
   return key in zodProducts;
 }
+type TProductWithImageUrl = Omit<
+  TPerfumeLujoWithSanityRefs,
+  // | "imagenes"
+  | "marca"
+  | "concentracion"
+  | "descripcion"
+  | "notasOlfativas"
+  | "ingredientes"
+  | "paisDeOrigen"
+> & {
+  // imagenes: (
+  //   | {
+  //       _type: "image";
+  //       _key: string;
+  //       asset: {
+  //         _ref: string;
+  //       };
+  //     }
+  //   | {
+  //       _type: "imageUrl";
+  //       _key: string;
+  //       url: string;
+  //     }
+  // )[];
+  marca: string | { _type: "reference"; _ref: string };
+  concentracion: string | { _type: "reference"; _ref: string };
+  descripcion: {
+    subirImagen?: boolean;
+    imagen?:
+      | {
+          _type: "imagenObject";
+          url: string;
+          alt: string;
+        }
+      | {
+          alt: string | null;
+          url: string | null;
+        }
+      | null;
+    texto: string;
+  };
+  notasOlfativas: {
+    familiaOlfativa: string | { _type: string; _ref: string };
+    notasDeBase: (string | { _type: string; _ref: string; _key: string })[];
+    notasDeCorazon: string[] | { _type: string; _ref: string; _key: string }[];
+    notasDeSalida: string[] | { _type: string; _ref: string; _key: string }[];
+  };
+  ingredientes: string[] | { _type: string; _ref: string; _key: string }[];
+  paisDeOrigen: string | { _type: string; _ref: string };
+};
 
 export const saveProductsInSanity = async (
   products: TProductType[],
@@ -217,15 +265,37 @@ export const saveProductsInSanity = async (
 
   const productsToSave: TPerfumeLujoWithSanityRefs[] = [];
   const newProducts: TSanityProduct[] = products.map((product) => {
+    console.log({ imagenesAntes: product.imagenes });
     return {
       _type: productType,
       marca: product.marca,
       titulo: product.titulo,
       imagenes: product.imagenes.map((img, i) => {
-        return {
-          alt: `${product.marca} ${product.titulo} - ${i + 1}`,
-          url: typeof img === "string" ? img : img.url,
-        };
+        if (img && typeof img !== "string" && img._id) {
+          return {
+            _type: "image",
+            _key: `image-${nanoid()}`,
+            asset: {
+              _ref: img._id,
+            },
+            alt: `${product.marca} ${product.titulo} - ${i + 1}`,
+          };
+        } else if (typeof img === "string") {
+          return {
+            _type: "imageUrl",
+            _key: `image-${nanoid()}`,
+            alt: `${product.marca} ${product.titulo} - ${i + 1}`,
+            url: img,
+          };
+        } else {
+          // handle the case where img is undefined or an object without an _id property
+          return {
+            _type: "imageUrl",
+            _key: `image-${nanoid()}`,
+            alt: `${product.marca} ${product.titulo} - ${i + 1}`,
+            url: "", // provide a default value
+          };
+        }
       }),
       genero: product.genero,
       concentracion: product.concentracion,
@@ -256,11 +326,14 @@ export const saveProductsInSanity = async (
     zodProducts[productType as keyof typeof zodProducts]
   );
 
-  // console.log({newProducts})
-
   const parsedProducts = productsParser.safeParse(newProducts);
+  console.log({ parsedProducts });
 
   if (!parsedProducts.success) {
+    console.log({
+      errors: parsedProducts.error.errors,
+      path: parsedProducts.error.errors[0].path,
+    });
     throw new Error("Invalid products");
   }
   const savingProducts = new Map();
@@ -268,6 +341,273 @@ export const saveProductsInSanity = async (
     let mergedProducts: TPerfumeLujoWithSanityRefs[] = [];
     await Promise.all(
       parsedProducts.data.map(async (product) => {
+        const newProd: TProductWithImageUrl = {
+          ...product,
+          // imagenes: product.imagenes,
+          marca: product.marca,
+          concentracion: product.concentracion,
+          descripcion: {
+            ...product.descripcion,
+            subirImagen: true,
+            imagen:
+              product.descripcion && product.descripcion.imagen
+                ? {
+                    url: product.descripcion.imagen.url || null,
+                    alt: product.descripcion.imagen.alt || null,
+                  }
+                : null,
+          },
+        };
+        const ingredientes = await Promise.all(
+          product.ingredientes.map(async (ingrediente) => {
+            try {
+              const ingredienteSanity = await sanityClient.fetch(
+                `*[_type == "ingrediente" && nombre == "${ingrediente}"][0]`
+              );
+
+              // console.log({ ingredienteSanity });
+
+              // console.log({ ingredienteSanity });
+              if (!ingredienteSanity) {
+                const newIngrediente = await sanityWriteClient.create({
+                  _type: "ingrediente",
+                  nombre: ingrediente,
+                });
+
+                // console.log({ newIngrediente });
+                if (!newIngrediente) {
+                  throw new Error("Failed to create new ingrediente");
+                }
+                return {
+                  _type: "reference",
+                  _ref: newIngrediente._id as string,
+                  _key: `ingred-${nanoid()}`,
+                };
+              } else {
+                if (!ingredienteSanity || !ingredienteSanity._id) {
+                  console.log({ ingredienterror: ingredienteSanity });
+                  throw new Error("IngredienteSanity has no _id property");
+                }
+
+                return {
+                  _type: "reference",
+                  _ref: ingredienteSanity._id,
+                  _key: `ingred-${nanoid()}`,
+                };
+              }
+            } catch (error) {
+              console.log({ ingrediente });
+              return {
+                _type: "reference",
+                _ref: "ingrediente-error",
+                _key: `ingred-${nanoid()}`,
+              };
+            }
+          })
+        );
+
+        newProd.ingredientes = ingredientes;
+        // console.log({ ingredientes });
+        const marcaDelExcel = product.marca;
+
+        const marcaSanity = await sanityClient.fetch(
+          `*[_type == "marca" && titulo == "${marcaDelExcel}"][0]`
+        );
+
+        if (!marcaSanity) {
+          const newMarca = await sanityWriteClient.create({
+            _type: "marca",
+            titulo: marcaDelExcel,
+          });
+
+          if (!newMarca) {
+            throw new Error("Failed to create new marca");
+          }
+
+          newProd.marca = {
+            _type: "reference",
+            _ref: newMarca._id,
+          };
+        } else {
+          newProd.marca = {
+            _type: "reference",
+            _ref: marcaSanity._id,
+          };
+        }
+
+        const paisDeOrigen = await sanityClient.fetch(
+          `*[_type == "paisDeOrigen" && nombre == "${product.paisDeOrigen}"][0]`
+        );
+
+        if (!paisDeOrigen) {
+          const newPaisDeOrigen = await sanityWriteClient.create({
+            _type: "paisDeOrigen",
+            nombre: product.paisDeOrigen,
+          });
+
+          if (!newPaisDeOrigen) {
+            throw new Error("Failed to create new paisDeOrigen");
+          }
+
+          newProd.paisDeOrigen = {
+            _type: "reference",
+            _ref: newPaisDeOrigen._id,
+          };
+        } else {
+          newProd.paisDeOrigen = {
+            _type: "reference",
+            _ref: paisDeOrigen._id,
+          };
+        }
+
+        const notasDeBase = await Promise.all(
+          product.notasOlfativas.notasDeBase.map(async (nota) => {
+            const notaSanity = await sanityClient.fetch(
+              `*[_type == "notasOlfativas" && nombre == "${nota}"][0]`
+            );
+
+            if (!notaSanity) {
+              const newNota = await sanityWriteClient.create({
+                _type: "notasOlfativas",
+                nombre: nota,
+              });
+
+              if (!newNota) {
+                throw new Error("Failed to create new nota");
+              }
+
+              return {
+                _type: "reference",
+                _ref: newNota._id,
+                _key: `nota-${nanoid()}`,
+              };
+            } else {
+              return {
+                _type: "reference",
+                _ref: notaSanity._id,
+                _key: `nota-${nanoid()}`,
+              };
+            }
+          })
+        );
+        const notasDeSalida = await Promise.all(
+          product.notasOlfativas.notasDeSalida.map(async (nota) => {
+            const notaSanity = await sanityClient.fetch(
+              `*[_type == "notasOlfativas" && nombre == "${nota}"][0]`
+            );
+
+            if (!notaSanity) {
+              const newNota = await sanityWriteClient.create({
+                _type: "notasOlfativas",
+                nombre: nota,
+              });
+              if (!newNota) {
+                throw new Error("Failed to create new nota");
+              }
+              return {
+                _type: "reference",
+                _ref: newNota._id as string,
+                _key: `nota-${nanoid()}`,
+              };
+            } else {
+              return {
+                _type: "reference",
+                _ref: notaSanity._id as string,
+                _key: `nota-${nanoid()}`,
+              };
+            }
+          })
+        );
+        const notasDeCorazon = await Promise.all(
+          product.notasOlfativas.notasDeSalida.map(async (nota) => {
+            const notaSanity = await sanityClient.fetch(
+              `*[_type == "notasOlfativas" && nombre == "${nota}"][0]`
+            );
+
+            if (!notaSanity) {
+              const newNota = await sanityWriteClient.create({
+                _type: "notasOlfativas",
+                nombre: nota,
+              });
+              if (!newNota) {
+                throw new Error("Failed to create new nota");
+              }
+              return {
+                _type: "reference",
+                _ref: newNota._id as string,
+                _key: `nota-${nanoid()}`,
+              };
+            } else {
+              return {
+                _type: "reference",
+                _ref: notaSanity._id as string,
+                _key: `nota-${nanoid()}`,
+              };
+            }
+          })
+        );
+
+        let familiaOlfativa: {
+          _type: string;
+          _ref: string;
+        } = {
+          _type: "reference",
+          _ref: "",
+        };
+
+        const sanityFamiliaOlfativa = await sanityClient.fetch(
+          `*[_type == "familiasOlfativas" && nombre == "${product.notasOlfativas.familiaOlfativa}"][0]`
+        );
+
+        if (!familiaOlfativa) {
+          const newFamiliaOlfativa = await sanityWriteClient.create({
+            _type: "familiasOlfativas",
+            nombre: product.notasOlfativas.familiaOlfativa,
+          });
+          if (!newFamiliaOlfativa) {
+            throw new Error("Failed to create new familiaOlfativa");
+          }
+          familiaOlfativa = {
+            _type: "reference",
+            _ref: newFamiliaOlfativa._id,
+          };
+        } else {
+          familiaOlfativa = {
+            _type: "reference",
+            _ref: sanityFamiliaOlfativa._id,
+          };
+        }
+
+        newProd.notasOlfativas = {
+          familiaOlfativa,
+          notasDeBase,
+          notasDeCorazon,
+          notasDeSalida,
+        };
+
+        const concentracionSanity = await sanityClient.fetch(
+          `*[_type == "concentracion" && nombre == "${product.concentracion}"][0]`
+        );
+
+        if (!concentracionSanity) {
+          const newConcentracion = await sanityWriteClient.create({
+            _type: "concentracion",
+            nombre: product.concentracion,
+          });
+          if (!newConcentracion) {
+            throw new Error("Failed to create new concentracion");
+          }
+          newProd.concentracion = {
+            _type: "reference",
+            _ref: newConcentracion._id,
+          };
+        } else {
+          newProd.concentracion = {
+            _type: "reference",
+            _ref: concentracionSanity._id,
+          };
+        }
+
         await Promise.all(
           product.variantes.map(async (variante) => {
             try {
@@ -277,284 +617,6 @@ export const saveProductsInSanity = async (
                   // "11411re",
                   product._type
                 );
-
-              type TProductWithImageUrl = Omit<
-                TPerfumeLujoWithSanityRefs,
-                | "imagenes"
-                | "marca"
-                | "concentracion"
-                | "descripcion"
-                | "notasOlfativas"
-                | "ingredientes"
-                | "paisDeOrigen"
-              > & {
-                imagenes: {
-                  _type: string;
-                  _key: string;
-                  url: string;
-                }[];
-                marca: string | { _type: "reference"; _ref: string };
-                concentracion: string | { _type: "reference"; _ref: string };
-                descripcion: {
-                  subirImagen?: boolean;
-                  imagen?:
-                    | {
-                        _type: "imagenObject";
-                        url: string;
-                        alt: string;
-                      }
-                    | {
-                        alt: string | null;
-                        url: string | null;
-                      }
-                    | null;
-                  texto: string;
-                };
-                notasOlfativas: {
-                  familiaOlfativa: string | { _type: string; _ref: string };
-                  notasDeBase: (
-                    | string
-                    | { _type: string; _ref: string; _key: string }
-                  )[];
-                  notasDeCorazon:
-                    | string[]
-                    | { _type: string; _ref: string; _key: string }[];
-                  notasDeSalida:
-                    | string[]
-                    | { _type: string; _ref: string; _key: string }[];
-                };
-                ingredientes:
-                  | string[]
-                  | { _type: string; _ref: string; _key: string }[];
-                paisDeOrigen: string | { _type: string; _ref: string };
-              };
-
-              const newProd: TProductWithImageUrl = {
-                ...product,
-                imagenes: product.imagenes.map((img, i) => {
-                  return {
-                    _type: "imageUrl",
-                    _key: `image-${nanoid()}`,
-                    url: img.url || "",
-                  };
-                }),
-                marca: product.marca,
-                concentracion: product.concentracion,
-                descripcion: {
-                  ...product.descripcion,
-                  subirImagen: true,
-                  imagen:
-                    product.descripcion && product.descripcion.imagen
-                      ? {
-                          url: product.descripcion.imagen.url || null,
-                          alt: product.descripcion.imagen.alt || null,
-                        }
-                      : null,
-                },
-              };
-
-              const marcaDelExcel = product.marca;
-
-              const marcaSanity = await sanityClient.fetch(
-                `*[_type == "marca" && titulo == "${marcaDelExcel}"][0]`
-              );
-
-              if (!marcaSanity) {
-                const newMarca = await sanityWriteClient.create({
-                  _type: "marca",
-                  titulo: marcaDelExcel,
-                });
-                newProd.marca = {
-                  _type: "reference",
-                  _ref: newMarca._id,
-                };
-              } else {
-                newProd.marca = {
-                  _type: "reference",
-                  _ref: marcaSanity._id,
-                };
-              }
-
-              const paisDeOrigen = await sanityClient.fetch(
-                `*[_type == "paisDeOrigen" && nombre == "${product.paisDeOrigen}"][0]`
-              );
-
-              if (!paisDeOrigen) {
-                const newPaisDeOrigen = await sanityWriteClient.create({
-                  _type: "paisDeOrigen",
-                  nombre: product.paisDeOrigen,
-                });
-                newProd.paisDeOrigen = {
-                  _type: "reference",
-                  _ref: newPaisDeOrigen._id,
-                };
-              } else {
-                newProd.paisDeOrigen = {
-                  _type: "reference",
-                  _ref: paisDeOrigen._id,
-                };
-              }
-
-              const ingredientes = await Promise.all(
-                product.ingredientes.map(async (ingrediente) => {
-                  const ingredienteSanity = await sanityClient.fetch(
-                    `*[_type == "ingrediente" && nombre == "${ingrediente}"][0]`
-                  );
-
-                  // console.log({ ingredienteSanity });
-
-                  if (!ingredienteSanity) {
-                    const newIngrediente = await sanityWriteClient.create({
-                      _type: "ingrediente",
-                      nombre: ingrediente,
-                    });
-                    return {
-                      _type: "reference",
-                      _ref: newIngrediente._id as string,
-                      _key: `ingred-${nanoid()}`,
-                    };
-                  } else {
-                    return {
-                      _type: "reference",
-                      _ref: ingredienteSanity._id as string,
-                      _key: `ingred-${nanoid()}`,
-                    };
-                  }
-                })
-              );
-
-              newProd.ingredientes = ingredientes;
-
-              const notasDeBase = await Promise.all(
-                product.notasOlfativas.notasDeBase.map(async (nota) => {
-                  const notaSanity = await sanityClient.fetch(
-                    `*[_type == "notasOlfativas" && nombre == "${nota}"][0]`
-                  );
-
-                  if (!notaSanity) {
-                    const newNota = await sanityWriteClient.create({
-                      _type: "notasOlfativas",
-                      nombre: nota,
-                    });
-                    return {
-                      _type: "reference",
-                      _ref: newNota._id as string,
-                      _key: `nota-${nanoid()}`,
-                    };
-                  } else {
-                    return {
-                      _type: "reference",
-                      _ref: notaSanity._id as string,
-                      _key: `nota-${nanoid()}`,
-                    };
-                  }
-                })
-              );
-              const notasDeSalida = await Promise.all(
-                product.notasOlfativas.notasDeSalida.map(async (nota) => {
-                  const notaSanity = await sanityClient.fetch(
-                    `*[_type == "notasOlfativas" && nombre == "${nota}"][0]`
-                  );
-
-                  if (!notaSanity) {
-                    const newNota = await sanityWriteClient.create({
-                      _type: "notasOlfativas",
-                      nombre: nota,
-                    });
-                    return {
-                      _type: "reference",
-                      _ref: newNota._id as string,
-                      _key: `nota-${nanoid()}`,
-                    };
-                  } else {
-                    return {
-                      _type: "reference",
-                      _ref: notaSanity._id as string,
-                      _key: `nota-${nanoid()}`,
-                    };
-                  }
-                })
-              );
-              const notasDeCorazon = await Promise.all(
-                product.notasOlfativas.notasDeSalida.map(async (nota) => {
-                  const notaSanity = await sanityClient.fetch(
-                    `*[_type == "notasOlfativas" && nombre == "${nota}"][0]`
-                  );
-
-                  if (!notaSanity) {
-                    const newNota = await sanityWriteClient.create({
-                      _type: "notasOlfativas",
-                      nombre: nota,
-                    });
-                    return {
-                      _type: "reference",
-                      _ref: newNota._id as string,
-                      _key: `nota-${nanoid()}`,
-                    };
-                  } else {
-                    return {
-                      _type: "reference",
-                      _ref: notaSanity._id as string,
-                      _key: `nota-${nanoid()}`,
-                    };
-                  }
-                })
-              );
-
-              let familiaOlfativa: {
-                _type: string;
-                _ref: string;
-              } = {
-                _type: "reference",
-                _ref: "",
-              };
-
-              const sanityFamiliaOlfativa = await sanityClient.fetch(
-                `*[_type == "familiasOlfativas" && nombre == "${product.notasOlfativas.familiaOlfativa}"][0]`
-              );
-
-              if (!familiaOlfativa) {
-                const newFamiliaOlfativa = await sanityWriteClient.create({
-                  _type: "familiasOlfativas",
-                  nombre: product.notasOlfativas.familiaOlfativa,
-                });
-                familiaOlfativa = {
-                  _type: "reference",
-                  _ref: newFamiliaOlfativa._id,
-                };
-              } else {
-                familiaOlfativa = {
-                  _type: "reference",
-                  _ref: sanityFamiliaOlfativa._id,
-                };
-              }
-
-              newProd.notasOlfativas = {
-                familiaOlfativa,
-                notasDeBase,
-                notasDeCorazon,
-                notasDeSalida,
-              };
-
-              const concentracionSanity = await sanityClient.fetch(
-                `*[_type == "concentracion" && nombre == "${product.concentracion}"][0]`
-              );
-
-              if (!concentracionSanity) {
-                const newConcentracion = await sanityWriteClient.create({
-                  _type: "concentracion",
-                  nombre: product.concentracion,
-                });
-                newProd.concentracion = {
-                  _type: "reference",
-                  _ref: newConcentracion._id,
-                };
-              } else {
-                newProd.concentracion = {
-                  _type: "reference",
-                  _ref: concentracionSanity._id,
-                };
-              }
 
               if (sanityProd) {
                 // console.log("Product found");
@@ -573,23 +635,23 @@ export const saveProductsInSanity = async (
                   })),
                 };
 
-                const parsedProduct =
-                  zodPerfumeLujoSchemaWithSanityRefs.safeParse(updatedProduct);
+                // const parsedProduct =
+                //   zodPerfumeLujoSchemaWithSanityRefs.safeParse(updatedProduct);
 
-                if (!parsedProduct.success) {
-                  throw console.log({ errors: parsedProduct.error.errors });
-                }
+                // if (!parsedProduct.success) {
+                //   throw console.log({ errors: parsedProduct.error.errors });
+                // }
 
                 if (
-                  parsedProduct.data._id === undefined ||
-                  parsedProduct.data._id === null
+                  updatedProduct._id === undefined ||
+                  updatedProduct._id === null
                 ) {
                   throw new Error("The _id property is undefined or null");
                 }
 
                 productsToSave.push({
-                  ...parsedProduct.data,
-                  _id: parsedProduct.data._id,
+                  ...updatedProduct,
+                  _id: updatedProduct._id,
                 });
                 // console.log("Products not found", {
                 //   ingredientes: parsedProduct.data.ingredientes,
@@ -614,7 +676,7 @@ export const saveProductsInSanity = async (
                 // await sanityWriteClient.create(parsedProduct.data);
               }
             } catch (error) {
-              console.log(error);
+              return console.log(error);
             }
             mergedProducts = productsToSave.reduce(
               (acc: TPerfumeLujoWithSanityRefs[], product) => {
@@ -664,13 +726,18 @@ export const saveProductsInSanity = async (
 
   const prodsToSave = await prepareProductsToSave();
 
-  // console.log({ prodsToSave });
-
   for (const product of prodsToSave) {
+    console.log(
+      "imagenes",
+      { prodImgs: product.imagenes },
+      "titulo",
+      product.titulo
+    );
     const parsedProd = zodPerfumeLujoSchemaWithSanityRefs.safeParse(product);
     if (!parsedProd.success) {
       throw new Error("Invalid product");
     }
+    console.log("parsed:", parsedProd.data.imagenes);
 
     if (parsedProd.data._id && typeof parsedProd.data._id === "string") {
       if (!savingProducts.has(parsedProd.data._id)) {
@@ -760,13 +827,7 @@ const zodPerfumeLujoSchemaWithSanityRefs =
         _type: z.literal("reference"),
         _ref: z.string(),
       }),
-      imagenes: z.array(
-        z.object({
-          _type: z.literal("imageUrl"),
-          _key: z.string(),
-          url: z.string().url(),
-        })
-      ),
+      imagenes: z.array(zodImageUploadSchema),
       concentracion: z.object({
         _type: z.literal("reference"),
         _ref: z.string(),
