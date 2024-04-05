@@ -26,9 +26,10 @@ const PerfumeLujo = ({
   setCantidad,
   pricing,
 }: TPerfumeLujoProps) => {
+  
   return (
     <>
-      <HeroProduct
+      {/* <HeroProduct
         product={product}
         images={product.imagenes}
         selectedVariant={selectedVariant}
@@ -36,12 +37,13 @@ const PerfumeLujo = ({
         cantidad={cantidad}
         setCantidad={setCantidad}
         pricing={pricing}
-      />
+      /> */}
       <InfoSection
         titulo="Descripción"
+      //@ts-ignore
+        isExternal={product.descripcion.subirImagen}
         descripcion={product.descripcion.texto}
-        alt={product.descripcion.imagen.alt}
-        url={product.descripcion.imagen.url}
+        imagen={product.descripcion.imagen}
         className=""
       />
 
@@ -82,15 +84,15 @@ const PerfumeLujo = ({
             }}
           />
         }
-        ImageComp={
-          product.banners ?
-          <ProductSlide
-            imageVideoProducts={product.banners || []}
-            className="w-full h-[60vw] md:max-h-[350px]"
-            isLink={false}
-          /> :
-          null
-        }
+        // ImageComp={
+        //   product.banners ?
+        //   <ProductSlide
+        //     imageVideoProducts={product.banners || []}
+        //     className="w-full h-[60vw] md:max-h-[350px]"
+        //     isLink={false}
+        //   /> :
+        //   null
+        // }
       />
 
       <section className="px-4 py-6 lg:hidden">

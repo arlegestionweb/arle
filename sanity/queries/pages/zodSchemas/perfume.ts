@@ -16,6 +16,7 @@ const notasSchema = z.object({
 
 const descripcionSchema = z.object({
   texto: z.string(),
+  subirImagen: z.boolean(),
   imagen: imageSchema,
 });
 

@@ -1,4 +1,6 @@
+import ImageWrapper from "@/app/_components/ImageWrapper";
 import { cn } from "@/app/_lib/utils";
+import { TImage } from "@/sanity/queries/pages/zodSchemas/general";
 import { VariantProps, cva } from "class-variance-authority";
 import Image from "next/image";
 import React from "react";
@@ -23,13 +25,21 @@ type InfoProps = {
   subTitulo?: string;
   descripcion?: string;
   alt?: string;
-  url?: string;
+  url?: string; // TODO: refactor en las demas pantallas
+
+  imagen?: TImage
+  isExternal?:boolean
+
   DescriptionComp?: JSX.Element;
   ImageComp?: JSX.Element | null;
   className?: string;
 } & VariantProps<typeof infoVariants>;
 
 const InfoSection = (props: InfoProps) => {
+  
+  console.log("imagen :",props.imagen);
+  
+
   return (
     <section className={cn(infoVariants({ labelType: props.labelType }),"w-screen flex justify-center lg:px-20")}>
       <section
@@ -59,9 +69,9 @@ const InfoSection = (props: InfoProps) => {
         </section>
         {!props.DescriptionComp && !props.ImageComp ? (
           <div className="relative  w-[90%] mb-8 lg:mb-0 lg:w-1/2 h-64 sm:h-72 md:h-80 lg:h-72 lg:aspect-video ">
-            <Image
-              alt={props.alt || ""}
-              src={props.url || ""}
+            <ImageWrapper
+              isExternal={!!props.isExternal}
+              imagen={props.imagen!}
               height={500}
               width={500}
               className="object-contain w-full h-full"

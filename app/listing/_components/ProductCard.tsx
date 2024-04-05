@@ -11,7 +11,7 @@ import {
 } from "@/sanity/queries/pages/listingQueries";
 import Button from "../../_components/Button";
 import { LuShoppingCart } from "react-icons/lu";
-import ProductSlide from "../../_components/ProductSlide";
+import ProductSlide, { ProductImage } from "../../_components/ProductSlide";
 import Link from "next/link";
 import Labels from "../../_components/Labels";
 import { useEffect, useState } from "react";
@@ -150,11 +150,11 @@ const CardLayout = ({
           <ProductSlide
             slug={product.slug}
             imagesProduct={
-              isPerfume(product)
-                ? product.imagenes
+              (isPerfume(product)
+                ? product.imagenes!
                 : "imagenes" in selectedVariant
-                ? selectedVariant.imagenes
-                : []
+                ? selectedVariant.imagenes!
+                : [] ) as ProductImage[]
             }
             className=" h-[180px] sm:h-[250px]"
           />
@@ -163,14 +163,14 @@ const CardLayout = ({
             <Image
               src={
                 isPerfume(product)
-                  ? product.imagenes[0].url
+                  ? product?.imagenes[0].url!
                   : "imagenes" in selectedVariant
-                  ? selectedVariant.imagenes[0].url
+                  ? selectedVariant.imagenes[0].url!
                   : ""
               }
               alt={
                 isPerfume(product)
-                  ? product.imagenes[0].url
+                  ? product?.imagenes[0].url!
                   : isReloj(product)
                   ? product.variantes[0].imagenes[0].alt!
                   : (product as TGafa).variantes[0].imagenes[0].alt!

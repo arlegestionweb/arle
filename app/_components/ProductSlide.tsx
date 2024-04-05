@@ -9,7 +9,7 @@ import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 
 export type ProductImage = {
   url: string;
-  alt?: string | null | undefined;
+  alt: string;
 };
 
 export type ProductVideo = {
@@ -71,6 +71,12 @@ const ProductSlide = ({
     }
   };
 
+  console.log(imagesProduct?.some(img => img.url));
+  
+  if( !imagesProduct?.some(img => img.url) ){
+    return <></>
+  }
+
   return (
     <section
       className={cn(
@@ -87,7 +93,7 @@ const ProductSlide = ({
         {imagesProduct &&
           imagesProduct.map((image, index) => (
             <div
-              key={"alt" in image ? `${image.alt}-${index}` : image.url}
+              key={"alt" in image ? `${image.alt}-${index}` : image}
               className={cn(
                 `relative h-full w-full`,
                 `snap-center snap-always ${
@@ -98,7 +104,7 @@ const ProductSlide = ({
                 <Link href={slug || ""} className="w-full h-full">
                   <Image
                     alt={image.alt || "product"}
-                    src={image.url}
+                    src={image.url!}
                     width={250}
                     height={250}
                     className={`absolute object-contain h-full w-full object-center`}
@@ -111,7 +117,7 @@ const ProductSlide = ({
                 }} className="w-full h-full cursor-zoom-in">
                   <Image
                     alt={image.alt || "product"}
-                    src={image.url}
+                    src={image.url!}
                     width={250}
                     height={250}
                     className={`absolute object-contain h-full w-full object-center`}
