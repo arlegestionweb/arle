@@ -53,8 +53,7 @@ const ValidationForm = () => {
           Generar Excel para relojes Premium
         </a>
         <form action={uploadFormAction}>
-          <input type="file" name="file" />
-          <button type="submit" className="bg-white text-black border border-black px-2">
+          <input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="file" />          <button type="submit" className="bg-white text-black border border-black px-2">
             Upload file
           </button>
         </form>
