@@ -3,9 +3,14 @@ import { TProductType } from "./UploadedData";
 import { uploadImages } from "./uploadImages";
 import SingleImageUpload from "./SingleImageUpload";
 import MultipleImageUpload from "./MultipleImageUpload";
+import { useProductUploadStore } from "./productUploadStore";
 
 const ProductCard = ({ product }: { product: TProductType }) => {
-  useFileDrop('imageUpload', uploadImages);
+  // useFileDrop('imageUpload', uploadImages);
+
+
+  const { updateProduct } = useProductUploadStore();
+
   return (
     <div className="border border-black p-4 flex justify-between">
       {/* <p><strong>Código: </strong>{product.variante.codigoDeReferencia}</p> */}
@@ -19,8 +24,53 @@ const ProductCard = ({ product }: { product: TProductType }) => {
           {product.variantes.map((variant) => variant.codigoDeReferencia).join(', ')}
         </p>
       </section>
+      {product.inspiracion?.usarInspiracion && product.inspiracion.contenido?.imagen == null ? (
+        <SingleImageUpload
+          product={product}
+          title="Imagen de la inspiración:"
+          onImageUpload={(product, imageUrl) => {
+            const newProd = {
+              ...product,
+              inspiracion: {
+                ...product.inspiracion,
+                contenido: {
+                  imagen: {
+                    url: imageUrl,
+                    alt: `${product.marca}-${product.titulo}`
+                  }
+                }
+              }
+            };
+            updateProduct(newProd);
+          }
+          }
+        />
+      ) : (
+        product.inspiracion?.contenido?.imagen && (
+          <section>
+            <h4 className="font-bold">Imagen de la inspiración </h4>
+            <img className="w-[50px] h-[50px]" width={50} height={50} src={product.inspiracion.contenido.imagen.url} alt={product.inspiracion.contenido.imagen.alt} />
+          </section>
+        )
+      )}
       {!product.descripcion.imagen ? (
-        <SingleImageUpload product={product} title="Imagen de la descripción:" />
+        <SingleImageUpload
+          product={product}
+          title="Imagen de la descripción:"
+          onImageUpload={(product, imageUrl) => {
+            const newProd = {
+              ...product,
+              descripcion: {
+                ...product.descripcion,
+                imagen: {
+                  url: imageUrl,
+                  alt: `${product.marca}-${product.titulo}`
+                }
+              }
+            };
+            updateProduct(newProd);
+          }}
+        />
       ) : (
         <section>
           <h4 className="font-bold">Imagen de la descripción</h4>

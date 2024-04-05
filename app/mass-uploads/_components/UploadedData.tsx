@@ -1,10 +1,11 @@
 "use client"
 import { z } from "zod";
-import { excelData, saveProductsInSanity } from "../actions";
+import { saveProductsInSanity } from "../actions";
 import { arrayMessage, moveEmptyKeyValuesToParent, setNestedProperty, toCamelCase } from "../_helpers";
 import ProductCard from "./ProductCard";
 import { useProductUploadStore } from "./productUploadStore";
 import { useEffect } from "react";
+import { excelData } from "../fileUpload";
 
 
 const zodSiBoolean = z.string().transform(value => value === 'si');

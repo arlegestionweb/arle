@@ -16,10 +16,15 @@ type TProductType =
 const contenidoQuery = `
   "contenido": contenido {
     resena,
+    subirImagen,
     "imagen": imagen {
       alt,
-      "url": asset->url,
-  }
+      "url": asset->url
+    },
+    "imagenExterna": imagenExterna {
+      alt,
+      url
+    }
 }`;
 const inspiracionQuery = `inspiracion { 
   usarInspiracion, 

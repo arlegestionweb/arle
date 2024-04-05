@@ -95,7 +95,7 @@ export const imageUrlSchema = defineField({
 });
 
 export const imageArrayMemberSchema = defineArrayMember({
-  name: "imagen",
+  name: "image",
   title: "Imagen",
   type: "image",
   fields: [

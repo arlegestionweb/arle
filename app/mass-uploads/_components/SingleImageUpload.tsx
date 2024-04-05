@@ -2,18 +2,14 @@
 import { useEffect, useState } from "react";
 import { saveImageToSanity } from "./saveImageToSanity";
 import { useFormState } from "react-dom";
-import Image from "next/image";
-import { useProductUploadStore } from "./productUploadStore";
 import { TProductType } from "./UploadedData";
 
-const SingleImageUpload = ({ title, product }: {
+const SingleImageUpload = ({ title, product, onImageUpload }: {
   title: string;
   product: TProductType;
+  onImageUpload: (product: TProductType, imageUrl: string) => void;
 }) => {
   const [image, setImage] = useState<File | null>(null);
-
-  const { updateProduct } = useProductUploadStore();
-
 
   const [formState, formAction] = useFormState(saveImageToSanity, {
     status: "pending",
@@ -23,19 +19,10 @@ const SingleImageUpload = ({ title, product }: {
 
   useEffect(() => {
     if (formState.status === "success" && formState.image) {
-      const newProd = {
-        ...product,
-        descripcion: {
-          ...product.descripcion,
-          imagen: {
-            url: formState.image.url,
-            alt: `${product.marca}-${product.titulo}`
-          }
-        }
-      }
-      updateProduct(newProd);
+      onImageUpload(product, formState.image.url);
     }
   }, [formState.status, formState.image]);
+
 
   return (
     <section className="flex flex-col">

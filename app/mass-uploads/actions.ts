@@ -1,121 +1,9 @@
 "use server";
-import {
-  numberToColombianPriceString,
-  toKebabCase,
-} from "./../../utils/helpers";
-import { type CellValue, Workbook } from "exceljs";
-import fs from "fs";
-import path from "path";
+import { numberToColombianPriceString } from "./../../utils/helpers";
 import { TProductType } from "./_components/UploadedData";
 import { z } from "zod";
-import { imageSchema } from "@/sanity/queries/pages/zodSchemas/general";
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { nanoid } from "nanoid";
-
-const EMAIL = "email@gmail.com";
-const PASSWORD = "password";
-
-export const validateUser = async (
-  formState: { success: boolean; error: string | null },
-  formData: FormData
-) => {
-  if (
-    formData.get("email") === EMAIL &&
-    formData.get("password") === PASSWORD
-  ) {
-    return {
-      success: true,
-      error: null,
-    };
-  } else {
-    return {
-      success: false,
-      error: "Invalid credentials",
-    };
-  }
-};
-
-export type excelData = {
-  rowNumber: number;
-  values: CellValue[] | { [key: string]: CellValue };
-};
-export const uploadFile = async (
-  formState: {
-    success: boolean;
-    error: string | null;
-    data: excelData[] | null;
-    fileName: string | null;
-  },
-  formData: FormData
-) => {
-  console.log("File uploaded");
-  const file = formData.get("file") as File;
-
-  if (!file) {
-    return {
-      success: false,
-      error: "No file was uploaded",
-      data: null,
-      fileName: null,
-    };
-  }
-
-  // if (file)
-  if (
-    file.type !==
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
-    file.type !== "application/vnd.ms-excel"
-  ) {
-    return {
-      success: false,
-      error: "The uploaded file is not an Excel file",
-      data: null,
-      fileName: null,
-    };
-  }
-
-  // const savedFile = await saveFile(file, "documentHash");
-
-  // const fileData = await fs.readFileSync(savedFile);
-
-  const savedFile = await sanityWriteClient.assets.upload("file", file);
-
-  const fileData = savedFile.url;
-
-  const response = await fetch(fileData);
-  const arrayBuffer = await response.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-
-  const workbook = new Workbook();
-  await workbook.xlsx.load(buffer);
-
-  // Read the Excel file
-  // await workbook.xlsx.load(fileData);
-  // Get the first worksheet
-  const worksheet = workbook.worksheets[0];
-
-  // Read the data from the worksheet
-  const data: excelData[] = [];
-  worksheet.eachRow((row, rowNumber) => {
-    data.push({ values: row.values, rowNumber });
-  });
-
-  return {
-    success: true,
-    error: null,
-    data,
-    fileName: file.name,
-  };
-};
-
-async function saveFile(file: File, documentHash: string) {
-  const data = await file.arrayBuffer();
-  const filePath = path.join(__dirname, file.name);
-
-  fs.appendFileSync(filePath, Buffer.from(data));
-
-  return filePath; // Return the file path
-}
 
 const zodImageUploadSchema = z
   .object({
@@ -127,6 +15,7 @@ const zodImageUploadSchema = z
   .or(
     z.object({
       _type: z.literal("image"),
+      alt: z.string().optional().nullable(),
       _key: z.string().optional().nullable(),
       asset: z.object({
         _ref: z.string(),
@@ -157,9 +46,10 @@ const zodPerfumeLujoSchemaSanityReady = z.object({
     usarInspiracion: z.boolean(),
     contenido: z
       .object({
+        subirImagen: z.boolean(),
         imagen: z.object({
           alt: z.string(),
-          url: z.string().url(),
+          url: z.string(),
         }),
         resena: z.string().optional().nullable(),
       })
@@ -210,26 +100,31 @@ type TProductWithImageUrl = Omit<
   | "marca"
   | "concentracion"
   | "descripcion"
+  | "inspiracion"
   | "notasOlfativas"
   | "ingredientes"
   | "paisDeOrigen"
 > & {
-  // imagenes: (
-  //   | {
-  //       _type: "image";
-  //       _key: string;
-  //       asset: {
-  //         _ref: string;
-  //       };
-  //     }
-  //   | {
-  //       _type: "imageUrl";
-  //       _key: string;
-  //       url: string;
-  //     }
-  // )[];
   marca: string | { _type: "reference"; _ref: string };
   concentracion: string | { _type: "reference"; _ref: string };
+  inspiracion: {
+    usarInspiracion: boolean;
+    contenido?: {
+      subirImagen?: boolean;
+      imagen?:
+        | {
+            _type: "imagenObject";
+            url: string;
+            alt: string;
+          }
+        | {
+            alt: string | null;
+            url: string | null;
+          }
+        | null;
+      resena: string | null;
+    };
+  };
   descripcion: {
     subirImagen?: boolean;
     imagen?:
@@ -300,6 +195,31 @@ export const saveProductsInSanity = async (
       genero: product.genero,
       concentracion: product.concentracion,
       parteDeUnSet: product.parteDeUnSet,
+      inspiracion: {
+        usarInspiracion: product.inspiracion.usarInspiracion,
+        contenido: product.inspiracion.contenido
+          ? {
+              subirImagen: true,
+              imagen: product.inspiracion.contenido.imagen
+                ? {
+                    url: product.inspiracion.contenido.imagen.url,
+                    alt: product.inspiracion.contenido.imagen.alt,
+                  }
+                : {
+                    url: "", // provide a default value
+                    alt: "", // provide a default value
+                  },
+              resena: product.inspiracion.contenido.resena || null,
+            }
+          : {
+              subirImagen: false,
+              imagen: {
+                url: "", // provide a default value
+                alt: "", // provide a default value
+              },
+              resena: null,
+            },
+      },
       descripcion: {
         ...product.descripcion,
         imagen:
@@ -313,7 +233,6 @@ export const saveProductsInSanity = async (
               }
             : null,
       },
-      inspiracion: product.inspiracion,
       notasOlfativas: product.notasOlfativas,
       ingredientes: product.ingredientes,
       paisDeOrigen: product.paisDeOrigen,
@@ -346,6 +265,21 @@ export const saveProductsInSanity = async (
           // imagenes: product.imagenes,
           marca: product.marca,
           concentracion: product.concentracion,
+          inspiracion: {
+            ...product.inspiracion,
+            contenido: {
+              ...product.inspiracion.contenido,
+              imagen:
+                product.inspiracion.contenido &&
+                product.inspiracion.contenido.imagen
+                  ? {
+                      url: product.inspiracion.contenido.imagen.url || null,
+                      alt: product.inspiracion.contenido.imagen.alt || null,
+                    }
+                  : null,
+              resena: product.inspiracion.contenido?.resena || null,
+            },
+          },
           descripcion: {
             ...product.descripcion,
             subirImagen: true,
@@ -735,6 +669,12 @@ export const saveProductsInSanity = async (
     );
     const parsedProd = zodPerfumeLujoSchemaWithSanityRefs.safeParse(product);
     if (!parsedProd.success) {
+      console.log({
+        product,
+        contenido: product.inspiracion.contenido,
+        errors: parsedProd.error.errors,
+        path: parsedProd.error.errors[0].path,
+      });
       throw new Error("Invalid product");
     }
     console.log("parsed:", parsedProd.data.imagenes);
@@ -850,7 +790,29 @@ const zodPerfumeLujoSchemaWithSanityRefs =
             ...data.imagen,
           },
         })),
-      // inspiracion:
+      inspiracion: z.object({
+        usarInspiracion: z.boolean(),
+        contenido: z
+          .object({
+            subirImagen: z.boolean().optional().nullable(),
+            imagen: z
+              .object({
+                url: z.string().url().optional().nullable(),
+                alt: z.string().optional().nullable(),
+              })
+              .optional()
+              .nullable(),
+            resena: z.string().optional().nullable(),
+          })
+          .transform((data) => ({
+            ...data,
+            imagenExterna: {
+              ...data.imagen,
+            },
+          }))
+          .optional()
+          .nullable(),
+      }),
       notasOlfativas: z.object({
         familiaOlfativa: z.object({
           _type: z.literal("reference"),

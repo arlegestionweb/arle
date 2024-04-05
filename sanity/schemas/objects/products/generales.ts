@@ -4,6 +4,7 @@ import { PiFlagBannerFill } from "react-icons/pi";
 import { videoSchema } from "../video";
 import ColeccionDeMarcaInput from "@/sanity/components/SelectColeccionDeMarca";
 import { TParentWithSubirImagen } from "../../products/perfumes/lujo";
+import ImageUrl from "@/sanity/components/ImageUrl";
 
 export const generoSchema = defineField({
   name: "genero",
@@ -225,6 +226,9 @@ export const inspiracionSchema = defineField({
               name: "url",
               title: "URL",
               type: "url",
+              components: {
+                input: ImageUrl,
+              },
               validation: (Rule) => Rule.required(),
             }),
             defineField({
