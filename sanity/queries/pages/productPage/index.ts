@@ -18,12 +18,7 @@ const contenidoQuery = `
     resena,
     "imagen": imagen {
       alt,
-      _type == 'imageUrl' => {
-        url
-      },
-      _type == 'imagen' => {
-        "url": asset->url
-      }
+      "url": asset->url,
   }
 }`;
 const inspiracionQuery = `inspiracion { 
@@ -235,13 +230,7 @@ export const productQuery: Record<TProductType, string> = {
     "concentracion": concentracion -> nombre,
     "imagenes": imagenes[]{
       alt,
-      _type == 'imageUrl' => {
-        url
-      },
-      _type == 'imagen' => {
-        "url": asset->url
-      }
-
+      "url": asset->url,
       },    
     "notasOlfativas": notasOlfativas {
       "notasDeBase": notasDeBase [] -> nombre,
@@ -254,15 +243,12 @@ export const productQuery: Record<TProductType, string> = {
     "marca": marca -> titulo,
     "descripcion": descripcion {
       texto,
+      subirImagen,
       "imagen": imagen {
         ...,
         alt,
-        _type == 'imageUrl' => {
-          url
-        },
-        _type == 'imagen' => {
-          "url": asset->url
-        }
+        "url": asset->url,
+        "urlImage": url
       }
     },
     "paisDeOrigen": paisDeOrigen -> nombre,
@@ -290,7 +276,7 @@ export const productQuery: Record<TProductType, string> = {
     mostrarCredito,
     "imagenes": imagenes[]{
       alt,
-      url,
+      "url": asset->url,
     },
     "marca": marca->titulo,
     "variantes": variantes[]{

@@ -153,10 +153,10 @@ const zodListPage = z.object({
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
-
-    console.log(result.perfumes.map((perfu:any)=>perfu._type))
-    console.log(result.perfumes[1])
     
+    console.log(result.perfumes[1].descripcion);
+    
+
     const parsedResult = zodListPage.safeParse(result);
 
     if (!parsedResult.success) {
