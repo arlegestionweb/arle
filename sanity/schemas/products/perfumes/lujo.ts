@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { imageArrayForProducts } from "../../objects/image";
+import { imageArrayForProducts, newImagesArrayForProducts } from "../../objects/image";
 import {
   bannersDeProductoSchema,
   coleccionesDeMarcaSchema,
@@ -11,6 +11,7 @@ import {
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
 import { notasOlfativasProdSchema } from ".";
 import { GiDelicatePerfume } from "react-icons/gi";
+import ImageUrl from "@/sanity/components/ImageUrl";
 
 export type TParentWithSubirImagen = {
   subirImagen?: boolean;
@@ -52,6 +53,7 @@ export const perfumeLujoSchema = defineType({
       validation: (Rule) => Rule.required(),
     }),
     imageArrayForProducts,
+    // newImagesArrayForProducts,
     mostrarCreditoSchema,
     generoSchema,
     defineField({
@@ -115,6 +117,9 @@ export const perfumeLujoSchema = defineType({
               name: "url",
               title: "URL",
               type: "url",
+              components: {
+                input: ImageUrl,
+              },
               validation: (Rule) => Rule.required(),
             }),
             defineField({

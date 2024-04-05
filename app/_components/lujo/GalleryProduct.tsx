@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import CarouselProduct from "./CarouselProduct";
 import ImageModal from "../ImageModal";
 import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 
 type GalleryProductProps = {
   imagesProduct: {
@@ -30,7 +31,7 @@ const GalleryProduct = ({
           key={`${img.url}-${idx}`}
           className="relative min-w-[80px] w-20 h-20 mr-3"
         >
-          <Image
+          <ImageWrapper
             src={img.url}
             alt={img.alt || "perfume"}
             width={80}
@@ -65,7 +66,7 @@ const GalleryProduct = ({
           orientation == "vertical" && "md:w-1/2 lg:w-full"
         )}
       >
-        <Image
+        <ImageWrapper
           alt={imagesProduct[index].alt || ""}
           src={imagesProduct[index].url}
           width={800}

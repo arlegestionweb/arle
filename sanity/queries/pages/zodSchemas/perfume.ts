@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { bannerSchema, coleccionDeMarcaSchema, contenidoSchema, imageSchema } from "./general";
+import {
+  bannerSchema,
+  coleccionDeMarcaSchema,
+  contenidoSchema,
+  imageSchema,
+} from "./general";
 
 export const inspiracionSchema = z.object({
   usarInspiracion: z.boolean().optional().nullable(),
@@ -13,10 +18,23 @@ const notasSchema = z.object({
   notasDeCorazon: z.array(z.string()).optional().nullable(),
 });
 
-
 const descripcionSchema = z.object({
   texto: z.string(),
-  imagen: imageSchema,
+  imagen: z
+    .object({
+      url: z.string().optional().nullable(),
+      alt: z.string().optional().nullable(),
+    })
+    .optional()
+    .nullable(),
+  subirImagen: z.boolean().optional().nullable(),
+  imagenExterna: z
+    .object({
+      url: z.string(),
+      alt: z.string(),
+    })
+    .optional()
+    .nullable(),
 });
 
 const perfumeVariantSchema = z.object({
@@ -58,7 +76,6 @@ export const perfumePremiumSchema = z.object({
   coleccionDeMarca: coleccionDeMarcaSchema,
 });
 
-
 export const perfumeLujoSchema = z.object({
   date: z.string(),
   titulo: z.string(),
@@ -70,7 +87,14 @@ export const perfumeLujoSchema = z.object({
   _id: z.string(),
   parteDeUnSet: z.boolean().optional().nullable(),
   concentracion: z.string(),
-  imagenes: z.array(imageSchema),
+  imagenes: z.array(
+    imageSchema.or(
+      z.object({
+        alt: z.string(),
+        url: z.string(),
+      })
+    )
+  ),
   notasOlfativas: notasSchema,
   ingredientes: z.array(z.string()).optional().nullable(),
   mostrarCredito: z.boolean().optional().nullable(),

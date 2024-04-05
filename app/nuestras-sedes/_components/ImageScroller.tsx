@@ -1,5 +1,6 @@
 "use client";
 import ImageModal from "@/app/_components/ImageModal";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
@@ -63,7 +64,7 @@ const ImageScroller = ({ images }: Props) => {
         <section 
         key={i + item.url}
         className={`w-[60vw] xs:w-[50vw] sm:w-[40vw] md:w-[30vw] lg:w-[20vw] aspect-square flex`}>
-        <Image
+        <ImageWrapper
           onClick={() =>{
             carouselRef?.current?.scrollTo({ left: i * imageWidth + (imageWidth/2) + 2.3 ,
               behavior: "smooth"});

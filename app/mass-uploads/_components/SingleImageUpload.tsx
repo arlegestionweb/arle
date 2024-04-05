@@ -33,7 +33,6 @@ const SingleImageUpload = ({ title, product }: {
           }
         }
       }
-      console.log("updating:", { oldProd: product, newProd, mess: formState.message });
       updateProduct(newProd);
     }
   }, [formState.status, formState.image]);

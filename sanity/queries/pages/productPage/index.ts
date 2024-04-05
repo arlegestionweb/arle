@@ -228,10 +228,17 @@ export const productQuery: Record<TProductType, string> = {
     _id,
     parteDeUnSet,
     "concentracion": concentracion -> nombre,
-    "imagenes": imagenes[]{
+    "imagenes": imagenes[] {
+      _type == "imagen" => {
+        ...,
         alt,
-        "url": asset->url,
-      },    
+        "url": asset->url
+      },
+      _type == "imageUrl" => {
+        alt,
+        url
+      }
+    },
     "notasOlfativas": notasOlfativas {
       "notasDeBase": notasDeBase [] -> nombre,
       "notasDeSalida": notasDeSalida [] -> nombre,
@@ -243,10 +250,14 @@ export const productQuery: Record<TProductType, string> = {
     "marca": marca -> titulo,
     "descripcion": descripcion {
       texto,
+      subirImagen,
       "imagen": imagen {
-        ...,
         alt,
-        "url": asset->url,
+        "url": asset->url
+      },
+      "imagenExterna": imagenExterna {
+        alt,
+        url
       }
     },
     "paisDeOrigen": paisDeOrigen -> nombre,
@@ -382,7 +393,7 @@ export const productQuery: Record<TProductType, string> = {
       }
     },
   }`,
-  
+
   gafasPremium: `{
     mostrarCredito,
     "date": _createdAt,

@@ -1,4 +1,5 @@
 import { cn } from "@/app/_lib/utils";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 import Image from "next/image";
 import React, { useState } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
@@ -80,7 +81,7 @@ const CarouselProduct = ({
             className="relative min-w-[80px] w-20 h-20 "
             onClick={() => selectImages(img)}
           >
-            <Image
+            <ImageWrapper
               src={img.url}
               alt={img.alt || "perfume"}
               width={80}

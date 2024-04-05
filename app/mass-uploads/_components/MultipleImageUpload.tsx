@@ -32,7 +32,6 @@ const MultipleImageUpload = ({
         ...product,
         imagenes: formState.images
       }
-      console.log("updating:", { oldProd: product, newProd, mess: formState.message });
       updateProduct(newProd);
     }
   }, [formState.status, formState.images]);

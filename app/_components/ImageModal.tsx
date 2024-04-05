@@ -2,6 +2,7 @@ import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward, IoMdClose } from "react-icons/io";
+import ImageWrapper from "../listing/_components/ImageWrapper";
 
 type Props = {
   images: TImages;
@@ -41,7 +42,7 @@ const ImageModal = ({ images, index, isImageOpen, closeImage }: Props) => {
         className={`absolute z-20 -left-[20px] top-1/2 transform -translate-y-1/2 w-10 h-10 p-[7px] border border-spacing-1 border-neutral-900 opacity-80 bg-neutral-100 shadow justify-center items-center inline-flex disabled:hidden pointer-events-auto`}>
         <IoIosArrowBack className="text-xl" />
       </button>
-        <Image
+        <ImageWrapper
           height={900}
           width={1200}
           src={images[imageIndex].url}

@@ -18,6 +18,7 @@ import {
   isPerfumePremium,
   isRelojLujo,
 } from "@/sanity/queries/pages/types";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 
 const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, withoutQuantity?: boolean }) => {
   const [product, setProduct] = useState<TProduct | null>(null);
@@ -72,7 +73,7 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
         <IoMdClose className="text-zinc-500 w-4 h-4" />
       </button>
       {image && (
-        <Image
+        <ImageWrapper
           src={image?.url}
           alt={image?.alt}
           width={115}

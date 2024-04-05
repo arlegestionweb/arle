@@ -12,6 +12,7 @@ import {
   isReloj,
 } from "@/sanity/queries/pages/listingQueries";
 import Link from "next/link";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 
 const ProductCard = ({
   product,
@@ -40,7 +41,7 @@ const ProductCard = ({
   return (
     <li key={image?.url} className="flex items-center gap-4">
       {image && (
-        <Image
+        <ImageWrapper
           src={image?.url}
           alt={image?.alt}
           width={110}

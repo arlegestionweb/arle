@@ -1,5 +1,5 @@
 import { defineField, defineArrayMember } from "sanity";
-
+import ImageUrl, { Image } from "../../components/ImageUrl";
 export const imageObjectSchema = defineField({
   name: "imagenObject",
   title: "Imagen",
@@ -15,7 +15,7 @@ export const imageObjectSchema = defineField({
       description: "Para buscadores de internet (SEO)",
       type: "string",
       hidden: ({ parent }) => !parent,
-      validation: (Rule) => Rule.required(),
+      // validation: (Rule) => Rule.required(),
     }),
   ],
 });
@@ -60,14 +60,38 @@ export const imageUrlSchema = defineField({
   name: "imageUrl",
   title: "URL de la imagen",
   type: "object",
+  // components: {
+  //   input: ImageUrl({value: "url"}),
+  // },
   fields: [
     defineField({
       name: "url",
       title: "URL",
-      type: "url",
-      // validation: (Rule) => Rule.required().url(),
+      type: "string",
+      components: {
+        input: ImageUrl,
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "alt",
+      title: "Texto Alternativo",
+      type: "string",
+      validation: (Rule) => Rule.required(),
     }),
   ],
+  preview: {
+    select: {
+      title: "alt",
+      media: "url",
+    },
+    prepare({ title, media }) {
+      return {
+        title,
+        media: Image({media, title}),
+      };
+    },
+  },
 });
 
 export const imageArrayMemberSchema = defineArrayMember({
@@ -98,8 +122,40 @@ export const imageArrayForProducts = defineField({
       }
       return true;
     }),
-    of: [imageArrayMemberSchema, imageUrlSchema],
-    options: {
+  of: [imageArrayMemberSchema, imageUrlSchema],
+  options: {
     layout: "grid",
   },
+});
+
+export const newImagesArrayForProducts = defineField({
+  name: "newImagenes",
+  title: "Nuevas Imágenes",
+  type: "array",
+  of: [
+    defineArrayMember({
+      name: "imagen",
+      title: "Imagen",
+      type: "object",
+      fields: [
+        // defineField({
+        //   name: "useExternalImage",
+        //   title: "Usar imagen externa",
+        //   type: "boolean",
+        // }),
+        defineField({
+          name: "externalImage",
+          title: "Imagen Externa",
+          type: "imageUrlObject",
+          hidden: ({ parent }) => !parent.useExternalImage,
+        }),
+        defineField({
+          name: "image",
+          title: "Imagen",
+          type: "image",
+          hidden: ({ parent }) => parent.useExternalImage,
+        }),
+      ],
+    }),
+  ],
 });

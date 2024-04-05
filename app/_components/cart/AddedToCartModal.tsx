@@ -23,6 +23,7 @@ import {
   isRelojLujo,
 } from "@/sanity/queries/pages/types";
 import ArleBasicLogo from "../ArleBasicLogo";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 
 const AddedToCartModal = () => {
   const [product, setProduct] = useState<TProduct | null>(null);
@@ -108,7 +109,7 @@ const AddedToCartModal = () => {
           </header>
           <section className="flex flex-col sm:flex-row w-full gap-5 items-center sm:items-start justify-between">
             {image && (
-              <Image
+              <ImageWrapper
                 src={image?.url}
                 alt={image?.alt}
                 width={180}

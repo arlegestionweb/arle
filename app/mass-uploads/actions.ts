@@ -243,6 +243,8 @@ export const saveProductsInSanity = async (
     zodProducts[productType as keyof typeof zodProducts]
   );
 
+  // console.log({newProducts})
+
   const parsedProducts = productsParser.safeParse(newProducts);
 
   if (!parsedProducts.success) {
@@ -274,7 +276,7 @@ export const saveProductsInSanity = async (
                 | "paisDeOrigen"
               > & {
                 imagenes: {
-                  _type: "imageUrl";
+                  _type: string;
                   _key: string;
                   url: string;
                 }[];
@@ -320,7 +322,7 @@ export const saveProductsInSanity = async (
                   return {
                     _type: "imageUrl",
                     _key: `image-${nanoid()}`,
-                    url: img.url,
+                    url: img.url || "",
                   };
                 }),
                 marca: product.marca,

@@ -13,6 +13,7 @@ import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 import ImageModal from "../ImageModal";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 
 type ProductViewerProps = {
   product: TGafaPremium | TRelojPremium | TPerfumePremium;
@@ -81,7 +82,7 @@ const ProductGrid = ({
           }}
           key={image.alt}
           className="relative">
-            <Image
+            <ImageWrapper
               src={image.url}
               alt={image.alt}
               height={900}
@@ -100,7 +101,7 @@ const ProductGrid = ({
           }}
           key={image.alt}
           className="relative">
-            <Image
+            <ImageWrapper
               src={image.url}
               alt={image.alt}
               height={900}

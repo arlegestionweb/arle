@@ -9,9 +9,6 @@ import { colorInput } from "@sanity/color-input";
 
 const dataset = process.env.SANITY_DATASET as string || "production";
 
-console.log("process.env.SANITY_PROJECT_ID", {dataset}, process.env.SANITY_DATASET);
-
-
 export const sanityAdminConfig = {
   projectId: process.env.SANITY_PROJECT_ID || "",
   dataset,

@@ -128,11 +128,9 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
 
   useEffect(() => {
-    console.log("running useEffect")
     const zodProds = z.array(productTypes[productType as keyof typeof productTypes]).safeParse(products);
 
     if (zodProds.success) {
-      console.log("adding prods to store")
       addProducts(zodProds.data);
     }
   }, [data]);
@@ -142,7 +140,6 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
     return null;
   }
 
-  console.log({ storeProducts })
 
   return (
     <section>

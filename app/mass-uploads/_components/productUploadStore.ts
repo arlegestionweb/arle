@@ -16,7 +16,6 @@ type TProductUploadStore = TProductUploadState & TProductUploadActions;
 export const useProductUploadStore = create<TProductUploadStore>((set) => ({
   products: [],
   addProducts: (products) => set((state) => {
-    console.log({products})
     return ({ products: [...state.products, ...products] })}),
   updateProduct: (newProduct) => set((state) => ({
     products: state.products.map((p) => {

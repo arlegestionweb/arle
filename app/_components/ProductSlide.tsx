@@ -6,6 +6,7 @@ import Link from "next/link";
 import ProductVideo from "./ProductVideo";
 import ImageModal from "./ImageModal";
 import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
+import ImageWrapper from "../listing/_components/ImageWrapper";
 
 export type ProductImage = {
   url: string;
@@ -22,18 +23,18 @@ type ProductSlideProps = {
   imageVideoProducts?: {
     imagenOVideo?: boolean | null | undefined;
     imagen?:
-      | {
-          alt: string;
-          url: string;
-        }
-      | null
-      | undefined;
+    | {
+      alt: string;
+      url: string;
+    }
+    | null
+    | undefined;
     video?:
-      | {
-          url: string;
-        }
-      | null
-      | undefined;
+    | {
+      url: string;
+    }
+    | null
+    | undefined;
   }[];
   className?: string;
   isLink?: boolean;
@@ -81,22 +82,21 @@ const ProductSlide = ({
         className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
         onScroll={handleScroll}
         ref={productRef}>
-          { imagesProduct as TImages && (
-          <ImageModal closeImage={()=>setImageOpen(false)} images={imagesProduct as TImages} index={imageIndex} isImageOpen={isImageOpen} />
-          )}
+        {imagesProduct as TImages && (
+          <ImageModal closeImage={() => setImageOpen(false)} images={imagesProduct as TImages} index={imageIndex} isImageOpen={isImageOpen} />
+        )}
         {imagesProduct &&
           imagesProduct.map((image, index) => (
             <div
               key={"alt" in image ? `${image.alt}-${index}` : image.url}
               className={cn(
                 `relative h-full w-full`,
-                `snap-center snap-always ${
-                  index === 1 && "snap-mandatory"
+                `snap-center snap-always ${index === 1 && "snap-mandatory"
                 } min-w-full h-full flex-col justify-end items-center gap-2.5 inline-flex`
               )}>
               {isLink ? (
                 <Link href={slug || ""} className="w-full h-full">
-                  <Image
+                  <ImageWrapper
                     alt={image.alt || "product"}
                     src={image.url}
                     width={250}
@@ -105,11 +105,11 @@ const ProductSlide = ({
                   />
                 </Link>
               ) : (
-                <div onClick={()=>{
+                <div onClick={() => {
                   setImageIndex(index);
                   setImageOpen(true);
                 }} className="w-full h-full cursor-zoom-in">
-                  <Image
+                  <ImageWrapper
                     alt={image.alt || "product"}
                     src={image.url}
                     width={250}
@@ -127,13 +127,12 @@ const ProductSlide = ({
               key={product.imagen?.alt || "" + index}
               className={cn(
                 `relative h-full w-full`,
-                `snap-center snap-always ${
-                  index === 1 && "snap-mandatory"
+                `snap-center snap-always ${index === 1 && "snap-mandatory"
                 } min-w-full flex-col justify-end items-center gap-2.5 inline-flex`
               )}>
               {product.imagenOVideo ? (
                 <div>
-                  <Image
+                  <ImageWrapper
                     alt={product.imagen?.alt || "product"}
                     src={product.imagen?.url || ""}
                     width={250}
@@ -155,9 +154,8 @@ const ProductSlide = ({
           imagesProduct.map((image, index) => (
             <div
               key={index}
-              className={`w-[9px] h-[9px] rounded-full mix-blend-difference bg-black mx-1.5 cursor-pointer ${
-                index === scrollPosition ? "opacity-80" : "opacity-30"
-              }`}
+              className={`w-[9px] h-[9px] rounded-full mix-blend-difference bg-black mx-1.5 cursor-pointer ${index === scrollPosition ? "opacity-80" : "opacity-30"
+                }`}
               onClick={() => changeScrollPosition(index)}
             />
           ))}
@@ -166,9 +164,8 @@ const ProductSlide = ({
           imageVideoProducts.map((product, index) => (
             <div
               key={index}
-              className={`w-[9px] h-[9px] rounded-full mix-blend-difference bg-white mx-1.5 cursor-pointer ${
-                index === scrollPosition ? "opacity-80" : "opacity-30"
-              }`}
+              className={`w-[9px] h-[9px] rounded-full mix-blend-difference bg-white mx-1.5 cursor-pointer ${index === scrollPosition ? "opacity-80" : "opacity-30"
+                }`}
               onClick={() => changeScrollPosition(index)}
             />
           ))}

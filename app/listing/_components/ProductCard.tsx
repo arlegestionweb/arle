@@ -24,6 +24,7 @@ import { TTimedDiscount } from "@/sanity/queries/pages/zodSchemas/general";
 import { TVarianSelectorProps } from "@/app/_components/types/card";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { isGafaLujo, isPerfumeLujo, isPerfumePremium, isRelojLujo } from "@/sanity/queries/pages/types";
+import ImageWrapper from "./ImageWrapper";
 
 const ProductoCard = ({
   producto,
@@ -42,11 +43,11 @@ const ProductoCard = ({
     precioSinDescuento: colombianPriceStringToNumber(selectedVariant.precio),
     timedDiscountPrice: discount
       ? parseFloat(
-          (
-            (1 - +discount.porcentaje / 100) *
-            colombianPriceStringToNumber(selectedVariant.precio)
-          ).toFixed(0)
-        )
+        (
+          (1 - +discount.porcentaje / 100) *
+          colombianPriceStringToNumber(selectedVariant.precio)
+        ).toFixed(0)
+      )
       : undefined,
     finalPrice: 0,
     discountTypeUsed: "none",
@@ -141,39 +142,45 @@ const CardLayout = ({
     });
   };
 
+  const imgSrc = isPerfume(product)
+    ? product.imagenes[0].url
+    : "imagenes" in selectedVariant
+      ? selectedVariant.imagenes[0].url
+      : "";
+
+
+  const imgAlt = isPerfume(product)
+    ? product.imagenes[0].url
+    : isReloj(product)
+      ? product.variantes[0].imagenes[0].alt!
+      : (product as TGafa).variantes[0].imagenes[0].alt!;
+
+
   return (
     <>
       <section className="h-full w-full overflow-hidden">
         {(isPerfume(product) && product.imagenes.length > 1) ||
-        (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
-        (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
+          (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
+          (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
           <ProductSlide
             slug={product.slug}
             imagesProduct={
               isPerfume(product)
                 ? product.imagenes
                 : "imagenes" in selectedVariant
-                ? selectedVariant.imagenes
-                : []
+                  ? selectedVariant.imagenes
+                  : []
             }
             className=" h-[180px] sm:h-[250px]"
           />
         ) : (
           <Link href={product.slug} className="h-full w-full">
-            <Image
+            <ImageWrapper
               src={
-                isPerfume(product)
-                  ? product.imagenes[0].url
-                  : "imagenes" in selectedVariant
-                  ? selectedVariant.imagenes[0].url
-                  : ""
+                imgSrc
               }
               alt={
-                isPerfume(product)
-                  ? product.imagenes[0].url
-                  : isReloj(product)
-                  ? product.variantes[0].imagenes[0].alt!
-                  : (product as TGafa).variantes[0].imagenes[0].alt!
+                imgAlt
               }
               width={288}
               height={288}
@@ -181,7 +188,7 @@ const CardLayout = ({
             />
           </Link>
         )}
-      </section>
+      </section >
 
       <section className=" flex-1 justify-end font-tajawal flex flex-col gap-1">
         <Link href={product.slug} className="flex flex-col gap-0.5">
@@ -190,12 +197,12 @@ const CardLayout = ({
           </h2>
           <h3 className="text-md md:text-lg md:leading-none font-medium text-gray-700 leading-none">
             {isPerfumePremium(product)
-              ? `${product.parteDeUnSet ? "Set " :""}${product.titulo} - ${product.detalles.concentracion}`
+              ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.detalles.concentracion}`
               : isPerfumeLujo(product)
-              ? `${product.parteDeUnSet ? "Set " :""}${product.titulo} - ${product.concentracion}`
-              : isReloj(product)
-              ? product.modelo
-              : product.modelo}
+                ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.concentracion}`
+                : isReloj(product)
+                  ? product.modelo
+                  : product.modelo}
           </h3>
           {isPerfume(product) && (
             <p className="text-sm leading-none capitalize text-gray-600">
@@ -271,11 +278,10 @@ export const VariantSelector = <T extends TProduct>({
               return (
                 <button
                   onClick={() => setSelectedVariant(variante)}
-                  className={`h-7 min-w-7 px-1.5 pt-1 rounded-[5px] text-sm leading-none overflow-hidden border justify-center items-center ${
-                    isVariantSelected
-                      ? "bg-neutral-100 border-black"
-                      : "bg-neutral-200 border-neutral-300"
-                  }`}
+                  className={`h-7 min-w-7 px-1.5 pt-1 rounded-[5px] text-sm leading-none overflow-hidden border justify-center items-center ${isVariantSelected
+                    ? "bg-neutral-100 border-black"
+                    : "bg-neutral-200 border-neutral-300"
+                    }`}
                   key={`${variante.tamano}-${variante.precio}-${index}`}
                 >
                   {variante.tamano}ml
@@ -299,7 +305,7 @@ export const VariantSelector = <T extends TProduct>({
               key={`${variante.colorDeLaMontura.nombre}-${index}`}
               className={
                 "codigoDeReferencia" in selectedVariant &&
-                variante.codigoDeReferencia ===
+                  variante.codigoDeReferencia ===
                   selectedVariant.codigoDeReferencia
                   ? `border-[1.5px] border-gray-500 p-[1px] rounded-[6.5px]`
                   : `border-[1.5px] border-transparent p-[1px]`
@@ -328,7 +334,7 @@ export const VariantSelector = <T extends TProduct>({
               key={`${variante.colorCaja.nombre}-${index}`}
               className={
                 "codigoDeReferencia" in selectedVariant &&
-                selectedVariant.codigoDeReferencia ===
+                  selectedVariant.codigoDeReferencia ===
                   variante.codigoDeReferencia
                   ? `border-[1.5px] border-gray-500 rounded-[6.5px] p-[1px]`
                   : `border-[1.5px] border-transparent p-[1px]`
@@ -367,7 +373,7 @@ const ColorSelector = ({
         //   ? "bg-neutral-100 border-black"
         //   : "bg-neutral-200 border-neutral-300"
         "border-neutral-300"
-      }`}
+        }`}
     >
       <ColorBar color={color1} />
       <ColorBar color={color2} />
