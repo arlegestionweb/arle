@@ -2,7 +2,6 @@
 import ImageModal from "@/app/_components/ImageModal";
 import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
-import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
 
 type Props = {

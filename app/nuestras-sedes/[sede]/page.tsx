@@ -1,10 +1,8 @@
 import { getSedeByTitle } from "@/sanity/queries/pages/nuestrasSedesQueries";
-import Image from "next/image";
 import ImageScroller from "../_components/ImageScroller";
 import Main from "@/app/_components/Main";
 import { GoChevronLeft } from "react-icons/go";
 import Link from "next/link";
-import AboutSubMenu from "@/app/_components/AboutSubMenu";
 
 export const dynamic = "force-dynamic";
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { saveImageArrayToSanity } from "./saveImageArrayToSanity";
-import Image from "next/image";
 import { useProductUploadStore } from "./productUploadStore";
 import { TProductType } from "./UploadedData";
 

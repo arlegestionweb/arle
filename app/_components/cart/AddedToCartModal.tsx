@@ -8,10 +8,8 @@ import {
 import { useEffect, useState } from "react";
 import { useCartStore } from "./store";
 import { getProductById } from "@/sanity/queries/pages/productPage";
-import Image from "next/image";
 import { IoMdClose } from "react-icons/io";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
-import { FiTrash2 } from "react-icons/fi";
 import Button from "../Button";
 import Precio from "../Precio";
 import { MdOutlinePayments } from "react-icons/md";

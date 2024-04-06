@@ -1,7 +1,6 @@
 import { cn } from "@/app/_lib/utils";
 import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 import { VariantProps, cva } from "class-variance-authority";
-import Image from "next/image";
 import React from "react";
 
 const infoVariants = cva(

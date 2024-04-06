@@ -1,7 +1,6 @@
 import { cn } from "@/app/_lib/utils";
 import ImageWrapper from "@/app/listing/_components/ImageWrapper";
-import Image from "next/image";
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 type ImageType = ({
@@ -37,10 +36,6 @@ const CarouselProduct = ({
     );
   };
 
-  // const visibleImages = Array.from({ length: 4 }, (_, idx) => {
-  //   const arrayIndex = (startIndex + idx) % imagesProduct.length;
-  //   return imagesProduct[arrayIndex];
-  // });
 
   const visibleImages = Array.from(
     { length: Math.min(4, imagesProduct.length) },

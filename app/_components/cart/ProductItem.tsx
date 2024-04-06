@@ -7,7 +7,6 @@ import {
   isReloj,
 } from "@/sanity/queries/pages/listingQueries";
 import { getProductById } from "@/sanity/queries/pages/productPage";
-import Image from "next/image";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { IoMdClose } from "react-icons/io";
 import { TCartItem, useCartStore } from "./store";
