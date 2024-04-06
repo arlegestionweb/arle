@@ -111,10 +111,7 @@ export const getOrderById = async (id: string) => {
   const parsedOrder = zodSanityOrderSchema.safeParse(order);
 
   if (!parsedOrder.success) {
-    // console.log(parsedOrder.error.message);
-    return null
-    // console.error(parsedOrder.error);
-    // throw new Error(parsedOrder.error.message);
+    return null;
   }
   return parsedOrder.data;
 };

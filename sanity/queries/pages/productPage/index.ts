@@ -522,14 +522,11 @@ export const getProductsByIds = async (
       const productWithVariants = await sanityClient.fetch(
         `*[_id == "${product._id}"][0]{_id, "variantes": variantes[]{unidadesDisponibles, codigoDeReferencia}}`
       );
-      // console.log({ productWithVariants });
       return productWithVariants;
     })
   );
 
   const parsedResult = zodProductsWithVariants.safeParse(result);
-
-  // console.log({ result, variantes: result[0].variantes[0] });
 
   if (!parsedResult.success) {
     return console.error(parsedResult.error.message);

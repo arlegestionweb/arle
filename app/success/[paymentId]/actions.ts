@@ -16,20 +16,19 @@ export const successAction = async (_: unknown, formData: FormData) => {
   const order = JSON.parse(
     formData.get("order") as string
   ) as TFrontEndOrderSchema;
-  // console.log("formData", order);
+
   const { data, error } = await sendClientInvoiceEmail(order);
+
   if (error) {
     return { error: error };
   }
+
   return { data: data, error: null };
 };
 
 export const sendClientInvoiceEmail = async (order: TFrontEndOrderSchema) => {
-  // console.log("sending email to", order.customer.email);
-  // console.log({ items: order.items });
 
   const fetchProduct = async (item: TEmailOrderItemSchema) => {
-    // console.log("fetching product", item);
     if (!item.product) {
       const { product } = await getProductById(
         item.productId._ref,
@@ -42,8 +41,6 @@ export const sendClientInvoiceEmail = async (order: TFrontEndOrderSchema) => {
 
   const newItems = await Promise.all(order.items.map(fetchProduct));
 
-  // console.log({ newItems });
-
   const newOrder = { ...order, items: newItems };
   try {
     const { data, error } = await resend.emails.send({
@@ -52,7 +49,7 @@ export const sendClientInvoiceEmail = async (order: TFrontEndOrderSchema) => {
       subject: "Factura de tu compra",
       react: EmailTemplate({ order: newOrder }) as React.ReactElement,
     });
-    // console.log({ data, error });
+
     if (error) {
       return { error: error };
     }
@@ -63,11 +60,9 @@ export const sendClientInvoiceEmail = async (order: TFrontEndOrderSchema) => {
   }
 };
 export const sendAdminInvoiceEmail = async (order: TFrontEndOrderSchema) => {
-  // console.log("sending email to", order.customer.email);
-  // console.log({ items: order.items });
 
   const fetchProduct = async (item: TEmailOrderItemSchema) => {
-    // console.log("fetching product", item);
+
     if (!item.product) {
       const { product } = await getProductById(
         item.productId._ref,
@@ -80,8 +75,6 @@ export const sendAdminInvoiceEmail = async (order: TFrontEndOrderSchema) => {
 
   const newItems = await Promise.all(order.items.map(fetchProduct));
 
-  // console.log({ newItems });
-
   const newOrder = { ...order, items: newItems };
   try {
     const { data, error } = await resend.emails.send({
@@ -90,7 +83,7 @@ export const sendAdminInvoiceEmail = async (order: TFrontEndOrderSchema) => {
       subject: `Numero de orden: ${order._id}`,
       react: EmailTemplate({ order: newOrder }) as React.ReactElement,
     });
-    // console.log({ data, error });
+
     if (error) {
       return { error: error };
     }

@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import {
   TColor,
   TGafa,
@@ -63,8 +62,6 @@ const ProductoCard = ({
     pricing.finalPrice = pricing.precioSinDescuento;
     pricing.discountTypeUsed = "none";
   }
-
-  // console.log(selectedVariant.tag + producto.marca)
 
   useEffect(() => {
     const fetchTimedDiscounts = async () => {

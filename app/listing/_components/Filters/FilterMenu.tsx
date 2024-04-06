@@ -42,7 +42,6 @@ const FilterMenu = ({
   const searchParams = useSearchParams();
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log("running");
     const val = e.target as HTMLFormElement;
 
     const newParams = new URLSearchParams(searchParams.toString());
@@ -50,7 +49,6 @@ const FilterMenu = ({
     const checkboxValues: string[] = [];
     val.querySelectorAll("input").forEach((input) => {
       if (input.type === "checkbox" && input.checked) {
-        // console.log(input.name, input.value);
         if (newParams.has(input.name)) {
           checkboxValues.push(input.value);
           newParams.set(input.name, checkboxValues.join("& "));
@@ -59,7 +57,6 @@ const FilterMenu = ({
         }
       }
       if (input.type === "radio" && input.checked) {
-        // console.log(input.dataset)
         newParams.set(input.name, input.value);
       }
 
@@ -71,7 +68,6 @@ const FilterMenu = ({
       }
     });
 
-    // newParams.forEach((value, key) => console.log(key, value));
     push(createUrl("/listing", newParams));
     toggleFilter();
   };

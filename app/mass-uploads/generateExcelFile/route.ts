@@ -262,7 +262,6 @@ export const GET = async (req: Request, res: NextApiResponse) => {
         ${queryString}
       }`);
 
-      // console.log({sanityDoc})
 
       const docKeys = getNestedKeys2(sanityDoc).sort((a, b) => {
         return a.path
@@ -300,7 +299,6 @@ export const GET = async (req: Request, res: NextApiResponse) => {
         throw new Error("Failed to upload asset");
       }
 
-      // console.log({ asset });
 
       return Response.redirect(asset.url);
     } catch (error) {

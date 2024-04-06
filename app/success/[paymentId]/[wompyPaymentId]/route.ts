@@ -39,16 +39,11 @@ export const GET = async (
         { id: params.paymentId }
       );
 
-      // console.log({ sanityOrder });
-
       const newSanityOrder = {
         ...sanityOrder,
         status: "PAID",
         wompiReference: wompyJson.data.id,
       };
-      // return Response.json(newSanityOrder);
-
-      //   // console.log({ newSanityOrder, item: newSanityOrder.items[0] });
 
         const updateSanityOrder = await sanityWriteClient
           .patch(newSanityOrder._id)
@@ -81,7 +76,6 @@ export const GET = async (
           });
         }
 
-        // console.log({ productsToUpdate, variante: productsToUpdate[0].variantes });
         for (const product of cartItemProducts) {
           const productToUpdate = productsToUpdate.find(
             (p) => p._id === product._id
@@ -104,7 +98,6 @@ export const GET = async (
             const newVariantInfo = {...variantToUpdate, unidadesDisponibles: variantToUpdate.unidadesDisponibles - product.quantity};
 
             const variantIndex = productToUpdate.variantes.indexOf(variantToUpdate);
-            // console.log("here", { newVariantInfo, variantIndex, oldVariant: productToUpdate.variantes[variantIndex] });
             const updateProduct = await sanityWriteClient
               .patch(productToUpdate._id)
               .set({ [`variantes[${variantIndex}].unidadesDisponibles`]: newVariantInfo.unidadesDisponibles })

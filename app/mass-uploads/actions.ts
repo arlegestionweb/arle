@@ -160,7 +160,6 @@ export const saveProductsInSanity = async (
 
   const productsToSave: TPerfumeLujoWithSanityRefs[] = [];
   const newProducts: TSanityProduct[] = products.map((product) => {
-    // console.log({ imagenesAntes: product.imagenes });
     return {
       _type: productType,
       marca: product.marca,
@@ -246,7 +245,6 @@ export const saveProductsInSanity = async (
   );
 
   const parsedProducts = productsParser.safeParse(newProducts);
-  // console.log({ parsedProducts });
 
   if (!parsedProducts.success) {
     console.log({
@@ -299,16 +297,12 @@ export const saveProductsInSanity = async (
                 `*[_type == "ingrediente" && nombre == "${ingrediente}"][0]`
               );
 
-              // console.log({ ingredienteSanity });
-
-              // console.log({ ingredienteSanity });
               if (!ingredienteSanity) {
                 const newIngrediente = await sanityWriteClient.create({
                   _type: "ingrediente",
                   nombre: ingrediente,
                 });
 
-                // console.log({ newIngrediente });
                 if (!newIngrediente) {
                   throw new Error("Failed to create new ingrediente");
                 }
@@ -319,7 +313,6 @@ export const saveProductsInSanity = async (
                 };
               } else {
                 if (!ingredienteSanity || !ingredienteSanity._id) {
-                  console.log({ ingredienterror: ingredienteSanity });
                   throw new Error("IngredienteSanity has no _id property");
                 }
 
@@ -340,7 +333,6 @@ export const saveProductsInSanity = async (
         );
 
         newProd.ingredientes = ingredientes;
-        // console.log({ ingredientes });
         const marcaDelExcel = product.marca;
 
         const marcaSanity = await sanityClient.fetch(
@@ -552,7 +544,6 @@ export const saveProductsInSanity = async (
                 );
 
               if (sanityProd) {
-                // console.log("Product found");
 
                 const updatedProduct = {
                   ...sanityProd,
@@ -568,13 +559,6 @@ export const saveProductsInSanity = async (
                   })),
                 };
 
-                // const parsedProduct =
-                //   zodPerfumeLujoSchemaWithSanityRefs.safeParse(updatedProduct);
-
-                // if (!parsedProduct.success) {
-                //   throw console.log({ errors: parsedProduct.error.errors });
-                // }
-
                 if (
                   updatedProduct._id === undefined ||
                   updatedProduct._id === null
@@ -586,9 +570,7 @@ export const saveProductsInSanity = async (
                   ...updatedProduct,
                   _id: updatedProduct._id,
                 });
-                // console.log("Products not found", {
-                //   ingredientes: parsedProduct.data.ingredientes,
-                // });
+
               } else {
                 const parsedProduct =
                   zodPerfumeLujoSchemaWithSanityRefs.safeParse(newProd);
@@ -598,15 +580,12 @@ export const saveProductsInSanity = async (
                     path: parsedProduct.error.errors[0].path,
                   });
                 }
-                // console.log("Products not found", {
-                //   ingredientes: parsedProduct.data.ingredientes,
-                // });
+  
                 productsToSave.push({
                   ...parsedProduct.data,
                   _id: parsedProduct.data._id,
                 });
-                // console.log("Product not found", { newProd, imagenes: newProd.imagenes });
-                // await sanityWriteClient.create(parsedProduct.data);
+
               }
             } catch (error) {
               return console.log(error);
@@ -660,12 +639,6 @@ export const saveProductsInSanity = async (
   const prodsToSave = await prepareProductsToSave();
 
   for (const product of prodsToSave) {
-    // console.log(
-    //   "imagenes",
-    //   { prodImgs: product.imagenes },
-    //   "titulo",
-    //   product.titulo
-    // );
     const parsedProd = zodPerfumeLujoSchemaWithSanityRefs.safeParse(product);
     if (!parsedProd.success) {
       console.log({
@@ -676,7 +649,6 @@ export const saveProductsInSanity = async (
       });
       throw new Error("Invalid product");
     }
-    // console.log("parsed:", parsedProd.data.imagenes);
 
     if (parsedProd.data._id && typeof parsedProd.data._id === "string") {
       if (!savingProducts.has(parsedProd.data._id)) {
@@ -703,7 +675,6 @@ export const saveProductsInSanity = async (
           }),
         });
         savingProducts.delete(parsedProd.data._id);
-        // console.log({ saveResp });
       }
     } else {
       const _id = `${productType}-${nanoid()}`;
@@ -733,7 +704,6 @@ export const saveProductsInSanity = async (
           }),
         });
         savingProducts.delete(_id);
-        // console.log({ saveResp });
       }
     }
   }

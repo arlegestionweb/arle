@@ -26,7 +26,6 @@ export const saveImageArrayToSanity = async (
   }
 
   let errors: unknown[] = [];
-  // console.log({ imageFiles });
   const images = await Promise.all(
     imageFiles.map(async (imageFile) => {
       const sanityResp = await sanityWriteClient.assets.upload(
