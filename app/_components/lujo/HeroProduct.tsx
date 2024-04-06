@@ -1,10 +1,6 @@
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import AddToCart from "@/app/[type]/[id]/_components/AddToCart";
 import NuestrasComprasIncluyen from "@/app/[type]/[id]/_components/NuestrasComprasIncluyen";
-import {
-  colombianPriceStringToNumber,
-  numberToColombianPriceString,
-} from "@/utils/helpers";
 import Labels from "../Labels";
 import GalleryProduct from "./GalleryProduct";
 import {
@@ -13,9 +9,7 @@ import {
   TRelojLujo,
   isPerfumeLujo,
 } from "@/sanity/queries/pages/types";
-import { imageType } from "../types";
 import {
-  TTimedDiscount,
   TVariant,
 } from "@/sanity/queries/pages/zodSchemas/general";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
@@ -26,7 +20,13 @@ import { isGafa, isReloj } from "@/sanity/queries/pages/listingQueries";
 
 type HeroProductProps = {
   product: TPerfumeLujo | TRelojLujo | TGafaLujo;
-  images: imageType;
+  images: ({
+    url: string;
+    alt: string;
+  } | {
+    alt: string;
+    sanityUrl: string;
+  })[];
   selectedVariant: TVariant;
   setSelectedVariant: (variant: TVariant) => void;
   cantidad: number;
@@ -87,7 +87,7 @@ const HeroProduct = ({
             {product.marca}
           </h1>
           <h1 className="text-2xl text-gray-600 font-jomolhari capitalize leading-none ">
-            {isPerfumeLujo(product) ? `${product.parteDeUnSet ? "Set " :""}${product.titulo}` : product.modelo}
+            {isPerfumeLujo(product) ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo}` : product.modelo}
           </h1>
           {isGafa(product) && product.descripcion && (
             <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 ">
@@ -122,12 +122,12 @@ const HeroProduct = ({
         </header>
 
         <section className="default-paddings lg:px-4 py-2 pb-6 lg:pb-2 flex first:flex-col gap-6 font-tajawal">
-          { product.variantes.length > 1 &&
+          {product.variantes.length > 1 &&
             <VariantSelector
-            product={product}
-            selectedVariant={selectedVariant}
-            setSelectedVariant={setSelectedVariant}
-          />}
+              product={product}
+              selectedVariant={selectedVariant}
+              setSelectedVariant={setSelectedVariant}
+            />}
           <Cantidad
             cantidad={cantidad}
             anadirACantidad={() => setCantidad(cantidad + 1)}

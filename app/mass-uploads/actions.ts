@@ -160,7 +160,7 @@ export const saveProductsInSanity = async (
 
   const productsToSave: TPerfumeLujoWithSanityRefs[] = [];
   const newProducts: TSanityProduct[] = products.map((product) => {
-    console.log({ imagenesAntes: product.imagenes });
+    // console.log({ imagenesAntes: product.imagenes });
     return {
       _type: productType,
       marca: product.marca,
@@ -246,7 +246,7 @@ export const saveProductsInSanity = async (
   );
 
   const parsedProducts = productsParser.safeParse(newProducts);
-  console.log({ parsedProducts });
+  // console.log({ parsedProducts });
 
   if (!parsedProducts.success) {
     console.log({
@@ -330,7 +330,6 @@ export const saveProductsInSanity = async (
                 };
               }
             } catch (error) {
-              console.log({ ingrediente });
               return {
                 _type: "reference",
                 _ref: "ingrediente-error",
@@ -661,12 +660,12 @@ export const saveProductsInSanity = async (
   const prodsToSave = await prepareProductsToSave();
 
   for (const product of prodsToSave) {
-    console.log(
-      "imagenes",
-      { prodImgs: product.imagenes },
-      "titulo",
-      product.titulo
-    );
+    // console.log(
+    //   "imagenes",
+    //   { prodImgs: product.imagenes },
+    //   "titulo",
+    //   product.titulo
+    // );
     const parsedProd = zodPerfumeLujoSchemaWithSanityRefs.safeParse(product);
     if (!parsedProd.success) {
       console.log({
@@ -677,7 +676,7 @@ export const saveProductsInSanity = async (
       });
       throw new Error("Invalid product");
     }
-    console.log("parsed:", parsedProd.data.imagenes);
+    // console.log("parsed:", parsedProd.data.imagenes);
 
     if (parsedProd.data._id && typeof parsedProd.data._id === "string") {
       if (!savingProducts.has(parsedProd.data._id)) {

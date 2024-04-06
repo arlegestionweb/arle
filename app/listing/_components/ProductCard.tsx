@@ -142,15 +142,19 @@ const CardLayout = ({
     });
   };
 
+  const firstImage = isPerfume(product) ? product.imagenes[0] : null;
+
+  // ('sanityUrl' in image) ? image.sanityUrl : image.ur
+
   const imgSrc = isPerfume(product)
-    ? product.imagenes[0].url
+    ? firstImage && ('sanityUrl' in firstImage) ? firstImage.sanityUrl : firstImage?.url || ""
     : "imagenes" in selectedVariant
       ? selectedVariant.imagenes[0].url
       : "";
 
 
   const imgAlt = isPerfume(product)
-    ? product.imagenes[0].url
+    ? product.imagenes[0].alt
     : isReloj(product)
       ? product.variantes[0].imagenes[0].alt!
       : (product as TGafa).variantes[0].imagenes[0].alt!;

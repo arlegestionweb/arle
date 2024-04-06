@@ -8,10 +8,13 @@ import ImageModal from "./ImageModal";
 import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 import ImageWrapper from "../listing/_components/ImageWrapper";
 
-export type ProductImage = {
+export type ProductImage = ({
   url: string;
-  alt?: string | null | undefined;
-};
+  alt: string;
+} | {
+  alt: string;
+  sanityUrl: string;
+})
 
 export type ProductVideo = {
   url: string;
@@ -23,12 +26,13 @@ type ProductSlideProps = {
   imageVideoProducts?: {
     imagenOVideo?: boolean | null | undefined;
     imagen?:
-    | {
-      alt: string;
+    ({
       url: string;
-    }
-    | null
-    | undefined;
+      alt: string;
+    } | {
+      alt: string;
+      sanityUrl: string;
+    }) | null | undefined;
     video?:
     | {
       url: string;
@@ -83,12 +87,12 @@ const ProductSlide = ({
         onScroll={handleScroll}
         ref={productRef}>
         {imagesProduct as TImages && (
-          <ImageModal closeImage={() => setImageOpen(false)} images={imagesProduct as TImages} index={imageIndex} isImageOpen={isImageOpen} />
+          <ImageModal closeImage={() => setImageOpen(false)} images={imagesProduct as ProductImage[]} index={imageIndex} isImageOpen={isImageOpen} />
         )}
         {imagesProduct &&
           imagesProduct.map((image, index) => (
             <div
-              key={"alt" in image ? `${image.alt}-${index}` : image.url}
+              key={`${image.alt}-${index}`}
               className={cn(
                 `relative h-full w-full`,
                 `snap-center snap-always ${index === 1 && "snap-mandatory"
@@ -98,7 +102,7 @@ const ProductSlide = ({
                 <Link href={slug || ""} className="w-full h-full">
                   <ImageWrapper
                     alt={image.alt || "product"}
-                    src={image.url}
+                    src={('sanityUrl' in image) ? image.sanityUrl : image.url}
                     width={250}
                     height={250}
                     className={`absolute object-contain h-full w-full object-center`}
@@ -111,7 +115,7 @@ const ProductSlide = ({
                 }} className="w-full h-full cursor-zoom-in">
                   <ImageWrapper
                     alt={image.alt || "product"}
-                    src={image.url}
+                    src={('sanityUrl' in image) ? image.sanityUrl : image.url}
                     width={250}
                     height={250}
                     className={`absolute object-contain h-full w-full object-center`}
@@ -134,7 +138,7 @@ const ProductSlide = ({
                 <div>
                   <ImageWrapper
                     alt={product.imagen?.alt || "product"}
-                    src={product.imagen?.url || ""}
+                    src={product.imagen && ('sanityUrl' in product.imagen) ? product.imagen?.sanityUrl : product.imagen?.url || ""}
                     width={250}
                     height={250}
                     className={`object-contain w-full h-full fit object-center`}

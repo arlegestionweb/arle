@@ -4,10 +4,13 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
-type ImageType = {
+type ImageType = ({
   url: string;
-  alt?: string | null | undefined;
-};
+  alt: string;
+} | {
+  alt: string;
+  sanityUrl: string;
+});
 
 type CarouselProductProps = {
   imagesProduct: ImageType[];
@@ -77,13 +80,13 @@ const CarouselProduct = ({
       >
         {visibleImages.map((img, idx) => (
           <div
-            key={`${img.url}-${idx}`}
+            key={`${('sanityUrl' in img) ? img.sanityUrl : img.url}-${idx}`}
             className="relative min-w-[80px] w-20 h-20 "
             onClick={() => selectImages(img)}
           >
             <ImageWrapper
-              src={img.url}
-              alt={img.alt || "perfume"}
+              src={('sanityUrl' in img) ? img.sanityUrl : img.url}
+               alt={img.alt || "perfume"}
               width={80}
               height={80}
               className="object-contain w-full h-full cursor-pointer"

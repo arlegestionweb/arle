@@ -42,8 +42,8 @@ const RelojLujo = ({
         <InfoSection
           titulo="Inspiración"
           descripcion={product.inspiracion.contenido?.resena || ""}
-          alt={product.inspiracion.contenido?.imagen?.alt || ""}
-          url={product.inspiracion.contenido?.imagen?.url || ""}
+          alt={product.inspiracion.contenido?.subirImagen ? (product.inspiracion.contenido.imagenExterna?.alt || "") : (product.inspiracion.contenido?.imagen?.alt || "")}
+          url={product.inspiracion.contenido?.subirImagen ? (product.inspiracion.contenido.imagenExterna?.url || "") : (product.inspiracion.contenido?.imagen?.url || "")}
           className=""
         />
       )}
@@ -52,8 +52,8 @@ const RelojLujo = ({
         <InfoSection
           titulo="Detalles"
           descripcion={product.detalles?.contenido?.texto || ""}
-          alt={product.detalles?.contenido?.imagen?.alt || ""}
-          url={product.detalles?.contenido?.imagen?.url || ""}
+          alt={product.detalles.contenido?.subirImagen ? (product.detalles.contenido.imagenExterna?.alt || "") : (product.detalles.contenido?.imagen?.alt || "")}
+          url={product.detalles.contenido?.subirImagen ? (product.detalles.contenido.imagenExterna?.url || "") : (product.detalles.contenido?.imagen?.url || "")}
           labelType={product.inspiracion.usarInspiracion ? "light" : "dark"}
           className={product.inspiracion.usarInspiracion ? "lg:flex-row-reverse" : ""}
         />
@@ -68,18 +68,18 @@ const RelojLujo = ({
           url={product.movimiento?.contenido?.imagen?.url || ""}
           labelType={
             product.inspiracion.usarInspiracion &&
-            !product.detalles?.usarDetalles
+              !product.detalles?.usarDetalles
               ? "light"
               : !product.inspiracion.usarInspiracion &&
                 product.detalles?.usarDetalles
-              ? "light"
-              : "dark"
+                ? "light"
+                : "dark"
           }
           className={product.inspiracion.usarInspiracion &&
             !product.detalles?.usarDetalles
-              ? "lg:flex-row-reverse"
-              : !product.inspiracion.usarInspiracion &&
-                product.detalles?.usarDetalles
+            ? "lg:flex-row-reverse"
+            : !product.inspiracion.usarInspiracion &&
+              product.detalles?.usarDetalles
               ? "lg:flex-row-reverse"
               : ""}
         />
@@ -89,40 +89,40 @@ const RelojLujo = ({
         labelType={!product.inspiracion.usarInspiracion &&
           !product.detalles?.usarDetalles &&
           !product.movimiento?.usarMovimiento
-            ? "dark"
-            : product.inspiracion.usarInspiracion &&
-              product.detalles?.usarDetalles &&
-              !product.movimiento?.usarMovimiento
+          ? "dark"
+          : product.inspiracion.usarInspiracion &&
+            product.detalles?.usarDetalles &&
+            !product.movimiento?.usarMovimiento
             ? "dark"
             : product.inspiracion.usarInspiracion &&
               !product.detalles?.usarDetalles &&
               product.movimiento?.usarMovimiento
-            ? "dark"
-            : !product.inspiracion.usarInspiracion &&
-              product.detalles?.usarDetalles &&
-              product.movimiento?.usarMovimiento
-            ? "dark"
-            : "light"}
+              ? "dark"
+              : !product.inspiracion.usarInspiracion &&
+                product.detalles?.usarDetalles &&
+                product.movimiento?.usarMovimiento
+                ? "dark"
+                : "light"}
         titulo="Inspiración"
         DescriptionComp={
           <DetallesProducto
             theme={!product.inspiracion.usarInspiracion &&
               !product.detalles?.usarDetalles &&
               !product.movimiento?.usarMovimiento
-                ? "dark"
-                : product.inspiracion.usarInspiracion &&
-                  product.detalles?.usarDetalles &&
-                  !product.movimiento?.usarMovimiento
+              ? "dark"
+              : product.inspiracion.usarInspiracion &&
+                product.detalles?.usarDetalles &&
+                !product.movimiento?.usarMovimiento
                 ? "dark"
                 : product.inspiracion.usarInspiracion &&
                   !product.detalles?.usarDetalles &&
                   product.movimiento?.usarMovimiento
-                ? "dark"
-                : !product.inspiracion.usarInspiracion &&
-                  product.detalles?.usarDetalles &&
-                  product.movimiento?.usarMovimiento
-                ? "dark"
-                : "light"}
+                  ? "dark"
+                  : !product.inspiracion.usarInspiracion &&
+                    product.detalles?.usarDetalles &&
+                    product.movimiento?.usarMovimiento
+                    ? "dark"
+                    : "light"}
             detalles={{
               caja: {
                 cristal: product.caja.cristal,
@@ -137,10 +137,10 @@ const RelojLujo = ({
                 materialDelPulso: product.especificaciones.material,
                 ...(product.especificaciones.funciones
                   ? {
-                      funciones: product.especificaciones.funciones.map(
-                        (funcion) => `${funcion.titulo}: ${funcion.descripcion}`
-                      ),
-                    }
+                    funciones: product.especificaciones.funciones.map(
+                      (funcion) => `${funcion.titulo}: ${funcion.descripcion}`
+                    ),
+                  }
                   : {}),
               },
               colores: {
@@ -163,10 +163,10 @@ const RelojLujo = ({
                 (product.banners &&
                   product.banners.map(
                     (element) =>
-                      ({
-                        url: element.imagen?.url,
-                        alt: element.imagen?.alt,
-                      } as ProductImage)
+                    ({
+                      url: element.imagen?.url,
+                      alt: element.imagen?.alt,
+                    } as ProductImage)
                   )) ||
                 []
               }
@@ -178,20 +178,20 @@ const RelojLujo = ({
         className={!product.inspiracion.usarInspiracion &&
           !product.detalles?.usarDetalles &&
           !product.movimiento?.usarMovimiento
-            ? ""
-            : product.inspiracion.usarInspiracion &&
-              product.detalles?.usarDetalles &&
-              !product.movimiento?.usarMovimiento
+          ? ""
+          : product.inspiracion.usarInspiracion &&
+            product.detalles?.usarDetalles &&
+            !product.movimiento?.usarMovimiento
             ? ""
             : product.inspiracion.usarInspiracion &&
               !product.detalles?.usarDetalles &&
               product.movimiento?.usarMovimiento
-            ? ""
-            : !product.inspiracion.usarInspiracion &&
-              product.detalles?.usarDetalles &&
-              product.movimiento?.usarMovimiento
-            ? ""
-            : "lg:flex-row-reverse"}
+              ? ""
+              : !product.inspiracion.usarInspiracion &&
+                product.detalles?.usarDetalles &&
+                product.movimiento?.usarMovimiento
+                ? ""
+                : "lg:flex-row-reverse"}
       />
 
       <section className="px-4 py-6 lg:hidden">

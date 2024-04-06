@@ -8,10 +8,13 @@ import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 
 type GalleryProductProps = {
-  imagesProduct: {
+  imagesProduct: ({
     url: string;
-    alt?: string | null | undefined;
-  }[];
+    alt: string;
+  } | {
+    alt: string;
+    sanityUrl: string;
+  })[]
   className?: string;
   orientation?: "vertical" | "horizontal";
 };
@@ -28,11 +31,11 @@ const GalleryProduct = ({
     if (imagesProduct.length > 1) {
       return (
         <section
-          key={`${img.url}-${idx}`}
+          key={`${('sanityUrl' in img) ? img.sanityUrl : img.url}-${idx}`}
           className="relative min-w-[80px] w-20 h-20 mr-3"
         >
           <ImageWrapper
-            src={img.url}
+            src={('sanityUrl' in img) ? img.sanityUrl : img.url}
             alt={img.alt || "perfume"}
             width={80}
             height={80}
@@ -44,12 +47,13 @@ const GalleryProduct = ({
     }
   });
 
+  const image = imagesProduct[index];
   return (
     <section
       className={cn(
         "flex flex-col items-center lg:mt-8",
         orientation == "vertical" &&
-          "md:flex-row-reverse gap-2 md:px-20 md:mb-4 justify-center md:items-start md:pt-4",
+        "md:flex-row-reverse gap-2 md:px-20 md:mb-4 justify-center md:items-start md:pt-4",
         className
       )}
     >
@@ -68,7 +72,7 @@ const GalleryProduct = ({
       >
         <ImageWrapper
           alt={imagesProduct[index].alt || ""}
-          src={imagesProduct[index].url}
+          src={('sanityUrl' in image) ? image.sanityUrl : image.url}
           width={800}
           height={800}
           className="object-contain object-center h-full w-full"

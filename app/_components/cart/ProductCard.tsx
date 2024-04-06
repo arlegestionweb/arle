@@ -28,9 +28,9 @@ const ProductCard = ({
 }) => {
   const image =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.variantes[0].imagenes[0]
       : product.imagenes[0];
 
@@ -39,10 +39,10 @@ const ProductCard = ({
   );
 
   return (
-    <li key={image?.url} className="flex items-center gap-4">
+    <li key={('sanityUrl' in image) ? image.sanityUrl : image.url} className="flex items-center gap-4">
       {image && (
         <ImageWrapper
-          src={image?.url}
+          src={('sanityUrl' in image) ? image.sanityUrl : image.url}
           alt={image?.alt}
           width={110}
           height={110}
@@ -68,16 +68,14 @@ const ProductCard = ({
         </h2>
         <h3 className="text-md mb-1 md:text-lg md:leading-none font-medium text-gray-700 leading-none">
           {isPerfumePremium(product)
-            ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${
-                product.detalles.concentracion
-              }`
+            ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.detalles.concentracion
+            }`
             : isPerfumeLujo(product)
-            ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${
-                product.concentracion
+              ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.concentracion
               }`
-            : isReloj(product)
-            ? product.modelo
-            : product.modelo}
+              : isReloj(product)
+                ? product.modelo
+                : product.modelo}
         </h3>
         {isPerfume(product) && variant && (
           <p className="text-sm leading-none capitalize text-gray-600">

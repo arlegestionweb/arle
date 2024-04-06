@@ -27,7 +27,6 @@ const PerfumePremium = ({
   setCantidad,
   pricing,
 }: TPerfumePremiumProps) => {
-  // console.log({product});
   return (
     <>
       <PremiumLayout

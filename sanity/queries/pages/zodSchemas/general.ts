@@ -32,8 +32,8 @@ export const contenidoSchema = z.object({
   subirImagen: z.boolean().optional().nullable(),
   imagenExterna: z
     .object({
-      url: z.string(),
-      alt: z.string(),
+      url: z.string().optional().nullable(),
+      alt: z.string().optional().nullable(),
     })
     .optional()
     .nullable(),

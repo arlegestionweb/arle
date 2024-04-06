@@ -234,15 +234,10 @@ export const productQuery: Record<TProductType, string> = {
     parteDeUnSet,
     "concentracion": concentracion -> nombre,
     "imagenes": imagenes[] {
-      _type == "imagen" => {
-        ...,
-        alt,
-        "url": asset->url
-      },
-      _type == "imageUrl" => {
-        alt,
-        url
-      }
+      ...,
+      alt, 
+      "sanityUrl": asset->url,
+      url
     },
     "notasOlfativas": notasOlfativas {
       "notasDeBase": notasDeBase [] -> nombre,

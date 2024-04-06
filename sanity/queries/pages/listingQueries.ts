@@ -157,7 +157,7 @@ export const getListingInitialLoadContent = async () => {
     const parsedResult = zodListPage.safeParse(result);
 
     // const perfumesLujo = result.perfumes.filter(p => p._type === "perfumeLujo");
-    // console.log({ imgs: perfumesLujo[0].descripcion, marca: perfumesLujo[0].marca });
+    // console.log({ imgs: result.perfumes[1].imagenes, marca: result.perfumes[1].marca, "perfumesAt9": result.perfumes[9] });
 
     if (!parsedResult.success) {
       throw new Error(parsedResult.error.message);

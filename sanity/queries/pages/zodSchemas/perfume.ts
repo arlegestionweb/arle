@@ -91,7 +91,7 @@ export const perfumeLujoSchema = z.object({
     imageSchema.or(
       z.object({
         alt: z.string(),
-        url: z.string(),
+        sanityUrl: z.string(),
       })
     )
   ),

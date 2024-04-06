@@ -5,7 +5,13 @@ import { IoIosArrowBack, IoIosArrowForward, IoMdClose } from "react-icons/io";
 import ImageWrapper from "../listing/_components/ImageWrapper";
 
 type Props = {
-  images: TImages;
+  images: ({
+    url: string;
+    alt: string;
+} | {
+    alt: string;
+    sanityUrl: string;
+})[];
   index: number;
   isImageOpen: boolean | false;
   closeImage: Function;
@@ -19,6 +25,8 @@ const ImageModal = ({ images, index, isImageOpen, closeImage }: Props) => {
         setImageIndex(index);
     }, [isImageOpen])
 
+
+    const image = images[imageIndex];
   return (
     <div 
       className={`${
@@ -45,8 +53,8 @@ const ImageModal = ({ images, index, isImageOpen, closeImage }: Props) => {
         <ImageWrapper
           height={900}
           width={1200}
-          src={images[imageIndex].url}
-          alt={images[imageIndex].alt}
+          src={('sanityUrl' in image) ? image.sanityUrl : image.url}
+          alt={image.alt}
           className=" h-full w-auto object-contain pointer-events-auto"
         />
         <button

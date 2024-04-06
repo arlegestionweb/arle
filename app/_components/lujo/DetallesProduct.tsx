@@ -57,7 +57,6 @@ const DetallesProducto = ({
           Object.keys(detalles).map((detalle, index) => {
             let arrDetalles: JSX.Element[] = [];
 
-            // console.log(detalles[detalle]);
             if (typeof detalles[detalle] === "string") {
               arrDetalles.push(
                 <p className=" w-full text-lg font-normal font-tajawal leading-snug">
