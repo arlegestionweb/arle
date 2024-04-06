@@ -42,8 +42,8 @@ const GafaLujo = ({
         <InfoSection
           titulo="Inspiración"
           descripcion={product.inspiracion.contenido?.resena || ""}
-          alt={product.inspiracion.contenido?.imagen?.alt}
-          url={product.inspiracion.contenido?.imagen?.url}
+          alt={product.inspiracion.contenido?.imagen?.alt || ""}
+          url={product.inspiracion.contenido?.imagen?.url || ""}
           className=""
         />
       )}
