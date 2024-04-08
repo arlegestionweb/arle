@@ -14,8 +14,8 @@ const Home = async function () {
 
   const exploreSections = [
     pageContent.perfumes,
-    pageContent.relojes,
     pageContent.gafas,
+    pageContent.relojes,
   ];
 
   return (
