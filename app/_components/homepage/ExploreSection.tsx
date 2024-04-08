@@ -23,12 +23,14 @@ function ExploreSection({
   section: { titulo, descripcion, imagen },
 }: ExploreSectionProps) {
   return (
-    <section className=" max-w-screen h-[60vh] relative">
+    <section className=" max-w-screen h-[75vh] md:h-[70vh] relative">
       <GradientImage
         src={imagen.url}
         alt={imagen.alt}
         layout="fill"
-        imageClassName="fit object-cover object-top"
+        width={2000}
+        height={1000}
+        imageClassName="object-cover object-center"
         containerclassName="flex justify-center items-end"
       >
         <div className="sticky z-10 flex-col justify-center items-center mb-14 gap-2.5 flex w-full default-paddings">

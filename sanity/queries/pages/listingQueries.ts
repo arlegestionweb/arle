@@ -12,8 +12,53 @@ import { zodHomeSectionSchema } from "./homepageQuery";
 const listingMainString = ` 
 {
   "listingContent": *[_type == "listing"][0]{
-    ${bannersQuery}
+    ${bannersQuery},
+    "generalBanners": generalBanners[] {
+      titulo,
+      descripcion,
+      "imagen": imagen {
+        alt,
+        "url": asset->url
+      },
+      "video": video {
+        "url": asset->url
+      }
+    },
+    "perfumesBanners": perfumesBanners[] {
+      titulo,
+      descripcion,
+      "imagen": imagen {
+        alt,
+        "url": asset->url
+      },
+      "video": video {
+        "url": asset->url
+      }
+    },
+    "gafasBanners": gafasBanners[] {
+      titulo,
+      descripcion,
+      "imagen": imagen {
+        alt,
+        "url": asset->url
+      },
+      "video": video {
+        "url": asset->url
+      }
+    },
+    "relojesBanners": relojesBanners[] {
+      titulo,
+      descripcion,
+      "imagen": imagen {
+        alt,
+        "url": asset->url
+      },
+      "video": video {
+        "url": asset->url
+      }
+    },
   },
+
   "perfumes": *[_type in ["perfumeLujo", "perfumePremium"]] {
     _type == "perfumeLujo" => ${productQuery.perfumeLujo},
     _type == "perfumePremium" => ${productQuery.perfumePremium}
@@ -139,6 +184,10 @@ export type TColecciones = z.infer<typeof zodCollectiones>;
 const zodListPage = z.object({
   listingContent: z.object({
     banners: z.array(zodBanner),
+    generalBanners: z.array(zodBanner),
+    perfumesBanners: z.array(zodBanner),
+    gafasBanners: z.array(zodBanner),
+    relojesBanners: z.array(zodBanner),
   }),
 
   perfumes: z.array(zodPerfumeListingQuery),

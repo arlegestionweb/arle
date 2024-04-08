@@ -151,7 +151,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           </li>
         ))}
       </ul>
-      <button onClick={() => {
+      <button className="light-button border border-black mt-4" onClick={() => {
         saveProductsInSanity(storeProducts, productType)
       }}>
         Guardar

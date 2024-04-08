@@ -1,6 +1,6 @@
 "use server";
-const EMAIL = "email@gmail.com";
-const PASSWORD = "password";
+const EMAIL = "arleweb8@gmail.com";
+const PASSWORD = "Pagwebarle5440";
 
 export const validateUser = async (
   formState: { success: boolean; error: string | null },

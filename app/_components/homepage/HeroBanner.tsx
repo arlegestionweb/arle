@@ -50,10 +50,12 @@ const Banner = ({ content, className }: BannerProps) => {
                 src={banner.imagen.url}
                 alt={banner.imagen.alt}
                 layout="fill"
+                width={4000}
+                height={2000}
                 imageClassName="object-cover object-top"
                 containerclassName={`snap-center snap-always ${
                   index === 1 && "snap-mandatory"
-                } min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`}>
+                } min-w-full px-2 pt-2 flex-col justify-end items-center gap-2.5 inline-flex`}>
               </GradientImage>
             )}
           </React.Fragment>
