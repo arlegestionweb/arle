@@ -72,3 +72,24 @@ export const camelToTitleCase = function (str: string): string {
 
   return result;
 };
+
+export const columnLetterToNumber = function (columnLetter: string): number {
+  let columnNumber = 0;
+  for (let i = 0; i < columnLetter.length; i++) {
+    columnNumber = columnNumber * 26 + columnLetter.charCodeAt(i) - 64;
+  }
+  return columnNumber;
+};
+
+export const incrementColumnLetter = function (columnLetter: string): string {
+  if (columnLetter === "Z" || columnLetter === "z") {
+    return String.fromCharCode(columnLetter.charCodeAt(0) - 25) + "A";
+  } else if (columnLetter.endsWith("Z") || columnLetter.endsWith("z")) {
+    return incrementColumnLetter(columnLetter.slice(0, -1)) + "A";
+  } else {
+    return (
+      columnLetter.slice(0, -1) +
+      String.fromCharCode(columnLetter.charCodeAt(columnLetter.length - 1) + 1)
+    );
+  }
+};

@@ -48,11 +48,14 @@ export const formatNumber = function (number: number | string): string {
 export const getAllMarcas = (products: TProduct[]) =>
   products.map((product) => product.marca);
 
-  export const getAllColeccionesDeMarca = (products: TProduct[]) => 
+export const getAllColeccionesDeMarca = (products: TProduct[]) =>
   products
-    .map(product => product.coleccionDeMarca)
-    .filter((coleccionDeMarca): coleccionDeMarca is string => coleccionDeMarca !== undefined && coleccionDeMarca !== null);
-    
+    .map((product) => product.coleccionDeMarca)
+    .filter(
+      (coleccionDeMarca): coleccionDeMarca is string =>
+        coleccionDeMarca !== undefined && coleccionDeMarca !== null
+    );
+
 export const spanishToCamelCase = function (input: string) {
   // Split the input string into words
   const words = input.split(/[\s]+/);
@@ -76,28 +79,41 @@ export const spanishToCamelCase = function (input: string) {
 };
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export function convertirCamelCaseATitulo(detalle: string): string {
-  return detalle
-    .replace(/([a-z])([A-Z])/g, "$1 $2") // Insertar espacio antes de las letras mayúsculas
-    .charAt(0)
-    .toUpperCase() +
-    detalle
-      .slice(1)
-      .replace(/([A-Z]+)/g, " $1")
-      .replace(/([A-Z][a-z])/g, " $1");
+  let result = "";
+  let previousChar = "";
+
+  for (let i = 0; i < detalle.length; i++) {
+    const currentChar = detalle[i];
+    if (i === 0) {
+      result += currentChar.toUpperCase();
+    } else if (
+      currentChar === currentChar.toUpperCase() &&
+      previousChar === previousChar.toLowerCase()
+    ) {
+      result += " " + currentChar;
+    } else {
+      result += currentChar;
+    }
+    previousChar = currentChar;
+  }
+
+  return result;
 }
 
-
-export async function fetchWithRetry(url: string, maxRetries = 3): Promise<Response> {
+export async function fetchWithRetry(
+  url: string,
+  maxRetries = 3
+): Promise<Response> {
   try {
     const response = await fetch(url);
-    if (!response.ok) throw new Error('Network response was not ok');
+    if (!response.ok) throw new Error("Network response was not ok");
     return response;
   } catch (error) {
-    if (maxRetries === 1) throw new Error('Maximum retry attempts exceeded');
+    if (maxRetries === 1) throw new Error("Maximum retry attempts exceeded");
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(fetchWithRetry(url, maxRetries - 1));

@@ -19,8 +19,6 @@ export const getAllDiscountCodes = async () => {
   try {
     const result = await sanityClient.fetch(allDiscountCodesQuery);
 
-    // console.log(result);
-
     const parsedResult = zodDiscountCodeSchema.safeParse(result);
 
     if (!parsedResult.success) {

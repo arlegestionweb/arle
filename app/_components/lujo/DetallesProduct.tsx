@@ -1,6 +1,6 @@
 "use client";
 import { cn, convertirCamelCaseATitulo } from "@/app/_lib/utils";
-import React, { useState } from "react";
+import { Fragment, useState } from "react";
 
 type DetallesProductoProps = {
   detalles?: {
@@ -57,7 +57,6 @@ const DetallesProducto = ({
           Object.keys(detalles).map((detalle, index) => {
             let arrDetalles: JSX.Element[] = [];
 
-            // console.log(detalles[detalle]);
             if (typeof detalles[detalle] === "string") {
               arrDetalles.push(
                 <p className=" w-full text-lg font-normal font-tajawal leading-snug">
@@ -99,13 +98,13 @@ const DetallesProducto = ({
             }
 
             return (
-              <React.Fragment key={index + "-" + Math.random()}>
+              <Fragment key={index + "-" + Math.random()}>
                 {arrDetalles.map(elementDetalle => (
-                  <React.Fragment key={index + "-" + Math.random()}>
+                  <Fragment key={index + "-" + Math.random()}>
                     {detalle == activeSection && elementDetalle}
-                  </React.Fragment>
+                  </Fragment>
                 ))}
-              </React.Fragment>
+              </Fragment>
             );
           })}
       </section>

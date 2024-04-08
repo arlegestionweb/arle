@@ -85,6 +85,7 @@ export const gafasPremiumSchema = z.object({
   date: z.string(),
   _type: z.literal("gafasPremium"),
   marca: z.string(),
+  mostrarCredito: z.boolean().optional().nullable(),
   _id: z.string(),
   variantes: z.array(gafaVariantSchema),
   modelo: z.string(),

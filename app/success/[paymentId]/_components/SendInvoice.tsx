@@ -7,7 +7,6 @@ import { useFormState } from "react-dom";
 const SendInvoice = ({order}: {
   order: TFrontEndOrderSchema;
 }) => {
-  // console.log({order})
   const [formState, formAction] = useFormState(sendInvoice, null);
 
   return (

@@ -19,9 +19,6 @@ const CheckboxSection = ({
 
   const allTitle = feminine ? "todas" : "todos";
 
-  // if (name === "marcas") {
-  //   console.log({marcas: searchParams.get("marcas")})
-  // }
   const [checkedState, setCheckedState] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {

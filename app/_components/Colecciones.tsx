@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { cn } from "../_lib/utils";
 import { THomeSection } from "@/sanity/queries/pages/homepageQuery";
+import ImageWrapper from "../listing/_components/ImageWrapper";
 
 type ColeccionesProps = { colecciones: THomeSection[], className?: string }
 
@@ -20,10 +20,10 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
             <Link href={`/listing?coleccion=${coleccion.titulo}`} className="group" >
               {coleccion.imagen && (
                 <div className="relative w-[120px] h-[120px] flex items-center justify-center overflow-hidden">
-                  <Image height={120}
+                  <ImageWrapper height={120}
                     width={120} className="absolute z-10 w-full h-full" src="ArleCircle.svg" alt="circulo Arle"/>
                     <div className="w-[110px] h-[110px] overflow-hidden rounded-full absolute justify-center items-center flex z-0">
-                  <Image
+                  <ImageWrapper
                     src={coleccion.imagen.url}
                     alt={coleccion.imagen.alt || ""}
                     height={110}

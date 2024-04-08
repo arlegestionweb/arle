@@ -1,6 +1,6 @@
 import { cn } from "@/app/_lib/utils";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 import { VariantProps, cva } from "class-variance-authority";
-import Image from "next/image";
 import React from "react";
 
 const infoVariants = cva(
@@ -59,7 +59,7 @@ const InfoSection = (props: InfoProps) => {
         </section>
         {!props.DescriptionComp && !props.ImageComp ? (
           <div className="relative  w-[90%] mb-8 lg:mb-0 lg:w-1/2 h-64 sm:h-72 md:h-80 lg:h-72 lg:aspect-video ">
-            <Image
+            <ImageWrapper
               alt={props.alt || ""}
               src={props.url || ""}
               height={500}

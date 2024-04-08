@@ -22,7 +22,21 @@ export const videoSchema = z.object({
 export const contenidoSchema = z.object({
   resena: z.string().optional().nullable(),
   texto: z.string().optional().nullable(),
-  imagen: imageSchema.optional().nullable(),
+  imagen: z
+    .object({
+      url: z.string().optional().nullable(),
+      alt: z.string().optional().nullable(),
+    })
+    .optional()
+    .nullable(),
+  subirImagen: z.boolean().optional().nullable(),
+  imagenExterna: z
+    .object({
+      url: z.string().optional().nullable(),
+      alt: z.string().optional().nullable(),
+    })
+    .optional()
+    .nullable(),
 });
 
 export const bannerSchema = z.object({

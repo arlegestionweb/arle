@@ -3,6 +3,8 @@ import { SlugParent, defineArrayMember, defineField } from "sanity";
 import { PiFlagBannerFill } from "react-icons/pi";
 import { videoSchema } from "../video";
 import ColeccionDeMarcaInput from "@/sanity/components/SelectColeccionDeMarca";
+import { TParentWithSubirImagen } from "../../products/perfumes/lujo";
+import ImageUrl from "@/sanity/components/ImageUrl";
 
 export const generoSchema = defineField({
   name: "genero",
@@ -20,8 +22,8 @@ export const coleccionesDeMarcaSchema = defineField({
   type: "string",
   components: {
     input: ColeccionDeMarcaInput,
-  }
-})
+  },
+});
 
 export const bannersDeProductoSchema = defineField({
   name: "bannersDeProducto",
@@ -192,9 +194,62 @@ export const inspiracionSchema = defineField({
           validation: (Rule) => Rule.required(),
         }),
         defineField({
+          name: "subirImagen",
+          title: "Usar imagen externa?",
+          type: "boolean",
+          initialValue: false,
+        }),
+        defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
+          hidden: ({ parent }) =>
+            parent && (parent as TParentWithSubirImagen).subirImagen !== false,
+          validation: (Rule) =>
+            Rule.custom((field, context) => {
+              if (
+                (context.parent as TParentWithSubirImagen).subirImagen &&
+                !field
+              ) {
+                return "La imagen es requerida cuando 'Subir imagen' está seleccionado";
+              }
+              return true;
+            }),
+        }),
+        defineField({
+          name: "imagenExterna",
+          description: "Usar imagen de un URL externo",
+          title: "Imagen Externa",
+          type: "object",
+          fields: [
+            defineField({
+              name: "url",
+              title: "URL",
+              type: "url",
+              components: {
+                input: ImageUrl,
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "alt",
+              title: "Texto alternativo",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          hidden: ({ parent }) =>
+            parent && (parent as TParentWithSubirImagen).subirImagen === false,
+          validation: (Rule) =>
+            Rule.custom((field, context) => {
+              if (
+                (context.parent as TParentWithSubirImagen).subirImagen &&
+                !field
+              ) {
+                return "La URL es requerida cuando 'Subir imagen' no está seleccionado";
+              }
+              return true;
+            }),
         }),
       ],
       hidden: ({ parent }) => !parent?.usarInspiracion,
@@ -301,6 +356,6 @@ export const slugSchema = defineField({
         return slug.replace(/\s+/g, "-").slice(0, 200).replace("drafts.", "");
       }
       return "acaba de llenar los datos para llenar este campo automaticamente";
-    }
+    },
   },
 });

@@ -1,16 +1,19 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { cn } from "@/app/_lib/utils";
-import Image from "next/image";
 import Link from "next/link";
 import ProductVideo from "./ProductVideo";
 import ImageModal from "./ImageModal";
 import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
+import ImageWrapper from "../listing/_components/ImageWrapper";
 
-export type ProductImage = {
+export type ProductImage = ({
   url: string;
-  alt?: string | null | undefined;
-};
+  alt: string;
+} | {
+  alt: string;
+  sanityUrl: string;
+})
 
 export type ProductVideo = {
   url: string;
@@ -22,18 +25,19 @@ type ProductSlideProps = {
   imageVideoProducts?: {
     imagenOVideo?: boolean | null | undefined;
     imagen?:
-      | {
-          alt: string;
-          url: string;
-        }
-      | null
-      | undefined;
+    ({
+      url: string;
+      alt: string;
+    } | {
+      alt: string;
+      sanityUrl: string;
+    }) | null | undefined;
     video?:
-      | {
-          url: string;
-        }
-      | null
-      | undefined;
+    | {
+      url: string;
+    }
+    | null
+    | undefined;
   }[];
   className?: string;
   isLink?: boolean;
@@ -81,37 +85,36 @@ const ProductSlide = ({
         className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
         onScroll={handleScroll}
         ref={productRef}>
-          { imagesProduct as TImages && (
-          <ImageModal closeImage={()=>setImageOpen(false)} images={imagesProduct as TImages} index={imageIndex} isImageOpen={isImageOpen} />
-          )}
+        {imagesProduct as TImages && (
+          <ImageModal closeImage={() => setImageOpen(false)} images={imagesProduct as ProductImage[]} index={imageIndex} isImageOpen={isImageOpen} />
+        )}
         {imagesProduct &&
           imagesProduct.map((image, index) => (
             <div
-              key={"alt" in image ? `${image.alt}-${index}` : image.url}
+              key={`${image.alt}-${index}`}
               className={cn(
                 `relative h-full w-full`,
-                `snap-center snap-always ${
-                  index === 1 && "snap-mandatory"
+                `snap-center snap-always ${index === 1 && "snap-mandatory"
                 } min-w-full h-full flex-col justify-end items-center gap-2.5 inline-flex`
               )}>
               {isLink ? (
                 <Link href={slug || ""} className="w-full h-full">
-                  <Image
+                  <ImageWrapper
                     alt={image.alt || "product"}
-                    src={image.url}
+                    src={('sanityUrl' in image) ? image.sanityUrl : image.url}
                     width={250}
                     height={250}
                     className={`absolute object-contain h-full w-full object-center`}
                   />
                 </Link>
               ) : (
-                <div onClick={()=>{
+                <div onClick={() => {
                   setImageIndex(index);
                   setImageOpen(true);
                 }} className="w-full h-full cursor-zoom-in">
-                  <Image
+                  <ImageWrapper
                     alt={image.alt || "product"}
-                    src={image.url}
+                    src={('sanityUrl' in image) ? image.sanityUrl : image.url}
                     width={250}
                     height={250}
                     className={`absolute object-contain h-full w-full object-center`}
@@ -127,15 +130,14 @@ const ProductSlide = ({
               key={product.imagen?.alt || "" + index}
               className={cn(
                 `relative h-full w-full`,
-                `snap-center snap-always ${
-                  index === 1 && "snap-mandatory"
+                `snap-center snap-always ${index === 1 && "snap-mandatory"
                 } min-w-full flex-col justify-end items-center gap-2.5 inline-flex`
               )}>
               {product.imagenOVideo ? (
                 <div>
-                  <Image
+                  <ImageWrapper
                     alt={product.imagen?.alt || "product"}
-                    src={product.imagen?.url || ""}
+                    src={product.imagen && ('sanityUrl' in product.imagen) ? product.imagen?.sanityUrl : product.imagen?.url || ""}
                     width={250}
                     height={250}
                     className={`object-contain w-full h-full fit object-center`}
@@ -155,9 +157,8 @@ const ProductSlide = ({
           imagesProduct.map((image, index) => (
             <div
               key={index}
-              className={`w-[9px] h-[9px] rounded-full mix-blend-difference bg-black mx-1.5 cursor-pointer ${
-                index === scrollPosition ? "opacity-80" : "opacity-30"
-              }`}
+              className={`w-[9px] h-[9px] rounded-full mix-blend-difference bg-black mx-1.5 cursor-pointer ${index === scrollPosition ? "opacity-80" : "opacity-30"
+                }`}
               onClick={() => changeScrollPosition(index)}
             />
           ))}
@@ -166,9 +167,8 @@ const ProductSlide = ({
           imageVideoProducts.map((product, index) => (
             <div
               key={index}
-              className={`w-[9px] h-[9px] rounded-full mix-blend-difference bg-white mx-1.5 cursor-pointer ${
-                index === scrollPosition ? "opacity-80" : "opacity-30"
-              }`}
+              className={`w-[9px] h-[9px] rounded-full mix-blend-difference bg-white mx-1.5 cursor-pointer ${index === scrollPosition ? "opacity-80" : "opacity-30"
+                }`}
               onClick={() => changeScrollPosition(index)}
             />
           ))}

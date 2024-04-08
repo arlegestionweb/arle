@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { imageArrayForProducts } from "../../objects/image";
+import { imageArrayForProducts, newImagesArrayForProducts } from "../../objects/image";
 import {
   bannersDeProductoSchema,
   coleccionesDeMarcaSchema,
@@ -10,11 +10,18 @@ import {
 } from "../../objects/products/generales";
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
 import { notasOlfativasProdSchema } from ".";
+import { GiDelicatePerfume } from "react-icons/gi";
+import ImageUrl from "@/sanity/components/ImageUrl";
+
+export type TParentWithSubirImagen = {
+  subirImagen?: boolean;
+}
 
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
   title: "Perfumes de Lujo",
   type: "document",
+  icon: GiDelicatePerfume,
   groups: [
     {
       name: "general",
@@ -46,6 +53,7 @@ export const perfumeLujoSchema = defineType({
       validation: (Rule) => Rule.required(),
     }),
     imageArrayForProducts,
+    // newImagesArrayForProducts,
     mostrarCreditoSchema,
     generoSchema,
     defineField({
@@ -77,10 +85,62 @@ export const perfumeLujoSchema = defineType({
           validation: (Rule) => Rule.required(),
         }),
         defineField({
+          name: "subirImagen",
+          title: "Usar imagen externa?",
+          type: "boolean",
+          initialValue: false,
+        }),
+        defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
-          validation: (Rule) => Rule.required(),
+          hidden: ({ parent }) =>
+            parent && (parent as TParentWithSubirImagen).subirImagen !== false,
+          validation: (Rule) =>
+            Rule.custom((field, context) => {
+              if (
+                (context.parent as TParentWithSubirImagen).subirImagen &&
+                !field
+              ) {
+                return "La imagen es requerida cuando 'Subir imagen' está seleccionado";
+              }
+              return true;
+            }),
+        }),
+        defineField({
+          name: "imagenExterna",
+          description: "Usar imagen de un URL externo",
+          title: "Imagen Externa",
+          type: "object",
+          fields: [
+            defineField({
+              name: "url",
+              title: "URL",
+              type: "url",
+              components: {
+                input: ImageUrl,
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "alt",
+              title: "Texto alternativo",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          hidden: ({ parent }) =>
+            parent && (parent as TParentWithSubirImagen).subirImagen === false,
+          validation: (Rule) =>
+            Rule.custom((field, context) => {
+              if (
+                (context.parent as TParentWithSubirImagen).subirImagen &&
+                !field
+              ) {
+                return "La URL es requerida cuando 'Subir imagen' no está seleccionado";
+              }
+              return true;
+            }),
         }),
       ],
     }),
@@ -94,8 +154,6 @@ export const perfumeLujoSchema = defineType({
       type: "array",
       of: [
         defineArrayMember({
-          name: "ingrediente",
-          title: "Ingrediente",
           type: "reference",
           to: [{ type: "ingrediente" }],
         }),

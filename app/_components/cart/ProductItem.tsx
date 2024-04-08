@@ -7,7 +7,6 @@ import {
   isReloj,
 } from "@/sanity/queries/pages/listingQueries";
 import { getProductById } from "@/sanity/queries/pages/productPage";
-import Image from "next/image";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
 import { IoMdClose } from "react-icons/io";
 import { TCartItem, useCartStore } from "./store";
@@ -18,6 +17,7 @@ import {
   isPerfumePremium,
   isRelojLujo,
 } from "@/sanity/queries/pages/types";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 
 const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, withoutQuantity?: boolean }) => {
   const [product, setProduct] = useState<TProduct | null>(null);
@@ -72,8 +72,8 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
         <IoMdClose className="text-zinc-500 w-4 h-4" />
       </button>
       {image && (
-        <Image
-          src={image?.url}
+        <ImageWrapper
+          src={('sanityUrl' in image) ? image.sanityUrl : image.url}
           alt={image?.alt}
           width={115}
           height={115}

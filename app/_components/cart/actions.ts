@@ -23,13 +23,10 @@ const zodOrderSchemaWithProductReference = zodOrderSchema.merge(
 );
 
 export const createInvoice = async function (_: unknown, formData: FormData) {
-  // console.log(currentState, formData)
 
   if (!formData || !formData.get("reference")) {
     return { error: "No reference provided", status: 400 };
   }
-
-  // console.log("id", formData.get("reference"));
 
   const now = DateTime.now().toISO();
 

@@ -10,7 +10,6 @@ type EmailTemplateProps = {
 export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   order,
 }) => {
-  // console.log("items in email-template", order.items, Array.isArray(order.items))
   DateTime.fromSQL(order.orderDate);
   return (
 

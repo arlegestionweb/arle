@@ -154,8 +154,6 @@ export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
 
-    // console.log(result.perfumes[0].variantes[0].tag)
-    
     const parsedResult = zodListPage.safeParse(result);
 
     if (!parsedResult.success) {
@@ -188,7 +186,7 @@ export const getTimedDiscountByProductId = async (productId: string) => {
     (discount) => new Date(discount.duracion.fin).getTime() > now
   );
 
-  return { discount: activeDiscounts?.[0]};
+  return { discount: activeDiscounts?.[0] };
 };
 
 export const getRecommendedProducts = async () => {
@@ -218,15 +216,11 @@ export const getRecommendedProducts = async () => {
       }  
     }`);
 
-
     const parsedResult = recommendedProductsSchema.safeParse(result);
 
     if (!parsedResult.success) {
       throw new Error(parsedResult.error.message);
     }
-
-
-
 
     return parsedResult.data;
   } catch (error) {

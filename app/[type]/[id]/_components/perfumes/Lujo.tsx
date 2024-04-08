@@ -40,8 +40,8 @@ const PerfumeLujo = ({
       <InfoSection
         titulo="Descripción"
         descripcion={product.descripcion.texto}
-        alt={product.descripcion.imagen.alt}
-        url={product.descripcion.imagen.url}
+        alt={product.descripcion.imagen?.alt || product.descripcion.imagenExterna?.alt}
+        url={product.descripcion.imagen?.url || product.descripcion.imagenExterna?.url}
         className=""
       />
 

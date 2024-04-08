@@ -32,7 +32,6 @@ const Banner = ({ content, className }: BannerProps) => {
       setScrollPosition(index);
     }
   };
-  // console.log({ banners });
 
   return (
     <section

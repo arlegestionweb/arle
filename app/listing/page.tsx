@@ -223,15 +223,6 @@ const Listing = async ({
         .filter((color) => color !== "")
     : [];
 
-  // console.log({
-  //   tiposDeGafasSeleccionadas,
-  //   estilosDeGafasSeleccionadas,
-  //   materialesDeLasMonturasSeleccionadas,
-  //   coloresDeLasMonturasSeleccionados,
-  //   coloresDeLosLentesSeleccionados,
-  //   formasDeLasMonturasSeleccionadas
-  // });
-
   // PERFUME PARAMS
   const tamanosDePerfumeSeleccionados = searchParams.tamanosDePerfume
     ? Array.isArray(searchParams.tamanosDePerfume)
@@ -612,7 +603,6 @@ const Listing = async ({
   const filteredProducts = productos?.filter((producto) =>
     filters.every((filter) => typeof filter === "function" && filter(producto))
   );
-  // console.log({ filteredProducts });
   const newFilteredProducts = filteredProducts;
 
   const marcas = getAllMarcas(filteredProducts);

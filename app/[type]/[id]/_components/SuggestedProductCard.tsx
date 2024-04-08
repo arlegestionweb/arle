@@ -61,21 +61,23 @@ const CardLayout = ({
   selectedVariant: TVariant;
   setSelectedVariant: (variant: TVariant) => void;
 }) => {
+  const firstImage = isPerfume(product) ? product.imagenes[0] : null;
+
 
   return (
     <>
       <section className="w-full h-[150px] overflow-hidden">
         {(isPerfume(product) && product.imagenes.length > 1) ||
-        (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
-        (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
+          (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
+          (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
           <ProductSlide
             slug={product.slug}
             imagesProduct={
               isPerfume(product)
                 ? product.imagenes
                 : "imagenes" in selectedVariant
-                ? selectedVariant.imagenes
-                : []
+                  ? selectedVariant.imagenes
+                  : []
             }
             className="h-full w-full"
           />
@@ -84,17 +86,17 @@ const CardLayout = ({
             <Image
               src={
                 isPerfume(product)
-                  ? product.imagenes[0].url
+                  ? firstImage && ('sanityUrl' in firstImage) ? firstImage.sanityUrl : firstImage?.url || ""
                   : "imagenes" in selectedVariant
-                  ? selectedVariant.imagenes[0].url
-                  : ""
+                    ? selectedVariant.imagenes[0].url
+                    : ""
               }
               alt={
                 isPerfume(product)
-                  ? product.imagenes[0].url
+                  ? product.imagenes[0].alt
                   : isReloj(product)
-                  ? product.variantes[0].imagenes[0].alt!
-                  : (product as TGafa).variantes[0].imagenes[0].alt!
+                    ? product.variantes[0].imagenes[0].alt!
+                    : (product as TGafa).variantes[0].imagenes[0].alt!
               }
               width={200}
               height={200}
@@ -111,12 +113,12 @@ const CardLayout = ({
           </h2>
           <h3 className="text-md md:text-lg md:leading-none font-medium text-gray-700 leading-none">
             {isPerfumePremium(product)
-              ? `${product.parteDeUnSet ? "Set " :""}${product.titulo} - ${product.detalles.concentracion}`
+              ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.detalles.concentracion}`
               : isPerfumeLujo(product)
-              ? `${product.parteDeUnSet ? "Set " :""}${product.titulo} - ${product.concentracion}`
-              : isReloj(product)
-              ? product.modelo
-              : product.modelo}
+                ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.concentracion}`
+                : isReloj(product)
+                  ? product.modelo
+                  : product.modelo}
           </h3>
           {isPerfume(product) && (
             <p className="text-sm leading-none capitalize text-gray-600">

@@ -1,6 +1,5 @@
 "use client";
 import { useRef } from "react";
-// import { useClickOutside } from "../_lib/hooks";
 import Link from "next/link";
 
 
@@ -17,9 +16,6 @@ const Dropdown = ({ options, isOpen, onClose, ignoreRef }: {
   ignoreRef?: React.RefObject<HTMLElement>;
 }) => {
   const dropdownRef = useRef<HTMLUListElement | null>(null);
-
-  // useClickOutside(dropdownRef, onClose)
-
 
   if (!isOpen) return null;
 

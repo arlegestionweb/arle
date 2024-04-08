@@ -8,10 +8,8 @@ import {
 import { useEffect, useState } from "react";
 import { useCartStore } from "./store";
 import { getProductById } from "@/sanity/queries/pages/productPage";
-import Image from "next/image";
 import { IoMdClose } from "react-icons/io";
 import Cantidad from "@/app/[type]/[id]/_components/Cantidad";
-import { FiTrash2 } from "react-icons/fi";
 import Button from "../Button";
 import Precio from "../Precio";
 import { MdOutlinePayments } from "react-icons/md";
@@ -23,6 +21,7 @@ import {
   isRelojLujo,
 } from "@/sanity/queries/pages/types";
 import ArleBasicLogo from "../ArleBasicLogo";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 
 const AddedToCartModal = () => {
   const [product, setProduct] = useState<TProduct | null>(null);
@@ -67,17 +66,17 @@ const AddedToCartModal = () => {
 
   const image =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.variantes[variantIndex].imagenes[0]
       : product.imagenes[0];
 
   const productTitle =
     product._type === "relojesLujo" ||
-    product._type === "relojesPremium" ||
-    product._type === "gafasLujo" ||
-    product._type === "gafasPremium"
+      product._type === "relojesPremium" ||
+      product._type === "gafasLujo" ||
+      product._type === "gafasPremium"
       ? product.modelo
       : product.titulo;
   return (
@@ -86,11 +85,10 @@ const AddedToCartModal = () => {
         onClick={() => {
           toggleAddedToCartModal();
         }}
-        className={`${
-          isAddedToCartModalOpen
-            ? "opacity-100"
-            : "opacity-0 pointer-events-none"
-        } fixed z-[105] top-[0px] left-0 items-end w-screen h-screen bg-black bg-opacity-50 backdrop-blur-sm flex flex-col overflow-hidden`}
+        className={`${isAddedToCartModalOpen
+          ? "opacity-100"
+          : "opacity-0 pointer-events-none"
+          } fixed z-[105] top-[0px] left-0 items-end w-screen h-screen bg-black bg-opacity-50 backdrop-blur-sm flex flex-col overflow-hidden`}
       />
       <section
         className="w-screen pointer-events-none h-screen fixed top-0 left-0 z-[106] 
@@ -108,8 +106,8 @@ const AddedToCartModal = () => {
           </header>
           <section className="flex flex-col sm:flex-row w-full gap-5 items-center sm:items-start justify-between">
             {image && (
-              <Image
-                src={image?.url}
+              <ImageWrapper
+                src={('sanityUrl' in image) ? image.sanityUrl : image.url}
                 alt={image?.alt}
                 width={180}
                 height={180}
@@ -122,16 +120,14 @@ const AddedToCartModal = () => {
               </h2>
               <h3 className="text-md mb-1 md:text-lg md:leading-none font-medium text-gray-700 leading-none">
                 {isPerfumePremium(product)
-                  ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${
-                      product.detalles.concentracion
-                    }`
+                  ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.detalles.concentracion
+                  }`
                   : isPerfumeLujo(product)
-                  ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${
-                      product.concentracion
+                    ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.concentracion
                     }`
-                  : isReloj(product)
-                  ? product.modelo
-                  : product.modelo}
+                    : isReloj(product)
+                      ? product.modelo
+                      : product.modelo}
               </h3>
               {isPerfume(product) && (
                 <p className="text-sm leading-none capitalize text-gray-600">
@@ -173,7 +169,7 @@ const AddedToCartModal = () => {
                       removeItem(itemAddedToCart);
                     }}
                     max={product.variantes[variantIndex].unidadesDisponibles}
-                    // dontUseMin
+                  // dontUseMin
                   />
                 </section>
                 <Precio

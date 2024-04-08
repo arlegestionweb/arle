@@ -16,10 +16,15 @@ type TProductType =
 const contenidoQuery = `
   "contenido": contenido {
     resena,
+    subirImagen,
     "imagen": imagen {
       alt,
-      "url": asset->url,
-  }
+      "url": asset->url
+    },
+    "imagenExterna": imagenExterna {
+      alt,
+      url
+    }
 }`;
 const inspiracionQuery = `inspiracion { 
   usarInspiracion, 
@@ -159,6 +164,7 @@ export const productQuery: Record<TProductType, string> = {
     "date": _createdAt,
     "variantes": variantes[]{
       precio,
+      precioConDescuento,
       "colorTablero": colorTablero -> { 
         nombre, 
         "color": color.hex
@@ -204,7 +210,8 @@ export const productQuery: Record<TProductType, string> = {
       },
     },
     "genero": detallesReloj.genero,
-    coleccionDeMarca
+    coleccionDeMarca,
+    mostrarCredito
   }`,
   perfumeLujo: `{
     "date": _createdAt,
@@ -226,10 +233,12 @@ export const productQuery: Record<TProductType, string> = {
     _id,
     parteDeUnSet,
     "concentracion": concentracion -> nombre,
-    "imagenes": imagenes[]{
-        alt,
-        "url": asset->url,
-      },    
+    "imagenes": imagenes[] {
+      ...,
+      alt, 
+      "sanityUrl": asset->url,
+      url
+    },
     "notasOlfativas": notasOlfativas {
       "notasDeBase": notasDeBase [] -> nombre,
       "notasDeSalida": notasDeSalida [] -> nombre,
@@ -241,10 +250,14 @@ export const productQuery: Record<TProductType, string> = {
     "marca": marca -> titulo,
     "descripcion": descripcion {
       texto,
+      subirImagen,
       "imagen": imagen {
-        ...,
         alt,
-        "url": asset->url,
+        "url": asset->url
+      },
+      "imagenExterna": imagenExterna {
+        alt,
+        url
       }
     },
     "paisDeOrigen": paisDeOrigen -> nombre,
@@ -276,6 +289,7 @@ export const productQuery: Record<TProductType, string> = {
     },
     "marca": marca->titulo,
     "variantes": variantes[]{
+      precioConDescuento,
       tamano,
       tag,
       precio,
@@ -335,8 +349,6 @@ export const productQuery: Record<TProductType, string> = {
         "tipo": tipo -> titulo,
       },
     },
-    "inspiracion": ${inspiracionQuery},    
-    modelo,
     coleccionDeMarca,
     "slug": slug.current,
     "variantes": variantes[] {
@@ -358,6 +370,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       codigoDeReferencia,
       unidadesDisponibles,
+      precioConDescuento,
       precio,
       tag,
       mostrarUnidadesDisponibles
@@ -380,8 +393,9 @@ export const productQuery: Record<TProductType, string> = {
       }
     },
   }`,
-  
+
   gafasPremium: `{
+    mostrarCredito,
     "date": _createdAt,
     _type,
     "marca": marca->titulo,
@@ -406,6 +420,7 @@ export const productQuery: Record<TProductType, string> = {
       codigoDeReferencia,
       unidadesDisponibles,
       precio,
+      precioConDescuento,
       tag,
       mostrarUnidadesDisponibles
     },
@@ -507,14 +522,11 @@ export const getProductsByIds = async (
       const productWithVariants = await sanityClient.fetch(
         `*[_id == "${product._id}"][0]{_id, "variantes": variantes[]{unidadesDisponibles, codigoDeReferencia}}`
       );
-      // console.log({ productWithVariants });
       return productWithVariants;
     })
   );
 
   const parsedResult = zodProductsWithVariants.safeParse(result);
-
-  // console.log({ result, variantes: result[0].variantes[0] });
 
   if (!parsedResult.success) {
     return console.error(parsedResult.error.message);

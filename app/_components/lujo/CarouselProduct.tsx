@@ -1,12 +1,15 @@
 import { cn } from "@/app/_lib/utils";
-import Image from "next/image";
-import React, { useState } from "react";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
+import { useState } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
-type ImageType = {
+type ImageType = ({
   url: string;
-  alt?: string | null | undefined;
-};
+  alt: string;
+} | {
+  alt: string;
+  sanityUrl: string;
+});
 
 type CarouselProductProps = {
   imagesProduct: ImageType[];
@@ -33,10 +36,6 @@ const CarouselProduct = ({
     );
   };
 
-  // const visibleImages = Array.from({ length: 4 }, (_, idx) => {
-  //   const arrayIndex = (startIndex + idx) % imagesProduct.length;
-  //   return imagesProduct[arrayIndex];
-  // });
 
   const visibleImages = Array.from(
     { length: Math.min(4, imagesProduct.length) },
@@ -76,13 +75,13 @@ const CarouselProduct = ({
       >
         {visibleImages.map((img, idx) => (
           <div
-            key={`${img.url}-${idx}`}
+            key={`${('sanityUrl' in img) ? img.sanityUrl : img.url}-${idx}`}
             className="relative min-w-[80px] w-20 h-20 "
             onClick={() => selectImages(img)}
           >
-            <Image
-              src={img.url}
-              alt={img.alt || "perfume"}
+            <ImageWrapper
+              src={('sanityUrl' in img) ? img.sanityUrl : img.url}
+               alt={img.alt || "perfume"}
               width={80}
               height={80}
               className="object-contain w-full h-full cursor-pointer"

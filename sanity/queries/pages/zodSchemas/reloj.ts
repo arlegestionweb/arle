@@ -16,17 +16,21 @@ const zodCajaSchema = z.object({
   cristal: z.string(),
 });
 
-export type TCaja = z.infer<typeof zodCajaSchema>
+export type TCaja = z.infer<typeof zodCajaSchema>;
 
 const detallesRelojSchema = z.object({
   tipoDeReloj: z.string(),
   estiloDeReloj: z.string(),
   resistenciaAlAgua: z.string(),
-  funciones: z.array(
-    z.object({
-      titulo: z.string(),
-      descripcion: z.string().optional().nullable(),
-    })).optional().nullable(),
+  funciones: z
+    .array(
+      z.object({
+        titulo: z.string(),
+        descripcion: z.string().optional().nullable(),
+      })
+    )
+    .optional()
+    .nullable(),
   material: z.string(),
   tipoDeMovimiento: z.string(),
   caja: zodCajaSchema,
@@ -65,26 +69,34 @@ export const relojLujoSchema = z.object({
     tipoDeReloj: z.string(),
     estiloDeReloj: z.string(),
     resistenciaAlAgua: z.string(),
-    funciones: z.array(
-      z.object({
-        titulo: z.string(),
-        descripcion: z.string().optional().nullable(),
-      })
-    ).optional().nullable(),
+    funciones: z
+      .array(
+        z.object({
+          titulo: z.string(),
+          descripcion: z.string().optional().nullable(),
+        })
+      )
+      .optional()
+      .nullable(),
     material: z.string(),
   }),
   variantes: z.array(relojVariantSchema),
   inspiracion: inspiracionSchema,
   modelo: z.string(),
   garantia: garantiaSchema,
-  movimiento: z.object({
-    usarMovimiento: z.boolean().optional().nullable(),
-    tipoDeMovimiento: z.string(),
-    contenido: z.object({
-      descripcion: z.string().optional().nullable(),
-      imagen: imageSchema.optional().nullable(),
-    }).optional().nullable(),
-  }).optional(),
+  movimiento: z
+    .object({
+      usarMovimiento: z.boolean().optional().nullable(),
+      tipoDeMovimiento: z.string(),
+      contenido: z
+        .object({
+          descripcion: z.string().optional().nullable(),
+          imagen: imageSchema.optional().nullable(),
+        })
+        .optional()
+        .nullable(),
+    })
+    .optional(),
   banners: z.array(bannerSchema).optional().nullable(),
   descripcion: z.string().optional().nullable(),
   coleccionDeMarca: coleccionDeMarcaSchema,
@@ -105,4 +117,5 @@ export const relojPremiumSchema = z.object({
   genero: generoSchema,
   slug: z.string(),
   coleccionDeMarca: coleccionDeMarcaSchema,
+  mostrarCredito: z.boolean().optional().nullable(),
 });
