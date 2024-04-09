@@ -44,7 +44,7 @@ const SocialLogo = ({ red }: { red: string }) => {
 const Footer = ({ settings, sedes }: FooterProps) => {
   const pathname = usePathname();
 
-  if (pathname.includes("admin")) return;
+  if (pathname.includes("admin") || pathname.includes("mass-uploads")) return;
   return (
     <section className="lg:fixed ">
       <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-20 xs:px-8 sm:px-14 md:pt-20  text-white bg-arle-blue pointer-events-auto">

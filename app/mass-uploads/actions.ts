@@ -150,15 +150,27 @@ type TProductWithImageUrl = Omit<
   paisDeOrigen: string | { _type: string; _ref: string };
 };
 
-export const saveProductsInSanity = async (
-  products: TProductType[],
-  productType: string
+export const saveProductsInSanityUsingForm = async (
+  formState: {
+    success: boolean;
+    error: string | null;
+  },
+  data: {
+    products: TProductType[];
+    productType: string;
+  }
 ) => {
+  const { products, productType } = data;
+
   if (!isProductType(productType)) {
-    throw new Error(`Invalid product type: ${productType}`);
+    return {
+      success: false,
+      error: `Invalid product type: ${productType}`,
+    };
   }
 
   const productsToSave: TPerfumeLujoWithSanityRefs[] = [];
+
   const newProducts: TSanityProduct[] = products.map((product) => {
     return {
       _type: productType,
@@ -239,7 +251,6 @@ export const saveProductsInSanity = async (
       mostrarCredito: product.mostrarCredito,
     };
   });
-
   const productsParser = z.array(
     zodProducts[productType as keyof typeof zodProducts]
   );
@@ -251,9 +262,14 @@ export const saveProductsInSanity = async (
       errors: parsedProducts.error.errors,
       path: parsedProducts.error.errors[0].path,
     });
-    throw new Error("Invalid products");
+    return {
+      success: false,
+      error: "Invalid products",
+    };
   }
+
   const savingProducts = new Map();
+
   const prepareProductsToSave = async () => {
     let mergedProducts: TPerfumeLujoWithSanityRefs[] = [];
     await Promise.all(
@@ -544,7 +560,6 @@ export const saveProductsInSanity = async (
                 );
 
               if (sanityProd) {
-
                 const updatedProduct = {
                   ...sanityProd,
                   ...newProd,
@@ -563,29 +578,30 @@ export const saveProductsInSanity = async (
                   updatedProduct._id === undefined ||
                   updatedProduct._id === null
                 ) {
-                  throw new Error("The _id property is undefined or null");
+                  return {
+                    success: false,
+                    error: `Invalid product ${newProd._id} ${newProd.titulo} ${newProd.marca}`,
+                  };
                 }
 
                 productsToSave.push({
                   ...updatedProduct,
                   _id: updatedProduct._id,
                 });
-
               } else {
                 const parsedProduct =
                   zodPerfumeLujoSchemaWithSanityRefs.safeParse(newProd);
                 if (!parsedProduct.success) {
-                  throw console.log({
-                    errors: parsedProduct.error.errors,
-                    path: parsedProduct.error.errors[0].path,
-                  });
+                  return {
+                    success: false,
+                    error: `Invalid product ${newProd._id} ${newProd.titulo} ${newProd.marca}`,
+                  };
                 }
-  
+
                 productsToSave.push({
                   ...parsedProduct.data,
                   _id: parsedProduct.data._id,
                 });
-
               }
             } catch (error) {
               return console.log(error);
@@ -647,7 +663,10 @@ export const saveProductsInSanity = async (
         errors: parsedProd.error.errors,
         path: parsedProd.error.errors[0].path,
       });
-      throw new Error("Invalid product");
+      return {
+        success: false,
+        error: `Invalid product ${product._id} ${product.titulo} ${product.marca}`,
+      };
     }
 
     if (parsedProd.data._id && typeof parsedProd.data._id === "string") {
@@ -707,6 +726,10 @@ export const saveProductsInSanity = async (
       }
     }
   }
+  return {
+    success: true,
+    error: null,
+  };
 };
 
 const findSanityProductBycodigoDeReferenciaAndProductType = async (
