@@ -1,11 +1,13 @@
 "use client"
 import { z } from "zod";
-import { saveProductsInSanity } from "../actions";
+import { saveProductsInSanityUsingForm } from "../actions";
 import { arrayMessage, moveEmptyKeyValuesToParent, setNestedProperty, toCamelCase } from "../_helpers";
 import ProductCard from "./ProductCard";
 import { useProductUploadStore } from "./productUploadStore";
 import { useEffect } from "react";
 import { excelData } from "../fileUpload";
+import { useFormState, useFormStatus } from "react-dom";
+import Link from "next/link";
 
 
 const zodSiBoolean = z.string().transform(value => value === 'si');
@@ -71,6 +73,8 @@ export type TProductType = z.infer<typeof productTypes[keyof typeof productTypes
 
 const UploadedData = ({ data, productType }: { data: excelData[]; productType: null | 'perfumeLujo' | 'perfumePremium' | 'relojesPremium' | 'relojesLujo' | 'gafasLujo' | 'gafasPremium' }) => {
   const { addProducts, products: storeProducts } = useProductUploadStore();
+  const [formState, formAction] = useFormState(saveProductsInSanityUsingForm, { error: null, success: false });
+
 
   const keys = data.slice(0, 4).map(row => row.values);
 
@@ -141,9 +145,8 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
     return null;
   }
 
-
   return (
-    <section>
+    <section className="flex flex-col items-center">
       <ul className="flex flex-col gap-2">
         {storeProducts.map((product, index) => (
           <li key={index}>
@@ -151,14 +154,34 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           </li>
         ))}
       </ul>
-      <button className="light-button border border-black mt-4" onClick={() => {
-        saveProductsInSanity(storeProducts, productType)
-      }}>
-        Guardar
-      </button>
+      {!formState.success && (
+        <form action={() => formAction({ products: storeProducts, productType })}>
+          <Submit />
+        </form>
+      )}
+
+      {formState.success && (
+        <>
+          <p className="text-green-600 text-base">Productos guardados con éxito</p>
+          <Link href="/mass-uploads">
+            Volver al inicio
+          </Link>
+        </>
+      )}
+      {formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
     </section>
   )
 }
 
 export default UploadedData;
 
+
+const Submit = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button className="light-button border border-black my-4 px-2">
+      {pending ? "Guardando..." : "Guardar"}
+    </button>
+  )
+}

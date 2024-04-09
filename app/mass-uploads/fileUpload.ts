@@ -75,12 +75,3 @@ export const uploadFile = async (
     fileName: file.name,
   };
 };
-
-// async function saveFile(file: File, documentHash: string) {
-//   const data = await file.arrayBuffer();
-//   const filePath = path.join(__dirname, file.name);
-
-//   fs.appendFileSync(filePath, Buffer.from(data));
-
-//   return filePath; // Return the file path
-// }

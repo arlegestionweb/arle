@@ -6,7 +6,7 @@ import MobileNavBar from "./NavMobile";
 const Navbar = ({marca}: {marca?: string | null}) => {
   const pathname = usePathname()
 
-  if (pathname.includes("admin")) return;
+  if (pathname.includes("admin") || pathname.includes("mass-uploads")) return;
   return (
     <>
       <MobileNavBar marca={marca} className="fixed w-full md:hidden" />
