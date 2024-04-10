@@ -100,9 +100,10 @@ const Filters = ({
           href += `${encodeURIComponent(paramKey)}=${encodeURIComponent(paramValue)}&`;
         });
       });
+      if(key === "sort" || key === "maxPrice" || key === "minPrice" || value === "todas" ) return
       breadCrumbs.push({
         param: key,
-        label: `${value === "reloj" ? "relojes" : value === "premium" ? "excelencia" : value === "lujo" ? "elite" : value === "gafa" ? "gafas" : value === "perfume" ? "perfumes" : value}`,
+        label: `${value === "reloj" ? "relojes" : value === "premium" ? "excelencia" : value === "lujo" ? "elite" : value === "gafa" ? "gafas" : value === "perfume" ? "perfumes" : key === "marcas" ? value : value}`,
         href: href.slice(0, -1), // remove the trailing '&'
       });
     });
