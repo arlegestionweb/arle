@@ -183,11 +183,11 @@ export type TColecciones = z.infer<typeof zodCollectiones>;
 
 const zodListPage = z.object({
   listingContent: z.object({
-    banners: z.array(zodBanner),
-    generalBanners: z.array(zodBanner),
-    perfumesBanners: z.array(zodBanner),
-    gafasBanners: z.array(zodBanner),
-    relojesBanners: z.array(zodBanner),
+    banners: z.array(zodBanner).optional().nullable(),
+    generalBanners: z.array(zodBanner).optional().nullable(),
+    perfumesBanners: z.array(zodBanner).optional().nullable(),
+    gafasBanners: z.array(zodBanner).optional().nullable(),
+    relojesBanners: z.array(zodBanner).optional().nullable(),
   }),
 
   perfumes: z.array(zodPerfumeListingQuery),
