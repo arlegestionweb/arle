@@ -3,7 +3,7 @@ import { z } from "zod";
 import { arrayMessage, moveEmptyKeyValuesToParent, setNestedProperty, toCamelCase } from "../_helpers";
 import ProductCard from "./ProductCard";
 import { useProductUploadStore } from "./productUploadStore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { excelData } from "../fileUpload";
 import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";

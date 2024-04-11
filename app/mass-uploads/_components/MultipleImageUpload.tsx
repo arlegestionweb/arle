@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { saveImageArrayToSanity } from "./saveImageArrayToSanity";
 import { useProductUploadStore } from "./productUploadStore";
-import { TProductType } from "./UploadedData";
+import { TPerfumeDeLujoExcel, TPerfumePremiumExcel } from "./UploadedData";
+
+type TProductType = TPerfumeDeLujoExcel | TPerfumePremiumExcel;
 
 const MultipleImageUpload = ({
   title,
