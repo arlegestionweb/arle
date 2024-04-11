@@ -1,9 +1,9 @@
 "use server";
-import { numberToColombianPriceString } from "./../../utils/helpers";
-import { TProductType } from "./_components/UploadedData";
 import { z } from "zod";
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { nanoid } from "nanoid";
+import { numberToColombianPriceString } from "@/utils/helpers";
+import { TPerfumeDeLujoExcel } from "../_components/UploadedData";
 
 const zodImageUploadSchema = z
   .object({
@@ -150,13 +150,13 @@ type TProductWithImageUrl = Omit<
   paisDeOrigen: string | { _type: string; _ref: string };
 };
 
-export const saveProductsInSanityUsingForm = async (
+export const savePerfumesDeLujoProductsInSanityUsingForm = async (
   formState: {
     success: boolean;
     error: string | null;
   },
   data: {
-    products: TProductType[];
+    products: TPerfumeDeLujoExcel[];
     productType: string;
   }
 ) => {
@@ -714,12 +714,11 @@ export const saveProductsInSanityUsingForm = async (
               ...variante,
               _key: variante._key || `variant-${nanoid()}`,
               precio: variante.precio,
-
               precioConDescuento:
                 variante.precioConDescuento &&
                 numberToColombianPriceString(+variante.precioConDescuento),
-              registroInvima: `${variante.registroInvima}`,
-            };
+                registroInvima: `${variante.registroInvima}`,
+              };
           }),
         });
         savingProducts.delete(_id);

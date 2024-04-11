@@ -1,13 +1,14 @@
 "use client"
 import { z } from "zod";
-import { saveProductsInSanityUsingForm } from "../actions";
 import { arrayMessage, moveEmptyKeyValuesToParent, setNestedProperty, toCamelCase } from "../_helpers";
 import ProductCard from "./ProductCard";
 import { useProductUploadStore } from "./productUploadStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { excelData } from "../fileUpload";
 import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
+import { savePerfumesDeLujoProductsInSanityUsingForm } from "../saveProductActions/savePerfumesLujo";
+import { savePerfumesPremiumInSanityUsingForm } from "../saveProductActions/savePerfumesPremium";
 
 
 const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si');
@@ -58,22 +59,63 @@ const perfumeDeLujoExcelSchema = z.object({
     url: z.string().url(),
     _id: z.string()
   }))),
+  coleccionDeMarca: z.string().optional().nullable(),
 });
+const perfumePremiumExcelSchema = z.object({
+  titulo: z.string(),
+  marca: z.string(),
+  variantes: z.array(z.object({
+    codigoDeReferencia: z.string(),
+    precio: z.number(),
+    precioConDescuento: z.number().optional().nullable(),
+    registroInvima: z.string().or(z.number()),
+    unidadesDisponibles: z.number(),
+    mostrarUnidadesDisponibles: zodSiBoolean,
+    tamano: z.string().or(z.number()),
+    etiqueta: z.string().optional().nullable().transform(etiqueta => ({ tag: etiqueta })),
+  })),
+  coleccionDeMarca: z.string().optional().nullable(),
+  descripcion: z.string(),
+  detalles: z.object({
+    concentracion: z.string(),
+    genero: z.string(),
+    notasOlfativas: z.object({
+      familiaOlfativa: z.string(),
+      notasDeBase: z.array(z.string()),
+      notasDeCorazon: z.array(z.string()),
+      notasDeSalida: z.array(z.string()),
+    }),
+    resenaCorta: z.string(),
+  }),
+  mostrarCredito: zodSiBoolean,
+  parteDeUnSet: zodSiBoolean,
+  imagenes: z.array(z.string().or(z.object({
+    url: z.string().url(),
+    _id: z.string()
+  }))),
+});
+
+
+
 const productTypes = {
   perfumeLujo: perfumeDeLujoExcelSchema,
-  // perfumePremium: perfumeDeLujoExcelSchema,
+  perfumePremium: perfumePremiumExcelSchema,
   // relojesPremium: perfumeDeLujoExcelSchema,
   // relojesLujo: perfumeDeLujoExcelSchema,
   // gafasLujo: perfumeDeLujoExcelSchema,
   // gafasPremium: perfumeDeLujoExcelSchema,
 }
 
-export type TProductType = z.infer<typeof productTypes[keyof typeof productTypes]>;
+// export type TProductType = z.infer<typeof productTypes[keyof typeof productTypes]>;
 
+export type TPerfumeDeLujoExcel = z.infer<typeof perfumeDeLujoExcelSchema>;
+export type TPerfumePremiumExcel = z.infer<typeof perfumePremiumExcelSchema>;
 
 const UploadedData = ({ data, productType }: { data: excelData[]; productType: null | 'perfumeLujo' | 'perfumePremium' | 'relojesPremium' | 'relojesLujo' | 'gafasLujo' | 'gafasPremium' }) => {
   const { addProducts, products: storeProducts } = useProductUploadStore();
-  const [formState, formAction] = useFormState(saveProductsInSanityUsingForm, { error: null, success: false });
+
+  const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesDeLujoProductsInSanityUsingForm, { error: null, success: false });
+  const [perfumePremiumFormState, perfumePremiumFormAction] = useFormState(savePerfumesPremiumInSanityUsingForm, { error: null, success: false });
 
   const keys = data.slice(0, 4).map(row => row.values);
 
@@ -152,21 +194,44 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           </li>
         ))}
       </ul>
-      {!formState.success && (
-        <form action={() => formAction({ products: storeProducts, productType })}>
-          <Submit />
-        </form>
-      )}
-
-      {formState.success && (
+      {productType === 'perfumeLujo' && (
         <>
-          <p className="text-green-600 text-base">Productos guardados con éxito</p>
-          <Link href="/mass-uploads">
-            Volver al inicio
-          </Link>
+          {!perfumeDeLujoFormState.success && (
+            <form action={() => perfumeDeLujoFormAction({ products: storeProducts as TPerfumeDeLujoExcel[], productType })}>
+              <Submit />
+            </form>
+          )}
+
+          {perfumeDeLujoFormState.success && (
+            <>
+              <p className="text-green-600 text-base">Productos guardados con éxito</p>
+              <Link href="/mass-uploads">
+                Volver al inicio
+              </Link>
+            </>
+          )}
+          {perfumeDeLujoFormState.error && <p className="text-red-600 text-base">{perfumeDeLujoFormState.error}</p>}
         </>
       )}
-      {formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
+      {productType === 'perfumePremium' && (
+        <>
+          {!perfumePremiumFormState.success && (
+            <form action={() => perfumePremiumFormAction({ products: storeProducts as TPerfumePremiumExcel[], productType })}>
+              <Submit />
+            </form>
+          )}
+
+          {perfumePremiumFormState.success && (
+            <>
+              <p className="text-green-600 text-base">Productos guardados con éxito</p>
+              <Link href="/mass-uploads">
+                Volver al inicio
+              </Link>
+            </>
+          )}
+          {perfumePremiumFormState.error && <p className="text-red-600 text-base">{perfumePremiumFormState.error}</p>}
+        </>
+      )}
     </section>
   )
 }

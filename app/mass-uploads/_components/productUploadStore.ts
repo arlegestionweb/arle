@@ -1,5 +1,9 @@
 import { create } from "zustand";
-import { TProductType } from "./UploadedData";
+import { TPerfumeDeLujoExcel, TPerfumePremiumExcel } from "./UploadedData";
+
+
+
+type TProductType = TPerfumeDeLujoExcel | TPerfumePremiumExcel;
 
 type TProductUploadState = {
   products: TProductType[];
