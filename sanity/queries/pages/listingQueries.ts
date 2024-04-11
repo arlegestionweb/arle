@@ -108,8 +108,10 @@ export type TColor = z.infer<typeof zodColorSchema>;
 // const zodgafasListingQuery = z.union([gafasLujoSchema, gafasPremiumSchema])
 
 const zodBanner = z.object({
-  titulo: z.string(),
-  descripcion: z.string(),
+  titulo: z.string().optional()
+  .nullable(),
+  descripcion: z.string().optional()
+  .nullable(),
   imagen: z
     .object({
       alt: z.string(),
