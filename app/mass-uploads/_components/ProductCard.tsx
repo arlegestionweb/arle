@@ -15,7 +15,7 @@ const ProductCard = ({ product }: { product: TProductType }) => {
 
   const { updateProduct } = useProductUploadStore();
 
-  
+
 
   return (
     <div className="border border-black p-4 flex justify-between">
@@ -30,7 +30,7 @@ const ProductCard = ({ product }: { product: TProductType }) => {
           {product.variantes.map((variant) => variant.codigoDeReferencia).join(', ')}
         </p>
       </section>
-      
+
       {isPerfumeDeLujo(product) && product.inspiracion && product.inspiracion?.usarInspiracion && product.inspiracion.contenido?.imagen == null ? (
         <SingleImageUpload
           product={product}
@@ -67,13 +67,13 @@ const ProductCard = ({ product }: { product: TProductType }) => {
           onImageUpload={(product, imageUrl) => {
             const newProd = {
               ...product,
-              descripcion: {
+              descripcion: typeof product.descripcion === 'object' && {
                 ...product.descripcion,
                 imagen: {
                   url: imageUrl,
                   alt: `${product.marca}-${product.titulo}`
                 }
-              }
+              },
             };
             updateProduct(newProd);
           }}
