@@ -111,6 +111,8 @@ const productTypes = {
 export type TPerfumeDeLujoExcel = z.infer<typeof perfumeDeLujoExcelSchema>;
 export type TPerfumePremiumExcel = z.infer<typeof perfumePremiumExcelSchema>;
 
+export type TProductType = TPerfumeDeLujoExcel | TPerfumePremiumExcel;
+
 const UploadedData = ({ data, productType }: { data: excelData[]; productType: null | 'perfumeLujo' | 'perfumePremium' | 'relojesPremium' | 'relojesLujo' | 'gafasLujo' | 'gafasPremium' }) => {
   const { addProducts, products: storeProducts } = useProductUploadStore();
 
