@@ -195,7 +195,8 @@ export const homeSchema = defineType({
           type: "array",
           of: [
             imageArrayMemberSchema
-          ]
+          ],
+          validation: (Rule) => Rule.required(),
         }),
       ]
     }),
@@ -221,7 +222,8 @@ export const homeSchema = defineType({
               type: "string",
               validation: (Rule) => Rule.required(),
             })
-          ]
+          ],
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "usarImagen",
