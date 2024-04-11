@@ -15,6 +15,7 @@ const Asesoria = ({content}: PageProps) => {
 					alt={content.imagenAsesoria.imagen.alt}
 					src={content.imagenAsesoria.imagen.url}
 					layout="fill"
+					gradientOff
 					containerclassName="w-full h-[400px] bg-color-bg-surface-1-default self-stretch">
 					</GradientImage>
 				</section>
