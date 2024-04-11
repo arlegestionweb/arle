@@ -74,6 +74,7 @@ const AboutArle = ({ sobre }: AboutArleProps) => {
                   src={banner.url}
                   alt={banner.alt}
                   layout="fill"
+                  gradientOff
                   imageClassName="object-cover object-center"
                   containerclassName={`snap-center snap-always ${
                     index === 1 && "snap-mandatory"
