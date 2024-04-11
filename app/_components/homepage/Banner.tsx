@@ -43,8 +43,8 @@ const Banner = ({ banners, className }: BannerProps) => {
         onScroll={handleScroll}
         ref={bannerRef}>
         {banners.map((banner, index) => (
-          <React.Fragment key={index + banner?.titulo}>
-            {banner.imagen && (
+          banner.imagen &&
+          <React.Fragment key={index + banner?.imagen?.alt}>
               <GradientImage
                 src={banner.imagen.url}
                 alt={banner.imagen.alt}
@@ -59,7 +59,6 @@ const Banner = ({ banners, className }: BannerProps) => {
                   </h2>
                 </div>
               </GradientImage>
-            )}
           </React.Fragment>
         ))}
       </section>
