@@ -1,15 +1,21 @@
-import useFileDrop from "@/app/_components/hooks/useFileDrop";
-import { TProductType } from "./UploadedData";
-import { uploadImages } from "./uploadImages";
+import { TPerfumeDeLujoExcel, TProductType } from "./UploadedData";
 import SingleImageUpload from "./SingleImageUpload";
 import MultipleImageUpload from "./MultipleImageUpload";
 import { useProductUploadStore } from "./productUploadStore";
+
+
+const isPerfumeDeLujo = (product: TProductType): product is TPerfumeDeLujoExcel => {
+  return (product as TPerfumeDeLujoExcel).inspiracion !== undefined;
+};
+
 
 const ProductCard = ({ product }: { product: TProductType }) => {
   // useFileDrop('imageUpload', uploadImages);
 
 
   const { updateProduct } = useProductUploadStore();
+
+  
 
   return (
     <div className="border border-black p-4 flex justify-between">
@@ -24,14 +30,15 @@ const ProductCard = ({ product }: { product: TProductType }) => {
           {product.variantes.map((variant) => variant.codigoDeReferencia).join(', ')}
         </p>
       </section>
-      {product.inspiracion?.usarInspiracion && product.inspiracion.contenido?.imagen == null ? (
+      
+      {isPerfumeDeLujo(product) && product.inspiracion && product.inspiracion?.usarInspiracion && product.inspiracion.contenido?.imagen == null ? (
         <SingleImageUpload
           product={product}
           title="Imagen de la inspiración:"
           onImageUpload={(product, imageUrl) => {
-            const newProd = {
+            const newProd: TPerfumeDeLujoExcel = {
               ...product,
-              inspiracion: {
+              inspiracion: isPerfumeDeLujo(product) ? {
                 ...product.inspiracion,
                 contenido: {
                   imagen: {
@@ -39,21 +46,21 @@ const ProductCard = ({ product }: { product: TProductType }) => {
                     alt: `${product.marca}-${product.titulo}`
                   }
                 }
-              }
+              } : null,
             };
             updateProduct(newProd);
           }
           }
         />
       ) : (
-        product.inspiracion?.contenido?.imagen && (
+        isPerfumeDeLujo(product) && product.inspiracion?.contenido?.imagen && (
           <section>
             <h4 className="font-bold">Imagen de la inspiración </h4>
             <img className="w-[50px] h-[50px]" width={50} height={50} src={product.inspiracion.contenido.imagen.url} alt={product.inspiracion.contenido.imagen.alt} />
           </section>
         )
       )}
-      {!product.descripcion.imagen ? (
+      {isPerfumeDeLujo(product) && !product.descripcion.imagen ? (
         <SingleImageUpload
           product={product}
           title="Imagen de la descripción:"

@@ -11,7 +11,7 @@ import { savePerfumesDeLujoProductsInSanityUsingForm } from "../saveProductActio
 import { savePerfumesPremiumInSanityUsingForm } from "../saveProductActions/savePerfumesPremium";
 
 
-const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si');
+const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si').or(z.boolean());
 
 const perfumeDeLujoExcelSchema = z.object({
   titulo: z.string(),
@@ -44,8 +44,8 @@ const perfumeDeLujoExcelSchema = z.object({
       }),
       resena: z.string().optional().nullable(),
     }).optional().nullable(),
-    usarInspiracion: zodSiBoolean,
-  }),
+    usarInspiracion: zodSiBoolean.optional().nullable(),
+  }).optional().nullable(),
   mostrarCredito: zodSiBoolean,
   notasOlfativas: z.object({
     familiaOlfativa: z.string(),
