@@ -31,7 +31,7 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
       <Link
         href={`/listing`}
         className={`px-2 py-0.5 flex justify-center items-center 
-        ${!selectedMarca && !selectedProducto ? "border border-black pointer-events-none" : ""}`}>
+        ${pathname.includes("listing") && !selectedMarca && !selectedProducto ? "border border-black pointer-events-none" : ""}`}>
           <p className="text-gray-700 font-inter text-sm font-medium hover:text-gray-500">Todos</p>
         </Link>
       {subMenu.map(item => (
