@@ -480,11 +480,11 @@ export const productQueryString: Record<string, string> = {
         "reference": true,
         "options": *[_type == "tipoDeMovimiento"] {"nombre": titulo}
       },
-      "contenido": contenido {
-        descripcion,
-        "imagen": imagen {
-          alt,
-          "url": asset->url,
+      "contenido": {
+        "descripcion": contenido.descripcion,
+        "imagen":  {
+          "alt": contenido.imagen.alt,
+          "url": contenido.imagen.asset->url,
         }
       }
     },
