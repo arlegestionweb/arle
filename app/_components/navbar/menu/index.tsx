@@ -13,8 +13,8 @@ export type TGender = "hombre" | "mujer" | "unisex";
 
 const firstScreenItems: Item[] = [
   { name: "perfume" },
-  { name: "relojes" },
   { name: "gafas" },
+  { name: "relojes" },
 ];
 
 const secondScreenItems: Item[] = [

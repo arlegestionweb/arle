@@ -8,12 +8,12 @@ const subMenu = [
     param: "perfume"
   },
   {
-    title: "Relojes",
-    param: "reloj"
-  },
-  {
     title: "Gafas",
     param: "gafa"
+  },
+  {
+    title: "Relojes",
+    param: "reloj"
   },
 ];
 
@@ -28,6 +28,12 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
   return (
     <section className="bg-gray-100 hidden md:flex mt-[53px] md:h-[36px] px-8 items-center justify-center">
       <section className="py-0 gap-2 -ml-5 w-full h-full flex items-center max-w-screen-xl">
+      <Link
+        href={`/listing`}
+        className={`px-2 py-0.5 flex justify-center items-center 
+        ${!selectedMarca && !selectedProducto ? "border border-black pointer-events-none" : ""}`}>
+          <p className="text-gray-700 font-inter text-sm font-medium hover:text-gray-500">Todos</p>
+        </Link>
       {subMenu.map(item => (
         <Link
         href={`/listing?type=${item.param}`}
