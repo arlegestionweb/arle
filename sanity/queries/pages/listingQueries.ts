@@ -114,7 +114,8 @@ const zodBanner = z.object({
   .nullable(),
   imagen: z
     .object({
-      alt: z.string(),
+      alt: z.string().optional()
+      .nullable(),
       url: z.string(),
     })
     .optional()
