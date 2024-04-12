@@ -11,9 +11,10 @@ type GradientImageProps = {
   containerclassName?: string
   children?: React.ReactNode;
   gradientOff?: boolean;
+  specialOpacity?: number;
 };
 
-function GradientImage({src, alt, layout, height, width, imageClassName, containerclassName, children, gradientOff}: GradientImageProps) {
+function GradientImage({src, alt, layout, height, width, imageClassName, containerclassName, children, gradientOff, specialOpacity}: GradientImageProps) {
   return (
     <div className={`relative h-full w-full ${containerclassName}`}>
       <Image

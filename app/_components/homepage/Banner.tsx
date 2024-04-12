@@ -2,10 +2,11 @@
 import React, { useRef, useState } from "react";
 import GradientImage from "../GradientImage";
 import { cn } from "@/app/_lib/utils";
-import { TBanner } from "@/sanity/queries/pages/listingQueries";
+import { TlistingContent, TBanner } from "@/sanity/queries/pages/listingQueries";
+import { useSearchParams } from "next/navigation";
 
 type BannerProps = {
-  banners: TBanner[];
+  banners: TlistingContent;
   className?: string;
 };
 
@@ -32,6 +33,15 @@ const Banner = ({ banners, className }: BannerProps) => {
     }
   };
 
+  const searchParams = useSearchParams();
+
+
+  const selectedProductType = searchParams.get("type");
+
+  const selectedBanners = selectedProductType === "gafa" ? banners.gafasBanners : selectedProductType === "reloj" ? banners.relojesBanners : selectedProductType === "perfume" ? banners.perfumesBanners : banners.generalBanners
+
+  console.log(selectedProductType);
+
   return (
     <section
       className={cn(
@@ -42,13 +52,14 @@ const Banner = ({ banners, className }: BannerProps) => {
         className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory bg-gray-100"
         onScroll={handleScroll}
         ref={bannerRef}>
-        {banners.map((banner, index) => (
+        {selectedBanners && selectedBanners.map((banner, index) => (
           banner.imagen &&
-          <React.Fragment key={index + banner?.imagen?.alt}>
+          <React.Fragment key={index + banner?.imagen?.url}>
               <GradientImage
                 src={banner.imagen.url}
-                alt={banner.imagen.alt}
+                alt={banner.imagen.alt || ""}
                 layout="fill"
+                gradientOff
                 imageClassName="object-cover object-top w-full h-full"
                 containerclassName={`snap-center snap-always ${
                   index === 1 && "snap-mandatory"
@@ -64,7 +75,7 @@ const Banner = ({ banners, className }: BannerProps) => {
       </section>
 
       <div className="flex absolute z-20 bottom-2 m-auto left-0 right-0 justify-center py-2">
-        {banners.map((banner, index) => (
+        {selectedBanners && selectedBanners.map((banner, index) => (
           <div
             key={index}
             className={`w-2.5 h-2.5 rounded-full mx-1.5 cursor-pointer ${
