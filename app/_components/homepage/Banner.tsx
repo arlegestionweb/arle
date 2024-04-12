@@ -40,8 +40,6 @@ const Banner = ({ banners, className }: BannerProps) => {
 
   const selectedBanners = selectedProductType === "gafa" ? banners.gafasBanners : selectedProductType === "reloj" ? banners.relojesBanners : selectedProductType === "perfume" ? banners.perfumesBanners : banners.generalBanners
 
-  console.log(selectedProductType);
-
   return (
     <section
       className={cn(
