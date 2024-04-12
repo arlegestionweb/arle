@@ -44,6 +44,7 @@ const AboutArle = ({ sobre }: AboutArleProps) => {
           className="h-[500px] w-[500px] absolute z-0 -top-[150px] xs:-top-[200px] md:-top-[45%] left-[30%] sm:left-[45%] md:left-[20%] lg:left-[25%] 2xl:left-[35%]"
           width={500}
           height={500}
+          quality={100}
           src="/ArleEscudoSobreAzul.svg"
           alt="Escudo de Arlé"
         />
