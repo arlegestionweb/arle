@@ -114,7 +114,8 @@ const zodBanner = z.object({
   .nullable(),
   imagen: z
     .object({
-      alt: z.string(),
+      alt: z.string().optional()
+      .nullable(),
       url: z.string(),
     })
     .optional()
@@ -183,14 +184,16 @@ const zodCollectiones = z.array(
 
 export type TColecciones = z.infer<typeof zodCollectiones>;
 
+const listingContent = z.object({
+  banners: z.array(zodBanner).optional().nullable(),
+  generalBanners: z.array(zodBanner),
+  perfumesBanners: z.array(zodBanner).optional().nullable(),
+  gafasBanners: z.array(zodBanner).optional().nullable(),
+  relojesBanners: z.array(zodBanner).optional().nullable(),
+});
+
 const zodListPage = z.object({
-  listingContent: z.object({
-    banners: z.array(zodBanner).optional().nullable(),
-    generalBanners: z.array(zodBanner).optional().nullable(),
-    perfumesBanners: z.array(zodBanner).optional().nullable(),
-    gafasBanners: z.array(zodBanner).optional().nullable(),
-    relojesBanners: z.array(zodBanner).optional().nullable(),
-  }),
+  listingContent,
 
   perfumes: z.array(zodPerfumeListingQuery),
 
@@ -200,6 +203,8 @@ const zodListPage = z.object({
 
   colecciones: zodCollectiones,
 });
+
+export type TlistingContent = z.infer<typeof listingContent>
 
 export const getListingInitialLoadContent = async () => {
   try {

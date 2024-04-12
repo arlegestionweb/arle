@@ -11,6 +11,7 @@ export const listingSchema = defineType({
       name: "generalBanners",
       title: "Banners Generales",
       type: "array",
+      validation: (Rule) => Rule.required(),
       of: [
         defineArrayMember({
           name: "banner",
