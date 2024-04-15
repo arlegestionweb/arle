@@ -218,25 +218,25 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
     <section className="flex flex-col items-center">
       {productType === 'perfumeLujo' && (
         <>
-          <ul className="flex flex-col gap-2">
-            {perfumesLujo.map((product, index) => (
-              <li key={index}>
-                <ProductCard product={product} productType={productType} />
-              </li>
-            ))}
-          </ul>
-          {!perfumeDeLujoFormState.success && (
-            <form action={() => perfumeDeLujoFormAction({ products: perfumesLujo as TPerfumeDeLujoExcel[], productType })}>
-              <Submit />
-            </form>
-          )}
-
-          {perfumeDeLujoFormState.success && (
+          {perfumeDeLujoFormState.success ? (
             <>
               <p className="text-green-600 text-base">Productos guardados con éxito</p>
               <Link href="/mass-uploads">
                 Volver al inicio
               </Link>
+            </>
+          ) : (
+            <>
+              <ul className="flex flex-col gap-2">
+                {perfumesLujo.map((product, index) => (
+                  <li key={index}>
+                    <ProductCard product={product} productType={productType} />
+                  </li>
+                ))}
+              </ul>
+              <form action={() => perfumeDeLujoFormAction({ products: perfumesLujo as TPerfumeDeLujoExcel[], productType })}>
+                <Submit />
+              </form>
             </>
           )}
           {perfumeDeLujoFormState.error && <p className="text-red-600 text-base">{perfumeDeLujoFormState.error}</p>}
@@ -244,49 +244,30 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
       )}
       {productType === 'perfumePremium' && (
         <>
-          <ul className="flex flex-col gap-2">
-            {perfumesPremium.map((product, index) => (
-              <li key={index}>
-                <ProductCard product={product} productType={productType} />
-              </li>
-            ))}
-          </ul>
-          {!perfumeDeLujoFormState.success && (
-            <form action={() => perfumePremiumFormAction({ products: perfumesPremium as TPerfumePremiumExcel[], productType })}>
-              <Submit />
-            </form>
-          )}
-
-          {perfumePremiumFormState.success && (
+          {perfumePremiumFormState.success ? (
             <>
               <p className="text-green-600 text-base">Productos guardados con éxito</p>
               <Link href="/mass-uploads">
                 Volver al inicio
               </Link>
+            </>
+          ) : (
+            <>
+              <ul className="flex flex-col gap-2">
+                {perfumesPremium.map((product, index) => (
+                  <li key={index}>
+                    <ProductCard product={product} productType={productType} />
+                  </li>
+                ))}
+              </ul>
+              <form action={() => perfumePremiumFormAction({ products: perfumesPremium as TPerfumePremiumExcel[], productType })}>
+                <Submit />
+              </form>
             </>
           )}
           {perfumePremiumFormState.error && <p className="text-red-600 text-base">{perfumePremiumFormState.error}</p>}
         </>
       )}
-      {/* {productType === 'perfumePremium' && (
-        <>
-          {!perfumePremiumFormState.success && (
-            <form action={() => perfumePremiumFormAction({ products: perfumesLujo as TPerfumePremiumExcel[], productType })}>
-              <Submit />
-            </form>
-          )}
-
-          {perfumePremiumFormState.success && (
-            <>
-              <p className="text-green-600 text-base">Productos guardados con éxito</p>
-              <Link href="/mass-uploads">
-                Volver al inicio
-              </Link>
-            </>
-          )}
-          {perfumePremiumFormState.error && <p className="text-red-600 text-base">{perfumePremiumFormState.error}</p>}
-        </>
-      )} */}
     </section>
   )
 }
