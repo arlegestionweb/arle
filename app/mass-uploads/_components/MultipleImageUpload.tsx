@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { saveImageArrayToSanity } from "./saveImageArrayToSanity";
-import { useProductUploadStore } from "./productUploadStore";
 import { TProductType } from "./UploadedData";
 
-
+// type Store = {
+//   products: TProductType[];
+//   addProducts: (products: TProductType[]) => void;
+//   updateProduct: (product: TProductType) => void;
+// };
 
 const MultipleImageUpload = ({
   title,
-  product
+  product,
+  store
 }: {
-  title: string
-  product: TProductType
+  title: string;
+  product: TProductType;
+  store: unknown;
 }) => {
   const [images, setImages] = useState<File[]>([]);
 
-  const { updateProduct } = useProductUploadStore();
+  const { updateProduct } = store;
 
   const [formState, formAction] = useFormState(saveImageArrayToSanity, {
     status: "pending",
