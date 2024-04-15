@@ -1,7 +1,7 @@
 import { TPerfumeDeLujoExcel, TProductType, TPerfumePremiumExcel } from "./UploadedData";
 import SingleImageUpload from "./SingleImageUpload";
 import MultipleImageUpload from "./MultipleImageUpload";
-import { usePerfumeLujoUploadStore } from "./productUploadStore";
+import { usePerfumeLujoUploadStore, usePerfumePremiumUploadStore } from "./productUploadStore";
 
 
 // const isPerfumeDeLujo = (product: TProductType): product is TPerfumeDeLujoExcel => {
@@ -16,7 +16,7 @@ const ProductCard = ({ product, productType }: { product: TProductType; productT
   return (
     <>
       {productType === "perfumeLujo" && (<PerfumeLujoCard product={product as TPerfumeDeLujoExcel} />)}
-      {/* {productType === "perfumePremium" && (<PerfumePremiumCard product={product as TPerfumePremiumExcel} />)} */}
+      {productType === "perfumePremium" && (<PerfumePremiumCard product={product as TPerfumePremiumExcel} />)}
     </>
 
   )
@@ -26,9 +26,8 @@ export default ProductCard;
 
 const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
 
-  const perfumeLujoStore = usePerfumeLujoUploadStore()
 
-  const { updateProduct: updatePerfumeLujo } = perfumeLujoStore;
+  const { updateProduct: updatePerfumeLujo } = usePerfumeLujoUploadStore();
   return (
     <div className="border border-black p-4 flex justify-between">
       {/* <p><strong>Código: </strong>{product.variante.codigoDeReferencia}</p> */}
@@ -120,11 +119,9 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
     </div>
   )
 }
-const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
+const PerfumePremiumCard = ({ product }: { product: TPerfumePremiumExcel }) => {
 
-  const perfumeLujoStore = usePerfumeLujoUploadStore()
-
-  const { updateProduct: updatePerfumeLujo } = perfumeLujoStore;
+  const { updateProduct: updatePerfumePremium } = usePerfumePremiumUploadStore();
   return (
     <div className="border border-black p-4 flex justify-between">
       {/* <p><strong>Código: </strong>{product.variante.codigoDeReferencia}</p> */}
@@ -139,60 +136,7 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
         </p>
       </section>
 
-      {product.inspiracion?.usarInspiracion && product.inspiracion.contenido?.imagen == null ? (
-        <SingleImageUpload
-          product={product}
-          title="Imagen de la inspiración:"
-          onImageUpload={(imageUrl) => {
-            const newProd = {
-              ...product,
-              inspiracion: product.inspiracion ? {
-                ...product.inspiracion,
-                contenido: {
-                  imagen: {
-                    url: imageUrl,
-                    alt: `${product.marca}-${product.titulo}`
-                  },
-                  resena: product.inspiracion?.contenido?.resena
-                }
-              } : null,
-            };
-            updatePerfumeLujo(newProd as TPerfumeDeLujoExcel);
-          }
-          }
-        />
-      ) : (
-        product.inspiracion?.contenido?.imagen && (
-          <section>
-            <h4 className="font-bold">Imagen de la inspiración </h4>
-            <img className="w-[50px] h-[50px]" width={50} height={50} src={product.inspiracion.contenido.imagen.url} alt={product.inspiracion.contenido.imagen.alt} />
-          </section>
-        )
-      )}
-      {!product.descripcion.imagen ? (
-        <SingleImageUpload
-          product={product}
-          title="Imagen de la descripción:"
-          onImageUpload={(imageUrl) => {
-            const newProd = {
-              ...product,
-              descripcion: typeof product.descripcion === 'object' ? {
-                ...product.descripcion,
-                imagen: {
-                  url: imageUrl,
-                  alt: `${product.marca}-${product.titulo}`
-                }
-              } : "null",
-            };
-            updatePerfumeLujo(newProd as TPerfumeDeLujoExcel);
-          }}
-        />
-      ) : (
-        <section>
-          <h4 className="font-bold">Imagen de la descripción</h4>
-          <img className="w-[50px] h-[50px]" width={50} height={50} src={typeof product.descripcion.imagen === "string" ? product.descripcion.imagen : product.descripcion.imagen.url} alt={product.titulo} />
-        </section>
-      )}
+
       {product.imagenes.length > 0 ? (
         <section>
           <p><strong>Imagenes del producto: </strong></p>
@@ -210,7 +154,7 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
             ...product,
             imagenes: newImages
           }
-          updatePerfumeLujo(newProd as TPerfumeDeLujoExcel);
+          updatePerfumePremium(newProd as TPerfumePremiumExcel);
         }} />
       )}
     </div>

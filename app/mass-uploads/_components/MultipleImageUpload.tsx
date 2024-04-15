@@ -35,10 +35,6 @@ const MultipleImageUpload = ({
 
   useEffect(() => {
     if (formState.status === "success" && formState.images) {
-      const newProd = {
-        ...product,
-        imagenes: formState.images
-      }
       callback(formState.images);
     }
   }, [formState.status, formState.images]);

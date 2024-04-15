@@ -43,7 +43,7 @@ const zodPerfumeLujoSchemaSanityReady = z.object({
     texto: z.string(),
   }),
   inspiracion: z.object({
-    usarInspiracion: z.boolean(),
+    usarInspiracion: z.boolean().optional().nullable(),
     contenido: z
       .object({
         subirImagen: z.boolean(),
@@ -207,8 +207,8 @@ export const savePerfumesDeLujoProductsInSanityUsingForm = async (
       concentracion: product.concentracion,
       parteDeUnSet: product.parteDeUnSet,
       inspiracion: {
-        usarInspiracion: product.inspiracion.usarInspiracion,
-        contenido: product.inspiracion.contenido
+        usarInspiracion: product.inspiracion?.usarInspiracion,
+        contenido: product.inspiracion?.contenido
           ? {
               subirImagen: true,
               imagen: product.inspiracion.contenido.imagen
@@ -281,6 +281,7 @@ export const savePerfumesDeLujoProductsInSanityUsingForm = async (
           concentracion: product.concentracion,
           inspiracion: {
             ...product.inspiracion,
+            usarInspiracion: product.inspiracion.usarInspiracion || false,
             contenido: {
               ...product.inspiracion.contenido,
               imagen:

@@ -29,7 +29,7 @@ const zodPerfumePremiumSanityReady = z.object({
   titulo: z.string(),
   variantes: z.array(
     z.object({
-      codigoDeReferencia: z.string(),
+      codigoDeReferencia: z.string().or(z.number()),
       precio: z.string().or(z.number()),
       precioConDescuento: z.string().or(z.number()).optional().nullable(),
       registroInvima: z.string().or(z.number()),
@@ -50,7 +50,7 @@ const zodPerfumePremiumSanityReady = z.object({
       notasDeCorazon: z.array(z.string()),
       notasDeSalida: z.array(z.string()),
     }),
-    resenaCorta: z.string(),
+    resenaCorta: z.string().optional().nullable(),
   }),
   mostrarCredito: z.boolean(),
   parteDeUnSet: z.boolean(),
@@ -89,7 +89,7 @@ type TProductWithImageUrl = Omit<
       notasDeSalida: string[] | { _type: string; _ref: string; _key: string }[];
     };
     genero: string;
-    resenaCorta: string;
+    resenaCorta?: string | null | undefined;
   };
 };
 
@@ -531,7 +531,7 @@ export const savePerfumesPremiumInSanityUsingForm = async (
 };
 
 const findSanityProductBycodigoDeReferenciaAndProductType = async (
-  codigoDeReferencia: string,
+  codigoDeReferencia: string | number,
   productType: "perfumeLujo" | "perfumePremium"
 ) => {
   const query = `*[_type == "${productType}"]{...}`;
@@ -563,7 +563,7 @@ const zodPerfumePremiumSchemaWithSanityRefs =
       detalles: z.object({
         concentracion: z.string(),
         genero: z.string(),
-        resenaCorta: z.string(),
+        resenaCorta: z.string().optional().nullable(),
         notasOlfativas: z.object({
           familiaOlfativa: z.object({
             _type: z.literal("reference"),

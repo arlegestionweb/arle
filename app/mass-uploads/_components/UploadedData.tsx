@@ -65,7 +65,7 @@ const perfumePremiumExcelSchema = z.object({
   titulo: z.string(),
   marca: z.string(),
   variantes: z.array(z.object({
-    codigoDeReferencia: zodCodigoDeReferencia,
+    codigoDeReferencia: z.string().or(z.number()),
     precio: z.number(),
     precioConDescuento: z.number().optional().nullable(),
     registroInvima: z.string().or(z.number()),
@@ -187,13 +187,6 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
 
   useEffect(() => {
-<<<<<<< HEAD
-    const zodProds = z.array(productTypes[productType as keyof typeof productTypes]).safeParse(products);
-    if (zodProds.success) {
-      addProducts(zodProds.data);
-=======
-    console.log({ productType })
-
     if (!productType) {
       return;
     }
@@ -212,7 +205,6 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
       }
       // console.log(productType, {zodProds})
       addPerfumesPremium(zodProds.data);
->>>>>>> 18586dc (fixes the upload section to receive perfumes Premium and solves ts errors)
     }
 
   }, [data]);
