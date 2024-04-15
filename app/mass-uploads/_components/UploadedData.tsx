@@ -229,7 +229,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           <ul className="flex flex-col gap-2">
             {perfumesLujo.map((product, index) => (
               <li key={index}>
-                <ProductCard product={product} />
+                <ProductCard product={product} productType={productType} />
               </li>
             ))}
           </ul>
@@ -255,7 +255,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           <ul className="flex flex-col gap-2">
             {perfumesPremium.map((product, index) => (
               <li key={index}>
-                <ProductCard product={product} />
+                <ProductCard product={product} productType={productType} />
               </li>
             ))}
           </ul>
