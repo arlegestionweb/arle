@@ -22,8 +22,8 @@ const Page = async () => {
     <Main extraClasses="md:mt-[53px] ">
       <AboutSubMenu />
       {pageContent?.whyWeDoWhatWeDo?.on &&
-        <section className="flex flex-col md:flex-row items-center ">
-          <section className="h-full flex relative border w-full md:w-[50vw] md:max-w-[50%]">
+        <section className="flex flex-col md:flex-row items-center bg-white">
+          <section className="h-full flex relative w-full md:w-[50vw] md:max-w-[50%]">
             <Image className="w-[45%] max-w-[260px] drop-shadow-[0_0_8px_rgba(0,0,0,100)] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 object-cover" width={400} height={400} alt="Arle-logo-Complete" src="/logo-footer.svg" />
             {pageContent?.whyWeDoWhatWeDo?.imagenOVideo ?
               <video src={pageContent?.whyWeDoWhatWeDo?.video?.url}></video>
