@@ -79,7 +79,7 @@ type TProductWithImageUrl = Omit<
 > & {
   marca: string | { _type: "reference"; _ref: string };
   detalles: {
-    concentracion: string;
+    concentracion: string | { _type: "reference"; _ref: string };
     notasOlfativas: {
       familiaOlfativa: string | { _type: string; _ref: string };
       notasDeBase: (string | { _type: string; _ref: string; _key: string })[];
@@ -221,6 +221,29 @@ export const savePerfumesPremiumInSanityUsingForm = async (
           newProd.marca = {
             _type: "reference",
             _ref: marcaSanity._id,
+          };
+        }
+
+        const concentracionSanity = await sanityClient.fetch(
+          `*[_type == "concentracion" && nombre == "${product.detalles.concentracion}"][0]`
+        );
+
+        if (!concentracionSanity) {
+          const newConcentracion = await sanityWriteClient.create({
+            _type: "concentracion",
+            nombre: product.detalles.concentracion,
+          });
+          if (!newConcentracion) {
+            throw new Error("Failed to create new concentracion");
+          }
+          newProd.detalles.concentracion = {
+            _type: "reference",
+            _ref: newConcentracion._id,
+          };
+        } else {
+          newProd.detalles.concentracion = {
+            _type: "reference",
+            _ref: concentracionSanity._id,
           };
         }
 
@@ -409,11 +432,12 @@ export const savePerfumesPremiumInSanityUsingForm = async (
             mergedProducts = productsToSave.reduce(
               (acc: TPerfumePremiumWithSanityRefs[], product) => {
                 // Check if the product already exists in the accumulator
-                const existingProduct: TPerfumePremiumWithSanityRefs | undefined =
-                  acc.find(
-                    (p: TPerfumePremiumWithSanityRefs) =>
-                      p.titulo === product.titulo && p._type === product._type
-                  );
+                const existingProduct:
+                  | TPerfumePremiumWithSanityRefs
+                  | undefined = acc.find(
+                  (p: TPerfumePremiumWithSanityRefs) =>
+                    p.titulo === product.titulo && p._type === product._type
+                );
 
                 if (existingProduct) {
                   // If the product already exists, merge the variants
@@ -483,11 +507,16 @@ export const savePerfumesPremiumInSanityUsingForm = async (
             return {
               ...variante,
               _key: variante._key || `variant-${nanoid()}`,
-              precio: variante.precio,
-
+              codigoDeReferencia: `${variante.codigoDeReferencia}`,
+              precio:
+                typeof variante.precio === "number"
+                  ? numberToColombianPriceString(variante.precio)
+                  : variante.precio,
               precioConDescuento:
                 variante.precioConDescuento &&
-                numberToColombianPriceString(+variante.precioConDescuento),
+                typeof variante.precioConDescuento === "number"
+                  ? numberToColombianPriceString(variante.precioConDescuento)
+                  : variante.precioConDescuento,
               registroInvima: `${variante.registroInvima}`,
             };
           }),
@@ -511,11 +540,17 @@ export const savePerfumesPremiumInSanityUsingForm = async (
 
             return {
               ...variante,
+              codigoDeReferencia: `${variante.codigoDeReferencia}`,
               _key: variante._key || `variant-${nanoid()}`,
-              precio: variante.precio,
+              precio:
+                typeof variante.precio === "number"
+                  ? numberToColombianPriceString(variante.precio)
+                  : variante.precio,
               precioConDescuento:
                 variante.precioConDescuento &&
-                numberToColombianPriceString(+variante.precioConDescuento),
+                typeof variante.precioConDescuento === "number"
+                  ? numberToColombianPriceString(variante.precioConDescuento)
+                  : variante.precioConDescuento,
               registroInvima: `${variante.registroInvima}`,
             };
           }),
@@ -561,7 +596,10 @@ const zodPerfumePremiumSchemaWithSanityRefs =
 
       descripcion: z.string(),
       detalles: z.object({
-        concentracion: z.string(),
+        concentracion: z.object({
+          _type: z.literal("reference"),
+          _ref: z.string(),
+        }),
         genero: z.string(),
         resenaCorta: z.string().optional().nullable(),
         notasOlfativas: z.object({
@@ -592,7 +630,6 @@ const zodPerfumePremiumSchemaWithSanityRefs =
           ),
         }),
       }),
-    
     })
   );
 

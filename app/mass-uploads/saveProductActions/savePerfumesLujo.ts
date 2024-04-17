@@ -567,6 +567,7 @@ export const savePerfumesDeLujoProductsInSanityUsingForm = async (
                   _id: sanityProd._id,
                   variantes: product.variantes.map((variante, index) => ({
                     ...variante,
+                    codigoDeReferencia: `${variante.codigoDeReferencia}`,
                     _key: `variant-${index}-${nanoid()}`,
                     precio:
                       typeof variante.precio === "number"
@@ -684,12 +685,18 @@ export const savePerfumesDeLujoProductsInSanityUsingForm = async (
           variantes: parsedProd.data.variantes.map((variante) => {
             return {
               ...variante,
+              codigoDeReferencia: `${variante.codigoDeReferencia}`,
               _key: variante._key || `variant-${nanoid()}`,
-              precio: variante.precio,
+              precio:
+                typeof variante.precio === "number"
+                  ? numberToColombianPriceString(variante.precio)
+                  : variante.precio,
 
               precioConDescuento:
                 variante.precioConDescuento &&
-                numberToColombianPriceString(+variante.precioConDescuento),
+                typeof variante.precioConDescuento === "number"
+                  ? numberToColombianPriceString(variante.precioConDescuento)
+                  : variante.precioConDescuento,
               registroInvima: `${variante.registroInvima}`,
             };
           }),
@@ -718,8 +725,8 @@ export const savePerfumesDeLujoProductsInSanityUsingForm = async (
               precioConDescuento:
                 variante.precioConDescuento &&
                 numberToColombianPriceString(+variante.precioConDescuento),
-                registroInvima: `${variante.registroInvima}`,
-              };
+              registroInvima: `${variante.registroInvima}`,
+            };
           }),
         });
         savingProducts.delete(_id);
