@@ -10,7 +10,7 @@ const ValidationForm = () => {
   const [userFormState, formAction] = useFormState(validateUser, { error: null, success: process.env.NODE_ENV === "development" });
 
   if (userFormState.success) {
-    return <div className="fixed top-0 z-[100] bg-white text-black w-screen min-h-screen max-h-[800px] overflow-scroll flex flex-col gap-5 pb-10 px-10">
+    return <div className="fixed top-0 z-[100] bg-white justify-center text-black w-screen min-h-screen max-h-[800px] overflow-scroll flex flex-col gap-5 pb-10 px-10">
       <div className="flex gap-2 items-center flex-col max-w-lg mx-auto text-center">
         <h1 className="text-black text-2xl">Genere un archivo de excel</h1>
         {/* <form action={generateExcelFile}> */}

@@ -7,7 +7,7 @@ import { TProductType } from "./UploadedData";
 const SingleImageUpload = ({ title, product, onImageUpload }: {
   title: string;
   product: TProductType;
-  onImageUpload: (product: TProductType, imageUrl: string) => void;
+  onImageUpload: (imageUrl: string) => void;
 }) => {
   const [image, setImage] = useState<File | null>(null);
 
@@ -19,7 +19,7 @@ const SingleImageUpload = ({ title, product, onImageUpload }: {
 
   useEffect(() => {
     if (formState.status === "success" && formState.image) {
-      onImageUpload(product, formState.image.url);
+      onImageUpload(formState.image.url);
     }
   }, [formState.status, formState.image]);
 

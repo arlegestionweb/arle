@@ -191,7 +191,7 @@ export const inspiracionSchema = defineField({
           name: "resena",
           title: "Reseña",
           type: "text",
-          validation: (Rule) => Rule.required(),
+          // validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "subirImagen",
@@ -229,13 +229,13 @@ export const inspiracionSchema = defineField({
               components: {
                 input: ImageUrl,
               },
-              validation: (Rule) => Rule.required(),
+              // validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: "alt",
               title: "Texto alternativo",
               type: "string",
-              validation: (Rule) => Rule.required(),
+              // validation: (Rule) => Rule.required(),
             }),
           ],
           hidden: ({ parent }) =>

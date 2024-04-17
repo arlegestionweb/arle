@@ -1,19 +1,27 @@
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { saveImageArrayToSanity } from "./saveImageArrayToSanity";
-import { useProductUploadStore } from "./productUploadStore";
 import { TProductType } from "./UploadedData";
+
 
 const MultipleImageUpload = ({
   title,
-  product
+  product,
+  // updateProduct,
+  callback
 }: {
-  title: string
-  product: TProductType
+  title: string;
+  product: TProductType;
+  // updateProduct: (product: TProductType) => void;
+  callback: (newImages: {
+    url: string;
+    _id: string;
+  }[]
+  ) => void;
 }) => {
   const [images, setImages] = useState<File[]>([]);
 
-  const { updateProduct } = useProductUploadStore();
+  // const { updateProduct } = store;
 
   const [formState, formAction] = useFormState(saveImageArrayToSanity, {
     status: "pending",
@@ -27,11 +35,7 @@ const MultipleImageUpload = ({
 
   useEffect(() => {
     if (formState.status === "success" && formState.images) {
-      const newProd = {
-        ...product,
-        imagenes: formState.images
-      }
-      updateProduct(newProd);
+      callback(formState.images);
     }
   }, [formState.status, formState.images]);
 

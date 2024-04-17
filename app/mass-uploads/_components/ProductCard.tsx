@@ -1,16 +1,33 @@
-import useFileDrop from "@/app/_components/hooks/useFileDrop";
-import { TProductType } from "./UploadedData";
-import { uploadImages } from "./uploadImages";
+import { TPerfumeDeLujoExcel, TProductType, TPerfumePremiumExcel } from "./UploadedData";
 import SingleImageUpload from "./SingleImageUpload";
 import MultipleImageUpload from "./MultipleImageUpload";
-import { useProductUploadStore } from "./productUploadStore";
+import { usePerfumeLujoUploadStore, usePerfumePremiumUploadStore } from "./productUploadStore";
 
-const ProductCard = ({ product }: { product: TProductType }) => {
+
+// const isPerfumeDeLujo = (product: TProductType): product is TPerfumeDeLujoExcel => {
+//   return (product as TPerfumeDeLujoExcel).inspiracion !== undefined;
+// };
+
+
+const ProductCard = ({ product, productType }: { product: TProductType; productType: string }) => {
   // useFileDrop('imageUpload', uploadImages);
 
 
-  const { updateProduct } = useProductUploadStore();
+  return (
+    <>
+      {productType === "perfumeLujo" && (<PerfumeLujoCard product={product as TPerfumeDeLujoExcel} />)}
+      {productType === "perfumePremium" && (<PerfumePremiumCard product={product as TPerfumePremiumExcel} />)}
+    </>
 
+  )
+}
+
+export default ProductCard;
+
+const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
+
+
+  const { updateProduct: updatePerfumeLujo } = usePerfumeLujoUploadStore();
   return (
     <div className="border border-black p-4 flex justify-between">
       {/* <p><strong>Código: </strong>{product.variante.codigoDeReferencia}</p> */}
@@ -24,24 +41,26 @@ const ProductCard = ({ product }: { product: TProductType }) => {
           {product.variantes.map((variant) => variant.codigoDeReferencia).join(', ')}
         </p>
       </section>
+
       {product.inspiracion?.usarInspiracion && product.inspiracion.contenido?.imagen == null ? (
         <SingleImageUpload
           product={product}
           title="Imagen de la inspiración:"
-          onImageUpload={(product, imageUrl) => {
+          onImageUpload={(imageUrl) => {
             const newProd = {
               ...product,
-              inspiracion: {
+              inspiracion: product.inspiracion ? {
                 ...product.inspiracion,
                 contenido: {
                   imagen: {
                     url: imageUrl,
                     alt: `${product.marca}-${product.titulo}`
-                  }
+                  },
+                  resena: product.inspiracion?.contenido?.resena
                 }
-              }
+              } : null,
             };
-            updateProduct(newProd);
+            updatePerfumeLujo(newProd as TPerfumeDeLujoExcel);
           }
           }
         />
@@ -57,18 +76,18 @@ const ProductCard = ({ product }: { product: TProductType }) => {
         <SingleImageUpload
           product={product}
           title="Imagen de la descripción:"
-          onImageUpload={(product, imageUrl) => {
+          onImageUpload={(imageUrl) => {
             const newProd = {
               ...product,
-              descripcion: {
+              descripcion: typeof product.descripcion === 'object' ? {
                 ...product.descripcion,
                 imagen: {
                   url: imageUrl,
                   alt: `${product.marca}-${product.titulo}`
                 }
-              }
+              } : "null",
             };
-            updateProduct(newProd);
+            updatePerfumeLujo(newProd as TPerfumeDeLujoExcel);
           }}
         />
       ) : (
@@ -89,10 +108,55 @@ const ProductCard = ({ product }: { product: TProductType }) => {
           </ul>
         </section>
       ) : (
-        <MultipleImageUpload product={product} title="Imágenes del producto" />
+        <MultipleImageUpload product={product} title="Imágenes del producto" callback={(newImages) => {
+          const newProd = {
+            ...product,
+            imagenes: newImages
+          }
+          updatePerfumeLujo(newProd as TPerfumeDeLujoExcel);
+        }} />
       )}
     </div>
   )
 }
+const PerfumePremiumCard = ({ product }: { product: TPerfumePremiumExcel }) => {
 
-export default ProductCard;
+  const { updateProduct: updatePerfumePremium } = usePerfumePremiumUploadStore();
+  return (
+    <div className="border border-black p-4 flex justify-between">
+      {/* <p><strong>Código: </strong>{product.variante.codigoDeReferencia}</p> */}
+      <section className="min-w-300px">
+
+        <p><strong>Marca: </strong>{product.marca}</p>
+        <p><strong>Modelo: </strong>{product.titulo}</p>
+        <p><strong>Variantes: </strong>
+          {product.variantes.map((variant) => variant.tamano).join(', ')}
+          <strong> Codigos De Ref: </strong>
+          {product.variantes.map((variant) => variant.codigoDeReferencia).join(', ')}
+        </p>
+      </section>
+
+
+      {product.imagenes.length > 0 ? (
+        <section>
+          <p><strong>Imagenes del producto: </strong></p>
+          <ul className="flex gap-2">
+            {product.imagenes.map((image, index) => (
+              <li key={index}>
+                <img className="w-[50px] h-[50px]" width={50} height={50} src={typeof image === "string" ? image : image.url} alt={product.titulo} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <MultipleImageUpload product={product} title="Imágenes del producto" callback={(newImages) => {
+          const newProd = {
+            ...product,
+            imagenes: newImages
+          }
+          updatePerfumePremium(newProd as TPerfumePremiumExcel);
+        }} />
+      )}
+    </div>
+  )
+}

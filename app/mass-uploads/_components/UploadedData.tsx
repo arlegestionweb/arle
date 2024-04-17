@@ -1,16 +1,17 @@
 "use client"
 import { z } from "zod";
-import { saveProductsInSanityUsingForm } from "../actions";
 import { arrayMessage, moveEmptyKeyValuesToParent, setNestedProperty, toCamelCase } from "../_helpers";
 import ProductCard from "./ProductCard";
-import { useProductUploadStore } from "./productUploadStore";
+import { usePerfumeLujoUploadStore, usePerfumePremiumUploadStore } from "./productUploadStore";
 import { useEffect } from "react";
 import { excelData } from "../fileUpload";
 import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
+import { savePerfumesDeLujoProductsInSanityUsingForm } from "../saveProductActions/savePerfumesLujo";
+import { savePerfumesPremiumInSanityUsingForm } from "../saveProductActions/savePerfumesPremium";
+import { ZodObject } from 'zod';
 
-
-const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si');
+const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si').or(z.boolean());
 
 const perfumeDeLujoExcelSchema = z.object({
   titulo: z.string(),
@@ -43,8 +44,8 @@ const perfumeDeLujoExcelSchema = z.object({
       }),
       resena: z.string().optional().nullable(),
     }).optional().nullable(),
-    usarInspiracion: zodSiBoolean,
-  }),
+    usarInspiracion: zodSiBoolean.optional().nullable(),
+  }).optional().nullable(),
   mostrarCredito: zodSiBoolean,
   notasOlfativas: z.object({
     familiaOlfativa: z.string(),
@@ -58,22 +59,76 @@ const perfumeDeLujoExcelSchema = z.object({
     url: z.string().url(),
     _id: z.string()
   }))),
+  coleccionDeMarca: z.string().optional().nullable(),
 });
-const productTypes = {
+const perfumePremiumExcelSchema = z.object({
+  titulo: z.string(),
+  marca: z.string(),
+  variantes: z.array(z.object({
+    codigoDeReferencia: z.string().or(z.number()),
+    precio: z.number(),
+    precioConDescuento: z.number().optional().nullable(),
+    registroInvima: z.string().or(z.number()),
+    unidadesDisponibles: z.number(),
+    mostrarUnidadesDisponibles: zodSiBoolean,
+    tamano: z.string().or(z.number()),
+    etiqueta: z.string().optional().nullable().transform(etiqueta => ({ tag: etiqueta })),
+  })),
+  coleccionDeMarca: z.string().optional().nullable(),
+  descripcion: z.string(),
+  detalles: z.object({
+    concentracion: z.string(),
+    genero: z.string(),
+    notasOlfativas: z.object({
+      familiaOlfativa: z.string(),
+      notasDeBase: z.array(z.string()),
+      notasDeCorazon: z.array(z.string()),
+      notasDeSalida: z.array(z.string()),
+    }),
+    resenaCorta: z.string().optional().nullable(),
+  }),
+  mostrarCredito: zodSiBoolean,
+  parteDeUnSet: zodSiBoolean,
+  imagenes: z.array(z.string().or(z.object({
+    url: z.string().url(),
+    _id: z.string()
+  }))),
+});
+
+type ProductType = "perfumeLujo" | "perfumePremium" | "relojesPremium" | "relojesLujo" | "gafasLujo" | "gafasPremium";
+
+type ProductTypes = {
+  [K in ProductType]: ZodObject<any>;
+};
+
+const productTypes: ProductTypes = {
   perfumeLujo: perfumeDeLujoExcelSchema,
-  // perfumePremium: perfumeDeLujoExcelSchema,
-  // relojesPremium: perfumeDeLujoExcelSchema,
-  // relojesLujo: perfumeDeLujoExcelSchema,
-  // gafasLujo: perfumeDeLujoExcelSchema,
-  // gafasPremium: perfumeDeLujoExcelSchema,
+  perfumePremium: perfumePremiumExcelSchema,
+  relojesPremium: perfumeDeLujoExcelSchema,
+  relojesLujo: perfumeDeLujoExcelSchema,
+  gafasLujo: perfumeDeLujoExcelSchema,
+  gafasPremium: perfumeDeLujoExcelSchema,
 }
+// export type TProductType = z.infer<typeof productTypes[keyof typeof productTypes]>;
 
-export type TProductType = z.infer<typeof productTypes[keyof typeof productTypes]>;
+export type TPerfumeDeLujoExcel = z.infer<typeof perfumeDeLujoExcelSchema>;
+export type TPerfumePremiumExcel = z.infer<typeof perfumePremiumExcelSchema>;
 
+export type TProductType = TPerfumeDeLujoExcel | TPerfumePremiumExcel;
 
 const UploadedData = ({ data, productType }: { data: excelData[]; productType: null | 'perfumeLujo' | 'perfumePremium' | 'relojesPremium' | 'relojesLujo' | 'gafasLujo' | 'gafasPremium' }) => {
-  const { addProducts, products: storeProducts } = useProductUploadStore();
-  const [formState, formAction] = useFormState(saveProductsInSanityUsingForm, { error: null, success: false });
+
+
+  const { addProducts: addPerfumesLujo, products: perfumesLujo } = usePerfumeLujoUploadStore()
+  const { addProducts: addPerfumesPremium, products: perfumesPremium } = usePerfumePremiumUploadStore()
+
+  // const updateProduct = useProductUploadStore<TProductType>(state => state.updateProduct);
+  // const storeProducts = useProductUploadStore. getState().products; const addProducts = useProductUploadStore<TProductType>(state => state.addProducts);
+  // console.log({ state: storeProducts })
+
+  // storeProducts.
+  const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesDeLujoProductsInSanityUsingForm, { error: null, success: false });
+  const [perfumePremiumFormState, perfumePremiumFormAction] = useFormState(savePerfumesPremiumInSanityUsingForm, { error: null, success: false });
 
   const keys = data.slice(0, 4).map(row => row.values);
 
@@ -132,12 +187,28 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
 
   useEffect(() => {
-    const zodProds = z.array(productTypes[productType as keyof typeof productTypes]).safeParse(products);
-    if (zodProds.success) {
-      addProducts(zodProds.data);
+    if (!productType) {
+      return;
     }
-  }, [data]);
+    if (productType === "perfumeLujo") {
+      const zodProds = z.array(perfumeDeLujoExcelSchema).safeParse(products);
+      // console.log(productType, {zodProds})
+      if (zodProds.success) {
+        addPerfumesLujo(zodProds.data);
+      }
+    }
+    if (productType === "perfumePremium") {
+      const zodProds = z.array(perfumePremiumExcelSchema).safeParse(products);
+      // console.log(productType, { zodProds })
+      if (!zodProds.success) {
+        return console.log({ errors: zodProds.error })
+      }
+      // console.log(productType, {zodProds})
+      addPerfumesPremium(zodProds.data);
+    }
 
+  }, [data]);
+  // console.log({perfumesPremium})
 
   if (!data || !productType) {
     return null;
@@ -145,28 +216,58 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
   return (
     <section className="flex flex-col items-center">
-      <ul className="flex flex-col gap-2">
-        {storeProducts.map((product, index) => (
-          <li key={index}>
-            <ProductCard product={product} />
-          </li>
-        ))}
-      </ul>
-      {!formState.success && (
-        <form action={() => formAction({ products: storeProducts, productType })}>
-          <Submit />
-        </form>
-      )}
-
-      {formState.success && (
+      {productType === 'perfumeLujo' && (
         <>
-          <p className="text-green-600 text-base">Productos guardados con éxito</p>
-          <Link href="/mass-uploads">
-            Volver al inicio
-          </Link>
+          {perfumeDeLujoFormState.success ? (
+            <>
+              <p className="text-green-600 text-base">Productos guardados con éxito</p>
+              <Link href="/mass-uploads">
+                Volver al inicio
+              </Link>
+            </>
+          ) : (
+            <>
+              <ul className="flex flex-col gap-2">
+                {perfumesLujo.map((product, index) => (
+                  <li key={index}>
+                    <ProductCard product={product} productType={productType} />
+                  </li>
+                ))}
+              </ul>
+              <form action={() => perfumeDeLujoFormAction({ products: perfumesLujo as TPerfumeDeLujoExcel[], productType })}>
+                <Submit />
+              </form>
+            </>
+          )}
+          {perfumeDeLujoFormState.error && <p className="text-red-600 text-base">{perfumeDeLujoFormState.error}</p>}
         </>
       )}
-      {formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
+      {productType === 'perfumePremium' && (
+        <>
+          {perfumePremiumFormState.success ? (
+            <>
+              <p className="text-green-600 text-base">Productos guardados con éxito</p>
+              <Link href="/mass-uploads">
+                Volver al inicio
+              </Link>
+            </>
+          ) : (
+            <>
+              <ul className="flex flex-col gap-2">
+                {perfumesPremium.map((product, index) => (
+                  <li key={index}>
+                    <ProductCard product={product} productType={productType} />
+                  </li>
+                ))}
+              </ul>
+              <form action={() => perfumePremiumFormAction({ products: perfumesPremium as TPerfumePremiumExcel[], productType })}>
+                <Submit />
+              </form>
+            </>
+          )}
+          {perfumePremiumFormState.error && <p className="text-red-600 text-base">{perfumePremiumFormState.error}</p>}
+        </>
+      )}
     </section>
   )
 }

@@ -103,7 +103,7 @@ async function createWorkbook2(docKeys: NestedKey[], file: string) {
         cell.font = { bold: true };
       }
 
-      if (docKey.path[0] === "genero") {
+      if (docKey.path[0] === "genero" || docKey.path[1] === "genero") {
         const options = ["mujer", "hombre", "unisex"];
 
         options.forEach((option, index) => {

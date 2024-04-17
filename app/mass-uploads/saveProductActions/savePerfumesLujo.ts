@@ -1,9 +1,9 @@
 "use server";
-import { numberToColombianPriceString } from "./../../utils/helpers";
-import { TProductType } from "./_components/UploadedData";
 import { z } from "zod";
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { nanoid } from "nanoid";
+import { numberToColombianPriceString } from "@/utils/helpers";
+import { TPerfumeDeLujoExcel } from "../_components/UploadedData";
 
 const zodImageUploadSchema = z
   .object({
@@ -43,7 +43,7 @@ const zodPerfumeLujoSchemaSanityReady = z.object({
     texto: z.string(),
   }),
   inspiracion: z.object({
-    usarInspiracion: z.boolean(),
+    usarInspiracion: z.boolean().optional().nullable(),
     contenido: z
       .object({
         subirImagen: z.boolean(),
@@ -150,13 +150,13 @@ type TProductWithImageUrl = Omit<
   paisDeOrigen: string | { _type: string; _ref: string };
 };
 
-export const saveProductsInSanityUsingForm = async (
+export const savePerfumesDeLujoProductsInSanityUsingForm = async (
   formState: {
     success: boolean;
     error: string | null;
   },
   data: {
-    products: TProductType[];
+    products: TPerfumeDeLujoExcel[];
     productType: string;
   }
 ) => {
@@ -207,8 +207,8 @@ export const saveProductsInSanityUsingForm = async (
       concentracion: product.concentracion,
       parteDeUnSet: product.parteDeUnSet,
       inspiracion: {
-        usarInspiracion: product.inspiracion.usarInspiracion,
-        contenido: product.inspiracion.contenido
+        usarInspiracion: product.inspiracion?.usarInspiracion,
+        contenido: product.inspiracion?.contenido
           ? {
               subirImagen: true,
               imagen: product.inspiracion.contenido.imagen
@@ -281,6 +281,7 @@ export const saveProductsInSanityUsingForm = async (
           concentracion: product.concentracion,
           inspiracion: {
             ...product.inspiracion,
+            usarInspiracion: product.inspiracion.usarInspiracion || false,
             contenido: {
               ...product.inspiracion.contenido,
               imagen:
@@ -566,6 +567,7 @@ export const saveProductsInSanityUsingForm = async (
                   _id: sanityProd._id,
                   variantes: product.variantes.map((variante, index) => ({
                     ...variante,
+                    codigoDeReferencia: `${variante.codigoDeReferencia}`,
                     _key: `variant-${index}-${nanoid()}`,
                     precio:
                       typeof variante.precio === "number"
@@ -683,12 +685,18 @@ export const saveProductsInSanityUsingForm = async (
           variantes: parsedProd.data.variantes.map((variante) => {
             return {
               ...variante,
+              codigoDeReferencia: `${variante.codigoDeReferencia}`,
               _key: variante._key || `variant-${nanoid()}`,
-              precio: variante.precio,
+              precio:
+                typeof variante.precio === "number"
+                  ? numberToColombianPriceString(variante.precio)
+                  : variante.precio,
 
               precioConDescuento:
                 variante.precioConDescuento &&
-                numberToColombianPriceString(+variante.precioConDescuento),
+                typeof variante.precioConDescuento === "number"
+                  ? numberToColombianPriceString(variante.precioConDescuento)
+                  : variante.precioConDescuento,
               registroInvima: `${variante.registroInvima}`,
             };
           }),
@@ -714,7 +722,6 @@ export const saveProductsInSanityUsingForm = async (
               ...variante,
               _key: variante._key || `variant-${nanoid()}`,
               precio: variante.precio,
-
               precioConDescuento:
                 variante.precioConDescuento &&
                 numberToColombianPriceString(+variante.precioConDescuento),
