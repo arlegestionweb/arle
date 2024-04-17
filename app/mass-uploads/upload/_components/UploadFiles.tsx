@@ -30,7 +30,6 @@ const UploadComponent = ({ title, productType }: {
   productType: TProductTypesForUpload;
 }) => {
   const [uploadFormState, uploadFormAction] = useFormState(uploadFile, { error: null, success: false, data: [], fileName: "" });
-
   return (
     <>
       {!uploadFormState.data || uploadFormState.data.length < 1 && (

@@ -69,7 +69,7 @@ const zodPerfumeLujoSchemaSanityReady = z.object({
       tamano: z.number().or(z.string()),
       precio: z.string().or(z.number()),
       precioConDescuento: z.string().or(z.number()).optional().nullable(),
-      codigoDeReferencia: z.string(),
+      codigoDeReferencia: z.string().or(z.number()),
       registroInvima: z.string().or(z.number()),
       unidadesDisponibles: z.number(),
       mostrarUnidadesDisponibles: z.boolean(),
@@ -733,7 +733,7 @@ export const saveProductsInSanityUsingForm = async (
 };
 
 const findSanityProductBycodigoDeReferenciaAndProductType = async (
-  codigoDeReferencia: string,
+  codigoDeReferencia: string | number,
   productType: "perfumeLujo" | "perfumePremium"
 ) => {
   const query = `*[_type == "${productType}"]{...}`;

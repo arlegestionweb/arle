@@ -10,13 +10,13 @@ import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
 
 
-const zodSiBoolean = z.string().transform(value => value === 'si');
+const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si');
 
 const perfumeDeLujoExcelSchema = z.object({
   titulo: z.string(),
   marca: z.string(),
   variantes: z.array(z.object({
-    codigoDeReferencia: z.string(),
+    codigoDeReferencia: z.string().or(z.number()),
     precio: z.number(),
     precioConDescuento: z.number().optional().nullable(),
     registroInvima: z.string().or(z.number()),
@@ -74,7 +74,6 @@ export type TProductType = z.infer<typeof productTypes[keyof typeof productTypes
 const UploadedData = ({ data, productType }: { data: excelData[]; productType: null | 'perfumeLujo' | 'perfumePremium' | 'relojesPremium' | 'relojesLujo' | 'gafasLujo' | 'gafasPremium' }) => {
   const { addProducts, products: storeProducts } = useProductUploadStore();
   const [formState, formAction] = useFormState(saveProductsInSanityUsingForm, { error: null, success: false });
-
 
   const keys = data.slice(0, 4).map(row => row.values);
 
@@ -134,7 +133,6 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
   useEffect(() => {
     const zodProds = z.array(productTypes[productType as keyof typeof productTypes]).safeParse(products);
-
     if (zodProds.success) {
       addProducts(zodProds.data);
     }
