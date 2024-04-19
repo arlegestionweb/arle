@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { TPerfumeDeLujoExcel, TPerfumePremiumExcel } from "./UploadedData";
+import { TGafasLujoExcel, TPerfumeDeLujoExcel, TPerfumePremiumExcel } from "./UploadedData";
 
 
 
@@ -61,3 +61,35 @@ export const usePerfumePremiumUploadStore = create<TPerfumePremiumUploadStore>((
     })
   }))
 }));
+
+
+
+
+type TGafasLujoUploadState = {
+  products: TGafasLujoExcel[];
+};
+
+type TGafasLujoUploadActions = {
+  addProducts: (products: TGafasLujoExcel[]) => void;
+  updateProduct: (product: TGafasLujoExcel) => void;
+};
+
+
+type TGafasLujoUploadStore = TGafasLujoUploadState & TGafasLujoUploadActions;
+
+export const useGafasLujoUploadStore = create<TGafasLujoUploadStore>((set) => ({
+  products: [],
+  addProducts: (products) => set((state) => {
+    const newProducts = products.filter(product => !state.products.some(p => p.modelo === product.modelo && p.marca === product.marca));
+    return ({ products: [...state.products, ...newProducts] });
+  }),
+  updateProduct: (newProduct) => set((state) => ({
+    products: state.products.map((p) => {
+      if (p.marca === newProduct.marca && p.modelo === newProduct.modelo) {
+        return newProduct;
+      }
+      return p;
+    })
+  }))
+}));
+

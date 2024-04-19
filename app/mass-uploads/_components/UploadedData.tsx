@@ -2,15 +2,15 @@
 import { z } from "zod";
 import { arrayMessage, moveEmptyKeyValuesToParent, setNestedProperty, toCamelCase } from "../_helpers";
 import ProductCard from "./ProductCard";
-import { usePerfumeLujoUploadStore, usePerfumePremiumUploadStore } from "./productUploadStore";
+import { useGafasLujoUploadStore, usePerfumeLujoUploadStore, usePerfumePremiumUploadStore } from "./productUploadStore";
 import { useEffect, useState } from "react";
 import { excelData } from "../fileUpload";
 import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
 import { savePerfumesDeLujoProductsInSanityUsingForm } from "../saveProductActions/savePerfumesLujo";
 import { savePerfumesPremiumInSanityUsingForm } from "../saveProductActions/savePerfumesPremium";
-import { ZodObject } from 'zod';
 import { camelToTitleCase } from "@/utils/helpers";
+import { gafasLujoExcelSchema, perfumeDeLujoExcelSchema, perfumePremiumExcelSchema } from "./excelZodSchemas";
 
 const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si').or(z.boolean());
 
@@ -114,25 +114,11 @@ const handleZodValidation = (data: any, schema: z.ZodSchema<any>, setErrors: Rea
   }
 }
 
-type ProductType = "perfumeLujo" | "perfumePremium" | "relojesPremium" | "relojesLujo" | "gafasLujo" | "gafasPremium";
-
-type ProductTypes = {
-  [K in ProductType]: ZodObject<any>;
-};
-
-const productTypes: ProductTypes = {
-  perfumeLujo: perfumeDeLujoExcelSchema,
-  perfumePremium: perfumePremiumExcelSchema,
-  relojesPremium: perfumeDeLujoExcelSchema,
-  relojesLujo: perfumeDeLujoExcelSchema,
-  gafasLujo: perfumeDeLujoExcelSchema,
-  gafasPremium: perfumeDeLujoExcelSchema,
-}
-
 export type TPerfumeDeLujoExcel = z.infer<typeof perfumeDeLujoExcelSchema>;
 export type TPerfumePremiumExcel = z.infer<typeof perfumePremiumExcelSchema>;
+export type TGafasLujoExcel = z.infer<typeof gafasLujoExcelSchema>;
 
-export type TProductType = TPerfumeDeLujoExcel | TPerfumePremiumExcel;
+export type TProductType = TPerfumeDeLujoExcel | TPerfumePremiumExcel | TGafasLujoExcel;
 
 const UploadedData = ({ data, productType }: { data: excelData[]; productType: null | 'perfumeLujo' | 'perfumePremium' | 'relojesPremium' | 'relojesLujo' | 'gafasLujo' | 'gafasPremium' }) => {
 
@@ -140,9 +126,12 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
   const { addProducts: addPerfumesLujo, products: perfumesLujo } = usePerfumeLujoUploadStore()
   const { addProducts: addPerfumesPremium, products: perfumesPremium } = usePerfumePremiumUploadStore()
+  const { addProducts: addGafasLujo, products: gafasLujo } = useGafasLujoUploadStore()
+
 
   const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesDeLujoProductsInSanityUsingForm, { error: null, success: false });
   const [perfumePremiumFormState, perfumePremiumFormAction] = useFormState(savePerfumesPremiumInSanityUsingForm, { error: null, success: false });
+  // const [gafasLujoFormState, gafasLujoFormAction] = useFormState(saveGafasLujoInSanityUsingForm, { error: null, success: false });
 
   const keys = data.slice(0, 4).map(row => row.values);
 
@@ -173,7 +162,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
       const images = ['image-1', 'image-2', 'image-3', 'image-4', 'image-5', 'image-6'].map(key => obj[key]).filter(Boolean);
 
       const existingProduct = acc.find(
-        (p) => p.marca === obj.marca && p.titulo === obj.titulo
+        (p) => p.marca === obj.marca && p.titulo === obj.titulo || p.marca === obj.marca && p.modelo === obj.modelo
       );
 
       if (existingProduct) {
@@ -186,11 +175,19 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
         // Add variant images to existing product
         existingProduct.imagenes = Array.from(new Set([...(existingProduct.imagenes || []), ...images]));
       } else {
-        acc.push({
-          ...obj,
-          variantes: [obj.variante],
-          imagenes: Array.from(new Set(images)),
-        });
+        if (productType?.includes("perfume")) {
+
+          acc.push({
+            ...obj,
+            variantes: [obj.variante],
+            imagenes: Array.from(new Set(images)),
+          });
+        } else {
+          acc.push({
+            ...obj,
+            variantes: [{ ...obj.variante, imagenes: Array.from(new Set(images)) }]
+          })
+        }
       }
     }
 
@@ -214,6 +211,10 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
       if (prods) {
         addPerfumesPremium(prods)
       }
+    }
+    if (productType === "gafasLujo") {
+      const prods = handleZodValidation(products, gafasLujoExcelSchema, setUploadErrors)
+      addGafasLujo(prods)
     }
   }, [data]);
 
@@ -279,6 +280,35 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           {perfumePremiumFormState.error && <p className="text-red-600 text-base">{perfumePremiumFormState.error}</p>}
         </>
       )}
+      {/* {productType === 'gafasLujo' && (
+        <>
+          {gafasLujoFormState.success ? (
+            <>
+              <p className="text-green-600 text-base">Productos guardados con éxito</p>
+              <Link href="/mass-uploads">
+                Volver al inicio
+              </Link>
+            </>
+          ) :
+            !uploadErrors && (
+              <>
+
+                <ul className="flex flex-col gap-2">
+                  {gafasLujo.map((product, index) => (
+                    <li key={index}>
+                      <ProductCard product={product} productType={productType} />
+                    </li>
+                  ))}
+                </ul>
+                <form action={() => gafasLujoFormAction({ products: gafasLujo as TGafasLujoExcel[], productType })}>
+                  <Guardar />
+                </form>
+                {gafasLujoFormState.error && <p className="text-red-600 text-base">{gafasLujoFormState.error}</p>}
+
+              </>
+            )}
+        </>
+      )} */}
       {uploadErrors && uploadErrors.length > 0 && uploadErrors.map((error, i) => <p className="text-red-600 text-base" key={error + i}>{error}</p>)}
     </section>
   )

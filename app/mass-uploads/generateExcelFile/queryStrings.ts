@@ -220,61 +220,61 @@ export const productQueryString: Record<string, string> = {
         }
       }
     },
-    "detalles": detalles {
+    "detalles": {
       "usarDetalles":  {
         "boolean": true,
       },
       "contenido":  {
-        "resena": contenido.resena,
+        "resena": detalles.contenido.resena,
         "imagen":  {
           "alt": contenido.imagen.alt,
           "url": contenido.imagen.asset->url,
         }
       }
     },
-    "monturaDetalles": monturaDetalles {
+    "monturaDetalles":  {
       "usarDetalles":  {
         "boolean": true,
       },
       "contenido":  {
-        "resena": contenido.resena,
+        "resena": monturaDetalles.contenido.resena,
         "imagen":  {
           "alt": contenido.imagen.alt,
           "url": contenido.imagen.asset->url
         }
       }
     },
-    "especificaciones": especificaciones {
+    "especificaciones": {
       ${paisDeOrigen}, 
       queIncluye,
-      "tipoDeGafa": tipoDeGafa -> {
+      "tipoDeGafa": especificaciones.tipoDeGafa -> {
         "nombre": titulo,
         "reference": true,
         "options": *[_type == "tipoDeGafa"] {"nombre": titulo}
       },
-      "estiloDeGafa": estiloDeGafa -> {
+      "estiloDeGafa": especificaciones.estiloDeGafa -> {
         "nombre": titulo,
         "reference": true,
         "options": *[_type == "estiloDeGafa"] {"nombre": titulo}
       },
-      "montura": montura {
+      "montura": especificaciones.montura {
         "formaDeLaMontura": formaDeLaMontura -> {
           "nombre": titulo,
           "reference": true,
           "options": *[_type == "formaDeLaMontura"] {"nombre": titulo}
         },
-        "materialMontura": materialMontura -> {
+        "materialMontura": especificaciones.materialMontura -> {
           "nombre": titulo,
           "reference": true,
           "options": *[_type == "materialDelMarco"] {"nombre": titulo}
         },
-        "materialVarilla": materialVarilla -> {
+        "materialVarilla": especificaciones.materialVarilla -> {
           "nombre": titulo,
           "reference": true,
           "options": *[_type == "materialDeLaVarilla"] {"nombre": titulo}
         },
       },
-      "lente": lente {
+      "lente": especificaciones.lente {
         "material": material -> {
           "nombre": titulo,
           "reference": true,

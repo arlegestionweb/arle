@@ -3,7 +3,7 @@ import { z } from "zod";
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { nanoid } from "nanoid";
 import { numberToColombianPriceString } from "@/utils/helpers";
-import { TPerfumePremiumExcel } from "../_components/UploadedData";
+import { TGafasLujoExcel, TPerfumePremiumExcel } from "../_components/UploadedData";
 
 const zodImageUploadSchema = z
   .object({
@@ -23,50 +23,91 @@ const zodImageUploadSchema = z
     })
   );
 
-const zodPerfumePremiumSanityReady = z.object({
-  _type: z.literal("perfumePremium"),
+const zodGafasLujoSanityReady = z.object({
+  _type: z.literal("gafasLujo"),
   marca: z.string(),
-  titulo: z.string(),
+  modelo: z.string(),
   variantes: z.array(
     z.object({
       codigoDeReferencia: z.string().or(z.number()),
       precio: z.string().or(z.number()),
       precioConDescuento: z.string().or(z.number()).optional().nullable(),
-      registroInvima: z.string().or(z.number()).optional().nullable(),
       unidadesDisponibles: z.number(),
       mostrarUnidadesDisponibles: z.boolean(),
-      tamano: z.number().or(z.string()),
       tag: z.string().optional().nullable(),
       _key: z.string().optional().nullable(),
+      colorDeLaMontura: z.string(),
+      colorDeLaVarilla: z.string(),
+      colorDelLente: z.string(),
+      imagenes: z.array(zodImageUploadSchema),
     })
   ),
   descripcion: z.string(),
   detalles: z.object({
-    concentracion: z.string(),
-    genero: z.string(),
-    notasOlfativas: z.object({
-      familiaOlfativa: z.string(),
-      notasDeBase: z.array(z.string()),
-      notasDeCorazon: z.array(z.string()),
-      notasDeSalida: z.array(z.string()),
-    }),
-    resenaCorta: z.string().optional().nullable(),
+    usarDetalles: z.boolean(),
+    contenido: z
+      .object({
+        imagen: zodImageUploadSchema,
+        resena: z.string(),
+      })
+      .optional()
+      .nullable(),
   }),
+  especificaciones: z.object({
+    estiloDeGafa: z.string(),
+    lente: z.object({
+      material: z.string(),
+      tipo: z.string(),
+    }),
+    montura: z.object({
+      formaDeLaMontura: z.string(),
+      materialDeLaMontura: z.string(),
+      materialDeLaVarilla: z.string(),
+    }),
+    paisDeOrigen: z.string(),
+    queIncluye: z.string(),
+    tipoDeGafa: z.string(),
+  }),
+  garantia: z.object({
+    descripcion: z.string(),
+    meses: z.string().or(z.number()),
+  }),
+  inspiracion: z.object({
+    usarInspiracion: z.boolean(),
+    contenido: z
+      .object({
+        imagen: zodImageUploadSchema,
+        resena: z.string(),
+      })
+      .optional()
+      .nullable(),
+  }),
+  monturaDetalles: z.object({
+    usarDetalles: z.boolean(),
+    contenido: z
+      .object({
+        imagen: zodImageUploadSchema,
+        resena: z.string(),
+      })
+      .optional()
+      .nullable(),
+  }),
+  genero: z.string(),
   mostrarCredito: z.boolean(),
+  codigoDeProducto: z.string().or(z.number()),
   parteDeUnSet: z.boolean(),
-  imagenes: z.array(zodImageUploadSchema),
 });
 
 const zodProducts = {
   // perfumeLujo: zodPerfumeLujoSchemaSanityReady,
-  perfumePremium: zodPerfumePremiumSanityReady,
-  // gafasLujo: zodPerfumeLujoSchemaSanityReady,
+  // perfumePremium: zodPerfumePremiumSanityReady,
+  gafasLujo: zodGafasLujoSanityReady,
   // gafasPremium: zodPerfumeLujoSchemaSanityReady,
   // relojesLujo: zodPerfumeLujoSchemaSanityReady,
   // relojesPremium: zodPerfumeLujoSchemaSanityReady,
 };
 
-type TSanityProduct = z.infer<typeof zodPerfumePremiumSanityReady>;
+type TSanityProduct = z.infer<typeof zodGafasLujoSanityReady>;
 // type TSanityProduct = z.infer<typeof zodPerfumeLujoSchemaSanityReady>;
 
 function isProductType(key: string): key is keyof typeof zodProducts {
@@ -78,28 +119,46 @@ type TProductWithImageUrl = Omit<
   "marca" | "detalles"
 > & {
   marca: string | { _type: "reference"; _ref: string };
-  detalles: {
-    concentracion: string | { _type: "reference"; _ref: string };
-    notasOlfativas: {
-      familiaOlfativa: string | { _type: string; _ref: string };
-      notasDeBase: (string | { _type: string; _ref: string; _key: string })[];
-      notasDeCorazon:
-        | string[]
-        | { _type: string; _ref: string; _key: string }[];
-      notasDeSalida: string[] | { _type: string; _ref: string; _key: string }[];
+  especificaciones: {
+    paisDeOrigen: string | { _type: "reference"; _ref: string };
+    queIncluye: string;
+    tipoDeGafa: string | { _type: "reference"; _ref: string };
+    estiloDeGafa: string | { _type: "reference"; _ref: string };
+    montura: {
+      formaDeLaMontura: string | { _type: "reference"; _ref: string };
+      materialMontura: string | { _type: "reference"; _ref: string };
+      materialVarilla: string | { _type: "reference"; _ref: string };
     };
-    genero: string;
-    resenaCorta?: string | null | undefined;
+    lente: {
+      material: string | { _type: "reference"; _ref: string };
+      tipo: string | { _type: "reference"; _ref: string };
+    };
   };
+  variantes: {
+    codigoDeReferencia: string;
+    precio: string | number;
+    precioConDescuento: string | number | null;
+    unidadesDisponibles: number;
+    mostrarUnidadesDisponibles: boolean;
+    tag: string | null;
+    _key: string | null;
+    colorDeLaMontura: string | { _type: "reference"; _ref: string };
+    colorDeLaVarilla: string | { _type: "reference"; _ref: string };
+    colorDelLente: string | { _type: "reference"; _ref: string };
+    imagenes: (
+      | { _type: "imageUrl"; _key: string; alt: string; url: string }
+      | { _type: "image"; _key: string; alt: string; asset: { _ref: string } }
+    )[];
+  }[];
 };
 
-export const savePerfumesPremiumInSanityUsingForm = async (
+export const saveGafasLujoInSanityUsingForm = async (
   formState: {
     success: boolean;
     error: string | null;
   },
   data: {
-    products: TPerfumePremiumExcel[];
+    products: TGafasLujoExcel[];
     productType: string;
   }
 ) => {
@@ -118,43 +177,37 @@ export const savePerfumesPremiumInSanityUsingForm = async (
     return {
       _type: productType,
       marca: product.marca,
-      titulo: product.titulo,
-      imagenes: product.imagenes.map((img, i) => {
-        if (img && typeof img !== "string" && img._id) {
-          return {
-            _type: "image",
-            _key: `image-${nanoid()}`,
-            asset: {
-              _ref: img._id,
-            },
-            alt: `${product.marca} ${product.titulo} - ${i + 1}`,
-          };
-        } else if (typeof img === "string") {
-          return {
-            _type: "imageUrl",
-            _key: `image-${nanoid()}`,
-            alt: `${product.marca} ${product.titulo} - ${i + 1}`,
-            url: img,
-          };
-        } else {
-          // handle the case where img is undefined or an object without an _id property
-          return {
-            _type: "imageUrl",
-            _key: `image-${nanoid()}`,
-            alt: `${product.marca} ${product.titulo} - ${i + 1}`,
-            url: "", // provide a default value
-          };
-        }
-      }),
-      parteDeUnSet: product.parteDeUnSet,
-      descripcion: product.descripcion,
-      detalles: {
-        concentracion: product.detalles.concentracion,
-        genero: product.detalles.genero,
-        notasOlfativas: product.detalles.notasOlfativas,
-        resenaCorta: product.detalles.resenaCorta,
-      },
-      variantes: product.variantes,
+      modelo: product.modelo,
+      variantes: product.variantes.map(variante => ({
+        ...variante,
+        imagenes: variante.imagenes.map((img, i) => {
+          if (img && typeof img !== "string" && img._id) {
+            return {
+              _type: "image",
+              _key: `image-${nanoid()}`,
+              asset: {
+                _ref: img._id,
+              },
+              alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+            };
+          } else if (typeof img === "string") {
+            return {
+              _type: "imageUrl",
+              _key: `image-${nanoid()}`,
+              alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+              url: img,
+            };
+          } else {
+            // handle the case where img is undefined or an object without an _id property
+            return {
+              _type: "imageUrl",
+              _key: `image-${nanoid()}`,
+              alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+              url: "", // provide a default value
+            };
+          }
+        }),
+      })),
       mostrarCredito: product.mostrarCredito,
     };
   });
