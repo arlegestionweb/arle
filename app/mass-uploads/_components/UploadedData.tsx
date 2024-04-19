@@ -96,7 +96,7 @@ const perfumePremiumExcelSchema = z.object({
   }))),
 });
 
-const handleZodValidation = (data: any, schema: z.ZodSchema<any>, setErrors: React.Dispatch<React.SetStateAction<string[] | null>>, setProds: React.Dispatch<React.SetStateAction<TProductType[]>>) => {
+const handleZodValidation = (data: any, schema: z.ZodSchema<any>, setErrors: React.Dispatch<React.SetStateAction<string[] | null>>) => {
   const zodResult = schema.safeParse(data);
 
   if (!zodResult.success) {
@@ -110,7 +110,7 @@ const handleZodValidation = (data: any, schema: z.ZodSchema<any>, setErrors: Rea
     });
     setErrors(errorMessages);
   } else {
-    setProds(zodResult.data)
+    return zodResult.data
   }
 }
 
@@ -205,10 +205,12 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
       return;
     }
     if (productType === "perfumeLujo") {
-      handleZodValidation(products, perfumeDeLujoExcelSchema, setUploadErrors, addPerfumesLujo)
+      const prods = handleZodValidation(products, perfumeDeLujoExcelSchema, setUploadErrors)
+      addPerfumesLujo(prods)
     }
     if (productType === "perfumePremium") {
-      handleZodValidation(products, perfumePremiumExcelSchema, setUploadErrors, addPerfumesPremium)
+      const prods = handleZodValidation(products, perfumePremiumExcelSchema, setUploadErrors)
+      addPerfumesPremium(prods)
     }
   }, [data]);
 
