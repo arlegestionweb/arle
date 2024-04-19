@@ -18,11 +18,10 @@ export const uploadFile = async (
 ) => {
   console.log("File uploaded");
   const file = formData.get("file") as File;
-
-  if (!file) {
+  if (!file || file.name === "undefined") {
     return {
       success: false,
-      error: "No file was uploaded",
+      error: "Selecciona un archivo para subir",
       data: null,
       fileName: null,
     };
@@ -36,7 +35,7 @@ export const uploadFile = async (
   ) {
     return {
       success: false,
-      error: "The uploaded file is not an Excel file",
+      error: "El archivo no es un archivo de excel",
       data: null,
       fileName: null,
     };
