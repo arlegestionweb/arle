@@ -30,9 +30,10 @@ const UploadComponent = ({ title, productType }: {
   productType: TProductTypesForUpload;
 }) => {
   const [uploadFormState, uploadFormAction] = useFormState(uploadFile, { error: null, success: false, data: [], fileName: "" });
+
   return (
     <>
-      {!uploadFormState.data || uploadFormState.data.length < 1 && (
+      {!uploadFormState.success ? (
         <form
           action={uploadFormAction}
         >
@@ -46,9 +47,14 @@ const UploadComponent = ({ title, productType }: {
             </button>
           </label>
         </form>
+      ) : (
+        <a href="/mass-uploads/upload">subir un archivo diferente</a>
       )}
+
       {uploadFormState.data && uploadFormState.data.length >= 1 && productType && <h2 className="font-semibold">{camelToTitleCase(productType)}</h2>}
       {uploadFormState.data && uploadFormState.data.length >= 1 && <UploadedData data={uploadFormState.data} productType={productType} />}
+      {uploadFormState.error && <p className="text-red-600 text-base">{uploadFormState.error}</p>}
+
     </>
   )
 };

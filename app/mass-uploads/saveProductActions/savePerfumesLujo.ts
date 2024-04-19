@@ -161,7 +161,7 @@ export const savePerfumesDeLujoProductsInSanityUsingForm = async (
   }
 ) => {
   const { products, productType } = data;
-
+  console.log({products, productType})
   if (!isProductType(productType)) {
     return {
       success: false,

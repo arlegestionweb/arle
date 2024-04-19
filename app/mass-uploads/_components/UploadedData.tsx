@@ -3,13 +3,14 @@ import { z } from "zod";
 import { arrayMessage, moveEmptyKeyValuesToParent, setNestedProperty, toCamelCase } from "../_helpers";
 import ProductCard from "./ProductCard";
 import { usePerfumeLujoUploadStore, usePerfumePremiumUploadStore } from "./productUploadStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { excelData } from "../fileUpload";
 import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
 import { savePerfumesDeLujoProductsInSanityUsingForm } from "../saveProductActions/savePerfumesLujo";
 import { savePerfumesPremiumInSanityUsingForm } from "../saveProductActions/savePerfumesPremium";
 import { ZodObject } from 'zod';
+import { camelToTitleCase } from "@/utils/helpers";
 
 const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si').or(z.boolean());
 
@@ -95,6 +96,24 @@ const perfumePremiumExcelSchema = z.object({
   }))),
 });
 
+const handleZodValidation = (data: any, schema: z.ZodSchema<any>, setErrors: React.Dispatch<React.SetStateAction<string[] | null>>) => {
+  const zodResult = schema.safeParse(data);
+
+  if (!zodResult.success) {
+    const errorMessages = zodResult.error.errors.map(err => {
+      const path = err.path
+        .filter((_, index) => index !== 2) // Remove the second '0'
+        .map((part, index) => index === 0 ? Number(part) + 1 : part) // Adjust the product index
+        .join(' > ');
+
+      return `Error en el producto ${camelToTitleCase(path)}: ${err.message}`;
+    });
+    setErrors(errorMessages);
+  } else {
+    return zodResult.data
+  }
+}
+
 type ProductType = "perfumeLujo" | "perfumePremium" | "relojesPremium" | "relojesLujo" | "gafasLujo" | "gafasPremium";
 
 type ProductTypes = {
@@ -109,7 +128,6 @@ const productTypes: ProductTypes = {
   gafasLujo: perfumeDeLujoExcelSchema,
   gafasPremium: perfumeDeLujoExcelSchema,
 }
-// export type TProductType = z.infer<typeof productTypes[keyof typeof productTypes]>;
 
 export type TPerfumeDeLujoExcel = z.infer<typeof perfumeDeLujoExcelSchema>;
 export type TPerfumePremiumExcel = z.infer<typeof perfumePremiumExcelSchema>;
@@ -118,15 +136,11 @@ export type TProductType = TPerfumeDeLujoExcel | TPerfumePremiumExcel;
 
 const UploadedData = ({ data, productType }: { data: excelData[]; productType: null | 'perfumeLujo' | 'perfumePremium' | 'relojesPremium' | 'relojesLujo' | 'gafasLujo' | 'gafasPremium' }) => {
 
+  const [uploadErrors, setUploadErrors] = useState<string[] | null>(null);
 
   const { addProducts: addPerfumesLujo, products: perfumesLujo } = usePerfumeLujoUploadStore()
   const { addProducts: addPerfumesPremium, products: perfumesPremium } = usePerfumePremiumUploadStore()
 
-  // const updateProduct = useProductUploadStore<TProductType>(state => state.updateProduct);
-  // const storeProducts = useProductUploadStore. getState().products; const addProducts = useProductUploadStore<TProductType>(state => state.addProducts);
-  // console.log({ state: storeProducts })
-
-  // storeProducts.
   const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesDeLujoProductsInSanityUsingForm, { error: null, success: false });
   const [perfumePremiumFormState, perfumePremiumFormAction] = useFormState(savePerfumesPremiumInSanityUsingForm, { error: null, success: false });
 
@@ -191,24 +205,14 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
       return;
     }
     if (productType === "perfumeLujo") {
-      const zodProds = z.array(perfumeDeLujoExcelSchema).safeParse(products);
-      // console.log(productType, {zodProds})
-      if (zodProds.success) {
-        addPerfumesLujo(zodProds.data);
-      }
+      const prods = handleZodValidation(products, perfumeDeLujoExcelSchema, setUploadErrors)
+      addPerfumesLujo(prods)
     }
     if (productType === "perfumePremium") {
-      const zodProds = z.array(perfumePremiumExcelSchema).safeParse(products);
-      // console.log(productType, { zodProds })
-      if (!zodProds.success) {
-        return console.log({ errors: zodProds.error })
-      }
-      // console.log(productType, {zodProds})
-      addPerfumesPremium(zodProds.data);
+      const prods = handleZodValidation(products, perfumePremiumExcelSchema, setUploadErrors)
+      addPerfumesPremium(prods)
     }
-
   }, [data]);
-  // console.log({perfumesPremium})
 
   if (!data || !productType) {
     return null;
@@ -216,6 +220,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
   return (
     <section className="flex flex-col items-center">
+      {/* <button onClick={reset} >volver a intentar</button> */}
       {productType === 'perfumeLujo' && (
         <>
           {perfumeDeLujoFormState.success ? (
@@ -225,21 +230,24 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
                 Volver al inicio
               </Link>
             </>
-          ) : (
-            <>
-              <ul className="flex flex-col gap-2">
-                {perfumesLujo.map((product, index) => (
-                  <li key={index}>
-                    <ProductCard product={product} productType={productType} />
-                  </li>
-                ))}
-              </ul>
-              <form action={() => perfumeDeLujoFormAction({ products: perfumesLujo as TPerfumeDeLujoExcel[], productType })}>
-                <Submit />
-              </form>
-            </>
-          )}
-          {perfumeDeLujoFormState.error && <p className="text-red-600 text-base">{perfumeDeLujoFormState.error}</p>}
+          ) :
+            !uploadErrors && (
+              <>
+
+                <ul className="flex flex-col gap-2">
+                  {perfumesLujo.map((product, index) => (
+                    <li key={index}>
+                      <ProductCard product={product} productType={productType} />
+                    </li>
+                  ))}
+                </ul>
+                <form action={() => perfumeDeLujoFormAction({ products: perfumesLujo as TPerfumeDeLujoExcel[], productType })}>
+                  <Guardar />
+                </form>
+                {perfumeDeLujoFormState.error && <p className="text-red-600 text-base">{perfumeDeLujoFormState.error}</p>}
+
+              </>
+            )}
         </>
       )}
       {productType === 'perfumePremium' && (
@@ -261,13 +269,14 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
                 ))}
               </ul>
               <form action={() => perfumePremiumFormAction({ products: perfumesPremium as TPerfumePremiumExcel[], productType })}>
-                <Submit />
+                <Guardar />
               </form>
             </>
           )}
           {perfumePremiumFormState.error && <p className="text-red-600 text-base">{perfumePremiumFormState.error}</p>}
         </>
       )}
+      {uploadErrors && uploadErrors.length > 0 && uploadErrors.map((error, i) => <p className="text-red-600 text-base" key={error + i}>{error}</p>)}
     </section>
   )
 }
@@ -275,7 +284,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 export default UploadedData;
 
 
-const Submit = () => {
+const Guardar = () => {
   const { pending } = useFormStatus();
 
   return (
