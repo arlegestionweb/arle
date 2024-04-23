@@ -158,6 +158,7 @@ async function createWorkbook2(docKeys: NestedKey[], file: string) {
       // If the docKey has the 'reference' flag, add options to the cell
       if (docKey.reference && index === docKey.path.length - 1) {
         // Add the options to the options sheet
+        console.log({docKey})
         docKey.options
           .sort((optionA, optionB) =>
             optionA.nombre.localeCompare(optionB.nombre)

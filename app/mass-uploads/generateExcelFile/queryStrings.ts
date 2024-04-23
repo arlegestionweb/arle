@@ -96,8 +96,8 @@ const mostrarUnidadesDisponibles = `
 `;
 
 const paisDeOrigen = `
-  "paisDeOrigen": paisDeOrigen -> {
-    nombre,
+  "paisDeOrigen": {
+    "nombre": "País de Origen",
     "reference": true,
     "options": *[_type == "paisDeOrigen"] {nombre}
   }
@@ -263,16 +263,19 @@ export const productQueryString: Record<string, string> = {
           "reference": true,
           "options": *[_type == "formaDeLaMontura"] {"nombre": titulo}
         },
-        "materialMontura": especificaciones.materialMontura -> {
-          "nombre": titulo,
+        "materialMontura": {
+          "nombre": "Material de la montura",
           "reference": true,
           "options": *[_type == "materialDelMarco"] {"nombre": titulo}
         },
-        "materialVarilla": especificaciones.materialVarilla -> {
-          "nombre": titulo,
+        "materialVarilla": {
+          "nombre": "Material de la varilla",
           "reference": true,
           "options": *[_type == "materialDeLaVarilla"] {"nombre": titulo}
         },
+        
+      
+       
       },
       "lente": especificaciones.lente {
         "material": material -> {
