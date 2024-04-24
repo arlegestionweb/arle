@@ -11,6 +11,7 @@ import { savePerfumesDeLujoProductsInSanityUsingForm } from "../saveProductActio
 import { savePerfumesPremiumInSanityUsingForm } from "../saveProductActions/savePerfumesPremium";
 import { camelToTitleCase } from "@/utils/helpers";
 import { gafasLujoExcelSchema, perfumeDeLujoExcelSchema, perfumePremiumExcelSchema } from "./excelZodSchemas";
+import { saveGafasLujoInSanityUsingForm } from "../saveProductActions/saveGafasLujo";
 
 const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si').or(z.boolean());
 
@@ -131,7 +132,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
   const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesDeLujoProductsInSanityUsingForm, { error: null, success: false });
   const [perfumePremiumFormState, perfumePremiumFormAction] = useFormState(savePerfumesPremiumInSanityUsingForm, { error: null, success: false });
-  // const [gafasLujoFormState, gafasLujoFormAction] = useFormState(saveGafasLujoInSanityUsingForm, { error: null, success: false });
+  const [gafasLujoFormState, gafasLujoFormAction] = useFormState(saveGafasLujoInSanityUsingForm, { error: null, success: false });
 
   const keys = data.slice(0, 4).map(row => row.values);
 
@@ -213,7 +214,11 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
       }
     }
     if (productType === "gafasLujo") {
+      // console.log("here", products)
       const prods = handleZodValidation(products, gafasLujoExcelSchema, setUploadErrors)
+      if (!prods) {
+        return setUploadErrors(["Error en la validación de los productos, por favor revisa los datos y vuelve a intentar."]);
+      }
       addGafasLujo(prods)
     }
   }, [data]);
@@ -222,6 +227,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
     return null;
   }
 
+  console.log({ gafasLujo })
   return (
     <section className="flex flex-col items-center">
       {/* <button onClick={reset} >volver a intentar</button> */}
@@ -280,7 +286,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           {perfumePremiumFormState.error && <p className="text-red-600 text-base">{perfumePremiumFormState.error}</p>}
         </>
       )}
-      {/* {productType === 'gafasLujo' && (
+      {productType === 'gafasLujo' && (
         <>
           {gafasLujoFormState.success ? (
             <>
@@ -308,7 +314,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
               </>
             )}
         </>
-      )} */}
+      )}
       {uploadErrors && uploadErrors.length > 0 && uploadErrors.map((error, i) => <p className="text-red-600 text-base" key={error + i}>{error}</p>)}
     </section>
   )

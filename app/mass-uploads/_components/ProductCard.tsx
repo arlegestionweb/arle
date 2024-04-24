@@ -1,7 +1,7 @@
-import { TPerfumeDeLujoExcel, TProductType, TPerfumePremiumExcel } from "./UploadedData";
+import { TPerfumeDeLujoExcel, TProductType, TPerfumePremiumExcel, TGafasLujoExcel } from "./UploadedData";
 import SingleImageUpload from "./SingleImageUpload";
 import MultipleImageUpload from "./MultipleImageUpload";
-import { usePerfumeLujoUploadStore, usePerfumePremiumUploadStore } from "./productUploadStore";
+import { useGafasLujoUploadStore, usePerfumeLujoUploadStore, usePerfumePremiumUploadStore } from "./productUploadStore";
 
 
 // const isPerfumeDeLujo = (product: TProductType): product is TPerfumeDeLujoExcel => {
@@ -17,12 +17,59 @@ const ProductCard = ({ product, productType }: { product: TProductType; productT
     <>
       {productType === "perfumeLujo" && (<PerfumeLujoCard product={product as TPerfumeDeLujoExcel} />)}
       {productType === "perfumePremium" && (<PerfumePremiumCard product={product as TPerfumePremiumExcel} />)}
+      {productType === "gafasLujo" && (<GafasLujoCard product={product as TGafasLujoExcel} />)}
     </>
 
   )
 }
 
 export default ProductCard;
+
+
+const GafasLujoCard = ({ product }: { product: TGafasLujoExcel }) => {
+  const { updateProduct: updateGafasLujo } = useGafasLujoUploadStore();
+  return (
+    <section className="border border-black p-4 flex flex-col justify-between">
+      <header>
+        <h2>{product.marca} {product.modelo}</h2>
+      </header>
+      <section>
+        <h3><strong>Variantes: </strong></h3>
+        <ul className="flex flex-col gap-2 w-full">
+          {product.variantes.map((variant) => (
+            <li key={variant.codigoDeReferencia} className="p-1 w-full border border-black">
+              <h4><strong>Codigo de Variante:</strong> {variant.codigoDeReferencia}</h4>
+              {variant.imagenes && variant.imagenes.length > 0 ? (
+                <section>
+                  <p><strong>Imagenes del producto: </strong></p>
+                  <ul className="flex gap-2">
+                    {variant.imagenes.map((image, index) => (
+                      <li key={index}>
+                        <img className="w-[50px] h-[50px]" width={50} height={50} src={typeof image === "string" ? image : image.url} alt={product.modelo} />
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ) : (
+                <MultipleImageUpload product={product} title="Subir imagenes de la variante" callback={(newImages) => {
+                  const newProd = {
+                    ...product,
+                    variantes: product.variantes.map((v) => ({
+                      ...v,
+                      imagenes: newImages
+                    }))
+                  }
+                  updateGafasLujo(newProd as TGafasLujoExcel);
+                }} />
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+    </section>
+  )
+}
 
 const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
 

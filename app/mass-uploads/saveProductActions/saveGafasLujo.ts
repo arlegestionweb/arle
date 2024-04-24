@@ -1,120 +1,123 @@
-// "use server";
-// import { z } from "zod";
-// import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
-// import { nanoid } from "nanoid";
-// import { numberToColombianPriceString } from "@/utils/helpers";
-// import { TGafasLujoExcel, TPerfumePremiumExcel } from "../_components/UploadedData";
+"use server";
+import { z } from "zod";
+import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
+import { nanoid } from "nanoid";
+import { numberToColombianPriceString } from "@/utils/helpers";
+import {
+  TGafasLujoExcel,
+  TPerfumePremiumExcel,
+} from "../_components/UploadedData";
 
-// const zodImageUploadSchema = z
-//   .object({
-//     _type: z.literal("imageUrl"),
-//     _key: z.string().optional().nullable(),
-//     alt: z.string().optional().nullable(),
-//     url: z.string().url(),
-//   })
-//   .or(
-//     z.object({
-//       _type: z.literal("image"),
-//       alt: z.string().optional().nullable(),
-//       _key: z.string().optional().nullable(),
-//       asset: z.object({
-//         _ref: z.string(),
-//       }),
-//     })
-//   );
+const zodImageUploadSchema = z
+  .object({
+    _type: z.literal("imageUrl"),
+    _key: z.string().optional().nullable(),
+    alt: z.string().optional().nullable(),
+    url: z.string().url(),
+  })
+  .or(
+    z.object({
+      _type: z.literal("image"),
+      alt: z.string().optional().nullable(),
+      _key: z.string().optional().nullable(),
+      asset: z.object({
+        _ref: z.string(),
+      }),
+    })
+  );
 
-// const zodGafasLujoSanityReady = z.object({
-//   _type: z.literal("gafasLujo"),
-//   marca: z.string(),
-//   modelo: z.string(),
-//   variantes: z.array(
-//     z.object({
-//       codigoDeReferencia: z.string().or(z.number()),
-//       precio: z.string().or(z.number()),
-//       precioConDescuento: z.string().or(z.number()).optional().nullable(),
-//       unidadesDisponibles: z.number(),
-//       mostrarUnidadesDisponibles: z.boolean(),
-//       tag: z.string().optional().nullable(),
-//       _key: z.string().optional().nullable(),
-//       colorDeLaMontura: z.string(),
-//       colorDeLaVarilla: z.string(),
-//       colorDelLente: z.string(),
-//       imagenes: z.array(zodImageUploadSchema),
-//     })
-//   ),
-//   descripcion: z.string(),
-//   detalles: z.object({
-//     usarDetalles: z.boolean(),
-//     contenido: z
-//       .object({
-//         imagen: zodImageUploadSchema,
-//         resena: z.string(),
-//       })
-//       .optional()
-//       .nullable(),
-//   }),
-//   especificaciones: z.object({
-//     estiloDeGafa: z.string(),
-//     lente: z.object({
-//       material: z.string(),
-//       tipo: z.string(),
-//     }),
-//     montura: z.object({
-//       formaDeLaMontura: z.string(),
-//       materialDeLaMontura: z.string(),
-//       materialDeLaVarilla: z.string(),
-//     }),
-//     paisDeOrigen: z.string(),
-//     queIncluye: z.string(),
-//     tipoDeGafa: z.string(),
-//   }),
-//   garantia: z.object({
-//     descripcion: z.string(),
-//     meses: z.string().or(z.number()),
-//   }),
-//   inspiracion: z.object({
-//     usarInspiracion: z.boolean(),
-//     contenido: z
-//       .object({
-//         imagen: zodImageUploadSchema,
-//         resena: z.string(),
-//       })
-//       .optional()
-//       .nullable(),
-//   }),
-//   monturaDetalles: z.object({
-//     usarDetalles: z.boolean(),
-//     contenido: z
-//       .object({
-//         imagen: zodImageUploadSchema,
-//         resena: z.string(),
-//       })
-//       .optional()
-//       .nullable(),
-//   }),
-//   genero: z.string(),
-//   mostrarCredito: z.boolean(),
-//   codigoDeProducto: z.string().or(z.number()),
-//   parteDeUnSet: z.boolean(),
-// });
+const zodGafasLujoSanityReady = z.object({
+  _type: z.literal("gafasLujo"),
+  marca: z.string(),
+  modelo: z.string(),
+  variantes: z.array(
+    z.object({
+      codigoDeReferencia: z.string().or(z.number()),
+      precio: z.string().or(z.number()),
+      precioConDescuento: z.string().or(z.number()).optional().nullable(),
+      unidadesDisponibles: z.number(),
+      mostrarUnidadesDisponibles: z.boolean(),
+      tag: z.string().optional().nullable(),
+      _key: z.string().optional().nullable(),
+      colorDeLaMontura: z.string(),
+      colorDeLaVarilla: z.string(),
+      colorDelLente: z.string(),
+      imagenes: z.array(zodImageUploadSchema).optional().nullable(),
+    })
+  ),
+  descripcion: z.string(),
+  detalles: z.object({
+    usarDetalles: z.boolean(),
+    contenido: z
+      .object({
+        imagen: zodImageUploadSchema,
+        resena: z.string(),
+      })
+      .optional()
+      .nullable(),
+  }),
+  especificaciones: z.object({
+    estiloDeGafa: z.string(),
+    lente: z.object({
+      material: z.string(),
+      tipo: z.string(),
+    }),
+    montura: z.object({
+      formaDeLaMontura: z.string(),
+      materialDeLaMontura: z.string(),
+      materialDeLaVarilla: z.string(),
+    }),
+    paisDeOrigen: z.string(),
+    queIncluye: z.string(),
+    tipoDeGafa: z.string(),
+  }),
+  garantia: z.object({
+    descripcion: z.string(),
+    meses: z.string().or(z.number()),
+  }),
+  inspiracion: z.object({
+    usarInspiracion: z.boolean(),
+    contenido: z
+      .object({
+        imagen: zodImageUploadSchema,
+        resena: z.string(),
+      })
+      .optional()
+      .nullable(),
+  }),
+  monturaDetalles: z.object({
+    usarDetalles: z.boolean(),
+    contenido: z
+      .object({
+        imagen: zodImageUploadSchema,
+        resena: z.string(),
+      })
+      .optional()
+      .nullable(),
+  }),
+  genero: z.string(),
+  mostrarCredito: z.boolean(),
+  codigoDeProducto: z.string().or(z.number()),
+  parteDeUnSet: z.boolean(),
+});
 
-// const zodProducts = {
-//   // perfumeLujo: zodPerfumeLujoSchemaSanityReady,
-//   // perfumePremium: zodPerfumePremiumSanityReady,
-//   gafasLujo: zodGafasLujoSanityReady,
-//   // gafasPremium: zodPerfumeLujoSchemaSanityReady,
-//   // relojesLujo: zodPerfumeLujoSchemaSanityReady,
-//   // relojesPremium: zodPerfumeLujoSchemaSanityReady,
-// };
+const zodProducts = {
+  // perfumeLujo: zodPerfumeLujoSchemaSanityReady,
+  // perfumePremium: zodPerfumePremiumSanityReady,
+  gafasLujo: zodGafasLujoSanityReady,
+  // gafasPremium: zodPerfumeLujoSchemaSanityReady,
+  // relojesLujo: zodPerfumeLujoSchemaSanityReady,
+  // relojesPremium: zodPerfumeLujoSchemaSanityReady,
+};
 
-// type TSanityProduct = z.infer<typeof zodGafasLujoSanityReady>;
-// // type TSanityProduct = z.infer<typeof zodPerfumeLujoSchemaSanityReady>;
+type TSanityProduct = z.infer<typeof zodGafasLujoSanityReady>;
+// type TSanityProduct = z.infer<typeof zodPerfumeLujoSchemaSanityReady>;
 
-// function isProductType(key: string): key is keyof typeof zodProducts {
-//   return key in zodProducts;
-// }
+function isProductType(key: string): key is keyof typeof zodProducts {
+  return key in zodProducts;
+}
 // type TProductWithImageUrl = Omit<
-//   TPerfumePremiumWithSanityRefs,
+//   // TPerfumePremiumWithSanityRefs,
 //   // | "imagenes"
 //   "marca" | "detalles"
 // > & {
@@ -135,7 +138,7 @@
 //     };
 //   };
 //   variantes: {
-//     codigoDeReferencia: string;
+//     codigoDeReferencia: string | number;
 //     precio: string | number;
 //     precioConDescuento: string | number | null;
 //     unidadesDisponibles: number;
@@ -152,490 +155,459 @@
 //   }[];
 // };
 
-// export const saveGafasLujoInSanityUsingForm = async (
-//   formState: {
-//     success: boolean;
-//     error: string | null;
-//   },
-//   data: {
-//     products: TGafasLujoExcel[];
-//     productType: string;
-//   }
-// ) => {
-//   const { products, productType } = data;
+export const saveGafasLujoInSanityUsingForm = async (
+  formState: {
+    success: boolean;
+    error: string | null;
+  },
+  data: {
+    products: TGafasLujoExcel[];
+    productType: string;
+  }
+) => {
+  const { products, productType } = data;
 
-//   if (!isProductType(productType)) {
-//     return {
-//       success: false,
-//       error: `Invalid product type: ${productType}`,
-//     };
-//   }
+  if (!isProductType(productType)) {
+    return {
+      success: false,
+      error: `Invalid product type: ${productType}`,
+    };
+  }
 
-//   const productsToSave: TPerfumePremiumWithSanityRefs[] = [];
+  // const productsToSave: TPerfumePremiumWithSanityRefs[] = [];
 
-//   const newProducts: TSanityProduct[] = products.map((product) => {
-//     return {
-//       _type: productType,
-//       marca: product.marca,
-//       modelo: product.modelo,
-//       variantes: product.variantes.map(variante => ({
-//         ...variante,
-//         imagenes: variante.imagenes.map((img, i) => {
-//           if (img && typeof img !== "string" && img._id) {
-//             return {
-//               _type: "image",
-//               _key: `image-${nanoid()}`,
-//               asset: {
-//                 _ref: img._id,
-//               },
-//               alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-//             };
-//           } else if (typeof img === "string") {
-//             return {
-//               _type: "imageUrl",
-//               _key: `image-${nanoid()}`,
-//               alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-//               url: img,
-//             };
-//           } else {
-//             // handle the case where img is undefined or an object without an _id property
-//             return {
-//               _type: "imageUrl",
-//               _key: `image-${nanoid()}`,
-//               alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-//               url: "", // provide a default value
-//             };
-//           }
-//         }),
-//       })),
-//       mostrarCredito: product.mostrarCredito,
-//     };
-//   });
-//   const productsParser = z.array(
-//     zodProducts[productType as keyof typeof zodProducts]
-//   );
+  // const newProducts: TSanityProduct[] = products.map((product) => {
+  //   return {
+  //     _type: productType,
+  //     marca: product.marca,
+  //     modelo: product.modelo,
+  //     variantes: product.variantes.map((variante) => ({
+  //       ...variante,
+  //       imagenes: variante.imagenes?.map((img, i) => {
+  //         if (img && typeof img !== "string" && img._id) {
+  //           return {
+  //             _type: "image",
+  //             _key: `image-${nanoid()}`,
+  //             asset: {
+  //               _ref: img._id,
+  //             },
+  //             alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+  //           };
+  //         } else if (typeof img === "string") {
+  //           return {
+  //             _type: "imageUrl",
+  //             _key: `image-${nanoid()}`,
+  //             alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+  //             url: img,
+  //           };
+  //         } else {
+  //           // handle the case where img is undefined or an object without an _id property
+  //           return {
+  //             _type: "imageUrl",
+  //             _key: `image-${nanoid()}`,
+  //             alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+  //             url: "", // provide a default value
+  //           };
+  //         }
+  //       }),
+  //     })),
+  //     descripcion: product.descripcion,
+  //     detalles: {
+  //       usarDetalles: product.detalles.usarDetalles,
+  //       contenido: product.detalles.contenido
+  //         ? {
+  //             imagen: {
+  //               _type: "imageUrl",
+  //               _key: `image-${nanoid()}`,
+  //               alt: product.detalles.contenido.imagen.alt,
+  //               url: product.detalles.contenido.imagen.url,
+  //             },
+  //             resena: product.detalles.contenido.resena,
+  //           }
+  //         : null,
+  //     },
+  //     especificaciones: {
+  //       estiloDeGafa: product.especificaciones.estiloDeGafa,
+  //       lente: {
+  //         material: product.especificaciones.lente.material,
+  //         tipo: product.especificaciones.lente.tipo,
+  //       },
+  //       montura: {
+  //         formaDeLaMontura: product.especificaciones.montura.formaDeLaMontura,
+  //         materialDeLaMontura:
+  //           product.especificaciones.montura.materialDeLaMontura,
+  //         materialDeLaVarilla:
+  //           product.especificaciones.montura.materialDeLaVarilla,
+  //       },
+  //       paisDeOrigen: product.especificaciones.paisDeOrigen,
+  //       queIncluye: product.especificaciones.queIncluye,
+  //       tipoDeGafa: product.especificaciones.tipoDeGafa,
+  //     },
+  //     garantia: {
+  //       descripcion: product.garantia.descripcion,
+  //       meses: product.garantia.meses,
+  //     },
+  //     inspiracion: {
+  //       usarInspiracion: product.inspiracion.usarInspiracion,
+  //       contenido: product.inspiracion.contenido
+  //         ? {
+  //             imagen: {
+  //               _type: "imageUrl",
+  //               _key: `image-${nanoid()}`,
+  //               alt: product.inspiracion.contenido.imagen.alt,
+  //               url: product.inspiracion.contenido.imagen.url,
+  //             },
+  //             resena: product.inspiracion.contenido.resena,
+  //           }
+  //         : null,
+  //     },
+  //     monturaDetalles: {
+  //       usarDetalles: product.monturaDetalles.usarDetalles,
+  //       contenido: product.monturaDetalles.contenido
+  //         ? {
+  //             imagen: {
+  //               _type: "imageUrl",
+  //               _key: `image-${nanoid()}`,
+  //               alt: product.monturaDetalles.contenido.imagen.alt,
+  //               url: product.monturaDetalles.contenido.imagen.url,
+  //             },
+  //             resena: product.monturaDetalles.contenido.resena,
+  //           }
+  //         : null,
+  //     },
+  //     genero: product.genero,
+  //     mostrarCredito: product.mostrarCredito,
+  //     codigoDeProducto: product.codigoDeProducto,
+  //     parteDeUnSet: product.parteDeUnSet,
+  //   };
+  // });
+  // const productsParser = z.array(
+  //   zodProducts[productType as keyof typeof zodProducts]
+  // );
 
-//   const parsedProducts = productsParser.safeParse(newProducts);
+  // const parsedProducts = productsParser.safeParse(newProducts);
 
-//   if (!parsedProducts.success) {
-//     console.log({
-//       errors: parsedProducts.error.errors,
-//       path: parsedProducts.error.errors[0].path,
-//     });
-//     return {
-//       success: false,
-//       error: "Invalid products",
-//     };
-//   }
+  // if (!parsedProducts.success) {
+  //   console.log({
+  //     errors: parsedProducts.error.errors,
+  //     path: parsedProducts.error.errors[0].path,
+  //   });
+  //   return {
+  //     success: false,
+  //     error: "Invalid products",
+  //   };
+  // }
 
-//   const savingProducts = new Map();
+  // const savingProducts = new Map();
 
-//   const prepareProductsToSave = async () => {
-//     let mergedProducts: TPerfumePremiumWithSanityRefs[] = [];
-//     await Promise.all(
-//       parsedProducts.data.map(async (product) => {
-//         const newProd: TProductWithImageUrl = {
-//           ...product,
-//           // imagenes: product.imagenes,
-//           marca: product.marca,
-//           detalles: {
-//             ...product.detalles,
-//             notasOlfativas: {
-//               ...product.detalles.notasOlfativas,
-//               familiaOlfativa: product.detalles.notasOlfativas.familiaOlfativa,
-//               notasDeBase: product.detalles.notasOlfativas.notasDeBase,
-//               notasDeCorazon: product.detalles.notasOlfativas.notasDeCorazon,
-//               notasDeSalida: product.detalles.notasOlfativas.notasDeSalida,
-//             },
-//           },
-//           descripcion: product.descripcion,
-//         };
-//         const marcaDelExcel = product.marca;
+  // const prepareProductsToSave = async () => {
+  //   let mergedProducts: TPerfumePremiumWithSanityRefs[] = [];
+  //   await Promise.all(
+  //     parsedProducts.data.map(async (product) => {
+  //       const newProd: TProductWithImageUrl = {
+  //         ...product,
+  //         // imagenes: product.imagenes,
+  //         marca: product.marca,
+  //         descripcion: product.descripcion,
+  //         especificaciones: {
+  //           ...product.especificaciones,
+  //           montura: {
+  //             ...product.especificaciones.montura,
+  //             materialMontura: product.especificaciones.montura.materialDeLaMontura,
+  //             materialVarilla: product.especificaciones.montura.materialDeLaVarilla,
+  //           }
+  //         }
+  //       };
+  //       const marcaDelExcel = product.marca;
 
-//         const marcaSanity = await sanityClient.fetch(
-//           `*[_type == "marca" && titulo == "${marcaDelExcel}"][0]`
-//         );
+  //       const marcaSanity = await sanityClient.fetch(
+  //         `*[_type == "marca" && titulo == "${marcaDelExcel}"][0]`
+  //       );
 
-//         if (!marcaSanity) {
-//           const newMarca = await sanityWriteClient.create({
-//             _type: "marca",
-//             titulo: marcaDelExcel,
-//           });
+  //       if (!marcaSanity) {
+  //         const newMarca = await sanityWriteClient.create({
+  //           _type: "marca",
+  //           titulo: marcaDelExcel,
+  //         });
 
-//           if (!newMarca) {
-//             throw new Error("Failed to create new marca");
-//           }
+  //         if (!newMarca) {
+  //           throw new Error("Failed to create new marca");
+  //         }
 
-//           newProd.marca = {
-//             _type: "reference",
-//             _ref: newMarca._id,
-//           };
-//         } else {
-//           newProd.marca = {
-//             _type: "reference",
-//             _ref: marcaSanity._id,
-//           };
-//         }
+  //         newProd.marca = {
+  //           _type: "reference",
+  //           _ref: newMarca._id,
+  //         };
+  //       } else {
+  //         newProd.marca = {
+  //           _type: "reference",
+  //           _ref: marcaSanity._id,
+  //         };
+  //       }
+        
 
-//         const concentracionSanity = await sanityClient.fetch(
-//           `*[_type == "concentracion" && nombre == "${product.detalles.concentracion}"][0]`
-//         );
+  //       await Promise.all(
+  //         product.variantes.map(async (variante) => {
+  //           try {
+  //             const sanityProd =
+  //               await findSanityProductBycodigoDeReferenciaAndProductType(
+  //                 variante.codigoDeReferencia,
+  //                 // "11411re",
+  //                 product._type
+  //               );
 
-//         if (!concentracionSanity) {
-//           const newConcentracion = await sanityWriteClient.create({
-//             _type: "concentracion",
-//             nombre: product.detalles.concentracion,
-//           });
-//           if (!newConcentracion) {
-//             throw new Error("Failed to create new concentracion");
-//           }
-//           newProd.detalles.concentracion = {
-//             _type: "reference",
-//             _ref: newConcentracion._id,
-//           };
-//         } else {
-//           newProd.detalles.concentracion = {
-//             _type: "reference",
-//             _ref: concentracionSanity._id,
-//           };
-//         }
+  //             const colorDeLaMonturaSanity = await sanityClient.fetch(
+  //               `*[_type == "colores" && nombre == "${variante.colorDeLaMontura}"][0]`
+  //             );
 
-//         const notasDeBase = await Promise.all(
-//           product.detalles.notasOlfativas.notasDeBase.map(async (nota) => {
-//             const notaSanity = await sanityClient.fetch(
-//               `*[_type == "notasOlfativas" && nombre == "${nota}"][0]`
-//             );
+  //             const colorDeLaVarillaSanity = await sanityClient.fetch(
+  //               `*[_type == "colores" && nombre == "${variante.colorDeLaVarilla}"][0]`
+  //             );
 
-//             if (!notaSanity) {
-//               const newNota = await sanityWriteClient.create({
-//                 _type: "notasOlfativas",
-//                 nombre: nota,
-//               });
+  //             const colorDelLenteSanity = await sanityClient.fetch(
+  //               `*[_type == "colores" && nombre == "${variante.colorDelLente}"][0]`
+  //             );
 
-//               if (!newNota) {
-//                 throw new Error("Failed to create new nota");
-//               }
+  //             console.log({colorDeLaMonturaSanity, colorDeLaVarillaSanity, colorDelLenteSanity});
 
-//               return {
-//                 _type: "reference",
-//                 _ref: newNota._id,
-//                 _key: `nota-${nanoid()}`,
-//               };
-//             } else {
-//               return {
-//                 _type: "reference",
-//                 _ref: notaSanity._id,
-//                 _key: `nota-${nanoid()}`,
-//               };
-//             }
-//           })
-//         );
-//         const notasDeSalida = await Promise.all(
-//           product.detalles.notasOlfativas.notasDeSalida.map(async (nota) => {
-//             const notaSanity = await sanityClient.fetch(
-//               `*[_type == "notasOlfativas" && nombre == "${nota}"][0]`
-//             );
+  //             if (sanityProd) {
+  //               const updatedProduct = {
+  //                 ...sanityProd,
+  //                 ...newProd,
+  //                 _id: sanityProd._id,
+  //                 variantes: product.variantes.map((variante, index) => ({
+  //                   ...variante,
+  //                   _key: `variant-${index}-${nanoid()}`,
+  //                   precio:
+  //                     typeof variante.precio === "number"
+  //                       ? numberToColombianPriceString(variante.precio)
+  //                       : variante.precio,
+  //                   precioConDescuento:
+  //                     typeof variante.precioConDescuento === "number"
+  //                       ? numberToColombianPriceString(
+  //                           variante.precioConDescuento
+  //                         )
+  //                       : variante.precioConDescuento,
+  //                   imagenes: variante.imagenes.map((img, i) => {
+  //                     if (
+  //                       img &&
+  //                       typeof img !== "string" &&
+  //                       img._type === "image"
+  //                     ) {
+  //                       return {
+  //                         _type: "image",
+  //                         _key: `image-${nanoid()}`,
+  //                         asset: {
+  //                           _ref: img.asset._ref,
+  //                         },
+  //                         alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+  //                       };
+  //                     } else if (typeof img === "string") {
+  //                       return {
+  //                         _type: "imageUrl",
+  //                         _key: `image-${nanoid()}`,
+  //                         alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+  //                         url: img,
+  //                       };
+  //                     } else {
+  //                       // handle the case where img is undefined or an object without an _id property
+  //                       return {
+  //                         _type: "imageUrl",
+  //                         _key: `image-${nanoid()}`,
+  //                         alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+  //                         url: "", // provide a default value
+  //                       };
+  //                     }
+  //                   }),
+  //                 })),
+  //               };
 
-//             if (!notaSanity) {
-//               const newNota = await sanityWriteClient.create({
-//                 _type: "notasOlfativas",
-//                 nombre: nota,
-//               });
-//               if (!newNota) {
-//                 throw new Error("Failed to create new nota");
-//               }
-//               return {
-//                 _type: "reference",
-//                 _ref: newNota._id as string,
-//                 _key: `nota-${nanoid()}`,
-//               };
-//             } else {
-//               return {
-//                 _type: "reference",
-//                 _ref: notaSanity._id as string,
-//                 _key: `nota-${nanoid()}`,
-//               };
-//             }
-//           })
-//         );
-//         const notasDeCorazon = await Promise.all(
-//           product.detalles.notasOlfativas.notasDeSalida.map(async (nota) => {
-//             const notaSanity = await sanityClient.fetch(
-//               `*[_type == "notasOlfativas" && nombre == "${nota}"][0]`
-//             );
+  //               if (
+  //                 updatedProduct._id === undefined ||
+  //                 updatedProduct._id === null
+  //               ) {
+  //                 return {
+  //                   success: false,
+  //                   error: `Invalid product ${newProd._id} ${newProd.titulo} ${newProd.marca}`,
+  //                 };
+  //               }
 
-//             if (!notaSanity) {
-//               const newNota = await sanityWriteClient.create({
-//                 _type: "notasOlfativas",
-//                 nombre: nota,
-//               });
-//               if (!newNota) {
-//                 throw new Error("Failed to create new nota");
-//               }
-//               return {
-//                 _type: "reference",
-//                 _ref: newNota._id as string,
-//                 _key: `nota-${nanoid()}`,
-//               };
-//             } else {
-//               return {
-//                 _type: "reference",
-//                 _ref: notaSanity._id as string,
-//                 _key: `nota-${nanoid()}`,
-//               };
-//             }
-//           })
-//         );
+  //               productsToSave.push({
+  //                 ...updatedProduct,
+  //                 _id: updatedProduct._id,
+  //               });
+  //             } else {
+  //               const parsedProduct =
+  //                 zodPerfumePremiumSchemaWithSanityRefs.safeParse(newProd);
+  //               if (!parsedProduct.success) {
+  //                 return {
+  //                   success: false,
+  //                   error: `Invalid product ${newProd._id} ${newProd.titulo} ${newProd.marca}`,
+  //                 };
+  //               }
 
-//         let familiaOlfativa: {
-//           _type: string;
-//           _ref: string;
-//         } = {
-//           _type: "reference",
-//           _ref: "",
-//         };
+  //               productsToSave.push({
+  //                 ...parsedProduct.data,
+  //                 _id: parsedProduct.data._id,
+  //               });
+  //             }
+  //           } catch (error) {
+  //             return console.log(error);
+  //           }
+  //           mergedProducts = productsToSave.reduce(
+  //             (acc: TPerfumePremiumWithSanityRefs[], product) => {
+  //               // Check if the product already exists in the accumulator
+  //               const existingProduct:
+  //                 | TPerfumePremiumWithSanityRefs
+  //                 | undefined = acc.find(
+  //                 (p: TPerfumePremiumWithSanityRefs) =>
+  //                   p.titulo === product.titulo && p._type === product._type
+  //               );
 
-//         const sanityFamiliaOlfativa = await sanityClient.fetch(
-//           `*[_type == "familiasOlfativas" && nombre == "${product.detalles.notasOlfativas.familiaOlfativa}"][0]`
-//         );
+  //               if (existingProduct) {
+  //                 // If the product already exists, merge the variants
+  //                 const variantes = [
+  //                   ...existingProduct.variantes,
+  //                   ...product.variantes,
+  //                 ];
+  //                 const uniqueVariantes = [];
 
-//         if (!familiaOlfativa) {
-//           const newFamiliaOlfativa = await sanityWriteClient.create({
-//             _type: "familiasOlfativas",
-//             nombre: product.detalles.notasOlfativas.familiaOlfativa,
-//           });
-//           if (!newFamiliaOlfativa) {
-//             throw new Error("Failed to create new familiaOlfativa");
-//           }
-//           familiaOlfativa = {
-//             _type: "reference",
-//             _ref: newFamiliaOlfativa._id,
-//           };
-//         } else {
-//           familiaOlfativa = {
-//             _type: "reference",
-//             _ref: sanityFamiliaOlfativa._id,
-//           };
-//         }
+  //                 // Create a Set to store the codigoDeReferencia values
+  //                 const variantCodes = new Set();
 
-//         newProd.detalles.notasOlfativas = {
-//           familiaOlfativa,
-//           notasDeBase,
-//           notasDeCorazon,
-//           notasDeSalida,
-//         };
+  //                 // Loop over the variantes array
+  //                 for (const variante of variantes) {
+  //                   // If the variant's codigoDeReferencia is not in the Set, add it to the uniqueVariantes array and the Set
+  //                   if (!variantCodes.has(variante.codigoDeReferencia)) {
+  //                     uniqueVariantes.push(variante);
+  //                     variantCodes.add(variante.codigoDeReferencia);
+  //                   }
+  //                 }
 
-//         await Promise.all(
-//           product.variantes.map(async (variante) => {
-//             try {
-//               const sanityProd =
-//                 await findSanityProductBycodigoDeReferenciaAndProductType(
-//                   variante.codigoDeReferencia,
-//                   // "11411re",
-//                   product._type
-//                 );
+  //                 existingProduct.variantes = uniqueVariantes;
+  //               } else {
+  //                 // If the product doesn't exist, add it to the accumulator
+  //                 acc.push(product);
+  //               }
 
-//               if (sanityProd) {
-//                 const updatedProduct = {
-//                   ...sanityProd,
-//                   ...newProd,
-//                   _id: sanityProd._id,
-//                   variantes: product.variantes.map((variante, index) => ({
-//                     ...variante,
-//                     _key: `variant-${index}-${nanoid()}`,
-//                     precio:
-//                       typeof variante.precio === "number"
-//                         ? numberToColombianPriceString(variante.precio)
-//                         : variante.precio,
-//                   })),
-//                 };
+  //               return acc;
+  //             },
+  //             []
+  //           );
+  //         })
+  //       );
+  //     })
+  //   );
+  //   return mergedProducts;
+  // };
 
-//                 if (
-//                   updatedProduct._id === undefined ||
-//                   updatedProduct._id === null
-//                 ) {
-//                   return {
-//                     success: false,
-//                     error: `Invalid product ${newProd._id} ${newProd.titulo} ${newProd.marca}`,
-//                   };
-//                 }
+  // const prodsToSave = await prepareProductsToSave();
 
-//                 productsToSave.push({
-//                   ...updatedProduct,
-//                   _id: updatedProduct._id,
-//                 });
-//               } else {
-//                 const parsedProduct =
-//                   zodPerfumePremiumSchemaWithSanityRefs.safeParse(newProd);
-//                 if (!parsedProduct.success) {
-//                   return {
-//                     success: false,
-//                     error: `Invalid product ${newProd._id} ${newProd.titulo} ${newProd.marca}`,
-//                   };
-//                 }
+  // for (const product of prodsToSave) {
+  //   const parsedProd = zodPerfumePremiumSchemaWithSanityRefs.safeParse(product);
+  //   if (!parsedProd.success) {
+  //     console.log({
+  //       product,
+  //       errors: parsedProd.error.errors,
+  //       path: parsedProd.error.errors[0].path,
+  //     });
+  //     return {
+  //       success: false,
+  //       error: `Invalid product ${product._id} ${product.titulo} ${product.marca}`,
+  //     };
+  //   }
 
-//                 productsToSave.push({
-//                   ...parsedProduct.data,
-//                   _id: parsedProduct.data._id,
-//                 });
-//               }
-//             } catch (error) {
-//               return console.log(error);
-//             }
-//             mergedProducts = productsToSave.reduce(
-//               (acc: TPerfumePremiumWithSanityRefs[], product) => {
-//                 // Check if the product already exists in the accumulator
-//                 const existingProduct:
-//                   | TPerfumePremiumWithSanityRefs
-//                   | undefined = acc.find(
-//                   (p: TPerfumePremiumWithSanityRefs) =>
-//                     p.titulo === product.titulo && p._type === product._type
-//                 );
+  //   if (parsedProd.data._id && typeof parsedProd.data._id === "string") {
+  //     if (!savingProducts.has(parsedProd.data._id)) {
+  //       savingProducts.set(parsedProd.data._id, true);
+  //       console.log("updating product");
+  //       const saveResp = await sanityWriteClient.createOrReplace({
+  //         ...parsedProd.data,
+  //         _id: parsedProd.data._id,
+  //         slug: {
+  //           _type: "slug",
+  //           current: `/${productType}/${parsedProd.data._id}`,
+  //         },
+  //         variantes: parsedProd.data.variantes.map((variante) => {
+  //           return {
+  //             ...variante,
+  //             _key: variante._key || `variant-${nanoid()}`,
+  //             codigoDeReferencia: `${variante.codigoDeReferencia}`,
+  //             precio:
+  //               typeof variante.precio === "number"
+  //                 ? numberToColombianPriceString(variante.precio)
+  //                 : variante.precio,
+  //             precioConDescuento:
+  //               variante.precioConDescuento &&
+  //               typeof variante.precioConDescuento === "number"
+  //                 ? numberToColombianPriceString(variante.precioConDescuento)
+  //                 : variante.precioConDescuento,
+  //             registroInvima: `${variante.registroInvima}`,
+  //           };
+  //         }),
+  //       });
+  //       savingProducts.delete(parsedProd.data._id);
+  //     }
+  //   } else {
+  //     const _id = `${productType}-${nanoid()}`;
+  //     if (!savingProducts.has(_id)) {
+  //       savingProducts.set(_id, true);
+  //       console.log("creating product");
+  //       const saveResp = await sanityWriteClient.create({
+  //         ...parsedProd.data,
+  //         _id,
+  //         slug: {
+  //           _type: "slug",
+  //           current: `/${productType}/${_id}`,
+  //         },
+  //         variantes: parsedProd.data.variantes.map((variante) => {
+  //           // const precio = numberToColombianPriceString(variante.precio);
 
-//                 if (existingProduct) {
-//                   // If the product already exists, merge the variants
-//                   const variantes = [
-//                     ...existingProduct.variantes,
-//                     ...product.variantes,
-//                   ];
-//                   const uniqueVariantes = [];
+  //           return {
+  //             ...variante,
+  //             codigoDeReferencia: `${variante.codigoDeReferencia}`,
+  //             _key: variante._key || `variant-${nanoid()}`,
+  //             precio:
+  //               typeof variante.precio === "number"
+  //                 ? numberToColombianPriceString(variante.precio)
+  //                 : variante.precio,
+  //             precioConDescuento:
+  //               variante.precioConDescuento &&
+  //               typeof variante.precioConDescuento === "number"
+  //                 ? numberToColombianPriceString(variante.precioConDescuento)
+  //                 : variante.precioConDescuento,
+  //             registroInvima: `${variante.registroInvima}`,
+  //           };
+  //         }),
+  //       });
+  //       savingProducts.delete(_id);
+  //     }
+  //   }
+  // }
+  return {
+    success: true,
+    error: null,
+  };
+};
 
-//                   // Create a Set to store the codigoDeReferencia values
-//                   const variantCodes = new Set();
+const findSanityProductBycodigoDeReferenciaAndProductType = async (
+  codigoDeReferencia: string | number,
+  productType: "perfumeLujo" | "perfumePremium" | "gafasLujo"
+) => {
+  const query = `*[_type == "${productType}"]{...}`;
 
-//                   // Loop over the variantes array
-//                   for (const variante of variantes) {
-//                     // If the variant's codigoDeReferencia is not in the Set, add it to the uniqueVariantes array and the Set
-//                     if (!variantCodes.has(variante.codigoDeReferencia)) {
-//                       uniqueVariantes.push(variante);
-//                       variantCodes.add(variante.codigoDeReferencia);
-//                     }
-//                   }
+  const products = await sanityClient.fetch(query);
 
-//                   existingProduct.variantes = uniqueVariantes;
-//                 } else {
-//                   // If the product doesn't exist, add it to the accumulator
-//                   acc.push(product);
-//                 }
+  const product = products.find(
+    (prod: { variantes: { codigoDeReferencia: string }[] }) => {
+      return prod.variantes.some((variante) => {
+        return variante.codigoDeReferencia === codigoDeReferencia;
+      });
+    }
+  );
 
-//                 return acc;
-//               },
-//               []
-//             );
-//           })
-//         );
-//       })
-//     );
-//     return mergedProducts;
-//   };
-
-//   const prodsToSave = await prepareProductsToSave();
-
-//   for (const product of prodsToSave) {
-//     const parsedProd = zodPerfumePremiumSchemaWithSanityRefs.safeParse(product);
-//     if (!parsedProd.success) {
-//       console.log({
-//         product,
-//         errors: parsedProd.error.errors,
-//         path: parsedProd.error.errors[0].path,
-//       });
-//       return {
-//         success: false,
-//         error: `Invalid product ${product._id} ${product.titulo} ${product.marca}`,
-//       };
-//     }
-
-//     if (parsedProd.data._id && typeof parsedProd.data._id === "string") {
-//       if (!savingProducts.has(parsedProd.data._id)) {
-//         savingProducts.set(parsedProd.data._id, true);
-//         console.log("updating product");
-//         const saveResp = await sanityWriteClient.createOrReplace({
-//           ...parsedProd.data,
-//           _id: parsedProd.data._id,
-//           slug: {
-//             _type: "slug",
-//             current: `/${productType}/${parsedProd.data._id}`,
-//           },
-//           variantes: parsedProd.data.variantes.map((variante) => {
-//             return {
-//               ...variante,
-//               _key: variante._key || `variant-${nanoid()}`,
-//               codigoDeReferencia: `${variante.codigoDeReferencia}`,
-//               precio:
-//                 typeof variante.precio === "number"
-//                   ? numberToColombianPriceString(variante.precio)
-//                   : variante.precio,
-//               precioConDescuento:
-//                 variante.precioConDescuento &&
-//                 typeof variante.precioConDescuento === "number"
-//                   ? numberToColombianPriceString(variante.precioConDescuento)
-//                   : variante.precioConDescuento,
-//               registroInvima: `${variante.registroInvima}`,
-//             };
-//           }),
-//         });
-//         savingProducts.delete(parsedProd.data._id);
-//       }
-//     } else {
-//       const _id = `${productType}-${nanoid()}`;
-//       if (!savingProducts.has(_id)) {
-//         savingProducts.set(_id, true);
-//         console.log("creating product");
-//         const saveResp = await sanityWriteClient.create({
-//           ...parsedProd.data,
-//           _id,
-//           slug: {
-//             _type: "slug",
-//             current: `/${productType}/${_id}`,
-//           },
-//           variantes: parsedProd.data.variantes.map((variante) => {
-//             // const precio = numberToColombianPriceString(variante.precio);
-
-//             return {
-//               ...variante,
-//               codigoDeReferencia: `${variante.codigoDeReferencia}`,
-//               _key: variante._key || `variant-${nanoid()}`,
-//               precio:
-//                 typeof variante.precio === "number"
-//                   ? numberToColombianPriceString(variante.precio)
-//                   : variante.precio,
-//               precioConDescuento:
-//                 variante.precioConDescuento &&
-//                 typeof variante.precioConDescuento === "number"
-//                   ? numberToColombianPriceString(variante.precioConDescuento)
-//                   : variante.precioConDescuento,
-//               registroInvima: `${variante.registroInvima}`,
-//             };
-//           }),
-//         });
-//         savingProducts.delete(_id);
-//       }
-//     }
-//   }
-//   return {
-//     success: true,
-//     error: null,
-//   };
-// };
-
-// const findSanityProductBycodigoDeReferenciaAndProductType = async (
-//   codigoDeReferencia: string | number,
-//   productType: "perfumeLujo" | "perfumePremium"
-// ) => {
-//   const query = `*[_type == "${productType}"]{...}`;
-
-//   const products = await sanityClient.fetch(query);
-
-//   const product = products.find(
-//     (prod: { variantes: { codigoDeReferencia: string }[] }) => {
-//       return prod.variantes.some((variante) => {
-//         return variante.codigoDeReferencia === codigoDeReferencia;
-//       });
-//     }
-//   );
-
-//   return product;
-// };
+  return product;
+};
 
 // const zodPerfumePremiumSchemaWithSanityRefs =
 //   zodPerfumePremiumSanityReady.merge(

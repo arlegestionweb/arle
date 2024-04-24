@@ -394,6 +394,10 @@ export const savePerfumesPremiumInSanityUsingForm = async (
                       typeof variante.precio === "number"
                         ? numberToColombianPriceString(variante.precio)
                         : variante.precio,
+                    precioConDescuento:
+                      typeof variante.precioConDescuento === "number"
+                        ? numberToColombianPriceString(variante.precioConDescuento)
+                        : variante.precioConDescuento,
                   })),
                 };
 

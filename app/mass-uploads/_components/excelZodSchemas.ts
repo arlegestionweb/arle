@@ -33,7 +33,7 @@ export const gafasLujoExcelSchema = z.object({
             _id: z.string(),
           })
         )
-      ),
+      ).optional().nullable(),
     })
   ),
   coleccionDeMarca: z.string().optional().nullable(),
@@ -44,8 +44,8 @@ export const gafasLujoExcelSchema = z.object({
       .object({
         imagen: z.object({
           alt: z.string(),
-          url: z.string().url(),
-        }),
+          url: z.string().url().optional().nullable(),
+        }).optional().nullable(),
         resena: z.string(),
       })
       .optional()
@@ -59,8 +59,8 @@ export const gafasLujoExcelSchema = z.object({
     }),
     montura: z.object({
       formaDeLaMontura: z.string(),
-      materialDeLaMontura: z.string(),
-      materialDeLaVarilla: z.string(),
+      materialMontura: z.string(),
+      materialVarilla: z.string(),
     }),
     paisDeOrigen: z.string(),
     queIncluye: z.string(),
@@ -76,8 +76,8 @@ export const gafasLujoExcelSchema = z.object({
       .object({
         imagen: z.object({
           alt: z.string(),
-          url: z.string().url(),
-        }),
+          url: z.string().url().optional().nullable(),
+        }).optional().nullable(),
         resena: z.string(),
       })
       .optional()
@@ -98,7 +98,8 @@ export const gafasLujoExcelSchema = z.object({
   }),
   genero: z.string(),
   mostrarCredito: zodSiBoolean,
-  codigoDeProducto: z.string().or(z.number()),
+  // codigoDeProducto: z.string().or(z.number()),
+  parteDeUnSet: zodSiBoolean
 });
 
 export const perfumeDeLujoExcelSchema = z.object({
