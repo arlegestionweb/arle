@@ -4,14 +4,7 @@ import MultipleImageUpload from "./MultipleImageUpload";
 import { useGafasLujoUploadStore, usePerfumeLujoUploadStore, usePerfumePremiumUploadStore } from "./productUploadStore";
 
 
-// const isPerfumeDeLujo = (product: TProductType): product is TPerfumeDeLujoExcel => {
-//   return (product as TPerfumeDeLujoExcel).inspiracion !== undefined;
-// };
-
-
 const ProductCard = ({ product, productType }: { product: TProductType; productType: string }) => {
-  // useFileDrop('imageUpload', uploadImages);
-
 
   return (
     <>
@@ -65,6 +58,96 @@ const GafasLujoCard = ({ product }: { product: TGafasLujoExcel }) => {
             </li>
           ))}
         </ul>
+        {product.detalles.usarDetalles && (
+          !product.detalles.contenido || !product.detalles.contenido?.imagen || !product.detalles?.contenido?.imagen?.url ? (
+            <SingleImageUpload
+              product={product}
+              title="Imagen de los detalles:"
+              onImageUpload={(imageUrl) => {
+                const newProd = {
+                  ...product,
+                  detalles: product.detalles ? {
+                    ...product.detalles,
+                    contenido: {
+                      imagen: {
+                        url: imageUrl,
+                        alt: `${product.marca}-${product.modelo}`
+                      },
+                      resena: product.detalles?.contenido?.resena
+                    }
+                  } : null,
+                };
+                updateGafasLujo(newProd as TGafasLujoExcel);
+              }
+              }
+            />
+          ) : (
+            <section>
+              <h4 className="font-bold">Imagen de los detalles </h4>
+              <img className="w-[50px] h-[50px]" width={50} height={50} src={product.detalles.contenido?.imagen?.url} alt={product.detalles.contenido?.imagen?.alt} />
+            </section>
+          )
+        )}
+        {product.inspiracion.usarInspiracion && (
+          !product.inspiracion.contenido?.imagen || !product.inspiracion?.contenido?.imagen?.url ? (
+            <SingleImageUpload
+              product={product}
+              title="Imagen de la inspiracion:"
+              onImageUpload={(imageUrl) => {
+                const newProd = {
+                  ...product,
+                  inspiracion: product.inspiracion ? {
+                    ...product.inspiracion,
+                    contenido: {
+                      imagen: {
+                        url: imageUrl,
+                        alt: `${product.marca}-${product.modelo}`
+                      },
+                      resena: product.inspiracion?.contenido?.resena
+                    }
+                  } : null,
+                };
+                updateGafasLujo(newProd as TGafasLujoExcel);
+              }
+              }
+            />
+          ) : (
+            <section>
+              <h4 className="font-bold">Imagen de la inspiracion </h4>
+              <img className="w-[50px] h-[50px]" width={50} height={50} src={product.inspiracion.contenido?.imagen?.url} alt={product.inspiracion.contenido?.imagen?.alt} />
+            </section>
+          )
+        )}
+        {product.monturaDetalles.usarDetalles && (
+          !product.monturaDetalles.contenido?.imagen || !product.monturaDetalles?.contenido?.imagen?.url ? (
+            <SingleImageUpload
+              product={product}
+              title="Imagen de los detalles de la montura:"
+              onImageUpload={(imageUrl) => {
+                const newProd = {
+                  ...product,
+                  monturaDetalles: product.monturaDetalles ? {
+                    ...product.monturaDetalles,
+                    contenido: {
+                      imagen: {
+                        url: imageUrl,
+                        alt: `${product.marca}-${product.modelo}`
+                      },
+                      resena: product.monturaDetalles?.contenido?.resena
+                    }
+                  } : null,
+                };
+                updateGafasLujo(newProd as TGafasLujoExcel);
+              }
+              }
+            />
+          ) : (
+            <section>
+              <h4 className="font-bold">Imagen de los detalles de la montura </h4>
+              <img className="w-[50px] h-[50px]" width={50} height={50} src={product.monturaDetalles.contenido?.imagen?.url} alt={product.monturaDetalles.contenido?.imagen?.alt} />
+            </section>
+          )
+        )}
       </section>
 
     </section>
