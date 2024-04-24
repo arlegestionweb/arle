@@ -50,7 +50,25 @@ const zodGafasLujoSanityReady = z.object({
     usarDetalles: z.boolean(),
     contenido: z
       .object({
-        imagen: zodImageUploadSchema,
+        imagen: z
+          .object({
+            _type: z.literal("imageUrl"),
+            _key: z.string().optional().nullable(),
+            alt: z.string().optional().nullable(),
+            url: z.string().url().optional().nullable(),
+          })
+          .or(
+            z.object({
+              _type: z.literal("image"),
+              alt: z.string().optional().nullable(),
+              _key: z.string().optional().nullable(),
+              asset: z.object({
+                _ref: z.string().optional().nullable(),
+              }),
+            })
+          )
+          .optional()
+          .nullable(),
         resena: z.string(),
       })
       .optional()
@@ -79,7 +97,25 @@ const zodGafasLujoSanityReady = z.object({
     usarInspiracion: z.boolean(),
     contenido: z
       .object({
-        imagen: zodImageUploadSchema,
+        imagen: z
+          .object({
+            _type: z.literal("imageUrl"),
+            _key: z.string().optional().nullable(),
+            alt: z.string().optional().nullable(),
+            url: z.string().url().optional().nullable(),
+          })
+          .or(
+            z.object({
+              _type: z.literal("image"),
+              alt: z.string().optional().nullable(),
+              _key: z.string().optional().nullable(),
+              asset: z.object({
+                _ref: z.string().optional().nullable(),
+              }),
+            })
+          )
+          .optional()
+          .nullable(),
         resena: z.string(),
       })
       .optional()
@@ -89,7 +125,25 @@ const zodGafasLujoSanityReady = z.object({
     usarDetalles: z.boolean(),
     contenido: z
       .object({
-        imagen: zodImageUploadSchema,
+        imagen: z
+          .object({
+            _type: z.literal("imageUrl"),
+            _key: z.string().optional().nullable(),
+            alt: z.string().optional().nullable(),
+            url: z.string().url().optional().nullable(),
+          })
+          .or(
+            z.object({
+              _type: z.literal("image"),
+              alt: z.string().optional().nullable(),
+              _key: z.string().optional().nullable(),
+              asset: z.object({
+                _ref: z.string().optional().nullable(),
+              }),
+            })
+          )
+          .optional()
+          .nullable(),
         resena: z.string(),
       })
       .optional()
@@ -116,44 +170,99 @@ type TSanityProduct = z.infer<typeof zodGafasLujoSanityReady>;
 function isProductType(key: string): key is keyof typeof zodProducts {
   return key in zodProducts;
 }
-// type TProductWithImageUrl = Omit<
-//   // TPerfumePremiumWithSanityRefs,
-//   // | "imagenes"
-//   "marca" | "detalles"
-// > & {
-//   marca: string | { _type: "reference"; _ref: string };
-//   especificaciones: {
-//     paisDeOrigen: string | { _type: "reference"; _ref: string };
-//     queIncluye: string;
-//     tipoDeGafa: string | { _type: "reference"; _ref: string };
-//     estiloDeGafa: string | { _type: "reference"; _ref: string };
-//     montura: {
-//       formaDeLaMontura: string | { _type: "reference"; _ref: string };
-//       materialMontura: string | { _type: "reference"; _ref: string };
-//       materialVarilla: string | { _type: "reference"; _ref: string };
-//     };
-//     lente: {
-//       material: string | { _type: "reference"; _ref: string };
-//       tipo: string | { _type: "reference"; _ref: string };
-//     };
-//   };
-//   variantes: {
-//     codigoDeReferencia: string | number;
-//     precio: string | number;
-//     precioConDescuento: string | number | null;
-//     unidadesDisponibles: number;
-//     mostrarUnidadesDisponibles: boolean;
-//     tag: string | null;
-//     _key: string | null;
-//     colorDeLaMontura: string | { _type: "reference"; _ref: string };
-//     colorDeLaVarilla: string | { _type: "reference"; _ref: string };
-//     colorDelLente: string | { _type: "reference"; _ref: string };
-//     imagenes: (
-//       | { _type: "imageUrl"; _key: string; alt: string; url: string }
-//       | { _type: "image"; _key: string; alt: string; asset: { _ref: string } }
-//     )[];
-//   }[];
-// };
+type TProductWithImageUrl = Omit<
+  TGafasLujoWithSanityRefs,
+  | "marca"
+  | "especificaciones"
+  | "variantes"
+  | "detalles"
+  | "inspiracion"
+  | "monturaDetalles"
+> & {
+  marca: string | { _type: "reference"; _ref: string };
+  especificaciones: {
+    paisDeOrigen: string | { _type: "reference"; _ref: string };
+    queIncluye: string;
+    tipoDeGafa: string | { _type: "reference"; _ref: string };
+    estiloDeGafa: string | { _type: "reference"; _ref: string };
+    montura: {
+      formaDeLaMontura: string | { _type: "reference"; _ref: string };
+      materialMontura: string | { _type: "reference"; _ref: string };
+      materialVarilla: string | { _type: "reference"; _ref: string };
+    };
+    lente: {
+      material: string | { _type: "reference"; _ref: string };
+      tipo: string | { _type: "reference"; _ref: string };
+    };
+  };
+  variantes: {
+    codigoDeReferencia: string | number;
+    precio: string | number;
+    precioConDescuento: string | number | null | undefined;
+    unidadesDisponibles: number;
+    mostrarUnidadesDisponibles: boolean;
+    tag: string | null;
+    _key: string | null;
+    colorDeLaMontura: string | { _type: "reference"; _ref: string };
+    colorDeLaVarilla: string | { _type: "reference"; _ref: string };
+    colorDelLente: string | { _type: "reference"; _ref: string };
+    imagenes: (
+      | { _type: "imageUrl"; _key: string; alt: string; url: string }
+      | { _type: "image"; _key: string; alt: string; asset: { _ref: string } }
+    )[];
+  }[];
+  detalles: {
+    usarDetalles: boolean;
+    contenido: {
+      imagen:
+        | (
+            | { _type: "imageUrl"; _key: string; alt: string; url: string }
+            | {
+                _type: "image";
+                _key: string;
+                alt: string;
+                asset: { _ref: string };
+              }
+          )
+        | null;
+      resena: string;
+    } | null;
+  };
+  inspiracion: {
+    usarInspiracion: boolean;
+    contenido: {
+      imagen:
+        | (
+            | { _type: "imageUrl"; _key: string; alt: string; url: string }
+            | {
+                _type: "image";
+                _key: string;
+                alt: string;
+                asset: { _ref: string };
+              }
+          )
+        | null;
+      resena: string;
+    } | null;
+  };
+  monturaDetalles: {
+    usarDetalles: boolean;
+    contenido: {
+      imagen:
+        | (
+            | { _type: "imageUrl"; _key: string; alt: string; url: string }
+            | {
+                _type: "image";
+                _key: string;
+                alt: string;
+                asset: { _ref: string };
+              }
+          )
+        | null;
+      resena: string;
+    } | null;
+  };
+};
 
 export const saveGafasLujoInSanityUsingForm = async (
   formState: {
@@ -174,416 +283,565 @@ export const saveGafasLujoInSanityUsingForm = async (
     };
   }
 
-  // const productsToSave: TPerfumePremiumWithSanityRefs[] = [];
+  const productsToSave: TGafasLujoWithSanityRefs[] = [];
+  const returnError: { success: boolean; error: null | string } = {
+    success: false,
+    error: null,
+  };
+  const newProducts: TSanityProduct[] = products.map((product) => {
+    for (const variante of product.variantes) {
+      if (!variante.imagenes || variante.imagenes?.length < 0) {
+        returnError.error = `Al producto ${product.marca} ${product.modelo} le faltan las imagenes`;
+      }
+    }
+    return {
+      _type: productType,
+      marca: product.marca,
+      modelo: product.modelo,
+      variantes: product.variantes.map((variante) => ({
+        ...variante,
+        imagenes: variante.imagenes?.map((img, i) => {
+          if (img && typeof img !== "string" && img._id) {
+            return {
+              _type: "image",
+              _key: `image-${nanoid()}`,
+              asset: {
+                _ref: img._id,
+              },
+              alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+            };
+          } else if (typeof img === "string") {
+            return {
+              _type: "imageUrl",
+              _key: `image-${nanoid()}`,
+              alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+              url: img,
+            };
+          } else {
+            // handle the case where img is undefined or an object without an _id property
+            return {
+              _type: "imageUrl",
+              _key: `image-${nanoid()}`,
+              alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+              url: "", // provide a default value
+            };
+          }
+        }),
+      })),
+      descripcion: product.descripcion,
+      detalles: {
+        usarDetalles: product.detalles.usarDetalles,
+        contenido: product.detalles.contenido
+          ? {
+              imagen: {
+                _type: "imageUrl",
+                _key: `image-${nanoid()}`,
+                alt: product.detalles.contenido.imagen?.alt,
+                url: product.detalles.contenido.imagen?.url,
+              },
+              resena: product.detalles.contenido.resena,
+            }
+          : null,
+      },
+      especificaciones: {
+        estiloDeGafa: product.especificaciones.estiloDeGafa,
+        lente: {
+          material: product.especificaciones.lente.material,
+          tipo: product.especificaciones.lente.tipo,
+        },
+        montura: {
+          formaDeLaMontura: product.especificaciones.montura.formaDeLaMontura,
+          materialDeLaMontura: product.especificaciones.montura.materialMontura,
+          materialDeLaVarilla: product.especificaciones.montura.materialVarilla,
+        },
+        paisDeOrigen: product.especificaciones.paisDeOrigen,
+        queIncluye: product.especificaciones.queIncluye,
+        tipoDeGafa: product.especificaciones.tipoDeGafa,
+      },
+      garantia: {
+        descripcion: product.garantia.descripcion,
+        meses: product.garantia.meses,
+      },
+      inspiracion: {
+        usarInspiracion: product.inspiracion.usarInspiracion,
+        contenido: product.inspiracion.contenido
+          ? {
+              imagen: {
+                _type: "imageUrl",
+                _key: `image-${nanoid()}`,
+                alt: product.inspiracion.contenido.imagen?.alt,
+                url: product.inspiracion.contenido.imagen?.url,
+              },
+              resena: product.inspiracion.contenido.resena,
+            }
+          : null,
+      },
+      monturaDetalles: {
+        usarDetalles: product.monturaDetalles.usarDetalles,
+        contenido: product.monturaDetalles.contenido
+          ? {
+              imagen: {
+                _type: "imageUrl",
+                _key: `image-${nanoid()}`,
+                alt: product.monturaDetalles.contenido.imagen.alt,
+                url: product.monturaDetalles.contenido.imagen.url,
+              },
+              resena: product.monturaDetalles.contenido.resena,
+            }
+          : null,
+      },
+      genero: product.genero,
+      mostrarCredito: product.mostrarCredito,
+      codigoDeProducto: nanoid(),
+      parteDeUnSet: product.parteDeUnSet,
+    };
+  });
+  const productsParser = z.array(
+    zodProducts[productType as keyof typeof zodProducts]
+  );
 
-  // const newProducts: TSanityProduct[] = products.map((product) => {
-  //   return {
-  //     _type: productType,
-  //     marca: product.marca,
-  //     modelo: product.modelo,
-  //     variantes: product.variantes.map((variante) => ({
-  //       ...variante,
-  //       imagenes: variante.imagenes?.map((img, i) => {
-  //         if (img && typeof img !== "string" && img._id) {
-  //           return {
-  //             _type: "image",
-  //             _key: `image-${nanoid()}`,
-  //             asset: {
-  //               _ref: img._id,
-  //             },
-  //             alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-  //           };
-  //         } else if (typeof img === "string") {
-  //           return {
-  //             _type: "imageUrl",
-  //             _key: `image-${nanoid()}`,
-  //             alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-  //             url: img,
-  //           };
-  //         } else {
-  //           // handle the case where img is undefined or an object without an _id property
-  //           return {
-  //             _type: "imageUrl",
-  //             _key: `image-${nanoid()}`,
-  //             alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-  //             url: "", // provide a default value
-  //           };
-  //         }
-  //       }),
-  //     })),
-  //     descripcion: product.descripcion,
-  //     detalles: {
-  //       usarDetalles: product.detalles.usarDetalles,
-  //       contenido: product.detalles.contenido
-  //         ? {
-  //             imagen: {
-  //               _type: "imageUrl",
-  //               _key: `image-${nanoid()}`,
-  //               alt: product.detalles.contenido.imagen.alt,
-  //               url: product.detalles.contenido.imagen.url,
-  //             },
-  //             resena: product.detalles.contenido.resena,
-  //           }
-  //         : null,
-  //     },
-  //     especificaciones: {
-  //       estiloDeGafa: product.especificaciones.estiloDeGafa,
-  //       lente: {
-  //         material: product.especificaciones.lente.material,
-  //         tipo: product.especificaciones.lente.tipo,
-  //       },
-  //       montura: {
-  //         formaDeLaMontura: product.especificaciones.montura.formaDeLaMontura,
-  //         materialDeLaMontura:
-  //           product.especificaciones.montura.materialDeLaMontura,
-  //         materialDeLaVarilla:
-  //           product.especificaciones.montura.materialDeLaVarilla,
-  //       },
-  //       paisDeOrigen: product.especificaciones.paisDeOrigen,
-  //       queIncluye: product.especificaciones.queIncluye,
-  //       tipoDeGafa: product.especificaciones.tipoDeGafa,
-  //     },
-  //     garantia: {
-  //       descripcion: product.garantia.descripcion,
-  //       meses: product.garantia.meses,
-  //     },
-  //     inspiracion: {
-  //       usarInspiracion: product.inspiracion.usarInspiracion,
-  //       contenido: product.inspiracion.contenido
-  //         ? {
-  //             imagen: {
-  //               _type: "imageUrl",
-  //               _key: `image-${nanoid()}`,
-  //               alt: product.inspiracion.contenido.imagen.alt,
-  //               url: product.inspiracion.contenido.imagen.url,
-  //             },
-  //             resena: product.inspiracion.contenido.resena,
-  //           }
-  //         : null,
-  //     },
-  //     monturaDetalles: {
-  //       usarDetalles: product.monturaDetalles.usarDetalles,
-  //       contenido: product.monturaDetalles.contenido
-  //         ? {
-  //             imagen: {
-  //               _type: "imageUrl",
-  //               _key: `image-${nanoid()}`,
-  //               alt: product.monturaDetalles.contenido.imagen.alt,
-  //               url: product.monturaDetalles.contenido.imagen.url,
-  //             },
-  //             resena: product.monturaDetalles.contenido.resena,
-  //           }
-  //         : null,
-  //     },
-  //     genero: product.genero,
-  //     mostrarCredito: product.mostrarCredito,
-  //     codigoDeProducto: product.codigoDeProducto,
-  //     parteDeUnSet: product.parteDeUnSet,
-  //   };
-  // });
-  // const productsParser = z.array(
-  //   zodProducts[productType as keyof typeof zodProducts]
-  // );
+  const parsedProducts = productsParser.safeParse(newProducts);
 
-  // const parsedProducts = productsParser.safeParse(newProducts);
+  if (!parsedProducts.success) {
+    console.log({
+      errors: parsedProducts.error.errors,
+      path: parsedProducts.error.errors[0].path,
+    });
+    return {
+      success: false,
+      error: "Invalid products",
+    };
+  }
 
-  // if (!parsedProducts.success) {
-  //   console.log({
-  //     errors: parsedProducts.error.errors,
-  //     path: parsedProducts.error.errors[0].path,
-  //   });
-  //   return {
-  //     success: false,
-  //     error: "Invalid products",
-  //   };
-  // }
+  const savingProducts = new Map();
 
-  // const savingProducts = new Map();
+  const prepareProductsToSave = async () => {
+    let mergedProducts: TGafasLujoWithSanityRefs[] = [];
+    await Promise.all(
+      parsedProducts.data.map(async (product) => {
+        const newProd: TProductWithImageUrl = {
+          ...product,
+          // imagenes: product.imagenes,
+          marca: product.marca,
+          descripcion: product.descripcion,
+          especificaciones: {
+            ...product.especificaciones,
+            montura: {
+              ...product.especificaciones.montura,
+              materialMontura:
+                product.especificaciones.montura.materialDeLaMontura,
+              materialVarilla:
+                product.especificaciones.montura.materialDeLaVarilla,
+            },
+          },
+          variantes: product.variantes.map((variante) => ({
+            ...variante,
+            precioConDescuento: variante.precioConDescuento || null,
+            tag: variante.tag || null,
+            _key: variante._key || `variant-${nanoid()}`,
+            imagenes: variante.imagenes
+              ? variante.imagenes.map((img, i) => {
+                  if (img && typeof img !== "string" && img._type === "image") {
+                    return {
+                      _type: "image",
+                      _key: `image-${nanoid()}`,
+                      asset: {
+                        _ref: img.asset._ref,
+                      },
+                      alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+                    };
+                  } else if (typeof img === "string") {
+                    return {
+                      _type: "imageUrl",
+                      _key: `image-${nanoid()}`,
+                      alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+                      url: img,
+                    };
+                  } else {
+                    // handle the case where img is undefined or an object without an _id property
+                    return {
+                      _type: "imageUrl",
+                      _key: `image-${nanoid()}`,
+                      alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+                      url: "", // provide a default value
+                    };
+                  }
+                })
+              : [],
+          })),
+          detalles: {
+            usarDetalles: product.detalles.usarDetalles,
+            contenido: product.detalles.contenido
+              ? {
+                  imagen:
+                    product.detalles.contenido.imagen &&
+                    typeof product.detalles.contenido.imagen !== "string" &&
+                    product.detalles.contenido.imagen._type === "image" &&
+                    product.detalles.contenido.imagen.asset._ref
+                      ? {
+                          _type: "image",
+                          _key: `image-${nanoid()}`,
+                          asset: {
+                            _ref: product.detalles.contenido.imagen.asset._ref,
+                          },
+                          alt: `${product.marca} ${product.modelo} detalles`,
+                        }
+                      : typeof product.detalles.contenido.imagen === "string"
+                      ? {
+                          _type: "imageUrl",
+                          _key: `image-${nanoid()}`,
+                          alt: `${product.marca} ${product.modelo} detalles`,
+                          url: product.detalles.contenido.imagen,
+                        }
+                      : // handle the case where img is undefined or an object without an _id property
+                        {
+                          _type: "imageUrl",
+                          _key: `image-${nanoid()}`,
+                          alt: `${product.marca} ${product.modelo} detalles`,
+                          url: "", // provide a default value
+                        },
+                  resena: product.detalles.contenido.resena,
+                }
+              : null,
+          },
+          inspiracion: {
+            usarInspiracion: product.inspiracion.usarInspiracion,
+            contenido: product.inspiracion.contenido
+              ? {
+                  imagen:
+                    product.inspiracion.contenido.imagen &&
+                    typeof product.inspiracion.contenido.imagen !== "string" &&
+                    product.inspiracion.contenido.imagen._type === "image" &&
+                    product.inspiracion.contenido.imagen.asset._ref
+                      ? {
+                          _type: "image",
+                          _key: `image-${nanoid()}`,
+                          asset: {
+                            _ref: product.inspiracion.contenido.imagen.asset._ref,
+                          },
+                          alt: `${product.marca} ${product.modelo} detalles`,
+                        }
+                      : typeof product.inspiracion.contenido.imagen === "string"
+                      ? {
+                          _type: "imageUrl",
+                          _key: `image-${nanoid()}`,
+                          alt: `${product.marca} ${product.modelo} detalles`,
+                          url: product.inspiracion.contenido.imagen,
+                        }
+                      : // handle the case where img is undefined or an object without an _id property
+                        {
+                          _type: "imageUrl",
+                          _key: `image-${nanoid()}`,
+                          alt: `${product.marca} ${product.modelo} detalles`,
+                          url: "", // provide a default value
+                        },
+                  resena: product.inspiracion.contenido.resena,
+                }
+              : null,
+          },
+          monturaDetalles: {
+            usarDetalles: product.monturaDetalles.usarDetalles,
+            contenido: product.monturaDetalles.contenido
+              ? {
+                  imagen:
+                    product.monturaDetalles.contenido.imagen &&
+                    typeof product.monturaDetalles.contenido.imagen !== "string" &&
+                    product.monturaDetalles.contenido.imagen._type === "image" &&
+                    product.monturaDetalles.contenido.imagen.asset._ref
+                      ? {
+                          _type: "image",
+                          _key: `image-${nanoid()}`,
+                          asset: {
+                            _ref: product.monturaDetalles.contenido.imagen.asset._ref,
+                          },
+                          alt: `${product.marca} ${product.modelo} detalles de la montura`,
+                        }
+                      : typeof product.monturaDetalles.contenido.imagen === "string"
+                      ? {
+                          _type: "imageUrl",
+                          _key: `image-${nanoid()}`,
+                          alt: `${product.marca} ${product.modelo} detalles de la montura`,
+                          url: product.monturaDetalles.contenido.imagen,
+                        }
+                      : // handle the case where img is undefined or an object without an _id property
+                        {
+                          _type: "imageUrl",
+                          _key: `image-${nanoid()}`,
+                          alt: `${product.marca} ${product.modelo} detalles de la montura`,
+                          url: "", // provide a default value
+                        },
+                  resena: product.monturaDetalles.contenido.resena,
+                }
+              : null,
+          },
+        };
+        const marcaDelExcel = product.marca;
 
-  // const prepareProductsToSave = async () => {
-  //   let mergedProducts: TPerfumePremiumWithSanityRefs[] = [];
-  //   await Promise.all(
-  //     parsedProducts.data.map(async (product) => {
-  //       const newProd: TProductWithImageUrl = {
-  //         ...product,
-  //         // imagenes: product.imagenes,
-  //         marca: product.marca,
-  //         descripcion: product.descripcion,
-  //         especificaciones: {
-  //           ...product.especificaciones,
-  //           montura: {
-  //             ...product.especificaciones.montura,
-  //             materialMontura: product.especificaciones.montura.materialDeLaMontura,
-  //             materialVarilla: product.especificaciones.montura.materialDeLaVarilla,
-  //           }
-  //         }
-  //       };
-  //       const marcaDelExcel = product.marca;
+        const marcaSanity = await sanityClient.fetch(
+          `*[_type == "marca" && titulo == "${marcaDelExcel}"][0]`
+        );
 
-  //       const marcaSanity = await sanityClient.fetch(
-  //         `*[_type == "marca" && titulo == "${marcaDelExcel}"][0]`
-  //       );
+        if (!marcaSanity) {
+          const newMarca = await sanityWriteClient.create({
+            _type: "marca",
+            titulo: marcaDelExcel,
+          });
 
-  //       if (!marcaSanity) {
-  //         const newMarca = await sanityWriteClient.create({
-  //           _type: "marca",
-  //           titulo: marcaDelExcel,
-  //         });
+          if (!newMarca) {
+            throw new Error("Failed to create new marca");
+          }
 
-  //         if (!newMarca) {
-  //           throw new Error("Failed to create new marca");
-  //         }
+          newProd.marca = {
+            _type: "reference",
+            _ref: newMarca._id,
+          };
+        } else {
+          newProd.marca = {
+            _type: "reference",
+            _ref: marcaSanity._id,
+          };
+        }
 
-  //         newProd.marca = {
-  //           _type: "reference",
-  //           _ref: newMarca._id,
-  //         };
-  //       } else {
-  //         newProd.marca = {
-  //           _type: "reference",
-  //           _ref: marcaSanity._id,
-  //         };
-  //       }
-        
+        await Promise.all(
+          product.variantes.map(async (variante) => {
+            try {
+              const sanityProd =
+                await findSanityProductBycodigoDeReferenciaAndProductType(
+                  variante.codigoDeReferencia,
+                  // "11411re",
+                  product._type
+                );
 
-  //       await Promise.all(
-  //         product.variantes.map(async (variante) => {
-  //           try {
-  //             const sanityProd =
-  //               await findSanityProductBycodigoDeReferenciaAndProductType(
-  //                 variante.codigoDeReferencia,
-  //                 // "11411re",
-  //                 product._type
-  //               );
+              const colorDeLaMonturaSanity = await sanityClient.fetch(
+                `*[_type == "colores" && nombre == "${variante.colorDeLaMontura}"][0]`
+              );
 
-  //             const colorDeLaMonturaSanity = await sanityClient.fetch(
-  //               `*[_type == "colores" && nombre == "${variante.colorDeLaMontura}"][0]`
-  //             );
+              const colorDeLaVarillaSanity = await sanityClient.fetch(
+                `*[_type == "colores" && nombre == "${variante.colorDeLaVarilla}"][0]`
+              );
 
-  //             const colorDeLaVarillaSanity = await sanityClient.fetch(
-  //               `*[_type == "colores" && nombre == "${variante.colorDeLaVarilla}"][0]`
-  //             );
+              const colorDelLenteSanity = await sanityClient.fetch(
+                `*[_type == "colores" && nombre == "${variante.colorDelLente}"][0]`
+              );
 
-  //             const colorDelLenteSanity = await sanityClient.fetch(
-  //               `*[_type == "colores" && nombre == "${variante.colorDelLente}"][0]`
-  //             );
+              console.log({
+                colorDeLaMonturaSanity,
+                colorDeLaVarillaSanity,
+                colorDelLenteSanity,
+              });
 
-  //             console.log({colorDeLaMonturaSanity, colorDeLaVarillaSanity, colorDelLenteSanity});
+              if (sanityProd) {
+                const updatedProduct = {
+                  ...sanityProd,
+                  ...newProd,
+                  _id: sanityProd._id,
+                  variantes: product.variantes.map((variante, index) => ({
+                    ...variante,
+                    _key: `variant-${index}-${nanoid()}`,
+                    precio:
+                      typeof variante.precio === "number"
+                        ? numberToColombianPriceString(variante.precio)
+                        : variante.precio,
+                    precioConDescuento:
+                      variante.precioConDescuento &&
+                      typeof variante.precioConDescuento === "number"
+                        ? numberToColombianPriceString(
+                            variante.precioConDescuento
+                          )
+                        : variante.precioConDescuento,
+                    imagenes: variante.imagenes?.map((img, i) => {
+                      if (
+                        img &&
+                        typeof img !== "string" &&
+                        img._type === "image"
+                      ) {
+                        return {
+                          _type: "image",
+                          _key: `image-${nanoid()}`,
+                          asset: {
+                            _ref: img.asset._ref,
+                          },
+                          alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+                        };
+                      } else if (typeof img === "string") {
+                        return {
+                          _type: "imageUrl",
+                          _key: `image-${nanoid()}`,
+                          alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+                          url: img,
+                        };
+                      } else {
+                        // handle the case where img is undefined or an object without an _id property
+                        return {
+                          _type: "imageUrl",
+                          _key: `image-${nanoid()}`,
+                          alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+                          url: "", // provide a default value
+                        };
+                      }
+                    }),
+                  })),
+                };
 
-  //             if (sanityProd) {
-  //               const updatedProduct = {
-  //                 ...sanityProd,
-  //                 ...newProd,
-  //                 _id: sanityProd._id,
-  //                 variantes: product.variantes.map((variante, index) => ({
-  //                   ...variante,
-  //                   _key: `variant-${index}-${nanoid()}`,
-  //                   precio:
-  //                     typeof variante.precio === "number"
-  //                       ? numberToColombianPriceString(variante.precio)
-  //                       : variante.precio,
-  //                   precioConDescuento:
-  //                     typeof variante.precioConDescuento === "number"
-  //                       ? numberToColombianPriceString(
-  //                           variante.precioConDescuento
-  //                         )
-  //                       : variante.precioConDescuento,
-  //                   imagenes: variante.imagenes.map((img, i) => {
-  //                     if (
-  //                       img &&
-  //                       typeof img !== "string" &&
-  //                       img._type === "image"
-  //                     ) {
-  //                       return {
-  //                         _type: "image",
-  //                         _key: `image-${nanoid()}`,
-  //                         asset: {
-  //                           _ref: img.asset._ref,
-  //                         },
-  //                         alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-  //                       };
-  //                     } else if (typeof img === "string") {
-  //                       return {
-  //                         _type: "imageUrl",
-  //                         _key: `image-${nanoid()}`,
-  //                         alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-  //                         url: img,
-  //                       };
-  //                     } else {
-  //                       // handle the case where img is undefined or an object without an _id property
-  //                       return {
-  //                         _type: "imageUrl",
-  //                         _key: `image-${nanoid()}`,
-  //                         alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-  //                         url: "", // provide a default value
-  //                       };
-  //                     }
-  //                   }),
-  //                 })),
-  //               };
+                if (
+                  updatedProduct._id === undefined ||
+                  updatedProduct._id === null
+                ) {
+                  return {
+                    success: false,
+                    error: `Invalid product ${newProd._id} ${newProd.modelo} ${newProd.marca}`,
+                  };
+                }
 
-  //               if (
-  //                 updatedProduct._id === undefined ||
-  //                 updatedProduct._id === null
-  //               ) {
-  //                 return {
-  //                   success: false,
-  //                   error: `Invalid product ${newProd._id} ${newProd.titulo} ${newProd.marca}`,
-  //                 };
-  //               }
+                productsToSave.push({
+                  ...updatedProduct,
+                  _id: updatedProduct._id,
+                });
+              } else {
+                const parsedProduct =
+                  zodGafasLujoSchemaWithSanityRefs.safeParse(newProd);
+                if (!parsedProduct.success) {
+                  return {
+                    success: false,
+                    error: `Invalid product ${newProd._id} ${newProd.modelo} ${newProd.marca}`,
+                  };
+                }
 
-  //               productsToSave.push({
-  //                 ...updatedProduct,
-  //                 _id: updatedProduct._id,
-  //               });
-  //             } else {
-  //               const parsedProduct =
-  //                 zodPerfumePremiumSchemaWithSanityRefs.safeParse(newProd);
-  //               if (!parsedProduct.success) {
-  //                 return {
-  //                   success: false,
-  //                   error: `Invalid product ${newProd._id} ${newProd.titulo} ${newProd.marca}`,
-  //                 };
-  //               }
+                productsToSave.push({
+                  ...parsedProduct.data,
+                  _id: parsedProduct.data._id,
+                });
+              }
+            } catch (error) {
+              return console.log(error);
+            }
+            mergedProducts = productsToSave.reduce(
+              (acc: TGafasLujoWithSanityRefs[], product) => {
+                // Check if the product already exists in the accumulator
+                const existingProduct: TGafasLujoWithSanityRefs | undefined =
+                  acc.find(
+                    (p: TGafasLujoWithSanityRefs) =>
+                      p.modelo === product.modelo && p._type === product._type
+                  );
 
-  //               productsToSave.push({
-  //                 ...parsedProduct.data,
-  //                 _id: parsedProduct.data._id,
-  //               });
-  //             }
-  //           } catch (error) {
-  //             return console.log(error);
-  //           }
-  //           mergedProducts = productsToSave.reduce(
-  //             (acc: TPerfumePremiumWithSanityRefs[], product) => {
-  //               // Check if the product already exists in the accumulator
-  //               const existingProduct:
-  //                 | TPerfumePremiumWithSanityRefs
-  //                 | undefined = acc.find(
-  //                 (p: TPerfumePremiumWithSanityRefs) =>
-  //                   p.titulo === product.titulo && p._type === product._type
-  //               );
+                if (existingProduct) {
+                  // If the product already exists, merge the variants
+                  const variantes = [
+                    ...existingProduct.variantes,
+                    ...product.variantes,
+                  ];
+                  const uniqueVariantes = [];
 
-  //               if (existingProduct) {
-  //                 // If the product already exists, merge the variants
-  //                 const variantes = [
-  //                   ...existingProduct.variantes,
-  //                   ...product.variantes,
-  //                 ];
-  //                 const uniqueVariantes = [];
+                  // Create a Set to store the codigoDeReferencia values
+                  const variantCodes = new Set();
 
-  //                 // Create a Set to store the codigoDeReferencia values
-  //                 const variantCodes = new Set();
+                  // Loop over the variantes array
+                  for (const variante of variantes) {
+                    // If the variant's codigoDeReferencia is not in the Set, add it to the uniqueVariantes array and the Set
+                    if (!variantCodes.has(variante.codigoDeReferencia)) {
+                      uniqueVariantes.push(variante);
+                      variantCodes.add(variante.codigoDeReferencia);
+                    }
+                  }
 
-  //                 // Loop over the variantes array
-  //                 for (const variante of variantes) {
-  //                   // If the variant's codigoDeReferencia is not in the Set, add it to the uniqueVariantes array and the Set
-  //                   if (!variantCodes.has(variante.codigoDeReferencia)) {
-  //                     uniqueVariantes.push(variante);
-  //                     variantCodes.add(variante.codigoDeReferencia);
-  //                   }
-  //                 }
+                  existingProduct.variantes = uniqueVariantes;
+                } else {
+                  // If the product doesn't exist, add it to the accumulator
+                  acc.push(product);
+                }
 
-  //                 existingProduct.variantes = uniqueVariantes;
-  //               } else {
-  //                 // If the product doesn't exist, add it to the accumulator
-  //                 acc.push(product);
-  //               }
+                return acc;
+              },
+              []
+            );
+          })
+        );
+      })
+    );
+    return mergedProducts;
+  };
 
-  //               return acc;
-  //             },
-  //             []
-  //           );
-  //         })
-  //       );
-  //     })
-  //   );
-  //   return mergedProducts;
-  // };
+  const prodsToSave = await prepareProductsToSave();
 
-  // const prodsToSave = await prepareProductsToSave();
+  for (const product of prodsToSave) {
+    const parsedProd = zodGafasLujoSchemaWithSanityRefs.safeParse(product);
+    if (!parsedProd.success) {
+      console.log({
+        product,
+        errors: parsedProd.error.errors,
+        path: parsedProd.error.errors[0].path,
+      });
+      return {
+        success: false,
+        error: `Invalid product ${product._id} ${product.modelo} ${product.marca}`,
+      };
+    }
 
-  // for (const product of prodsToSave) {
-  //   const parsedProd = zodPerfumePremiumSchemaWithSanityRefs.safeParse(product);
-  //   if (!parsedProd.success) {
-  //     console.log({
-  //       product,
-  //       errors: parsedProd.error.errors,
-  //       path: parsedProd.error.errors[0].path,
-  //     });
-  //     return {
-  //       success: false,
-  //       error: `Invalid product ${product._id} ${product.titulo} ${product.marca}`,
-  //     };
-  //   }
+    if (parsedProd.data._id && typeof parsedProd.data._id === "string") {
+      if (!savingProducts.has(parsedProd.data._id)) {
+        savingProducts.set(parsedProd.data._id, true);
+        console.log("updating product");
+        const saveResp = await sanityWriteClient.createOrReplace({
+          ...parsedProd.data,
+          _id: parsedProd.data._id,
+          slug: {
+            _type: "slug",
+            current: `/${productType}/${parsedProd.data._id}`,
+          },
+          variantes: parsedProd.data.variantes.map((variante) => {
+            return {
+              ...variante,
+              _key: variante._key || `variant-${nanoid()}`,
+              codigoDeReferencia: `${variante.codigoDeReferencia}`,
+              precio:
+                typeof variante.precio === "number"
+                  ? numberToColombianPriceString(variante.precio)
+                  : variante.precio,
+              precioConDescuento:
+                variante.precioConDescuento &&
+                typeof variante.precioConDescuento === "number"
+                  ? numberToColombianPriceString(variante.precioConDescuento)
+                  : variante.precioConDescuento,
+            };
+          }),
+        });
+        savingProducts.delete(parsedProd.data._id);
+      }
+    } else {
+      const _id = `${productType}-${nanoid()}`;
+      if (!savingProducts.has(_id)) {
+        savingProducts.set(_id, true);
+        console.log("creating product");
+        const saveResp = await sanityWriteClient.create({
+          ...parsedProd.data,
+          _id,
+          slug: {
+            _type: "slug",
+            current: `/${productType}/${_id}`,
+          },
+          variantes: parsedProd.data.variantes.map((variante) => {
+            // const precio = numberToColombianPriceString(variante.precio);
 
-  //   if (parsedProd.data._id && typeof parsedProd.data._id === "string") {
-  //     if (!savingProducts.has(parsedProd.data._id)) {
-  //       savingProducts.set(parsedProd.data._id, true);
-  //       console.log("updating product");
-  //       const saveResp = await sanityWriteClient.createOrReplace({
-  //         ...parsedProd.data,
-  //         _id: parsedProd.data._id,
-  //         slug: {
-  //           _type: "slug",
-  //           current: `/${productType}/${parsedProd.data._id}`,
-  //         },
-  //         variantes: parsedProd.data.variantes.map((variante) => {
-  //           return {
-  //             ...variante,
-  //             _key: variante._key || `variant-${nanoid()}`,
-  //             codigoDeReferencia: `${variante.codigoDeReferencia}`,
-  //             precio:
-  //               typeof variante.precio === "number"
-  //                 ? numberToColombianPriceString(variante.precio)
-  //                 : variante.precio,
-  //             precioConDescuento:
-  //               variante.precioConDescuento &&
-  //               typeof variante.precioConDescuento === "number"
-  //                 ? numberToColombianPriceString(variante.precioConDescuento)
-  //                 : variante.precioConDescuento,
-  //             registroInvima: `${variante.registroInvima}`,
-  //           };
-  //         }),
-  //       });
-  //       savingProducts.delete(parsedProd.data._id);
-  //     }
-  //   } else {
-  //     const _id = `${productType}-${nanoid()}`;
-  //     if (!savingProducts.has(_id)) {
-  //       savingProducts.set(_id, true);
-  //       console.log("creating product");
-  //       const saveResp = await sanityWriteClient.create({
-  //         ...parsedProd.data,
-  //         _id,
-  //         slug: {
-  //           _type: "slug",
-  //           current: `/${productType}/${_id}`,
-  //         },
-  //         variantes: parsedProd.data.variantes.map((variante) => {
-  //           // const precio = numberToColombianPriceString(variante.precio);
-
-  //           return {
-  //             ...variante,
-  //             codigoDeReferencia: `${variante.codigoDeReferencia}`,
-  //             _key: variante._key || `variant-${nanoid()}`,
-  //             precio:
-  //               typeof variante.precio === "number"
-  //                 ? numberToColombianPriceString(variante.precio)
-  //                 : variante.precio,
-  //             precioConDescuento:
-  //               variante.precioConDescuento &&
-  //               typeof variante.precioConDescuento === "number"
-  //                 ? numberToColombianPriceString(variante.precioConDescuento)
-  //                 : variante.precioConDescuento,
-  //             registroInvima: `${variante.registroInvima}`,
-  //           };
-  //         }),
-  //       });
-  //       savingProducts.delete(_id);
-  //     }
-  //   }
-  // }
+            return {
+              ...variante,
+              codigoDeReferencia: `${variante.codigoDeReferencia}`,
+              _key: variante._key || `variant-${nanoid()}`,
+              precio:
+                typeof variante.precio === "number"
+                  ? numberToColombianPriceString(variante.precio)
+                  : variante.precio,
+              precioConDescuento:
+                variante.precioConDescuento &&
+                typeof variante.precioConDescuento === "number"
+                  ? numberToColombianPriceString(variante.precioConDescuento)
+                  : variante.precioConDescuento,
+            };
+          }),
+        });
+        savingProducts.delete(_id);
+      }
+    }
+  }
   return {
     success: true,
     error: null,
@@ -609,55 +867,142 @@ const findSanityProductBycodigoDeReferenciaAndProductType = async (
   return product;
 };
 
-// const zodPerfumePremiumSchemaWithSanityRefs =
-//   zodPerfumePremiumSanityReady.merge(
-//     z.object({
-//       _id: z.string().optional().nullable(),
-//       marca: z.object({
-//         _type: z.literal("reference"),
-//         _ref: z.string(),
-//       }),
-//       imagenes: z.array(zodImageUploadSchema),
+const zodGafasLujoSchemaWithSanityRefs = zodGafasLujoSanityReady.merge(
+  z.object({
+    _id: z.string().optional().nullable(),
+    marca: z.object({
+      _type: z.literal("reference"),
+      _ref: z.string(),
+    }),
+    especificaciones: z.object({
+      paisDeOrigen: z.object({
+        _type: z.literal("reference"),
+        _ref: z.string(),
+      }),
+      queIncluye: z.string(),
+      tipoDeGafa: z.object({ _type: z.literal("reference"), _ref: z.string() }),
+      estiloDeGafa: z.object({
+        _type: z.literal("reference"),
+        _ref: z.string(),
+      }),
+      montura: z.object({
+        formaDeLaMontura: z.object({
+          _type: z.literal("reference"),
+          _ref: z.string(),
+        }),
+        materialMontura: z.object({
+          _type: z.literal("reference"),
+          _ref: z.string(),
+        }),
+        materialVarilla: z.object({
+          _type: z.literal("reference"),
+          _ref: z.string(),
+        }),
+      }),
+      lente: z.object({
+        material: z.object({ _type: z.literal("reference"), _ref: z.string() }),
+        tipo: z.object({ _type: z.literal("reference"), _ref: z.string() }),
+      }),
+    }),
+    variantes: z.array(
+      z.object({
+        codigoDeReferencia: z.string().or(z.number()),
+        precio: z.string().or(z.number()),
+        precioConDescuento: z.string().or(z.number()).optional().nullable(),
+        unidadesDisponibles: z.number(),
+        mostrarUnidadesDisponibles: z.boolean(),
+        tag: z.string().optional().nullable(),
+        _key: z.string().optional().nullable(),
+        colorDeLaMontura: z.object({
+          _type: z.literal("reference"),
+          _ref: z.string(),
+        }),
+        colorDeLaVarilla: z.object({
+          _type: z.literal("reference"),
+          _ref: z.string(),
+        }),
+        colorDelLente: z.object({
+          _type: z.literal("reference"),
+          _ref: z.string(),
+        }),
+        imagenes: z.array(zodImageUploadSchema),
+      })
+    ),
+    detalles: z.object({
+      usarDetalles: z.boolean(),
+      contenido: z
+        .object({
+          imagen: z
+            .object({
+              _type: z.literal("imageUrl"),
+              _key: z.string().optional().nullable(),
+              alt: z.string().optional().nullable(),
+              url: z.string().url().optional().nullable(),
+            })
+            .or(
+              z
+                .object({
+                  _type: z.literal("image"),
+                  alt: z.string().optional().nullable(),
+                  _key: z.string().optional().nullable(),
+                  asset: z.object({
+                    _ref: z.string(),
+                  }),
+                })
+                .optional()
+                .nullable()
+            ),
+          resena: z.string().optional().nullable(),
+        })
+        .optional()
+        .nullable(),
+    }),
+    inspiracion: z.object({
+      usarInspiracion: z.boolean(),
+      contenido: z
+        .object({
+          imagen: z
+            .object({
+              _type: z.literal("imageUrl"),
+              _key: z.string().optional().nullable(),
+              alt: z.string().optional().nullable(),
+              url: z.string().url().optional().nullable(),
+            })
+            .or(
+              z.object({
+                _type: z.literal("image"),
+                alt: z.string().optional().nullable(),
+                _key: z.string().optional().nullable(),
+                asset: z.object({
+                  _ref: z.string(),
+                }),
+              })
+            )
+            .optional()
+            .nullable(),
+          resena: z.string().optional().nullable(),
+        })
+        .optional()
+        .nullable(),
+    }),
+    monturaDetalles: z.object({
+      usarDetalles: z.boolean(),
+      contenido: z
+        .object({
+          imagen: z.object({
+            _type: z.literal("imageUrl"),
+            _key: z.string().optional().nullable(),
+            alt: z.string().optional().nullable(),
+            url: z.string().url().optional().nullable(),
+          }),
+          resena: z.string(),
+        })
+        .optional()
+        .nullable(),
+    }),
+  })
+);
 
-//       descripcion: z.string(),
-//       detalles: z.object({
-//         concentracion: z.object({
-//           _type: z.literal("reference"),
-//           _ref: z.string(),
-//         }),
-//         genero: z.string(),
-//         resenaCorta: z.string().optional().nullable(),
-//         notasOlfativas: z.object({
-//           familiaOlfativa: z.object({
-//             _type: z.literal("reference"),
-//             _ref: z.string(),
-//           }),
-//           notasDeBase: z.array(
-//             z.object({
-//               _type: z.literal("reference"),
-//               _ref: z.string(),
-//               _key: z.string(),
-//             })
-//           ),
-//           notasDeCorazon: z.array(
-//             z.object({
-//               _type: z.literal("reference"),
-//               _ref: z.string(),
-//               _key: z.string(),
-//             })
-//           ),
-//           notasDeSalida: z.array(
-//             z.object({
-//               _type: z.literal("reference"),
-//               _ref: z.string(),
-//               _key: z.string(),
-//             })
-//           ),
-//         }),
-//       }),
-//     })
-//   );
-
-// type TPerfumePremiumWithSanityRefs = z.infer<
-//   typeof zodPerfumePremiumSchemaWithSanityRefs
-// >;
+type TGafasLujoWithSanityRefs = z.infer<
+  typeof zodGafasLujoSchemaWithSanityRefs
+>;

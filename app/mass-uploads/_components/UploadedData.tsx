@@ -229,91 +229,34 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
   console.log({ gafasLujo })
   return (
-    <section className="flex flex-col items-center">
+    <section className="flex flex-col items-center w-full max-w-xl">
       {/* <button onClick={reset} >volver a intentar</button> */}
       {productType === 'perfumeLujo' && (
-        <>
-          {perfumeDeLujoFormState.success ? (
-            <>
-              <p className="text-green-600 text-base">Productos guardados con éxito</p>
-              <Link href="/mass-uploads">
-                Volver al inicio
-              </Link>
-            </>
-          ) :
-            !uploadErrors && (
-              <>
-
-                <ul className="flex flex-col gap-2">
-                  {perfumesLujo.map((product, index) => (
-                    <li key={index}>
-                      <ProductCard product={product} productType={productType} />
-                    </li>
-                  ))}
-                </ul>
-                <form action={() => perfumeDeLujoFormAction({ products: perfumesLujo as TPerfumeDeLujoExcel[], productType })}>
-                  <Guardar />
-                </form>
-                {perfumeDeLujoFormState.error && <p className="text-red-600 text-base">{perfumeDeLujoFormState.error}</p>}
-
-              </>
-            )}
-        </>
+        <ProductUpload
+          formAction={perfumeDeLujoFormAction}
+          formState={perfumeDeLujoFormState}
+          productType={productType}
+          products={perfumesLujo as TPerfumeDeLujoExcel[]}
+          uploadErrors={uploadErrors}
+        />
       )}
       {productType === 'perfumePremium' && (
-        <>
-          {perfumePremiumFormState.success ? (
-            <>
-              <p className="text-green-600 text-base">Productos guardados con éxito</p>
-              <Link href="/mass-uploads">
-                Volver al inicio
-              </Link>
-            </>
-          ) : (
-            <>
-              <ul className="flex flex-col gap-2">
-                {perfumesPremium.map((product, index) => (
-                  <li key={index}>
-                    <ProductCard product={product} productType={productType} />
-                  </li>
-                ))}
-              </ul>
-              <form action={() => perfumePremiumFormAction({ products: perfumesPremium as TPerfumePremiumExcel[], productType })}>
-                <Guardar />
-              </form>
-            </>
-          )}
-          {perfumePremiumFormState.error && <p className="text-red-600 text-base">{perfumePremiumFormState.error}</p>}
-        </>
+        <ProductUpload
+          formAction={perfumePremiumFormAction}
+          formState={perfumePremiumFormState}
+          productType={productType}
+          products={perfumesPremium as TPerfumePremiumExcel[]}
+          uploadErrors={uploadErrors}
+        />
       )}
       {productType === 'gafasLujo' && (
-        <>
-          {gafasLujoFormState.success ? (
-            <>
-              <p className="text-green-600 text-base">Productos guardados con éxito</p>
-              <Link href="/mass-uploads">
-                Volver al inicio
-              </Link>
-            </>
-          ) :
-            !uploadErrors && (
-              <>
-
-                <ul className="flex flex-col gap-2">
-                  {gafasLujo.map((product, index) => (
-                    <li key={index}>
-                      <ProductCard product={product} productType={productType} />
-                    </li>
-                  ))}
-                </ul>
-                <form action={() => gafasLujoFormAction({ products: gafasLujo as TGafasLujoExcel[], productType })}>
-                  <Guardar />
-                </form>
-                {gafasLujoFormState.error && <p className="text-red-600 text-base">{gafasLujoFormState.error}</p>}
-
-              </>
-            )}
-        </>
+        <ProductUpload
+          formAction={gafasLujoFormAction}
+          formState={gafasLujoFormState}
+          productType={productType}
+          products={gafasLujo as TGafasLujoExcel[]}
+          uploadErrors={uploadErrors}
+        />
       )}
       {uploadErrors && uploadErrors.length > 0 && uploadErrors.map((error, i) => <p className="text-red-600 text-base" key={error + i}>{error}</p>)}
     </section>
@@ -332,3 +275,38 @@ const Guardar = () => {
     </button>
   )
 }
+
+const ProductUpload = ({ productType, products, formState, formAction, uploadErrors }: {
+  productType: string;
+  products: (TGafasLujoExcel | TPerfumePremiumExcel | TPerfumeDeLujoExcel)[] ;
+  formState: { error: string | null; success: boolean };
+  formAction: (data: any) => void;
+  uploadErrors: string[] | null;
+}) => (
+  <>
+    {formState.success ? (
+      <>
+        <p className="text-green-600 text-base">Productos guardados con éxito</p>
+        <Link href="/mass-uploads">
+          Volver al inicio
+        </Link>
+      </>
+    ) : (
+      !uploadErrors && (
+        <>
+          <ul className="flex flex-col gap-3">
+            {products.map((product, index) => (
+              <li key={index}>
+                <ProductCard product={product} productType={productType} />
+              </li>
+            ))}
+          </ul>
+          <form action={() => formAction({ products, productType })}>
+            <Guardar />
+          </form>
+          {formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
+        </>
+      )
+    )}
+  </>
+);

@@ -24,7 +24,7 @@ const GafasLujoCard = ({ product }: { product: TGafasLujoExcel }) => {
   return (
     <section className="border border-black p-4 flex flex-col justify-between">
       <header>
-        <h2>{product.marca} {product.modelo}</h2>
+        <h2><strong>Marca: </strong> {product.marca} <strong> Modelo: </strong> {product.modelo}</h2>
       </header>
       <section>
         <h3><strong>Variantes: </strong></h3>
