@@ -419,7 +419,7 @@ export const saveGafasLujoInSanityUsingForm = async (
     let mergedProducts: TGafasLujoWithSanityRefs[] = [];
     await Promise.all(
       parsedProducts.data.map(async (product) => {
-        const newProd: TProductWithImageUrl = {
+        let newProd: TProductWithImageUrl = {
           ...product,
           // imagenes: product.imagenes,
           marca: product.marca,
@@ -517,7 +517,8 @@ export const saveGafasLujoInSanityUsingForm = async (
                           _type: "image",
                           _key: `image-${nanoid()}`,
                           asset: {
-                            _ref: product.inspiracion.contenido.imagen.asset._ref,
+                            _ref: product.inspiracion.contenido.imagen.asset
+                              ._ref,
                           },
                           alt: `${product.marca} ${product.modelo} detalles`,
                         }
@@ -545,18 +546,22 @@ export const saveGafasLujoInSanityUsingForm = async (
               ? {
                   imagen:
                     product.monturaDetalles.contenido.imagen &&
-                    typeof product.monturaDetalles.contenido.imagen !== "string" &&
-                    product.monturaDetalles.contenido.imagen._type === "image" &&
+                    typeof product.monturaDetalles.contenido.imagen !==
+                      "string" &&
+                    product.monturaDetalles.contenido.imagen._type ===
+                      "image" &&
                     product.monturaDetalles.contenido.imagen.asset._ref
                       ? {
                           _type: "image",
                           _key: `image-${nanoid()}`,
                           asset: {
-                            _ref: product.monturaDetalles.contenido.imagen.asset._ref,
+                            _ref: product.monturaDetalles.contenido.imagen.asset
+                              ._ref,
                           },
                           alt: `${product.marca} ${product.modelo} detalles de la montura`,
                         }
-                      : typeof product.monturaDetalles.contenido.imagen === "string"
+                      : typeof product.monturaDetalles.contenido.imagen ===
+                        "string"
                       ? {
                           _type: "imageUrl",
                           _key: `image-${nanoid()}`,
@@ -601,9 +606,88 @@ export const saveGafasLujoInSanityUsingForm = async (
             _ref: marcaSanity._id,
           };
         }
+        const sanityResults = await sanityClient.fetch(`
+          {
+            "paisDeOrigen": *[_type == "paisDeOrigen" && nombre == "${product.especificaciones.paisDeOrigen}"][0]{
+              "_ref":_id,
+              "_type": "reference"
+            },
+            "tipoDeGafa": *[_type == "tipoDeGafa" && titulo == "${product.especificaciones.tipoDeGafa}"][0]{
+              "_ref":_id,
+              "_type": "reference"
+            },
+            "estiloDeGafa": *[_type == "estiloDeGafa" && titulo == "${product.especificaciones.estiloDeGafa}"][0]{
+              "_ref":_id,
+              "_type": "reference"
+            },
+            "formaDeLaMontura": *[_type == "formaDeLaMontura" && titulo == "${product.especificaciones.montura.formaDeLaMontura}"][0]{
+              "_ref":_id,
+              "_type": "reference"
+            },
+            "materialMontura": *[_type == "materialDelMarco" && titulo == "${product.especificaciones.montura.materialDeLaMontura}"][0]{
+              "_ref":_id,
+              "_type": "reference"
+            },
+            "materialVarilla": *[_type == "materialDeLaVarilla" && titulo == "${product.especificaciones.montura.materialDeLaVarilla}"][0]{
+              "_ref":_id,
+              "_type": "reference"
+            },
+            "materialLente": *[_type == "materialDelLente" && titulo == "${product.especificaciones.lente.material}"][0]{
+              "_ref":_id,
+              "_type": "reference"
+            },
+            "tipoDeLente": *[_type == "tipoDeLente" && titulo == "${product.especificaciones.lente.tipo}"][0]{
+              "_ref":_id,
+              "_type": "reference"
+            }
+          }
+      `);
 
+        const zodRefObject = z.object({
+          _type: z.literal("reference"),
+          _ref: z.string(),
+        });
+
+        const zodSanityResults = z.object({
+          paisDeOrigen: zodRefObject,
+          tipoDeGafa: zodRefObject,
+          estiloDeGafa: zodRefObject,
+          formaDeLaMontura: zodRefObject,
+          materialMontura: zodRefObject,
+          materialVarilla: zodRefObject,
+          materialLente: zodRefObject,
+          tipoDeLente: zodRefObject,
+        });
+
+        const sanityResultsParsed = zodSanityResults.safeParse(sanityResults);
+        
+        if (!sanityResultsParsed.success) {
+          throw new Error(`Failed to find all the references ${sanityResultsParsed.error}`)
+        }
+
+
+        // console.log({ paisDeOrigenSanity });
+
+        newProd = {
+          ...newProd,
+          especificaciones: {
+            ...newProd.especificaciones,
+            paisDeOrigen: sanityResultsParsed.data.paisDeOrigen,
+            tipoDeGafa: sanityResultsParsed.data.tipoDeGafa,
+            estiloDeGafa: sanityResultsParsed.data.estiloDeGafa,
+            montura: {
+              formaDeLaMontura: sanityResultsParsed.data.formaDeLaMontura,
+              materialMontura: sanityResultsParsed.data.materialMontura,
+              materialVarilla: sanityResultsParsed.data.materialVarilla,
+            },
+            lente: {
+              material: sanityResultsParsed.data.materialLente,
+              tipo: sanityResultsParsed.data.tipoDeLente
+            }
+          }
+        }
         await Promise.all(
-          product.variantes.map(async (variante) => {
+          product.variantes.map(async (variante, varIndex) => {
             try {
               const sanityProd =
                 await findSanityProductBycodigoDeReferenciaAndProductType(
@@ -624,73 +708,86 @@ export const saveGafasLujoInSanityUsingForm = async (
                 `*[_type == "colores" && nombre == "${variante.colorDelLente}"][0]`
               );
 
-              console.log({
-                colorDeLaMonturaSanity,
-                colorDeLaVarillaSanity,
-                colorDelLenteSanity,
-              });
+              if (
+                !colorDeLaMonturaSanity ||
+                !colorDeLaVarillaSanity ||
+                !colorDelLenteSanity
+              ) {
+                throw new Error("Failed to find a color");
+              }
+              const newVariante = {
+                ...variante,
+                colorDeLaMontura: {
+                  _type: "reference" as "reference",
+                  _ref: colorDeLaMonturaSanity._id as string,
+                },
+                colorDeLaVarilla: {
+                  _type: "reference" as "reference",
+                  _ref: colorDeLaVarillaSanity._id as string,
+                },
+                colorDelLente: {
+                  _type: "reference" as "reference",
+                  _ref: colorDelLenteSanity._id as string,
+                },
+                precioConDescuento:
+                  variante.precioConDescuento &&
+                  typeof variante.precioConDescuento === "number"
+                    ? numberToColombianPriceString(variante.precioConDescuento)
+                    : variante.precioConDescuento,
+                tag: variante.tag || null,
+                _key: `variant-${varIndex}-${nanoid()}`,
+                imagenes:
+                  variante.imagenes?.map((img, i) => {
+                    if (
+                      img &&
+                      typeof img !== "string" &&
+                      img._type === "image"
+                    ) {
+                      return {
+                        _type: "image" as "image",
+                        _key: `image-${nanoid()}`,
+                        asset: {
+                          _ref: img.asset._ref,
+                        },
+                        alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+                      };
+                    } else if (typeof img === "string") {
+                      return {
+                        _type: "imageUrl" as "imageUrl",
+                        _key: `image-${nanoid()}`,
+                        alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+                        url: img,
+                      };
+                    } else {
+                      // handle the case where img is undefined or an object without an _id property
+                      return {
+                        _type: "imageUrl" as "imageUrl",
+                        _key: `image-${nanoid()}`,
+                        alt: `${product.marca} ${product.modelo} - ${i + 1}`,
+                        url: "", // provide a default value
+                      };
+                    }
+                  }) || [],
+                precio:
+                  typeof variante.precio === "number"
+                    ? numberToColombianPriceString(variante.precio)
+                    : variante.precio,
+              };
+
+              newProd.variantes[varIndex] = newVariante;
 
               if (sanityProd) {
                 const updatedProduct = {
                   ...sanityProd,
                   ...newProd,
                   _id: sanityProd._id,
-                  variantes: product.variantes.map((variante, index) => ({
-                    ...variante,
-                    _key: `variant-${index}-${nanoid()}`,
-                    precio:
-                      typeof variante.precio === "number"
-                        ? numberToColombianPriceString(variante.precio)
-                        : variante.precio,
-                    precioConDescuento:
-                      variante.precioConDescuento &&
-                      typeof variante.precioConDescuento === "number"
-                        ? numberToColombianPriceString(
-                            variante.precioConDescuento
-                          )
-                        : variante.precioConDescuento,
-                    imagenes: variante.imagenes?.map((img, i) => {
-                      if (
-                        img &&
-                        typeof img !== "string" &&
-                        img._type === "image"
-                      ) {
-                        return {
-                          _type: "image",
-                          _key: `image-${nanoid()}`,
-                          asset: {
-                            _ref: img.asset._ref,
-                          },
-                          alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-                        };
-                      } else if (typeof img === "string") {
-                        return {
-                          _type: "imageUrl",
-                          _key: `image-${nanoid()}`,
-                          alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-                          url: img,
-                        };
-                      } else {
-                        // handle the case where img is undefined or an object without an _id property
-                        return {
-                          _type: "imageUrl",
-                          _key: `image-${nanoid()}`,
-                          alt: `${product.marca} ${product.modelo} - ${i + 1}`,
-                          url: "", // provide a default value
-                        };
-                      }
-                    }),
-                  })),
                 };
 
                 if (
                   updatedProduct._id === undefined ||
                   updatedProduct._id === null
                 ) {
-                  return {
-                    success: false,
-                    error: `Invalid product ${newProd._id} ${newProd.modelo} ${newProd.marca}`,
-                  };
+                  throw new Error("Failed to find the product id")
                 }
 
                 productsToSave.push({
@@ -701,10 +798,7 @@ export const saveGafasLujoInSanityUsingForm = async (
                 const parsedProduct =
                   zodGafasLujoSchemaWithSanityRefs.safeParse(newProd);
                 if (!parsedProduct.success) {
-                  return {
-                    success: false,
-                    error: `Invalid product ${newProd._id} ${newProd.modelo} ${newProd.marca}`,
-                  };
+                  throw new Error(`failed to parse the product ${parsedProduct.error}`)
                 }
 
                 productsToSave.push({
@@ -762,7 +856,7 @@ export const saveGafasLujoInSanityUsingForm = async (
   };
 
   const prodsToSave = await prepareProductsToSave();
-
+  console.log({prodsToSave})
   for (const product of prodsToSave) {
     const parsedProd = zodGafasLujoSchemaWithSanityRefs.safeParse(product);
     if (!parsedProd.success) {
