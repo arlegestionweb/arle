@@ -45,12 +45,19 @@ const GafasLujoCard = ({ product }: { product: TGafasLujoExcel }) => {
                 </section>
               ) : (
                 <MultipleImageUpload product={product} title="Subir imagenes de la variante" callback={(newImages) => {
+
                   const newProd = {
                     ...product,
-                    variantes: product.variantes.map((v) => ({
-                      ...v,
-                      imagenes: newImages
-                    }))
+                    variantes: product.variantes.map((v) => {
+                      if (v.codigoDeReferencia === variant.codigoDeReferencia) {
+                        return {
+                          ...v,
+                          imagenes: newImages
+                        };
+                      }
+                      return v;
+                    })
+
                   }
                   updateGafasLujo(newProd as TGafasLujoExcel);
                 }} />
