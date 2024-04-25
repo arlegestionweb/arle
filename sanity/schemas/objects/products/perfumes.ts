@@ -71,7 +71,6 @@ const variantePerfumeSchema = defineField({
       name: "registroInvima",
       title: "Registro Invima",
       type: "string",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "mostrarUnidadesDisponibles",

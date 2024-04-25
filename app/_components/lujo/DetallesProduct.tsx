@@ -5,10 +5,11 @@ import { Fragment, useState } from "react";
 type DetallesProductoProps = {
   detalles?: {
     [key: string]:
+      | number
       | string
       | string[]
       | {
-          [key: string]: string | string[];
+          [key: string]: number | string | string[];
         };
   };
   theme?: "dark" | "light";
