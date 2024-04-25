@@ -2,7 +2,7 @@ import { cn } from "@/app/_lib/utils";
 
 type TSeccionEspecificacionesProps = {
   title: string;
-  paragraph: string;
+  paragraph: string | number;
   dontCapitalize?: boolean;
 };
 

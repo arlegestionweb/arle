@@ -86,12 +86,14 @@ const PerfumePremium = ({
             />
             <SeccionEspecificaciones
               title="Tamaño"
-              paragraph={selectedVariant.tamano.toString()+"ml"}
+              paragraph={selectedVariant.tamano.toString() + "ml"}
             />
-            <SeccionEspecificaciones
-              title="Registro Invima"
-              paragraph={selectedVariant.registroInvima}
-            />
+            {selectedVariant.registroInvima && (
+              <SeccionEspecificaciones
+                title="Registro Invima"
+                paragraph={selectedVariant.registroInvima}
+              />
+            )}
           </div>
         </CollapsibleProductSection>
 
@@ -127,7 +129,7 @@ const PerfumePremium = ({
             )}
           </div>
         </CollapsibleProductSection>
-        
+
         <NuestrasComprasIncluyen />
 
         <AddToCart

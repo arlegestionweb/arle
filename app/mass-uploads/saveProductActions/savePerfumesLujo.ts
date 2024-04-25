@@ -70,7 +70,7 @@ const zodPerfumeLujoSchemaSanityReady = z.object({
       precio: z.string().or(z.number()),
       precioConDescuento: z.string().or(z.number()).optional().nullable(),
       codigoDeReferencia: z.string().or(z.number()),
-      registroInvima: z.string().or(z.number()),
+      registroInvima: z.string().or(z.number()).optional().nullable(),
       unidadesDisponibles: z.number(),
       mostrarUnidadesDisponibles: z.boolean(),
       tag: z.string().optional().nullable(),
