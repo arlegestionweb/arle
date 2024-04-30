@@ -63,17 +63,16 @@ const PerfumeLujo = ({
             theme={product.inspiracion?.usarInspiracion ? "dark" : "light"}
             detalles={{
               notasOlfativas: {
-                notasDeBase: product.notasOlfativas.notasDeBase || "",
-                notasDeSalida: product.notasOlfativas.notasDeSalida || "",
                 familiaOlfativa: product.notasOlfativas.familiaOlfativa || "",
-                notasDeCorazon: product.notasOlfativas.notasDeCorazon || "",
-                ingredientes: product.ingredientes?.join(", ") || ""
+                notasDeSalida: product.notasOlfativas.notasDeSalida?.toString().replace(/.$/,".").replaceAll(",",", ") || "",
+                notasDeCorazon: product.notasOlfativas.notasDeCorazon?.toString().replace(/.$/,".").replaceAll(",",", ") || "",
+                notasDeBase: product.notasOlfativas.notasDeBase?.toString().replace(/.$/,".").replaceAll(",",", ") || "",
               },
               ingredientes:{
                 ingredientes: product.ingredientes?.join(", ") || "",
               },
               especificaciones: {
-                género: product.genero || "",
+                género: product.genero.charAt(0).toUpperCase() + product.genero.slice(1) || "",
                 tamaño: selectedVariant.tamano.toString()+"ml" || "",
                 concentración: product.concentracion || "",
                 paísDeOrigen: product.paisDeOrigen || "",
