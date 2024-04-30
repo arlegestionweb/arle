@@ -22,7 +22,7 @@ import { relojesLujoSchema } from "./products/relojes/lujo";
 import { relojesPremiumSchema } from "./products/relojes/premium";
 import { siteSettings } from "./siteSettings";
 import { codigoDeDescuentosSchema } from "./documents/codigosDeDescuento";
-import { imageObjectSchema, imageUrlObjectSchema, videoObjectSchema } from "./objects/image";
+import { imageObjectSchema, imageUrlObjectSchema, imageUrlSchema, videoObjectSchema } from "./objects/image";
 import { contentSchema } from "./objects/contentSchema";
 import { citySchema, nuestrasSedesSchema, sedeSchema } from "./pages/nuestrasSedesSchema";
 import { trabajaConNosotrosSchema } from "./pages/trabajaConNosotrosSchema";
@@ -83,6 +83,7 @@ export const schemaTypes = [
   imageObjectSchema,
   videoObjectSchema,
   contentSchema,
-  imageUrlObjectSchema
+  imageUrlObjectSchema,
+  imageUrlSchema
 
 ];

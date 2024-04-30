@@ -90,6 +90,13 @@ export const gafasLujoSchema = defineType({
         lenteSchema,
       ],
     }),
+    defineField({
+      name: "parteDeUnSet",
+      title: "Es parte de un set?",
+      type: "boolean",
+      group: "detalles",
+      initialValue: false,
+    }),
     variantesDeGafaLujoSchema,
     coleccionesDeMarcaSchema,
     slugSchema,

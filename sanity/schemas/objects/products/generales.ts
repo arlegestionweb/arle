@@ -97,11 +97,32 @@ export const detallesLujoSchema = defineField({
           validation: (Rule) => Rule.required(),
         }),
         defineField({
+          name: "usarImagenExterna",
+          title: "Usar Imagen Externa",
+          type: "boolean"
+        }),
+        defineField({
           name: "imagen",
           title: "Imagen",
-          type: "imagenObject",
-          validation: (Rule) => Rule.required(),
+          type: "image",
+          hidden: ({ parent }) => !parent?.usarImagenExterna,
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Texto Alternativo",
+              description: "Para buscadores de internet (SEO)",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            
+          ],
         }),
+        defineField({
+          name: "imageUrl",
+          title: "Imagen Externa",
+          type: "imageUrl",
+          hidden: ({parent}) => parent?.usarImagenExterna
+        })
       ],
       hidden: ({ parent }) => !parent?.usarDetalles,
     }),

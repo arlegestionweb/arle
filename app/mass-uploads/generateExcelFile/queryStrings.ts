@@ -225,7 +225,7 @@ export const productQueryString: Record<string, string> = {
         "boolean": true,
       },
       "contenido":  {
-        "resena": detalles.contenido.resena,
+        "resena": detalles.contenido.texto,
         "imagen":  {
           "alt": contenido.imagen.alt,
           "url": contenido.imagen.asset->url,
@@ -237,7 +237,7 @@ export const productQueryString: Record<string, string> = {
         "boolean": true,
       },
       "contenido":  {
-        "resena": monturaDetalles.contenido.resena,
+        "resena": monturaDetalles.contenido.texto,
         "imagen":  {
           "alt": contenido.imagen.alt,
           "url": contenido.imagen.asset->url

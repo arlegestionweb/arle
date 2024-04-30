@@ -11,7 +11,7 @@ import { savePerfumesDeLujoProductsInSanityUsingForm } from "../saveProductActio
 import { savePerfumesPremiumInSanityUsingForm } from "../saveProductActions/savePerfumesPremium";
 // import { camelToTitleCase } from "@/utils/helpers";
 import { gafasLujoExcelSchema } from "./excelZodSchemas";
-import { saveGafasLujoInSanityUsingForm } from "../saveProductActions/saveGafasLujo";
+import { TError, saveGafasLujoInSanity } from "../saveProductActions/newSaveGafasLujo";
 
 const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si').or(z.boolean());
 
@@ -132,7 +132,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
   const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesDeLujoProductsInSanityUsingForm, { error: null, success: false });
   const [perfumePremiumFormState, perfumePremiumFormAction] = useFormState(savePerfumesPremiumInSanityUsingForm, { error: null, success: false });
-  const [gafasLujoFormState, gafasLujoFormAction] = useFormState(saveGafasLujoInSanityUsingForm, { error: null, success: false });
+  const [gafasLujoFormState, gafasLujoFormAction] = useFormState(saveGafasLujoInSanity, { errors: [], success: false });
 
   const keys = data.slice(0, 4).map(row => row.values);
 
@@ -278,8 +278,8 @@ const Guardar = () => {
 
 const ProductUpload = ({ productType, products, formState, formAction, uploadErrors }: {
   productType: string;
-  products: (TGafasLujoExcel | TPerfumePremiumExcel | TPerfumeDeLujoExcel)[] ;
-  formState: { error: string | null; success: boolean };
+  products: (TGafasLujoExcel | TPerfumePremiumExcel | TPerfumeDeLujoExcel)[];
+  formState: { error: string | null; success: boolean } | { errors: TError[] | null; success: boolean };
   formAction: (data: any) => void;
   uploadErrors: string[] | null;
 }) => (
@@ -293,7 +293,7 @@ const ProductUpload = ({ productType, products, formState, formAction, uploadErr
       </>
     ) : (
       !uploadErrors && (
-        <>
+        <section className="pb-10 flex flex-col">
           <ul className="flex flex-col gap-3">
             {products.map((product, index) => (
               <li key={index}>
@@ -301,12 +301,49 @@ const ProductUpload = ({ productType, products, formState, formAction, uploadErr
               </li>
             ))}
           </ul>
-          <form action={() => formAction({ products, productType })}>
+          <form action={() => formAction({ products, productType })} className="">
             <Guardar />
           </form>
-          {formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
-        </>
+          {'error' in formState && formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
+          {'errors' in formState && formState.errors && formState.errors.length > 0 && formState.errors.map(error => <p className="text-red-600 text-base" key={error.message}>
+            {error.product && <>
+              <span className="ml-1">
+                {error.product.marca}
+              </span>
+              <span className="ml-1">
+                {error.product.modelo}
+              </span>
+            </>}
+            {error.path && <>
+              <span className="ml-1">
+                {pathToHumanReadable(error.path)}
+              </span>
+            </>}
+            <span className="ml-1">
+              {error.message.replace("Required", "Requerido").replace("Invalid input", "Item Invalido o Requerido")}
+            </span>
+          </p>)}
+        </section>
       )
     )}
   </>
 );
+
+const pathToHumanReadable = (path: string) => {
+  const pathParts = path.split('.');
+  const pathMapping: { [key: string]: string } = {
+    variantes: 'Variants',
+    imagenes: 'Images',
+  };
+  return pathParts
+    .slice(1) // Skip the first part of the path
+    .map((part, index) => {
+      // If the part is a number, add 1 to it
+      if (!isNaN(Number(part))) {
+        return `item ${Number(part) + 1}`;
+      }
+      // Otherwise, map it to a human-readable string
+      return pathMapping[part] || part;
+    })
+    .join(' > ');
+};
