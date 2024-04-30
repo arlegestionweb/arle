@@ -7,8 +7,9 @@ type ImageWrapperProps = Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageEleme
     alt: string;
     height: number;
     width: number;
+    quality?: number;
   };
-const ImageWrapper = ({ src, alt, height, width, ...rest }: ImageWrapperProps) => {
+const ImageWrapper = ({ src, alt, height, width, quality, ...rest }: ImageWrapperProps) => {
   const isSanityImage = src.includes("sanity");
 
   if (isSanityImage) {
@@ -19,6 +20,7 @@ const ImageWrapper = ({ src, alt, height, width, ...rest }: ImageWrapperProps) =
         alt={alt}
         height={height}
         width={width}
+        quality={quality || 80}
       />
     );
   }

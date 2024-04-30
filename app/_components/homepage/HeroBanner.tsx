@@ -52,6 +52,7 @@ const Banner = ({ content, className }: BannerProps) => {
                 layout="fill"
                 width={4000}
                 height={2000}
+                quality={100}
                 imageClassName="object-cover object-top"
                 containerclassName={`snap-center snap-always ${
                   index === 1 && "snap-mandatory"
