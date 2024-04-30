@@ -30,6 +30,7 @@ function ExploreSection({
         layout="fill"
         width={2000}
         height={1000}
+        quality={100}
         imageClassName="object-cover object-center"
         containerclassName="flex justify-center items-end"
       >

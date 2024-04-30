@@ -53,6 +53,7 @@ const ImageModal = ({ images, index, isImageOpen, closeImage }: Props) => {
         <ImageWrapper
           height={900}
           width={1200}
+          quality={85}
           src={('sanityUrl' in image) ? image.sanityUrl : image.url}
           alt={image.alt}
           className=" h-full w-auto object-contain pointer-events-auto"

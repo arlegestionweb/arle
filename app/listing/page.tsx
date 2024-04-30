@@ -834,11 +834,11 @@ const Listing = async ({
 
   return (
     <Main extraClasses=" lg:mb-[100vh] bg-white min-h-screen">
-      <div className="h-[140px] md:h-[160px] lg:h-[220px] flex justify-center bg-gray-950">
+      <div className="h-[140px] md:h-[160px] lg:h-[180px] flex justify-center bg-gray-950">
         {pageContent.listingContent && (
           <Banner
           banners={pageContent.listingContent}
-          className="h-full max-w-[1350px] w-full"
+          className="h-full max-w-[1600px] w-full"
           />
         )}
       </div>

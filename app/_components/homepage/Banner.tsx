@@ -40,8 +40,6 @@ const Banner = ({ banners, className }: BannerProps) => {
 
   const selectedBanners = selectedProductType === "gafa" ? banners.gafasBanners : selectedProductType === "reloj" ? banners.relojesBanners : selectedProductType === "perfume" ? banners.perfumesBanners : banners.generalBanners
 
-  console.log(selectedProductType);
-
   return (
     <section
       className={cn(
@@ -59,6 +57,9 @@ const Banner = ({ banners, className }: BannerProps) => {
                 src={banner.imagen.url}
                 alt={banner.imagen.alt || ""}
                 layout="fill"
+                height={300}
+                width={2000}
+                quality={100}
                 gradientOff
                 imageClassName="object-cover object-top w-full h-full"
                 containerclassName={`snap-center snap-always ${
