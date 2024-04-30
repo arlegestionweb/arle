@@ -3,6 +3,7 @@ import Image from "next/image";
 import Main from "../_components/Main";
 import { Metadata } from "next";
 import AboutSubMenu from "../_components/AboutSubMenu";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -95,6 +96,14 @@ const Page = async () => {
           </section>
         </section>
       }
+      <section className="w-full p-5 flex justify-center">
+      <Link
+          className="dark-button z-10"
+          href="/listing"
+        >
+          Explora nuestros productos
+        </Link>
+      </section>
     </Main>
 
   );
