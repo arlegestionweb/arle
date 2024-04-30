@@ -501,7 +501,7 @@ export const savePerfumesDeLujoProductsInSanityUsingForm = async (
           `*[_type == "familiasOlfativas" && nombre == "${product.notasOlfativas.familiaOlfativa}"][0]`
         );
 
-        if (!familiaOlfativa) {
+        if (!sanityFamiliaOlfativa) {
           const newFamiliaOlfativa = await sanityWriteClient.create({
             _type: "familiasOlfativas",
             nombre: product.notasOlfativas.familiaOlfativa,
