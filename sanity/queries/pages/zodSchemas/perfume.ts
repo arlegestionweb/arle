@@ -14,7 +14,7 @@ export const inspiracionSchema = z.object({
 const notasSchema = z.object({
   notasDeBase: z.array(z.string()).optional().nullable(),
   notasDeSalida: z.array(z.string()).optional().nullable(),
-  familiaOlfativa: z.string().optional().nullable(),
+  familiaOlfativa: z.string(),
   notasDeCorazon: z.array(z.string()).optional().nullable(),
 });
 
