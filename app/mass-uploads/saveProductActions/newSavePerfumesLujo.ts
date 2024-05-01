@@ -4,6 +4,7 @@ import { z } from "zod";
 import { TPerfumeDeLujoExcel } from "../_components/UploadedData";
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { nanoid } from "nanoid";
+import { numberToColombianPriceString } from "@/utils/helpers";
 
 const zodInitialImage = z
   .object({
@@ -15,6 +16,7 @@ const zodInitialImage = z
 const zodVariante = z.object({
   codigoDeReferencia: z.string().or(z.number()),
   precio: z.string().or(z.number()),
+  precioConDescuento: z.string().or(z.number()).optional().nullable(),
   registroInvima: z.string().or(z.number()).optional().nullable(),
   unidadesDisponibles: z.number(),
   mostrarUnidadesDisponibles: z.boolean(),
@@ -39,7 +41,7 @@ const zodInitialPerfumeLujo = z.object({
       _id: z.string().optional().nullable(),
     }),
   }),
-  genero: z.string(),
+  genero: z.string().transform((val) => val.toLowerCase()),
   ingredientes: z.array(z.string()),
   inspiracion: z.object({
     usarInspiracion: z.boolean(),
@@ -131,13 +133,13 @@ export const savePerfumesLujo = async (
   const productsReadyToSave = [];
 
   for (const product of initialParsedProducts.data) {
-    console.log({
+    // console.log({
       // product,
       // descripcion: product.descripcion,
       // // inspiracion: product.inspiracion,
       // inspiracionImagen: product.inspiracion?.contenido?.imagen,
       // imagenes: product.imagenes,
-    });
+    // });
 
     const references: TZodSanityReferences = {
       ingredientes: [],
@@ -491,7 +493,6 @@ export const savePerfumesLujo = async (
         }
       }
     }
-    // console.log({ references });
 
     if (
       !references.marca ||
@@ -603,7 +604,7 @@ export const savePerfumesLujo = async (
                 },
                 alt: `${product.marca} ${product.titulo}`,
               }
-            : null,
+            : undefined,
           imagenExterna: !product.descripcion.imagen._id
             ? {
                 _type: "imageUrl" as "imageUrl",
@@ -611,7 +612,7 @@ export const savePerfumesLujo = async (
                 alt: `${product.marca} ${product.titulo}`,
                 url: product.descripcion.imagen.url,
               }
-            : null,
+            : undefined,
         },
         inspiracion: {
           usarInspiracion: product.inspiracion.usarInspiracion,
@@ -620,7 +621,7 @@ export const savePerfumesLujo = async (
               product.inspiracion.usarInspiracion &&
               product.inspiracion.contenido?.resena
                 ? product.inspiracion.contenido.resena
-                : null,
+                : undefined,
             subirImagen: product.inspiracion.contenido?.imagen.id
               ? false
               : true,
@@ -633,7 +634,7 @@ export const savePerfumesLujo = async (
                   },
                   alt: `${product.marca} ${product.titulo}`,
                 }
-              : null,
+              : undefined,
             imagenExterna:
               !product.inspiracion.contenido?.imagen.id &&
               product.inspiracion.contenido?.imagen.url
@@ -643,10 +644,10 @@ export const savePerfumesLujo = async (
                     alt: `${product.marca} ${product.titulo}`,
                     url: product.inspiracion.contenido?.imagen.url,
                   }
-                : null,
+                : undefined,
           },
         },
-        imagenes: product.imagenes.map(imagen => {
+        imagenes: product.imagenes.map((imagen) => {
           if (typeof imagen === "string") {
             return {
               _type: "imageUrl" as "imageUrl",
@@ -664,12 +665,81 @@ export const savePerfumesLujo = async (
               alt: `${product.marca} ${product.titulo}`,
             };
           }
-        
-        })
+        }),
+        variantes: product.variantes.map((variante) => {
+          return {
+            ...variante,
+            _key: nanoid(),
+            precio:
+              typeof variante.precio === "number"
+                ? numberToColombianPriceString(variante.precio)
+                : variante.precio,
+            precioConDescuento:
+              variante.precioConDescuento &&
+              typeof variante.precioConDescuento === "number"
+                ? numberToColombianPriceString(variante.precioConDescuento)
+                : `${variante.precioConDescuento}`,
+            codigoDeReferencia: `${variante.codigoDeReferencia}`,
+          };
+        }),
       };
 
+      const parsedProductToSave =
+        zodPerfumeLujoWithReferences.safeParse(productToSave);
+
+      if (!parsedProductToSave.success) {
+        const parsingErrors = extractErrorsFromIssues(
+          parsedProductToSave.error.issues,
+          products
+        );
+
+        for (const error of parsingErrors) {
+          errors.push(error);
+        }
+      } else {
+        const sanityProduct = await sanityClient.fetch(
+          `*[_type == "perfumeLujo" && titulo == "${product.titulo}"][0]{...}`
+        );
+
+        if (
+          sanityProduct &&
+          sanityProduct.marca._ref === references.marca._ref
+        ) {
+          console.log("updating product", sanityProduct);
+          const updatedProduct = await sanityWriteClient.createOrReplace({
+            ...sanityProduct,
+            ...parsedProductToSave.data,
+          });
+
+          if (!updatedProduct) {
+            errors.push({
+              message: `Fallo la actualizacion del producto ${product.titulo}`,
+              product: product,
+            });
+          } else {
+            console.log({ updatedProduct });
+          }
+        } else {
+          console.log("creating product");
+          const newProduct = await sanityWriteClient.create({
+            ...parsedProductToSave.data,
+            _type: "perfumeLujo",
+            slug: {
+              current: `/${productType}/${productType}-${nanoid()}`
+            }
+          });
+
+          if (!newProduct) {
+            errors.push({
+              message: `Fallo la creacion del producto ${product.titulo}`,
+              product: product,
+            });
+          } else {
+            console.log({ newProduct });
+          }
+        }
+      }
     }
-    // console.log({ references });
   }
 
   return {
@@ -755,6 +825,19 @@ const zodPerfumeLujoWithReferences = zodInitialPerfumeLujo.merge(
     }),
     paisDeOrigen: zodRefObject,
     imagenes: z.array(zodImageSchema),
+    variantes: z.array(
+      zodVariante.merge(
+        z.object({
+          _key: z.string(),
+          precio: z.string(),
+          codigoDeReferencia: z.string(),
+          precioConDescuento: z.string().optional().nullable(),
+        })
+      )
+    ),
+    // slug: z.object({
+    //   current: z.string(),
+    // }),
   })
 );
 

@@ -96,16 +96,6 @@ export const perfumeLujoSchema = defineType({
           type: "imagenObject",
           hidden: ({ parent }) =>
             parent && (parent as TParentWithSubirImagen).subirImagen !== false,
-          validation: (Rule) =>
-            Rule.custom((field, context) => {
-              if (
-                (context.parent as TParentWithSubirImagen).subirImagen &&
-                !field
-              ) {
-                return "La imagen es requerida cuando 'Subir imagen' está seleccionado";
-              }
-              return true;
-            }),
         }),
         defineField({
           name: "imagenExterna",
@@ -131,16 +121,7 @@ export const perfumeLujoSchema = defineType({
           ],
           hidden: ({ parent }) =>
             parent && (parent as TParentWithSubirImagen).subirImagen === false,
-          validation: (Rule) =>
-            Rule.custom((field, context) => {
-              if (
-                (context.parent as TParentWithSubirImagen).subirImagen &&
-                !field
-              ) {
-                return "La URL es requerida cuando 'Subir imagen' no está seleccionado";
-              }
-              return true;
-            }),
+          
         }),
       ],
     }),
