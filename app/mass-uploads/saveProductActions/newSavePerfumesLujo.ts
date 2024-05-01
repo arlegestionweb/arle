@@ -646,9 +646,28 @@ export const savePerfumesLujo = async (
                 : null,
           },
         },
+        imagenes: product.imagenes.map(imagen => {
+          if (typeof imagen === "string") {
+            return {
+              _type: "imageUrl" as "imageUrl",
+              _key: `image-${nanoid()}`,
+              alt: `${product.marca} ${product.titulo}`,
+              url: imagen,
+            };
+          } else {
+            return {
+              _type: "image" as "image",
+              _key: `image-${nanoid()}`,
+              asset: {
+                _ref: imagen._id,
+              },
+              alt: `${product.marca} ${product.titulo}`,
+            };
+          }
+        
+        })
       };
 
-      console.log({ inspiracion: productToSave.inspiracion });
     }
     // console.log({ references });
   }
