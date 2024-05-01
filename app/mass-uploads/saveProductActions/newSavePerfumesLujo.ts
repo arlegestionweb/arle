@@ -613,9 +613,42 @@ export const savePerfumesLujo = async (
               }
             : null,
         },
+        inspiracion: {
+          usarInspiracion: product.inspiracion.usarInspiracion,
+          contenido: {
+            resena:
+              product.inspiracion.usarInspiracion &&
+              product.inspiracion.contenido?.resena
+                ? product.inspiracion.contenido.resena
+                : null,
+            subirImagen: product.inspiracion.contenido?.imagen.id
+              ? false
+              : true,
+            imagen: product.inspiracion.contenido?.imagen.id
+              ? {
+                  _type: "image" as "image",
+                  _key: `image-${nanoid()}`,
+                  asset: {
+                    _ref: product.inspiracion.contenido?.imagen.id,
+                  },
+                  alt: `${product.marca} ${product.titulo}`,
+                }
+              : null,
+            imagenExterna:
+              !product.inspiracion.contenido?.imagen.id &&
+              product.inspiracion.contenido?.imagen.url
+                ? {
+                    _type: "imageUrl" as "imageUrl",
+                    _key: `image-${nanoid()}`,
+                    alt: `${product.marca} ${product.titulo}`,
+                    url: product.inspiracion.contenido?.imagen.url,
+                  }
+                : null,
+          },
+        },
       };
 
-      console.log({ imagenDesc: productToSave.descripcion });
+      console.log({ inspiracion: productToSave.inspiracion });
     }
     // console.log({ references });
   }
