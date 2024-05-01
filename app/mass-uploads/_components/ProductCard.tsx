@@ -83,7 +83,7 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
               descripcion: typeof product.descripcion === 'object' ? {
                 ...product.descripcion,
                 imagen: {
-                  id: imageId,
+                  _id: imageId,
                   url: imageUrl,
                   alt: `${product.marca}-${product.titulo}`
                 }

@@ -514,79 +514,108 @@ export const savePerfumesLujo = async (
     ) {
       errors.push({ message: "error con las referencias" });
     } else {
-      const ingredientes = (references.ingredientes.map((ingrediente) => {
-        if (ingrediente !== null && ingrediente !== undefined) {
-          return {
-            ...ingrediente,
-            _key: ingrediente._key || nanoid(),
-          };
-        }
-        return null;
-      }).filter(Boolean) as Array<{
+      const ingredientes = references.ingredientes
+        .map((ingrediente) => {
+          if (ingrediente !== null && ingrediente !== undefined) {
+            return {
+              ...ingrediente,
+              _key: ingrediente._key || nanoid(),
+            };
+          }
+          return null;
+        })
+        .filter(Boolean) as Array<{
         _key: string;
         _type: "reference";
         _ref: string;
         nombre: string;
-      }>);
-      const notasDeBase = (references.notasOlfativas.notasDeBase.map((nota) => {
-        if (nota !== null && nota !== undefined) {
-          return {
-            ...nota,
-            _key: nota._key || nanoid(),
-          };
-        }
-        return null;
-      }).filter(Boolean) as Array<{
+      }>;
+      const notasDeBase = references.notasOlfativas.notasDeBase
+        .map((nota) => {
+          if (nota !== null && nota !== undefined) {
+            return {
+              ...nota,
+              _key: nota._key || nanoid(),
+            };
+          }
+          return null;
+        })
+        .filter(Boolean) as Array<{
         _key: string;
         _type: "reference";
         _ref: string;
         nombre: string;
-      }>);
-      const notasDeCorazon = (references.notasOlfativas.notasDeCorazon.map((nota) => {
-        if (nota !== null && nota !== undefined) {
-          return {
-            ...nota,
-            _key: nota._key || nanoid(),
-          };
-        }
-        return null;
-      }).filter(Boolean) as Array<{
+      }>;
+      const notasDeCorazon = references.notasOlfativas.notasDeCorazon
+        .map((nota) => {
+          if (nota !== null && nota !== undefined) {
+            return {
+              ...nota,
+              _key: nota._key || nanoid(),
+            };
+          }
+          return null;
+        })
+        .filter(Boolean) as Array<{
         _key: string;
         _type: "reference";
         _ref: string;
         nombre: string;
-      }>);
-      const notasDeSalida = (references.notasOlfativas.notasDeSalida.map((nota) => {
-        if (nota !== null && nota !== undefined) {
-          return {
-            ...nota,
-            _key: nota._key || nanoid(),
-          };
-        }
-        return null;
-      }).filter(Boolean) as Array<{
+      }>;
+      const notasDeSalida = references.notasOlfativas.notasDeSalida
+        .map((nota) => {
+          if (nota !== null && nota !== undefined) {
+            return {
+              ...nota,
+              _key: nota._key || nanoid(),
+            };
+          }
+          return null;
+        })
+        .filter(Boolean) as Array<{
         _key: string;
         _type: "reference";
         _ref: string;
         nombre: string;
-      }>);
+      }>;
 
-      // const productToSave: TPerfumeDeLujoSanityReady = {
-      //   ...product,
-      //   marca: references.marca,
-      //   concentracion: references.concentracion,
-      //   ingredientes,
-      //   notasOlfativas: {
-      //     familiaOlfativa: references.notasOlfativas.familiaOlfativa,
-      //     notasDeBase,
-      //     notasDeCorazon,
-      //     notasDeSalida,
-      //   },
-      //   paisDeOrigen: references.paisDeOrigen,
+      const productToSave: TPerfumeDeLujoSanityReady = {
+        ...product,
+        marca: references.marca,
+        concentracion: references.concentracion,
+        ingredientes,
+        notasOlfativas: {
+          familiaOlfativa: references.notasOlfativas.familiaOlfativa,
+          notasDeBase,
+          notasDeCorazon,
+          notasDeSalida,
+        },
+        paisDeOrigen: references.paisDeOrigen,
+        descripcion: {
+          texto: product.descripcion.texto,
+          subirImagen: product.descripcion.imagen._id ? false : true,
+          imagen: product.descripcion.imagen._id
+            ? {
+                _type: "image" as "image",
+                _key: `image-${nanoid()}`,
+                asset: {
+                  _ref: product.descripcion.imagen._id,
+                },
+                alt: `${product.marca} ${product.titulo}`,
+              }
+            : null,
+          imagenExterna: !product.descripcion.imagen._id
+            ? {
+                _type: "imageUrl" as "imageUrl",
+                _key: `image-${nanoid()}`,
+                alt: `${product.marca} ${product.titulo}`,
+                url: product.descripcion.imagen.url,
+              }
+            : null,
+        },
+      };
 
-      // };
-
-      // console.log({ productToSave });
+      console.log({ imagenDesc: productToSave.descripcion });
     }
     // console.log({ references });
   }
