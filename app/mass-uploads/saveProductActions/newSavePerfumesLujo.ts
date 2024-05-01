@@ -130,8 +130,6 @@ export const savePerfumesLujo = async (
     };
   }
 
-  const productsReadyToSave = [];
-
   for (const product of initialParsedProducts.data) {
     // console.log({
       // product,
