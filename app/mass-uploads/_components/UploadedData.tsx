@@ -43,7 +43,7 @@ const perfumeDeLujoExcelSchema = z.object({
         alt: z.string(),
         id: z.string().optional().nullable(),
         url: z.string()
-      }),
+      }).optional().nullable(),
       resena: z.string().optional().nullable(),
     }).optional().nullable(),
     usarInspiracion: zodSiBoolean.optional().nullable(),
@@ -297,59 +297,63 @@ const ProductUpload = ({ productType, products, formState, formAction, uploadErr
   formState: { error: string | null; success: boolean } | { errors: TError[] | null; success: boolean };
   formAction: (data: any) => void;
   uploadErrors: string[] | null;
-}) => (
-  <>
-    {formState.success ? (
-      <>
-        <p className="text-green-600 text-base">Productos guardados con éxito</p>
-        <Link href="/mass-uploads">
-          Volver al inicio
-        </Link>
-      </>
-    ) : (
-      !uploadErrors && (
-        <section className="pb-10 flex flex-col">
-          <ul className="flex flex-col gap-3">
-            {products.map((product, index) => (
-              <li key={index}>
-                <ProductCard product={product} productType={productType} />
-              </li>
-            ))}
-          </ul>
-          <form action={() => formAction({ products, productType })} className="">
-            <Guardar />
-          </form>
-          {'error' in formState && formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
-          {'errors' in formState && formState.errors && formState.errors.length > 0 && formState.errors.map(error => <p className="text-red-600 text-base" key={error.message}>
-            {error.product && <>
-              <span className="ml-1">
-                {error.product.marca}
-              </span>
-              {"modelo" in error.product && (
+}) => {
+
+  console.log({formState})
+  return (
+    <>
+      {formState.success ? (
+        <>
+          <p className="text-green-600 text-base">Productos guardados con éxito</p>
+          <Link href="/mass-uploads">
+            Volver al inicio
+          </Link>
+        </>
+      ) : (
+        !uploadErrors && (
+          <section className="pb-10 flex flex-col">
+            <ul className="flex flex-col gap-3">
+              {products.map((product, index) => (
+                <li key={index}>
+                  <ProductCard product={product} productType={productType} />
+                </li>
+              ))}
+            </ul>
+            <form action={() => formAction({ products, productType })} className="">
+              <Guardar />
+            </form>
+            {'error' in formState && formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
+            {'errors' in formState && formState.errors && formState.errors.length > 0 && formState.errors.map(error => <p className="text-red-600 text-base" key={error.message}>
+              {error.product && <>
                 <span className="ml-1">
-                  {error.product.modelo}
+                  {error.product.marca}
                 </span>
-              )}
-              {"titulo" in error.product && (
+                {"modelo" in error.product && (
+                  <span className="ml-1">
+                    {error.product.modelo}
+                  </span>
+                )}
+                {"titulo" in error.product && (
+                  <span className="ml-1">
+                    {error.product.titulo}
+                  </span>
+                )}
+              </>}
+              {error.path && <>
                 <span className="ml-1">
-                  {error.product.titulo}
+                  {pathToHumanReadable(error.path)}
                 </span>
-              )}
-            </>}
-            {error.path && <>
+              </>}
               <span className="ml-1">
-                {pathToHumanReadable(error.path)}
+                {error.message.replace("Required", "Requerido").replace("Invalid input", "Item Invalido o Requerido")}
               </span>
-            </>}
-            <span className="ml-1">
-              {error.message.replace("Required", "Requerido").replace("Invalid input", "Item Invalido o Requerido")}
-            </span>
-          </p>)}
-        </section>
-      )
-    )}
-  </>
-);
+            </p>)}
+          </section>
+        )
+      )}
+    </>
+  )
+};
 
 const pathToHumanReadable = (path: string) => {
   const pathParts = path.split('.');

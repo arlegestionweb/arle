@@ -49,9 +49,9 @@ const zodInitialPerfumeLujo = z.object({
       .object({
         imagen: z.object({
           alt: z.string(),
-          url: z.string(),
+          url: z.string().optional().nullable(),
           id: z.string().optional().nullable(),
-        }),
+        }).optional().nullable(),
         resena: z.string(),
       })
       .nullable()
@@ -620,10 +620,10 @@ export const savePerfumesLujo = async (
               product.inspiracion.contenido?.resena
                 ? product.inspiracion.contenido.resena
                 : undefined,
-            subirImagen: product.inspiracion.contenido?.imagen.id
+            subirImagen: product.inspiracion.contenido?.imagen?.id
               ? false
               : true,
-            imagen: product.inspiracion.contenido?.imagen.id
+            imagen: product.inspiracion.contenido?.imagen?.id
               ? {
                   _type: "image" as "image",
                   _key: `image-${nanoid()}`,
@@ -634,8 +634,8 @@ export const savePerfumesLujo = async (
                 }
               : undefined,
             imagenExterna:
-              !product.inspiracion.contenido?.imagen.id &&
-              product.inspiracion.contenido?.imagen.url
+              !product.inspiracion.contenido?.imagen?.id &&
+              product.inspiracion.contenido?.imagen?.url
                 ? {
                     _type: "imageUrl" as "imageUrl",
                     _key: `image-${nanoid()}`,
@@ -716,6 +716,10 @@ export const savePerfumesLujo = async (
             });
           } else {
             console.log({ updatedProduct });
+            return {
+              success: true,
+              errors: null,
+            };
           }
         } else {
           console.log("creating product");
@@ -734,6 +738,10 @@ export const savePerfumesLujo = async (
             });
           } else {
             console.log({ newProduct });
+            return {
+              success: true,
+              errors: null,
+            }
           }
         }
       }
