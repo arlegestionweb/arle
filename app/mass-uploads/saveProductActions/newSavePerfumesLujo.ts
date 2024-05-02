@@ -47,11 +47,14 @@ const zodInitialPerfumeLujo = z.object({
     usarInspiracion: z.boolean(),
     contenido: z
       .object({
-        imagen: z.object({
-          alt: z.string(),
-          url: z.string().optional().nullable(),
-          id: z.string().optional().nullable(),
-        }).optional().nullable(),
+        imagen: z
+          .object({
+            alt: z.string(),
+            url: z.string().optional().nullable(),
+            id: z.string().optional().nullable(),
+          })
+          .optional()
+          .nullable(),
         resena: z.string(),
       })
       .nullable()
@@ -130,13 +133,15 @@ export const savePerfumesLujo = async (
     };
   }
 
+  const createdMarcas: { _id: string; titulo: string }[] = [];
+
   for (const product of initialParsedProducts.data) {
     // console.log({
-      // product,
-      // descripcion: product.descripcion,
-      // // inspiracion: product.inspiracion,
-      // inspiracionImagen: product.inspiracion?.contenido?.imagen,
-      // imagenes: product.imagenes,
+    // product,
+    // descripcion: product.descripcion,
+    // // inspiracion: product.inspiracion,
+    // inspiracionImagen: product.inspiracion?.contenido?.imagen,
+    // imagenes: product.imagenes,
     // });
 
     const references: TZodSanityReferences = {
@@ -271,26 +276,39 @@ export const savePerfumesLujo = async (
       }
     } else {
       if (!sanityRefResultsParsed.data.marca) {
-        const newMarca = await sanityWriteClient.create({
-          _type: "marca",
-          titulo: product.marca,
-        });
-        if (!newMarca) {
-          errors.push({
-            message: "Fallo la creacion de una nueva marca",
-            product: product,
-          });
-        }
+        const existingMarca = createdMarcas.find(
+          (m) => m.titulo === product.marca
+        );
 
-        references.marca = {
-          _type: "reference",
-          _ref: newMarca._id,
-        };
+        if (existingMarca) {
+          references.marca = {
+            _type: "reference",
+            _ref: existingMarca._id,
+          };
+        } else {
+          const newMarca = await sanityWriteClient.create({
+            _type: "marca",
+            titulo: product.marca,
+          });
+
+          if (!newMarca) {
+            errors.push({
+              message: "Failed to create new marca",
+              product: product,
+            });
+          } else {
+            references.marca = {
+              _type: "reference",
+              _ref: newMarca._id,
+            };
+            createdMarcas.push(newMarca);
+          }
+        }
       } else {
         references.marca = {
           _type: "reference",
-          _ref: sanityRefResultsParsed.data.marca._ref,
-        };
+          _ref: sanityRefResultsParsed.data.marca._ref
+        }
       }
 
       if (!sanityRefResultsParsed.data.concentracion) {
@@ -703,7 +721,7 @@ export const savePerfumesLujo = async (
           sanityProduct &&
           sanityProduct.marca._ref === references.marca._ref
         ) {
-          console.log("updating product", sanityProduct);
+          console.log("updating product");
           const updatedProduct = await sanityWriteClient.createOrReplace({
             ...sanityProduct,
             ...parsedProductToSave.data,
@@ -715,11 +733,11 @@ export const savePerfumesLujo = async (
               product: product,
             });
           } else {
-            console.log({ updatedProduct });
-            return {
-              success: true,
-              errors: null,
-            };
+            // console.log({ updatedProduct });
+            // return {
+            //   success: true,
+            //   errors: null,
+            // };
           }
         } else {
           console.log("creating product");
@@ -727,8 +745,8 @@ export const savePerfumesLujo = async (
             ...parsedProductToSave.data,
             _type: "perfumeLujo",
             slug: {
-              current: `/${productType}/${productType}-${nanoid()}`
-            }
+              current: `/${productType}/${productType}-${nanoid()}`,
+            },
           });
 
           if (!newProduct) {
@@ -737,20 +755,27 @@ export const savePerfumesLujo = async (
               product: product,
             });
           } else {
-            console.log({ newProduct });
-            return {
-              success: true,
-              errors: null,
-            }
+            // console.log({ newProduct });
+            // return {
+            //   success: true,
+            //   errors: null,
+            // };
           }
         }
       }
     }
   }
 
+  if (errors && errors.length > 0) {
+    return {
+      success: false,
+      errors
+    }
+  }
+
   return {
-    success: false,
-    errors,
+    success: true,
+    errors: [],
   };
 };
 
