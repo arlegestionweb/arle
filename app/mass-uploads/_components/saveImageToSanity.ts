@@ -35,8 +35,8 @@ export const saveImageToSanity = async (
     status: "success",
     message: sanityResp._id,
     image: {
-      url: sanityResp.url,
-      _id: sanityResp._id
+        url: sanityResp.url,
+        _id: sanityResp._id
     }
   };
 };

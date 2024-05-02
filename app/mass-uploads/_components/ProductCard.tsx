@@ -46,13 +46,14 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
         <SingleImageUpload
           product={product}
           title="Imagen de la inspiración:"
-          onImageUpload={(imageUrl) => {
+          onImageUpload={(imageId, imageUrl) => {
             const newProd = {
               ...product,
               inspiracion: product.inspiracion ? {
                 ...product.inspiracion,
                 contenido: {
                   imagen: {
+                    id: imageId,
                     url: imageUrl,
                     alt: `${product.marca}-${product.titulo}`
                   },
@@ -76,12 +77,13 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
         <SingleImageUpload
           product={product}
           title="Imagen de la descripción:"
-          onImageUpload={(imageUrl) => {
+          onImageUpload={(imageId, imageUrl) => {
             const newProd = {
               ...product,
               descripcion: typeof product.descripcion === 'object' ? {
                 ...product.descripcion,
                 imagen: {
+                  _id: imageId,
                   url: imageUrl,
                   alt: `${product.marca}-${product.titulo}`
                 }

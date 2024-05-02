@@ -21,6 +21,7 @@ export const sanityAdminConfig = {
       structure,
     }),
     colorInput(),
+    // visionTool()
   ],
   schema: {
     types: schemaTypes,
