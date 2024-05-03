@@ -302,13 +302,15 @@ const ProductUpload = ({ productType, products, formState, formAction, uploadErr
   const [errors, setErrors] = useState<null | TError[]>()
 
   useEffect(() => {
+    // console.log("running useEffect")
     setErrors(null)
     if ("errors" in formState && formState.errors) {
+      // console.log(formState.errors)
       setErrors(formState.errors)
     }
   }, [formState])
 
-  console.log({ formState })
+  // console.log({ formState })
   return (
     <>
       {formState.success ? (
@@ -337,7 +339,7 @@ const ProductUpload = ({ productType, products, formState, formAction, uploadErr
               <Guardar />
             </form>
             {'error' in formState && formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
-            {errors && errors.length > 0 && errors.map(error => <p className="text-red-600 text-base" key={error.message}>
+          {errors && errors.length > 0 && errors.map((error, i) => <p className="text-red-600 text-base" key={`${error.message}-${i}`}>
               {error.product && <>
                 <span className="ml-1">
                   {error.product.marca}
