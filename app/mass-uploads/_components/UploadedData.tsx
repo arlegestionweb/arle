@@ -244,7 +244,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
   }
 
   return (
-    <section className="flex flex-col items-center w-full max-w-xl">
+    <section className="flex flex-col items-center w-full max-w-3xl">
       {/* <button onClick={reset} >volver a intentar</button> */}
       {productType === 'perfumeLujo' && (
         <ProductUpload
@@ -324,9 +324,9 @@ const ProductUpload = ({ productType, products, formState, formAction, uploadErr
       ) : (
         !uploadErrors && (
           <section className="pb-10 flex flex-col">
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-10 w-full">
               {products.map((product, index) => (
-                <li key={index}>
+                <li key={index} className="">
                   <ProductCard product={product} productType={productType} />
                 </li>
               ))}

@@ -29,7 +29,7 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
 
   const { updateProduct: updatePerfumeLujo } = usePerfumeLujoUploadStore();
   return (
-    <div className="border border-black p-4 flex justify-between">
+    <div className="border border-black min-w-xl p-4 flex flex-col justify-between">
       {/* <p><strong>Código: </strong>{product.variante.codigoDeReferencia}</p> */}
       <section className="min-w-300px">
 
