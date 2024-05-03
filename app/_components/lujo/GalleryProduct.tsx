@@ -11,9 +11,6 @@ type GalleryProductProps = {
   imagesProduct: ({
     url: string;
     alt: string;
-  } | {
-    alt: string;
-    sanityUrl: string;
   })[]
   className?: string;
   orientation?: "vertical" | "horizontal";
@@ -31,11 +28,11 @@ const GalleryProduct = ({
     if (imagesProduct.length > 1) {
       return (
         <section
-          key={`${('sanityUrl' in img) ? img.sanityUrl : img.url}-${idx}`}
+          key={`${img.url}-${idx}`}
           className="relative min-w-[80px] w-20 h-20 mr-3"
         >
           <ImageWrapper
-            src={('sanityUrl' in img) ? img.sanityUrl : img.url}
+            src={img.url}
             alt={img.alt || "perfume"}
             width={80}
             height={80}
@@ -72,7 +69,7 @@ const GalleryProduct = ({
       >
         <ImageWrapper
           alt={imagesProduct[index].alt || ""}
-          src={('sanityUrl' in image) ? image.sanityUrl : image.url}
+          src={image.url}
           width={800}
           height={800}
           className="object-contain object-center h-full w-full"

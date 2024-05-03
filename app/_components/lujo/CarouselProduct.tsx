@@ -6,9 +6,6 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 type ImageType = ({
   url: string;
   alt: string;
-} | {
-  alt: string;
-  sanityUrl: string;
 });
 
 type CarouselProductProps = {
@@ -75,12 +72,12 @@ const CarouselProduct = ({
       >
         {visibleImages.map((img, idx) => (
           <div
-            key={`${('sanityUrl' in img) ? img.sanityUrl : img.url}-${idx}`}
+            key={`${img.url}-${idx}`}
             className="relative min-w-[80px] w-20 h-20 "
             onClick={() => selectImages(img)}
           >
             <ImageWrapper
-              src={('sanityUrl' in img) ? img.sanityUrl : img.url}
+              src={img.url}
                alt={img.alt || "perfume"}
               width={80}
               height={80}

@@ -173,7 +173,7 @@ export type TProduct = z.infer<typeof zodProduct>;
 const zodCollectiones = z.array(
   z.object({
     titulo: z.string(),
-    descripcion: z.string(),
+    descripcion: z.string().optional().nullable(),
     imagen: z.object({
       url: z.string(),
       alt: z.string().optional().nullable(),
@@ -210,7 +210,10 @@ export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
 
-    console.log({imagenes: result.perfumes[0].imagenes})
+
+
+    console.log({colecciones: result.colecciones})
+
     const parsedResult = zodListPage.safeParse(result);
 
     if (!parsedResult.success) {

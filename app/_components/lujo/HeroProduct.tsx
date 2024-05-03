@@ -23,9 +23,6 @@ type HeroProductProps = {
   images: ({
     url: string;
     alt: string;
-  } | {
-    alt: string;
-    sanityUrl: string;
   })[];
   selectedVariant: TVariant;
   setSelectedVariant: (variant: TVariant) => void;

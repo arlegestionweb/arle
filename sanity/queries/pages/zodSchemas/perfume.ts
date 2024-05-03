@@ -41,7 +41,7 @@ const perfumeVariantSchema = z.object({
   tamano: z.number(),
   precio: z.string(),
   precioConDescuento: z.string().optional().nullable(),
-  codigoDeReferencia: z.string(),
+  codigoDeReferencia: z.string().or(z.number()),
   registroInvima: z.string().or(z.number()).optional().nullable(),
   mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   unidadesDisponibles: z.number(),
@@ -88,12 +88,7 @@ export const perfumeLujoSchema = z.object({
   parteDeUnSet: z.boolean().optional().nullable(),
   concentracion: z.string(),
   imagenes: z.array(
-    imageSchema.or(
-      z.object({
-        alt: z.string(),
-        sanityUrl: z.string(),
-      })
-    )
+    imageSchema
   ),
   notasOlfativas: notasSchema,
   ingredientes: z.array(z.string()).optional().nullable(),

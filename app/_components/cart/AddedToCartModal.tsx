@@ -107,7 +107,7 @@ const AddedToCartModal = () => {
           <section className="flex flex-col sm:flex-row w-full gap-5 items-center sm:items-start justify-between">
             {image && (
               <ImageWrapper
-                src={('sanityUrl' in image) ? image.sanityUrl : image.url}
+                src={image.url}
                 alt={image?.alt}
                 width={180}
                 height={180}

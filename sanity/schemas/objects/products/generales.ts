@@ -208,7 +208,7 @@ export const inspiracionSchema = defineField({
           validation: (Rule) =>
             Rule.custom((field, context) => {
               if (
-                (context.parent as TParentWithSubirImagen).subirImagen &&
+                !(context.parent as TParentWithSubirImagen).subirImagen &&
                 !field
               ) {
                 return "La imagen es requerida cuando 'Subir imagen' está seleccionado";

@@ -8,9 +8,6 @@ type Props = {
   images: ({
     url: string;
     alt: string;
-} | {
-    alt: string;
-    sanityUrl: string;
 })[];
   index: number;
   isImageOpen: boolean | false;
@@ -54,7 +51,7 @@ const ImageModal = ({ images, index, isImageOpen, closeImage }: Props) => {
           height={900}
           width={1200}
           quality={85}
-          src={('sanityUrl' in image) ? image.sanityUrl : image.url}
+          src={image.url}
           alt={image.alt}
           className=" h-full w-auto object-contain pointer-events-auto"
         />

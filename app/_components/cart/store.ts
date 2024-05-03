@@ -7,7 +7,7 @@ const TAX = 0.19;
 
 export const zodCartItem = z.object({
   productId: z.string(),
-  variantId: z.string(),
+  variantId: z.string().or(z.number()),
   price: z.number(),
   quantity: z.number(),
   productType: z.union([

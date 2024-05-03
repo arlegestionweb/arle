@@ -125,7 +125,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       "imagenes": imagenes[]{
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
       unidadesDisponibles,
       mostrarUnidadesDisponibles,
@@ -171,7 +171,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       "imagenes": imagenes[]{
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
       codigoDeReferencia,
       tag,
@@ -214,6 +214,7 @@ export const productQuery: Record<TProductType, string> = {
     mostrarCredito
   }`,
   perfumeLujo: `{
+    ...,
     "date": _createdAt,
     titulo,
     "inspiracion": ${inspiracionQuery},    
@@ -236,8 +237,8 @@ export const productQuery: Record<TProductType, string> = {
     "imagenes": imagenes[] {
       ...,
       alt, 
-      "sanityUrl": asset->url,
-      url
+      "url": coalesce(url, asset->url),
+      "aqui": "aqio"
     },
     "notasOlfativas": notasOlfativas {
       "notasDeBase": notasDeBase [] -> nombre,
@@ -285,7 +286,7 @@ export const productQuery: Record<TProductType, string> = {
     mostrarCredito,
     "imagenes": imagenes[]{
       alt,
-      "url": asset->url,
+      "url": coalesce(url, asset->url),
     },
     "marca": marca->titulo,
     "variantes": variantes[]{
@@ -366,7 +367,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       "imagenes": imagenes[] {
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
       codigoDeReferencia,
       unidadesDisponibles,
@@ -415,7 +416,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       "imagenes": imagenes[] {
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
       codigoDeReferencia,
       unidadesDisponibles,

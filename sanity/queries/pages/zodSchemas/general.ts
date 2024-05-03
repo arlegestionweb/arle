@@ -5,7 +5,7 @@ import { TPerfumeVariant } from "./perfume";
 
 export const imageSchema = z.object({
   alt: z.string(),
-  url: z.string().optional().nullable(),
+  url: z.string(),
 });
 
 export const generoSchema = z.string();
