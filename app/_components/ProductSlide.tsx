@@ -10,9 +10,6 @@ import ImageWrapper from "../listing/_components/ImageWrapper";
 export type ProductImage = ({
   url: string;
   alt: string;
-} | {
-  alt: string;
-  sanityUrl: string;
 })
 
 export type ProductVideo = {
@@ -28,9 +25,6 @@ type ProductSlideProps = {
     ({
       url: string;
       alt: string;
-    } | {
-      alt: string;
-      sanityUrl: string;
     }) | null | undefined;
     video?:
     | {
@@ -101,7 +95,7 @@ const ProductSlide = ({
                 <Link href={slug || ""} className="w-full h-full">
                   <ImageWrapper
                     alt={image.alt || "product"}
-                    src={('sanityUrl' in image) ? image.sanityUrl : image.url}
+                    src={image.url}
                     width={250}
                     height={250}
                     className={`absolute object-contain h-full w-full object-center`}
@@ -114,7 +108,7 @@ const ProductSlide = ({
                 }} className="w-full h-full cursor-zoom-in">
                   <ImageWrapper
                     alt={image.alt || "product"}
-                    src={('sanityUrl' in image) ? image.sanityUrl : image.url}
+                    src={image.url}
                     width={250}
                     height={250}
                     className={`absolute object-contain h-full w-full object-center`}
@@ -137,7 +131,7 @@ const ProductSlide = ({
                 <div>
                   <ImageWrapper
                     alt={product.imagen?.alt || "product"}
-                    src={product.imagen && ('sanityUrl' in product.imagen) ? product.imagen?.sanityUrl : product.imagen?.url || ""}
+                    src={product.imagen?.url || ""}
                     width={250}
                     height={250}
                     className={`object-contain w-full h-full fit object-center`}

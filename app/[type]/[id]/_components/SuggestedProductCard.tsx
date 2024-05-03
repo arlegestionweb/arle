@@ -86,9 +86,9 @@ const CardLayout = ({
             <Image
               src={
                 isPerfume(product)
-                  ? firstImage && ('sanityUrl' in firstImage) ? firstImage.sanityUrl : firstImage?.url || ""
+                  ? (firstImage && firstImage?.url) || ""
                   : "imagenes" in selectedVariant
-                    ? selectedVariant.imagenes[0].url
+                    ? selectedVariant.imagenes[0].url || ""
                     : ""
               }
               alt={

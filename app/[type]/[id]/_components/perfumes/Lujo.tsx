@@ -49,8 +49,24 @@ const PerfumeLujo = ({
         <InfoSection
           titulo="Inspiración"
           descripcion={product.inspiracion.contenido!.resena || ""}
-          alt={product.inspiracion.contenido!.imagen?.alt || ""}
-          url={product.inspiracion.contenido!.imagen?.url || ""}
+          alt={
+            !product.inspiracion.contenido?.subirImagen
+              ? ("imagen" in product.inspiracion.contenido! && product.inspiracion.contenido!.imagen?.alt)
+                ? product.inspiracion.contenido!.imagen.alt
+                : undefined
+              : (product.inspiracion.contenido!.imagenExterna.alt)
+                ? product.inspiracion.contenido!.imagenExterna.alt
+                : undefined
+          }
+          url={
+            !product.inspiracion.contenido?.subirImagen
+              ? ("imagen" in product.inspiracion.contenido! && product.inspiracion.contenido!.imagen?.url)
+                ? product.inspiracion.contenido!.imagen.url
+                : undefined
+              : (product.inspiracion.contenido!.imagenExterna.url)
+                ? product.inspiracion.contenido!.imagenExterna.url
+                : undefined
+          }
           labelType="light"
           className="lg:flex-row-reverse"
         />
@@ -68,12 +84,12 @@ const PerfumeLujo = ({
                 notasDeCorazon: product.notasOlfativas.notasDeCorazon?.toString().replaceAll(",",", ") + "." || "",
                 notasDeBase: product.notasOlfativas.notasDeBase?.toString().replaceAll(",",", ") + "." || "",
               },
-              ingredientes:{
+              ingredientes: {
                 ingredientes: product.ingredientes?.join(", ") || "",
               },
               especificaciones: {
                 género: product.genero.charAt(0).toUpperCase() + product.genero.slice(1) || "",
-                tamaño: selectedVariant.tamano.toString()+"ml" || "",
+                tamaño: selectedVariant.tamano.toString() + "ml" || "",
                 concentración: product.concentracion || "",
                 paísDeOrigen: product.paisDeOrigen || "",
                 registroInvima: selectedVariant.registroInvima || "",
@@ -83,12 +99,12 @@ const PerfumeLujo = ({
         }
         ImageComp={
           product.banners ?
-          <ProductSlide
-            imageVideoProducts={product.banners || []}
-            className="w-full h-[60vw] md:max-h-[350px]"
-            isLink={false}
-          /> :
-          null
+            <ProductSlide
+              imageVideoProducts={product.banners || []}
+              className="w-full h-[60vw] md:max-h-[350px]"
+              isLink={false}
+            /> :
+            null
         }
       />
 

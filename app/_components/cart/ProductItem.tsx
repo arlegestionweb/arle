@@ -73,7 +73,7 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
       </button>
       {image && (
         <ImageWrapper
-          src={('sanityUrl' in image) ? image.sanityUrl : image.url}
+          src={image.url}
           alt={image?.alt}
           width={115}
           height={115}

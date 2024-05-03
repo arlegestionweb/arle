@@ -14,7 +14,7 @@ const gafaVariantSchema = z.object({
   precio: z.string(),
   precioConDescuento: z.string().optional().nullable(),
   tag: z.string().optional().nullable(),
-  codigoDeReferencia: z.string(),
+  codigoDeReferencia: z.string().or(z.number()),
   mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   unidadesDisponibles: z.number(),
   imagenes: z.array(imageSchema),

@@ -26,7 +26,8 @@ const contenidoQuery = `
       url
     }
 }`;
-const inspiracionQuery = `inspiracion { 
+const inspiracionQuery = `inspiracion {
+  ...,
   usarInspiracion, 
   ${contenidoQuery}
 }`;
@@ -125,7 +126,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       "imagenes": imagenes[]{
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
       unidadesDisponibles,
       mostrarUnidadesDisponibles,
@@ -171,7 +172,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       "imagenes": imagenes[]{
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
       codigoDeReferencia,
       tag,
@@ -214,6 +215,7 @@ export const productQuery: Record<TProductType, string> = {
     mostrarCredito
   }`,
   perfumeLujo: `{
+    ...,
     "date": _createdAt,
     titulo,
     "inspiracion": ${inspiracionQuery},    
@@ -236,8 +238,8 @@ export const productQuery: Record<TProductType, string> = {
     "imagenes": imagenes[] {
       ...,
       alt, 
-      "sanityUrl": asset->url,
-      url
+      "url": coalesce(url, asset->url),
+      "aqui": "aqio"
     },
     "notasOlfativas": notasOlfativas {
       "notasDeBase": notasDeBase [] -> nombre,
@@ -285,7 +287,7 @@ export const productQuery: Record<TProductType, string> = {
     mostrarCredito,
     "imagenes": imagenes[]{
       alt,
-      "url": asset->url,
+      "url": coalesce(url, asset->url),
     },
     "marca": marca->titulo,
     "variantes": variantes[]{
@@ -366,7 +368,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       "imagenes": imagenes[] {
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
       codigoDeReferencia,
       unidadesDisponibles,
@@ -415,7 +417,7 @@ export const productQuery: Record<TProductType, string> = {
       },
       "imagenes": imagenes[] {
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
       codigoDeReferencia,
       unidadesDisponibles,
@@ -468,18 +470,21 @@ export const getProductById = async (id: string, productType: TProductType) => {
   const fetchResult =
     await sanityClient.fetch(`*[_type == "${productType}" && _id == "${id}"][0]
   ${query}`);
+
+  
   const productSchema = schemas[productType];
-
+  
   const params = { productId: id };
-
+  
   const discounts = await sanityClient.fetch(timedDiscountQuery, params);
-
+  
   const product = productSchema.safeParse(fetchResult);
 
   const parsedDiscounts = zodTimedDiscountsSchema.safeParse(discounts);
   //
 
   if (!parsedDiscounts.success) {
+    
     throw new Error(parsedDiscounts.error.message);
   }
 

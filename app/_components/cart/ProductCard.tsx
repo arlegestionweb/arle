@@ -22,7 +22,7 @@ const ProductCard = ({
     originalPrice: number;
     price: number;
     quantity: number;
-    variantId: string;
+    variantId: string | number;
   };
 }) => {
   const image =
@@ -38,10 +38,10 @@ const ProductCard = ({
   );
 
   return (
-    <li key={('sanityUrl' in image) ? image.sanityUrl : image.url} className="flex items-center gap-4">
+    <li key={image.url} className="flex items-center gap-4">
       {image && (
         <ImageWrapper
-          src={('sanityUrl' in image) ? image.sanityUrl : image.url}
+          src={image.url}
           alt={image?.alt}
           width={110}
           height={110}

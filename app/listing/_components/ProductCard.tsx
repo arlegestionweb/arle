@@ -141,10 +141,8 @@ const CardLayout = ({
 
   const firstImage = isPerfume(product) ? product.imagenes[0] : null;
 
-  // ('sanityUrl' in image) ? image.sanityUrl : image.ur
-
   const imgSrc = isPerfume(product)
-    ? firstImage && ('sanityUrl' in firstImage) ? firstImage.sanityUrl : firstImage?.url || ""
+    ? firstImage && firstImage?.url || ""
     : "imagenes" in selectedVariant
       ? selectedVariant.imagenes[0].url
       : "";

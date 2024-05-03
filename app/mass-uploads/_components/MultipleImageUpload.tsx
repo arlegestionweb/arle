@@ -46,7 +46,7 @@ const MultipleImageUpload = ({
       <form className="max-w-1/3" action={action}>
         <label htmlFor="imageUpload" id="imageUpload" className="flex flex-col items-center p-5 gap-2  bg-gray-200 border border-dashed border-black ">
           <span>Subir o arrastrar imagenes del producto acá</span>
-          <input accept="image/*" onChange={(e) => setImages(e.target.files ? Array.from(e.target.files) : [])} multiple type="file" name="imageUpload" />
+          <input accept="image/png, image/jpeg" onChange={(e) => setImages(e.target.files ? Array.from(e.target.files) : [])} multiple type="file" name="imageUpload" />
         </label>
         {images.length > 0 && (
           <button className="border border-black px-2 py-1">Guardar Imagenes en base de datos</button>

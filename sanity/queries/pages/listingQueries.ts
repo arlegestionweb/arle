@@ -173,7 +173,7 @@ export type TProduct = z.infer<typeof zodProduct>;
 const zodCollectiones = z.array(
   z.object({
     titulo: z.string(),
-    descripcion: z.string(),
+    descripcion: z.string().optional().nullable(),
     imagen: z.object({
       url: z.string(),
       alt: z.string().optional().nullable(),

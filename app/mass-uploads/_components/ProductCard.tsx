@@ -29,7 +29,7 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
 
   const { updateProduct: updatePerfumeLujo } = usePerfumeLujoUploadStore();
   return (
-    <div className="border border-black p-4 flex justify-between">
+    <div className="border border-black min-w-xl p-4 flex flex-col justify-between">
       {/* <p><strong>Código: </strong>{product.variante.codigoDeReferencia}</p> */}
       <section className="min-w-300px">
 
@@ -42,7 +42,7 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
         </p>
       </section>
 
-      {product.inspiracion?.usarInspiracion && product.inspiracion.contenido?.imagen == null ? (
+      {product.inspiracion?.usarInspiracion && "contenido" in product.inspiracion && !product.inspiracion.contenido?.imagen ? (
         <SingleImageUpload
           product={product}
           title="Imagen de la inspiración:"
@@ -57,7 +57,7 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
                     url: imageUrl,
                     alt: `${product.marca}-${product.titulo}`
                   },
-                  resena: product.inspiracion?.contenido?.resena
+                  resena: "contenido" in product.inspiracion && "resena" in product.inspiracion.contenido ? product.inspiracion?.contenido?.resena : ""
                 }
               } : null,
             };
@@ -66,7 +66,7 @@ const PerfumeLujoCard = ({ product }: { product: TPerfumeDeLujoExcel }) => {
           }
         />
       ) : (
-        product.inspiracion?.contenido?.imagen && (
+        product.inspiracion && "contenido" in product.inspiracion && "imagen" in product.inspiracion.contenido && product.inspiracion?.contenido?.imagen && (
           <section>
             <h4 className="font-bold">Imagen de la inspiración </h4>
             <img className="w-[50px] h-[50px]" width={50} height={50} src={product.inspiracion.contenido.imagen.url} alt={product.inspiracion.contenido.imagen.alt} />

@@ -28,7 +28,25 @@ const zodVariante = z.object({
     .optional()
     .nullable(),
 });
+const inspiracionWithResena = z.object({
+  usarInspiracion: z.literal(true),
+  contenido: z.object({
+    imagen: z.object({
+      alt: z.string(),
+      url: z.string().optional().nullable(),
+      id: z.string().optional().nullable(),
+    }),
+    resena: z.string(),
+  }),
+});
 
+const inspiracionWithoutResena = z.object({
+  usarInspiracion: z.literal(false),
+});
+
+const inspiracion = z.union([inspiracionWithResena, inspiracionWithoutResena]);
+
+// Use `inspiracion` in your main schema
 const zodInitialPerfumeLujo = z.object({
   titulo: z.string(),
   marca: z.string(),
@@ -43,23 +61,7 @@ const zodInitialPerfumeLujo = z.object({
   }),
   genero: z.string().transform((val) => val.toLowerCase()),
   ingredientes: z.array(z.string()),
-  inspiracion: z.object({
-    usarInspiracion: z.boolean(),
-    contenido: z
-      .object({
-        imagen: z
-          .object({
-            alt: z.string(),
-            url: z.string().optional().nullable(),
-            id: z.string().optional().nullable(),
-          })
-          .optional()
-          .nullable(),
-        resena: z.string(),
-      })
-      .nullable()
-      .optional(),
-  }),
+  inspiracion: inspiracion,
   mostrarCredito: z.boolean(),
   notasOlfativas: z.object({
     familiaOlfativa: z.string(),
@@ -69,7 +71,7 @@ const zodInitialPerfumeLujo = z.object({
   }),
   paisDeOrigen: z.string(),
   parteDeUnSet: z.boolean(),
-  imagenes: z.array(zodInitialImage),
+  imagenes: z.array(zodInitialImage).min(1, "Agrega al menos una imagen"),
 });
 
 export type TError = {
@@ -90,6 +92,7 @@ export const savePerfumesLujo = async (
   formState: {
     success: boolean;
     errors: TError[] | null;
+    message?: string;
   },
   data: {
     products: TPerfumeDeLujoExcel[];
@@ -109,8 +112,12 @@ export const savePerfumesLujo = async (
     };
   }
 
+  formState.errors = null;
+
   const errors: TError[] = [];
 
+  const updatedProducts = [];
+  const savedProducts = [];
   const initialParsedProducts = z
     .array(zodInitialPerfumeLujo)
     .safeParse(products);
@@ -307,8 +314,8 @@ export const savePerfumesLujo = async (
       } else {
         references.marca = {
           _type: "reference",
-          _ref: sanityRefResultsParsed.data.marca._ref
-        }
+          _ref: sanityRefResultsParsed.data.marca._ref,
+        };
       }
 
       if (!sanityRefResultsParsed.data.concentracion) {
@@ -630,39 +637,87 @@ export const savePerfumesLujo = async (
               }
             : undefined,
         },
-        inspiracion: {
-          usarInspiracion: product.inspiracion.usarInspiracion,
-          contenido: {
-            resena:
-              product.inspiracion.usarInspiracion &&
-              product.inspiracion.contenido?.resena
-                ? product.inspiracion.contenido.resena
-                : undefined,
-            subirImagen: product.inspiracion.contenido?.imagen?.id
-              ? false
-              : true,
-            imagen: product.inspiracion.contenido?.imagen?.id
-              ? {
-                  _type: "image" as "image",
-                  _key: `image-${nanoid()}`,
-                  asset: {
-                    _ref: product.inspiracion.contenido?.imagen.id,
-                  },
-                  alt: `${product.marca} ${product.titulo}`,
-                }
-              : undefined,
-            imagenExterna:
-              !product.inspiracion.contenido?.imagen?.id &&
-              product.inspiracion.contenido?.imagen?.url
-                ? {
-                    _type: "imageUrl" as "imageUrl",
-                    _key: `image-${nanoid()}`,
-                    alt: `${product.marca} ${product.titulo}`,
-                    url: product.inspiracion.contenido?.imagen.url,
-                  }
-                : undefined,
-          },
-        },
+        // inspiracion: product.inspiracion.usarInspiracion ? {
+        //   usarInspiracion: true,
+        //   contenido: {
+        //     resena:
+        //       product.inspiracion.usarInspiracion &&
+        //       product.inspiracion.contenido?.resena
+        //         ? product.inspiracion.contenido.resena
+        //         : undefined,
+        //     subirImagen: product.inspiracion.contenido?.imagen?.id
+        //       ? false
+        //       : true,
+        //     imagen: product.inspiracion.contenido?.imagen?.id
+        //       ? {
+        //           _type: "image" as "image",
+        //           _key: `image-${nanoid()}`,
+        //           asset: {
+        //             _ref: product.inspiracion.contenido?.imagen.id,
+        //           },
+        //           alt: `${product.marca} ${product.titulo}`,
+        //         }
+        //       : undefined,
+        //     imagenExterna:
+        //       !product.inspiracion.contenido?.imagen?.id &&
+        //       product.inspiracion.contenido?.imagen?.url
+        //         ? {
+        //             _type: "imageUrl" as "imageUrl",
+        //             _key: `image-${nanoid()}`,
+        //             alt: `${product.marca} ${product.titulo}`,
+        //             url: product.inspiracion.contenido?.imagen.url,
+        //           }
+        //         : undefined,
+        //   },
+        // } : {
+        //   usarInspiracion: false,
+        //   contenido: {}
+        // },
+        inspiracion: product.inspiracion.usarInspiracion
+          ? {
+              usarInspiracion: true,
+              contenido: {
+                resena:
+                  "resena" in product.inspiracion.contenido
+                    ? product.inspiracion.contenido?.resena
+                    : "",
+                subirImagen:
+                  "imagen" in product.inspiracion.contenido &&
+                  product.inspiracion.contenido?.imagen?.id
+                    ? false
+                    : true,
+                imagen:
+                  "imagen" in product.inspiracion.contenido &&
+                  product.inspiracion.contenido?.imagen?.id
+                    ? {
+                        _type: "image" as "image",
+                        _key: `image-${nanoid()}`,
+                        asset: {
+                          _ref: product.inspiracion.contenido?.imagen.id,
+                        },
+                        alt: `${product.marca} ${product.titulo}`,
+                      }
+                    : undefined,
+                imagenExterna:
+                  "imagen" in product.inspiracion.contenido &&
+                  !product.inspiracion.contenido?.imagen?.id &&
+                  product.inspiracion.contenido?.imagen?.url
+                    ? {
+                        _type: "imageUrl" as "imageUrl",
+                        _key: `image-${nanoid()}`,
+                        alt: `${product.marca} ${product.titulo}`,
+                        url: product.inspiracion.contenido?.imagen.url,
+                      }
+                    : undefined,
+              },
+            }
+          : {
+              usarInspiracion: false,
+              contenido: {
+                resena: "",
+                subirImagen: false,
+              },
+            },
         imagenes: product.imagenes.map((imagen) => {
           if (typeof imagen === "string") {
             return {
@@ -733,7 +788,9 @@ export const savePerfumesLujo = async (
               product: product,
             });
           } else {
-            // console.log({ updatedProduct });
+
+            console.log({ updatedProduct });
+            updatedProducts.push(updatedProduct)
             // return {
             //   success: true,
             //   errors: null,
@@ -741,11 +798,14 @@ export const savePerfumesLujo = async (
           }
         } else {
           console.log("creating product");
+          const _id = `pl_${nanoid()}`;
+
           const newProduct = await sanityWriteClient.create({
             ...parsedProductToSave.data,
+            _id,
             _type: "perfumeLujo",
             slug: {
-              current: `/${productType}/${productType}-${nanoid()}`,
+              current: `/${productType}/${_id}`,
             },
           });
 
@@ -755,28 +815,44 @@ export const savePerfumesLujo = async (
               product: product,
             });
           } else {
-            // console.log({ newProduct });
+
+            console.log({ newProduct });
+            savedProducts.push(newProduct)
             // return {
             //   success: true,
             //   errors: null,
-            // };
+            // }
           }
         }
       }
     }
   }
 
-  if (errors && errors.length > 0) {
-    return {
-      success: false,
-      errors
+  if (errors.length === 0) {
+    let message = '';
+
+    if (savedProducts.length > 0) {
+      message += `There were ${savedProducts.length} products saved. `;
     }
+    
+    if (updatedProducts.length > 0) {
+      message += `There were ${updatedProducts.length} products updated.`;
+    }
+    
+    if (message === '') {
+      message = 'No products were saved or updated.';
+    }
+    return {
+      success: true,
+      errors: null,
+      message
+    };
   }
 
   return {
-    success: true,
-    errors: [],
-  };
+    success: false,
+    errors,
+  }
 };
 
 function extractErrorsFromIssues<

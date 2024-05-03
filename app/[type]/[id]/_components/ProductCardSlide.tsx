@@ -22,7 +22,7 @@ export const ProductCardSlide = ({
       </h3>
       {products && products.length > 0 && (
         <>
-          <SlideMobile products={products} className="flex lg:hidden"/>
+          <SlideMobile products={products} className="flex lg:hidden" />
           <SlideDesktop
             products={products}
             columns={4}
@@ -68,9 +68,11 @@ const SlideDesktop = ({ products, columns, className }: SlideProps) => {
     });
   };
 
-  const getWidthCard = ()=>{
-    if(window.innerWidth < 1280){
-      return (window.innerWidth-80)/4
+  const getWidthCard = () => {
+    if (typeof window === 'undefined') return;
+    
+    if (window.innerWidth < 1280) {
+      return (window.innerWidth - 80) / 4
     }
     return 1280 / 4
   }
@@ -79,9 +81,9 @@ const SlideDesktop = ({ products, columns, className }: SlideProps) => {
     return products.length > columns;
   }, [products.length, columns]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setHasNext(determineHasNext());
-  },[products.length, determineHasNext])
+  }, [products.length, determineHasNext])
 
   return (
     <section className={cn("relative flex items-center", className)}>
@@ -95,9 +97,9 @@ const SlideDesktop = ({ products, columns, className }: SlideProps) => {
         <div
           style={{
             transition: "transform 0.5s ease",
-            transform: `translateX(-${currentIndex * getWidthCard()}px)`, 
+            transform: `translateX(-${currentIndex * (getWidthCard() || 1)}px)`,
           }}
-          >
+        >
           <ul className={"pt-4 md:pt-7 pb-3 h-auto max-w-mx  grid grid-cols-[repeat(7,calc(95%/4))] gap-4"}>
             {products.map((product, index) => (
               <li

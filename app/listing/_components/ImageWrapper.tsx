@@ -10,6 +10,9 @@ type ImageWrapperProps = Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageEleme
     quality?: number;
   };
 const ImageWrapper = ({ src, alt, height, width, quality, ...rest }: ImageWrapperProps) => {
+
+  if (!src) return; 
+
   const isSanityImage = src.includes("sanity");
 
   if (isSanityImage) {
