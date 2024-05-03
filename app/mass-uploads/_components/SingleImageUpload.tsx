@@ -33,8 +33,7 @@ const SingleImageUpload = ({ title, product, onImageUpload }: {
       <form className="max-w-1/3" action={formAction}>
         <label htmlFor="imageUpload" id="imageUpload" className="flex flex-col items-center p-5 gap-2  bg-gray-200 border border-dashed border-black ">
           <span>Subir o arrastrar imagen para la descripcion acá</span >
-          <input accept="image/*" onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)} type="file" name="imageUpload" />
-        </label >
+          <input accept="image/png, image/jpeg" onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)} type="file" name="imageUpload" />        </label >
         {image && (
           <button className="border border-black px-2 py-1">Guardar Imagen</button>
         )}
