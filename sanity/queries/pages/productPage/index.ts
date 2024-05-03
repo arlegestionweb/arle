@@ -26,7 +26,8 @@ const contenidoQuery = `
       url
     }
 }`;
-const inspiracionQuery = `inspiracion { 
+const inspiracionQuery = `inspiracion {
+  ...,
   usarInspiracion, 
   ${contenidoQuery}
 }`;
@@ -470,18 +471,20 @@ export const getProductById = async (id: string, productType: TProductType) => {
     await sanityClient.fetch(`*[_type == "${productType}" && _id == "${id}"][0]
   ${query}`);
 
+  
   const productSchema = schemas[productType];
-
+  
   const params = { productId: id };
-
+  
   const discounts = await sanityClient.fetch(timedDiscountQuery, params);
-
+  
   const product = productSchema.safeParse(fetchResult);
 
   const parsedDiscounts = zodTimedDiscountsSchema.safeParse(discounts);
   //
 
   if (!parsedDiscounts.success) {
+    
     throw new Error(parsedDiscounts.error.message);
   }
 

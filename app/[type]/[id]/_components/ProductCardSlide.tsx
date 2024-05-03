@@ -69,8 +69,8 @@ const SlideDesktop = ({ products, columns, className }: SlideProps) => {
   };
 
   const getWidthCard = () => {
-    if (!window) return;
-
+    if (typeof window === 'undefined') return;
+    
     if (window.innerWidth < 1280) {
       return (window.innerWidth - 80) / 4
     }

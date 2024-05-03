@@ -19,25 +19,36 @@ export const videoSchema = z.object({
   url: z.string(),
 });
 
-export const contenidoSchema = z.object({
+
+// const zodImage
+
+const contenidoBase = z.object({
   resena: z.string().optional().nullable(),
   texto: z.string().optional().nullable(),
+  subirImagen: z.boolean().optional().nullable()
+})
+
+const contenidowithSanityImage = contenidoBase.merge(z.object({
+  subirImagen: z.literal(false).optional().nullable(),
   imagen: z
     .object({
       url: z.string().optional().nullable(),
-      alt: z.string().optional().nullable(),
+      alt: z.string().optional().nullable()
     })
     .optional()
     .nullable(),
-  subirImagen: z.boolean().optional().nullable(),
+}))
+
+const contenidoWithExternalImage = contenidoBase.merge(z.object({
+  subirImagen: z.literal(true),
   imagenExterna: z
     .object({
       url: z.string().optional().nullable(),
       alt: z.string().optional().nullable(),
     })
-    .optional()
-    .nullable(),
-});
+}))
+
+export const contenidoSchema = z.union([contenidowithSanityImage, contenidoWithExternalImage])
 
 export const bannerSchema = z.object({
   imagenOVideo: z.boolean().optional().nullable(),

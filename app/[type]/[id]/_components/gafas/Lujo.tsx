@@ -42,8 +42,24 @@ const GafaLujo = ({
         <InfoSection
           titulo="Inspiración"
           descripcion={product.inspiracion.contenido?.resena || ""}
-          alt={product.inspiracion.contenido?.imagen?.alt || ""}
-          url={product.inspiracion.contenido?.imagen?.url || ""}
+          alt={
+            !product.inspiracion.contenido?.subirImagen
+              ? ("imagen" in product.inspiracion.contenido! && product.inspiracion.contenido!.imagen?.alt)
+                ? product.inspiracion.contenido!.imagen.alt
+                : undefined
+              : (product.inspiracion.contenido!.imagenExterna.alt)
+                ? product.inspiracion.contenido!.imagenExterna.alt
+                : undefined
+          }
+          url={
+            !product.inspiracion.contenido?.subirImagen
+              ? ("imagen" in product.inspiracion.contenido! && product.inspiracion.contenido!.imagen?.url)
+                ? product.inspiracion.contenido!.imagen.url
+                : undefined
+              : (product.inspiracion.contenido!.imagenExterna.url)
+                ? product.inspiracion.contenido!.imagenExterna.url
+                : undefined
+          }
           className=""
         />
       )}
@@ -55,7 +71,7 @@ const GafaLujo = ({
           alt={product.detalles?.contenido?.imagen?.alt || ""}
           url={product.detalles?.contenido?.imagen?.url || ""}
           labelType={product.inspiracion.usarInspiracion ? "light" : "dark"}
-          className={product.inspiracion.usarInspiracion ? "lg:flex-row-reverse": ""}
+          className={product.inspiracion.usarInspiracion ? "lg:flex-row-reverse" : ""}
         />
       )}
 
@@ -67,18 +83,18 @@ const GafaLujo = ({
           url={product.monturaDetalles.contenido?.imagen?.url}
           labelType={
             product.inspiracion.usarInspiracion &&
-            !product.detalles?.usarDetalles
+              !product.detalles?.usarDetalles
               ? "light"
               : !product.inspiracion.usarInspiracion &&
                 product.detalles?.usarDetalles
-              ? "light"
-              : "dark"
+                ? "light"
+                : "dark"
           }
           className={product.inspiracion.usarInspiracion &&
             !product.detalles?.usarDetalles
-              ? "lg:flex-row-reverse"
-              : !product.inspiracion.usarInspiracion &&
-                product.detalles?.usarDetalles
+            ? "lg:flex-row-reverse"
+            : !product.inspiracion.usarInspiracion &&
+              product.detalles?.usarDetalles
               ? "lg:flex-row-reverse"
               : ""}
         />
@@ -87,44 +103,44 @@ const GafaLujo = ({
       <InfoSection
         labelType={
           !product.inspiracion.usarInspiracion &&
-          !product.detalles?.usarDetalles &&
-          !product.monturaDetalles?.usarDetalles
+            !product.detalles?.usarDetalles &&
+            !product.monturaDetalles?.usarDetalles
             ? "dark"
             : product.inspiracion.usarInspiracion &&
               product.detalles?.usarDetalles &&
               !product.monturaDetalles?.usarDetalles
-            ? "dark"
-            : product.inspiracion.usarInspiracion &&
-              !product.detalles?.usarDetalles &&
-              product.monturaDetalles?.usarDetalles
-            ? "dark"
-            : !product.inspiracion.usarInspiracion &&
-              product.detalles?.usarDetalles &&
-              product.monturaDetalles?.usarDetalles
-            ? "dark"
-            : "light"
+              ? "dark"
+              : product.inspiracion.usarInspiracion &&
+                !product.detalles?.usarDetalles &&
+                product.monturaDetalles?.usarDetalles
+                ? "dark"
+                : !product.inspiracion.usarInspiracion &&
+                  product.detalles?.usarDetalles &&
+                  product.monturaDetalles?.usarDetalles
+                  ? "dark"
+                  : "light"
         }
         titulo="Inspiración"
         DescriptionComp={
           <DetallesProducto
             theme={
               !product.inspiracion.usarInspiracion &&
-              !product.detalles?.usarDetalles &&
-              !product.monturaDetalles?.usarDetalles
+                !product.detalles?.usarDetalles &&
+                !product.monturaDetalles?.usarDetalles
                 ? "dark"
                 : product.inspiracion.usarInspiracion &&
                   product.detalles?.usarDetalles &&
                   !product.monturaDetalles?.usarDetalles
-                ? "dark"
-                : product.inspiracion.usarInspiracion &&
-                  !product.detalles?.usarDetalles &&
-                  product.monturaDetalles?.usarDetalles
-                ? "dark"
-                : !product.inspiracion.usarInspiracion &&
-                  product.detalles?.usarDetalles &&
-                  product.monturaDetalles?.usarDetalles
-                ? "dark"
-                : "light"
+                  ? "dark"
+                  : product.inspiracion.usarInspiracion &&
+                    !product.detalles?.usarDetalles &&
+                    product.monturaDetalles?.usarDetalles
+                    ? "dark"
+                    : !product.inspiracion.usarInspiracion &&
+                      product.detalles?.usarDetalles &&
+                      product.monturaDetalles?.usarDetalles
+                      ? "dark"
+                      : "light"
             }
             detalles={{
               especificaciones: {
@@ -160,28 +176,28 @@ const GafaLujo = ({
                 )) ||
                 []}
               className="w-full h-[60vw] max-h-[350px]"
-              isLink={false}       />
+              isLink={false} />
           ) : (
             null
           )
         }
         className={!product.inspiracion.usarInspiracion &&
-        !product.detalles?.usarDetalles &&
-        !product.monturaDetalles?.usarDetalles
+          !product.detalles?.usarDetalles &&
+          !product.monturaDetalles?.usarDetalles
           ? ""
           : product.inspiracion.usarInspiracion &&
             product.detalles?.usarDetalles &&
             !product.monturaDetalles?.usarDetalles
-          ? ""
-          : product.inspiracion.usarInspiracion &&
-            !product.detalles?.usarDetalles &&
-            product.monturaDetalles?.usarDetalles
-          ? ""
-          : !product.inspiracion.usarInspiracion &&
-            product.detalles?.usarDetalles &&
-            product.monturaDetalles?.usarDetalles
-          ? ""
-          : "lg:flex-row-reverse"}
+            ? ""
+            : product.inspiracion.usarInspiracion &&
+              !product.detalles?.usarDetalles &&
+              product.monturaDetalles?.usarDetalles
+              ? ""
+              : !product.inspiracion.usarInspiracion &&
+                product.detalles?.usarDetalles &&
+                product.monturaDetalles?.usarDetalles
+                ? ""
+                : "lg:flex-row-reverse"}
       />
       <section className="px-4 py-6 lg:hidden">
         <NuestrasComprasIncluyen />
