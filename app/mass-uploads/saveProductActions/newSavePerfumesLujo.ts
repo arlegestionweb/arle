@@ -28,7 +28,25 @@ const zodVariante = z.object({
     .optional()
     .nullable(),
 });
+const inspiracionWithResena = z.object({
+  usarInspiracion: z.literal(true),
+  contenido: z.object({
+    imagen: z.object({
+      alt: z.string(),
+      url: z.string().optional().nullable(),
+      id: z.string().optional().nullable(),
+    }),
+    resena: z.string(),
+  }),
+});
 
+const inspiracionWithoutResena = z.object({
+  usarInspiracion: z.literal(false),
+});
+
+const inspiracion = z.union([inspiracionWithResena, inspiracionWithoutResena]);
+
+// Use `inspiracion` in your main schema
 const zodInitialPerfumeLujo = z.object({
   titulo: z.string(),
   marca: z.string(),
@@ -43,26 +61,7 @@ const zodInitialPerfumeLujo = z.object({
   }),
   genero: z.string().transform((val) => val.toLowerCase()),
   ingredientes: z.array(z.string()),
-  inspiracion: z.object({
-    usarInspiracion: z.literal(true),
-    contenido: z
-      .object({
-        imagen: z.object({
-          alt: z.string(),
-          url: z.string().optional().nullable(),
-          id: z.string().optional().nullable(),
-        }),
-        // .optional()
-        // .nullable(),
-        resena: z.string(),
-      })
-      .or(
-        z.object({
-          usarInspiracion: z.literal(false),
-          contenido: z.object({}),
-        })
-      ),
-  }),
+  inspiracion: inspiracion,
   mostrarCredito: z.boolean(),
   notasOlfativas: z.object({
     familiaOlfativa: z.string(),
@@ -114,12 +113,11 @@ export const savePerfumesLujo = async (
   }
 
   formState.errors = null;
-  
+
   const errors: TError[] = [];
 
   const updatedProducts = [];
   const savedProducts = [];
-
   const initialParsedProducts = z
     .array(zodInitialPerfumeLujo)
     .safeParse(products);
@@ -316,8 +314,8 @@ export const savePerfumesLujo = async (
       } else {
         references.marca = {
           _type: "reference",
-          _ref: sanityRefResultsParsed.data.marca._ref
-        }
+          _ref: sanityRefResultsParsed.data.marca._ref,
+        };
       }
 
       if (!sanityRefResultsParsed.data.concentracion) {
@@ -799,11 +797,14 @@ export const savePerfumesLujo = async (
           }
         } else {
           console.log("creating product");
+          const _id = `pl_${nanoid()}`;
+
           const newProduct = await sanityWriteClient.create({
             ...parsedProductToSave.data,
+            _id,
             _type: "perfumeLujo",
             slug: {
-              current: `/${productType}/${productType}-${nanoid()}`,
+              current: `/${productType}/${_id}`,
             },
           });
 

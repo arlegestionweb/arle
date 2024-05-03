@@ -13,6 +13,29 @@ import { TError, savePerfumesLujo } from "../saveProductActions/newSavePerfumesL
 
 const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si').or(z.boolean());
 
+
+const inspiracionWithResena = z.object({
+  contenido: z.object({
+    imagen: z.object({
+      alt: z.string(),
+      id: z.string().optional().nullable(),
+      url: z.string()
+    }).optional().nullable(),
+    resena: z.string().min(1, "no hay resena de inspiracion"),
+  }),
+  usarInspiracion: zodSiBoolean.refine(value => value === true),
+});
+
+const inspiracionWithoutResena = z.object({
+  // contenido: z.object({
+  //   id: z.string().optional().nullable(),
+  // }),
+  usarInspiracion: zodSiBoolean.refine(value => value === false),
+});
+
+const zodInspiracion = z.union([inspiracionWithResena, inspiracionWithoutResena]).optional().nullable();
+
+
 const perfumeDeLujoExcelSchema = z.object({
   titulo: z.string(),
   marca: z.string(),
@@ -37,17 +60,7 @@ const perfumeDeLujoExcelSchema = z.object({
   }),
   genero: z.string(),
   ingredientes: z.array(z.string()),
-  inspiracion: z.object({
-    contenido: z.object({
-      imagen: z.object({
-        alt: z.string(),
-        id: z.string().optional().nullable(),
-        url: z.string()
-      }).optional().nullable(),
-      resena: z.string().optional().nullable(),
-    }).optional().nullable(),
-    usarInspiracion: zodSiBoolean.optional().nullable(),
-  }).optional().nullable(),
+  inspiracion: zodInspiracion,
   mostrarCredito: zodSiBoolean,
   notasOlfativas: z.object({
     familiaOlfativa: z.string(),
@@ -63,6 +76,8 @@ const perfumeDeLujoExcelSchema = z.object({
   }))),
   coleccionDeMarca: z.string().optional().nullable(),
 });
+
+
 const perfumePremiumExcelSchema = z.object({
   titulo: z.string(),
   marca: z.string(),
@@ -115,20 +130,20 @@ const handleZodValidation = (data: any, schema: z.ZodSchema<any>, setErrors: Rea
   }
 }
 
-type ProductType = "perfumeLujo" | "perfumePremium" | "relojesPremium" | "relojesLujo" | "gafasLujo" | "gafasPremium";
+// type ProductType = "perfumeLujo" | "perfumePremium" | "relojesPremium" | "relojesLujo" | "gafasLujo" | "gafasPremium";
 
-type ProductTypes = {
-  [K in ProductType]: ZodObject<any>;
-};
+// type ProductTypes = {
+//   [K in ProductType]: ZodObject<any>;
+// };
 
-const productTypes: ProductTypes = {
-  perfumeLujo: perfumeDeLujoExcelSchema,
-  perfumePremium: perfumePremiumExcelSchema,
-  relojesPremium: perfumeDeLujoExcelSchema,
-  relojesLujo: perfumeDeLujoExcelSchema,
-  gafasLujo: perfumeDeLujoExcelSchema,
-  gafasPremium: perfumeDeLujoExcelSchema,
-}
+// const productTypes: ProductTypes = {
+//   perfumeLujo: perfumeDeLujoExcelSchema,
+//   perfumePremium: perfumePremiumExcelSchema,
+//   relojesPremium: perfumeDeLujoExcelSchema,
+//   relojesLujo: perfumeDeLujoExcelSchema,
+//   gafasLujo: perfumeDeLujoExcelSchema,
+//   gafasPremium: perfumeDeLujoExcelSchema,
+// }
 
 export type TPerfumeDeLujoExcel = z.infer<typeof perfumeDeLujoExcelSchema>;
 export type TPerfumePremiumExcel = z.infer<typeof perfumePremiumExcelSchema>;
@@ -220,6 +235,8 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
     if (productType === "perfumeLujo") {
       const prods = handleZodValidation(products, perfumeDeLujoExcelSchema, setUploadErrors)
       if (prods) {
+
+        
         addPerfumesLujo(prods)
       }
     }
@@ -339,7 +356,7 @@ const ProductUpload = ({ productType, products, formState, formAction, uploadErr
               <Guardar />
             </form>
             {'error' in formState && formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
-          {errors && errors.length > 0 && errors.map((error, i) => <p className="text-red-600 text-base" key={`${error.message}-${i}`}>
+            {errors && errors.length > 0 && errors.map((error, i) => <p className="text-red-600 text-base" key={`${error.message}-${i}`}>
               {error.product && <>
                 <span className="ml-1">
                   {error.product.marca}

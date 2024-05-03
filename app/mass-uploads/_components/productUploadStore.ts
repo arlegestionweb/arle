@@ -20,8 +20,6 @@ type TProductUploadStore = TPerfumeLujoUploadState & TPerfumeLujoUploadActions;
 export const usePerfumeLujoUploadStore = create<TProductUploadStore>((set) => ({
   products: [],
   addProducts: (products) => set((state) => {
-    console.log({products})
-
     const newProducts = products.filter(product => !state.products.some(p => p.titulo === product.titulo));
     return ({ products: [...state.products, ...newProducts] });
   }),
