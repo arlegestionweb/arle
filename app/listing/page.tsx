@@ -842,11 +842,11 @@ const Listing = async ({
           />
         )}
       </div>
-        {!coleccionSeleccionada && colecciones ? (
+        {!coleccionSeleccionada && parsedCollections.success && parsedCollections.data.length > 0 ? (
           <Colecciones
             colecciones={parsedCollections.success ? parsedCollections.data : []}
           />
-        ) : colecciones ? (
+        ) : parsedCollections.success && parsedCollections.data.length > 0 ? (
           <h2 className="text-2xl md:text-3xl w-full pt-3 font-jomolhari font-normal text-center capitalize">
             Colección: {coleccionSeleccionada}
           </h2>
