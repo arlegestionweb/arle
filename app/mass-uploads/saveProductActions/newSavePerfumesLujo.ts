@@ -790,6 +790,7 @@ export const savePerfumesLujo = async (
           } else {
 
             console.log({ updatedProduct });
+            updatedProducts.push(updatedProduct)
             // return {
             //   success: true,
             //   errors: null,
@@ -816,6 +817,7 @@ export const savePerfumesLujo = async (
           } else {
 
             console.log({ newProduct });
+            savedProducts.push(newProduct)
             // return {
             //   success: true,
             //   errors: null,
@@ -826,10 +828,26 @@ export const savePerfumesLujo = async (
     }
   }
 
-  return {
-    success: true,
-    errors: [],
-  };
+  if (errors.length === 0) {
+    let message = '';
+
+    if (savedProducts.length > 0) {
+      message += `There were ${savedProducts.length} products saved. `;
+    }
+    
+    if (updatedProducts.length > 0) {
+      message += `There were ${updatedProducts.length} products updated.`;
+    }
+    
+    if (message === '') {
+      message = 'No products were saved or updated.';
+    }
+    return {
+      success: true,
+      errors: [],
+      message
+    };
+  }
 };
 
 function extractErrorsFromIssues<
