@@ -294,17 +294,27 @@ const Guardar = () => {
 const ProductUpload = ({ productType, products, formState, formAction, uploadErrors }: {
   productType: string;
   products: (TPerfumePremiumExcel | TPerfumeDeLujoExcel)[];
-  formState: { error: string | null; success: boolean } | { errors: TError[] | null; success: boolean };
+  formState: { error: string | null; success: boolean, message?: string } | { errors: TError[] | null; success: boolean; message?: string };
   formAction: (data: any) => void;
   uploadErrors: string[] | null;
 }) => {
 
-  console.log({formState})
+  const [errors, setErrors] = useState<null | TError[]>()
+
+  useEffect(() => {
+    setErrors(null)
+    if ("errors" in formState && formState.errors) {
+      setErrors(formState.errors)
+    }
+  }, [formState])
+
+  console.log({ formState })
   return (
     <>
       {formState.success ? (
         <>
-          <p className="text-green-600 text-base">Productos guardados con éxito</p>
+          {formState.message && <p className="text-green-600 text-base">{formState.message}</p>}
+          {/* <p className="text-green-600 text-base">Productos guardados con éxito</p> */}
           <Link href="/mass-uploads">
             Volver al inicio
           </Link>
@@ -319,11 +329,15 @@ const ProductUpload = ({ productType, products, formState, formAction, uploadErr
                 </li>
               ))}
             </ul>
-            <form action={() => formAction({ products, productType })} className="">
+            <form action={() => {
+              // formState.errors = null
+              formAction({ products, productType })
+            }}
+              className="">
               <Guardar />
             </form>
             {'error' in formState && formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
-            {'errors' in formState && formState.errors && formState.errors.length > 0 && formState.errors.map(error => <p className="text-red-600 text-base" key={error.message}>
+            {errors && errors.length > 0 && errors.map(error => <p className="text-red-600 text-base" key={error.message}>
               {error.product && <>
                 <span className="ml-1">
                   {error.product.marca}
