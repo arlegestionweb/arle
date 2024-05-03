@@ -25,6 +25,7 @@ export const setNestedProperty = (obj: any, path: string, value: any) => {
 };
 
 
+
 export function moveEmptyKeyValuesToParent(obj: any) {
   for (let key in obj) {
     if (typeof obj[key] === 'object' && obj[key] !== null) {

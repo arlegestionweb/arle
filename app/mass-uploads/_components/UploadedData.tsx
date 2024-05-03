@@ -11,6 +11,7 @@ import { savePerfumesDeLujoProductsInSanityUsingForm } from "../saveProductActio
 import { savePerfumesPremiumInSanityUsingForm } from "../saveProductActions/savePerfumesPremium";
 import { ZodObject } from 'zod';
 import { camelToTitleCase } from "@/utils/helpers";
+import { TError, savePerfumesPremium } from "../saveProductActions/newSavePerfumesPremium";
 
 const zodSiBoolean = z.string().optional().nullable().default('no').transform(value => value === 'si').or(z.boolean());
 
@@ -31,7 +32,8 @@ const perfumeDeLujoExcelSchema = z.object({
   descripcion: z.object({
     imagen: z.object({
       alt: z.string(),
-      url: z.string().url(),
+      id: z.string().optional().nullable(),
+      url: z.string()
     }).optional().nullable(),
     texto: z.string(),
   }),
@@ -41,7 +43,8 @@ const perfumeDeLujoExcelSchema = z.object({
     contenido: z.object({
       imagen: z.object({
         alt: z.string(),
-        url: z.string().url(),
+        id: z.string().optional().nullable(),
+        url: z.string()
       }),
       resena: z.string().optional().nullable(),
     }).optional().nullable(),
@@ -141,8 +144,9 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
   const { addProducts: addPerfumesLujo, products: perfumesLujo } = usePerfumeLujoUploadStore()
   const { addProducts: addPerfumesPremium, products: perfumesPremium } = usePerfumePremiumUploadStore()
 
-  const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesDeLujoProductsInSanityUsingForm, { error: null, success: false });
-  const [perfumePremiumFormState, perfumePremiumFormAction] = useFormState(savePerfumesPremiumInSanityUsingForm, { error: null, success: false });
+
+  // const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesLujo, { errors: [], success: false });
+  const [perfumePremiumFormState, perfumePremiumFormAction] = useFormState(savePerfumesPremium, { errors: [], success: false });
 
   const keys = data.slice(0, 4).map(row => row.values);
 
@@ -173,8 +177,9 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
       const images = ['image-1', 'image-2', 'image-3', 'image-4', 'image-5', 'image-6'].map(key => obj[key]).filter(Boolean);
 
       const existingProduct = acc.find(
-        (p) => p.marca === obj.marca && p.titulo === obj.titulo
-      );
+        (p) => {
+          return (p.marca === obj.marca && p.titulo === obj.titulo) || (p.marca === obj.marca && p.modelo !== undefined && p.modelo === obj.modelo)
+        })
 
       if (existingProduct) {
         if (Array.isArray(existingProduct.variantes)) {
@@ -186,11 +191,19 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
         // Add variant images to existing product
         existingProduct.imagenes = Array.from(new Set([...(existingProduct.imagenes || []), ...images]));
       } else {
-        acc.push({
-          ...obj,
-          variantes: [obj.variante],
-          imagenes: Array.from(new Set(images)),
-        });
+        if (productType?.includes("perfume")) {
+
+          acc.push({
+            ...obj,
+            variantes: [obj.variante],
+            imagenes: Array.from(new Set(images)),
+          });
+        } else {
+          acc.push({
+            ...obj,
+            variantes: [{ ...obj.variante, imagenes: Array.from(new Set(images)) }]
+          })
+        }
       }
     }
 
@@ -215,6 +228,14 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
         addPerfumesPremium(prods)
       }
     }
+    // if (productType === "gafasLujo") {
+    //   // console.log("here", products)
+    //   const prods = handleZodValidation(products, gafasLujoExcelSchema, setUploadErrors)
+    //   if (!prods) {
+    //     return setUploadErrors(["Error en la validación de los productos, por favor revisa los datos y vuelve a intentar."]);
+    //   }
+    //   addGafasLujo(prods)
+    // }
   }, [data]);
 
   if (!data || !productType) {
@@ -222,63 +243,35 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
   }
 
   return (
-    <section className="flex flex-col items-center">
+    <section className="flex flex-col items-center w-full max-w-xl">
       {/* <button onClick={reset} >volver a intentar</button> */}
-      {productType === 'perfumeLujo' && (
-        <>
-          {perfumeDeLujoFormState.success ? (
-            <>
-              <p className="text-green-600 text-base">Productos guardados con éxito</p>
-              <Link href="/mass-uploads">
-                Volver al inicio
-              </Link>
-            </>
-          ) :
-            !uploadErrors && (
-              <>
-
-                <ul className="flex flex-col gap-2">
-                  {perfumesLujo.map((product, index) => (
-                    <li key={index}>
-                      <ProductCard product={product} productType={productType} />
-                    </li>
-                  ))}
-                </ul>
-                <form action={() => perfumeDeLujoFormAction({ products: perfumesLujo as TPerfumeDeLujoExcel[], productType })}>
-                  <Guardar />
-                </form>
-                {perfumeDeLujoFormState.error && <p className="text-red-600 text-base">{perfumeDeLujoFormState.error}</p>}
-
-              </>
-            )}
-        </>
-      )}
+      {/* {productType === 'perfumeLujo' && (
+        <ProductUpload
+          formAction={perfumeDeLujoFormAction}
+          formState={perfumeDeLujoFormState}
+          productType={productType}
+          products={perfumesLujo as TPerfumeDeLujoExcel[]}
+          uploadErrors={uploadErrors}
+        />
+      )} */}
       {productType === 'perfumePremium' && (
-        <>
-          {perfumePremiumFormState.success ? (
-            <>
-              <p className="text-green-600 text-base">Productos guardados con éxito</p>
-              <Link href="/mass-uploads">
-                Volver al inicio
-              </Link>
-            </>
-          ) : (
-            <>
-              <ul className="flex flex-col gap-2">
-                {perfumesPremium.map((product, index) => (
-                  <li key={index}>
-                    <ProductCard product={product} productType={productType} />
-                  </li>
-                ))}
-              </ul>
-              <form action={() => perfumePremiumFormAction({ products: perfumesPremium as TPerfumePremiumExcel[], productType })}>
-                <Guardar />
-              </form>
-            </>
-          )}
-          {perfumePremiumFormState.error && <p className="text-red-600 text-base">{perfumePremiumFormState.error}</p>}
-        </>
+        <ProductUpload
+          formAction={perfumePremiumFormAction}
+          formState={perfumePremiumFormState}
+          productType={productType}
+          products={perfumesPremium as TPerfumePremiumExcel[]}
+          uploadErrors={uploadErrors}
+        />
       )}
+      {/* {productType === 'gafasLujo' && (
+        <ProductUpload
+          formAction={gafasLujoFormAction}
+          formState={gafasLujoFormState}
+          productType={productType}
+          products={gafasLujo as TGafasLujoExcel[]}
+          uploadErrors={uploadErrors}
+        />
+      )} */}
       {uploadErrors && uploadErrors.length > 0 && uploadErrors.map((error, i) => <p className="text-red-600 text-base" key={error + i}>{error}</p>)}
     </section>
   )
@@ -296,3 +289,82 @@ const Guardar = () => {
     </button>
   )
 }
+
+const ProductUpload = ({ productType, products, formState, formAction, uploadErrors }: {
+  productType: string;
+  products: (TPerfumePremiumExcel | TPerfumeDeLujoExcel)[];
+  formState: { error: string | null; success: boolean } | { errors: TError[] | null; success: boolean };
+  formAction: (data: any) => void;
+  uploadErrors: string[] | null;
+}) => (
+  <>
+    {formState.success ? (
+      <>
+        <p className="text-green-600 text-base">Productos guardados con éxito</p>
+        <Link href="/mass-uploads">
+          Volver al inicio
+        </Link>
+      </>
+    ) : (
+      !uploadErrors && (
+        <section className="pb-10 flex flex-col">
+          <ul className="flex flex-col gap-3">
+            {products.map((product, index) => (
+              <li key={index}>
+                <ProductCard product={product} productType={productType} />
+              </li>
+            ))}
+          </ul>
+          <form action={() => formAction({ products, productType })} className="">
+            <Guardar />
+          </form>
+          {'error' in formState && formState.error && <p className="text-red-600 text-base">{formState.error}</p>}
+          {'errors' in formState && formState.errors && formState.errors.length > 0 && formState.errors.map(error => <p className="text-red-600 text-base" key={error.message}>
+            {error.product && <>
+              <span className="ml-1">
+                {error.product.marca}
+              </span>
+              {"modelo" in error.product && (
+                <span className="ml-1">
+                  {error.product.modelo}
+                </span>
+              )}
+              {"titulo" in error.product && (
+                <span className="ml-1">
+                  {error.product.titulo}
+                </span>
+              )}
+            </>}
+            {error.path && <>
+              <span className="ml-1">
+                {pathToHumanReadable(error.path)}
+              </span>
+            </>}
+            <span className="ml-1">
+              {error.message.replace("Required", "Requerido").replace("Invalid input", "Item Invalido o Requerido")}
+            </span>
+          </p>)}
+        </section>
+      )
+    )}
+  </>
+);
+
+const pathToHumanReadable = (path: string) => {
+  const pathParts = path.split('.');
+  const pathMapping: { [key: string]: string } = {
+    variantes: 'Variants',
+    imagenes: 'Images',
+  };
+  return pathParts
+    .slice(1) // Skip the first part of the path
+    .map((part, index) => {
+      // If the part is a number, add 1 to it
+      if (!isNaN(Number(part))) {
+        return `item ${Number(part) + 1}`;
+      }
+      // Otherwise, map it to a human-readable string
+      return pathMapping[part] || part;
+    })
+    .join(' > ');
+};
