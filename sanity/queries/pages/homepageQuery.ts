@@ -42,7 +42,7 @@ const zodHomepageSchema = z.object({
   perfumes: zodHomeSectionSchema,
   relojes: zodHomeSectionSchema,
   gafas: zodHomeSectionSchema,
-  colecciones: z.array(zodHomeSectionSchema),
+  colecciones: z.array(zodHomeSectionSchema).optional().nullable(),
   sobre: z.object({
     titulo: z.string(),
     descripcion: z.string(),

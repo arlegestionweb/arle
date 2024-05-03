@@ -261,7 +261,7 @@ const Listing = async ({
         .filter((set) => set !== "")
     : [];
 
-  const colecciones = pageContent?.colecciones.filter(
+  const colecciones = pageContent?.colecciones?.filter(
     (coleccion) => !!coleccion.productos
   );
 
@@ -842,15 +842,15 @@ const Listing = async ({
           />
         )}
       </div>
-        {!coleccionSeleccionada ? (
+        {!coleccionSeleccionada && parsedCollections.success && parsedCollections.data.length > 0 ? (
           <Colecciones
             colecciones={parsedCollections.success ? parsedCollections.data : []}
           />
-        ) : (
+        ) : parsedCollections.success && parsedCollections.data.length > 0 ? (
           <h2 className="text-2xl md:text-3xl w-full pt-3 font-jomolhari font-normal text-center capitalize">
             Colección: {coleccionSeleccionada}
           </h2>
-        )}
+        ) : null}
       <section className="bg-white flex flex-col items-center">
         <section className="max-w-screen-xl w-full py-2 px-4 md:px-8 flex">
             <Filters

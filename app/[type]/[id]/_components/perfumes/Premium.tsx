@@ -106,25 +106,19 @@ const PerfumePremium = ({
             {product.detalles.notasOlfativas.notasDeBase && (
               <SeccionEspecificaciones
                 title="Notas de Base"
-                paragraph={product.detalles.notasOlfativas.notasDeBase.join(
-                  ", "
-                )}
+                paragraph={product.detalles.notasOlfativas.notasDeBase.toString().replaceAll(",",", ") + "."}
               />
             )}
             {product.detalles.notasOlfativas.notasDeCorazon && (
               <SeccionEspecificaciones
                 title="Notas de Corazon"
-                paragraph={product.detalles.notasOlfativas.notasDeCorazon.join(
-                  ", "
-                )}
+                paragraph={product.detalles.notasOlfativas.notasDeCorazon.toString().replaceAll(",",", ") + "."}
               />
             )}
             {product.detalles.notasOlfativas.notasDeSalida && (
               <SeccionEspecificaciones
                 title="Notas de Salida"
-                paragraph={product.detalles.notasOlfativas.notasDeSalida.join(
-                  ", "
-                )}
+                paragraph={product.detalles.notasOlfativas.notasDeSalida.toString().replaceAll(",",", ") + "."}
               />
             )}
           </div>

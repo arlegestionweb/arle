@@ -45,8 +45,16 @@ export const formatNumber = function (number: number | string): string {
   return result;
 };
 
-export const getAllMarcas = (products: TProduct[]) =>
-  products.map((product) => product.marca);
+export const getAllMarcas = (products: TProduct[]) => {
+  const uniqueMarcas: string[] = [];
+  products.forEach((product) => {
+    if (uniqueMarcas.indexOf(product.marca) === -1) {
+      uniqueMarcas.push(product.marca);
+    }
+  });
+  return uniqueMarcas;
+}
+
 
 export const getAllColeccionesDeMarca = (products: TProduct[]) =>
   products

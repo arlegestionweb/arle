@@ -201,7 +201,7 @@ const zodListPage = z.object({
 
   gafas: z.array(zodGafaListingQuery),
 
-  colecciones: zodCollectiones,
+  colecciones: zodCollectiones.optional().nullable(),
 });
 
 export type TlistingContent = z.infer<typeof listingContent>

@@ -24,7 +24,9 @@ const Home = async function () {
       {exploreSections.map((section, index) => (
         <ExploreSection key={index + section.titulo} section={section} />
       ))}
-      <Colecciones colecciones={pageContent.colecciones} />
+      {pageContent.colecciones && (
+        <Colecciones colecciones={pageContent.colecciones} />
+      )}
       <AboutArle sobre={pageContent.sobre} />
       <Asesoria content={pageContent.asesoria} />
     </main>
