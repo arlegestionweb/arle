@@ -790,20 +790,12 @@ export const savePerfumesLujo = async (
               product: product,
             });
           } else {
-<<<<<<< HEAD
-            // console.log({ updatedProduct });
+
+            console.log({ updatedProduct });
             // return {
             //   success: true,
             //   errors: null,
             // };
-=======
-            console.log({ updatedProduct });
-            updatedProducts.push(updatedProduct);
-            // errors.push({
-            //   message: `Producto actualizado ${product.titulo}`,
-            //   product: product,
-            // })
->>>>>>> 4119d2a (fixes the error messages for the new save perfumes lujo)
           }
         } else {
           console.log("creating product");
@@ -821,49 +813,16 @@ export const savePerfumesLujo = async (
               product: product,
             });
           } else {
-<<<<<<< HEAD
-            // console.log({ newProduct });
+
+            console.log({ newProduct });
             // return {
             //   success: true,
             //   errors: null,
-            // };
-=======
-            console.log({ newProduct });
-            savedProducts.push(newProduct);
->>>>>>> 4119d2a (fixes the error messages for the new save perfumes lujo)
+            // }
           }
         }
       }
     }
-  }
-
-<<<<<<< HEAD
-  if (errors && errors.length > 0) {
-    return {
-      success: false,
-      errors
-    }
-=======
-  if (errors.length === 0) {
-    let message = "";
-    if (savedProducts.length > 0) {
-      message += `${savedProducts.length} Productos guardados`;
-    }
-    if (updatedProducts.length > 0) {
-      if (message.length > 0) {
-        message += " and ";
-      }
-      message += `${updatedProducts.length} productos actualizados`;
-    }
-    if (message.length === 0) {
-      message = "No products saved or updated";
-    }
-    return {
-      success: true,
-      errors: null,
-      message,
-    };
->>>>>>> 4119d2a (fixes the error messages for the new save perfumes lujo)
   }
 
   return {
