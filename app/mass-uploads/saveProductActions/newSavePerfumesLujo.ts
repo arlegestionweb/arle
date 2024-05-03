@@ -844,9 +844,14 @@ export const savePerfumesLujo = async (
     }
     return {
       success: true,
-      errors: [],
+      errors: null,
       message
     };
+  }
+
+  return {
+    success: false,
+    errors,
   }
 };
 

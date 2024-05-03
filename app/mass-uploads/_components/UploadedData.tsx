@@ -158,7 +158,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
   const { addProducts: addPerfumesPremium, products: perfumesPremium } = usePerfumePremiumUploadStore()
 
 
-  const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesLujo, { errors: [], success: false });
+  const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesLujo, { message: undefined, errors: [], success: false });
   const [perfumePremiumFormState, perfumePremiumFormAction] = useFormState(savePerfumesPremiumInSanityUsingForm, { error: null, success: false });
 
   const keys = data.slice(0, 4).map(row => row.values);
