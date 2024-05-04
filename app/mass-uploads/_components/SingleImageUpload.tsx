@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { saveImageToSanity } from "./saveImageToSanity";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { TProductType } from "./UploadedData";
 
 const SingleImageUpload = ({ title, product, onImageUpload }: {
@@ -15,7 +15,11 @@ const SingleImageUpload = ({ title, product, onImageUpload }: {
     status: "pending",
     message: "",
     image: undefined
-  })
+  });
+
+
+  const { pending, data, method, action } = useFormStatus();
+
 
   useEffect(() => {
     if (formState.status === "success" && formState.image) {
@@ -23,6 +27,12 @@ const SingleImageUpload = ({ title, product, onImageUpload }: {
     }
   }, [formState.status, formState.image]);
 
+  if (formState.status === "error") {
+    return <div>{formState.message}</div>
+  }
+
+
+  console.log({ pending, method, action })
 
   return (
     <section className="flex flex-col">
@@ -35,7 +45,14 @@ const SingleImageUpload = ({ title, product, onImageUpload }: {
           <span>Subir o arrastrar imagen para la descripcion acá</span >
           <input accept="image/png, image/jpeg" onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)} type="file" name="imageUpload" />        </label >
         {image && (
-          <button className="border border-black px-2 py-1">Guardar Imagen</button>
+          
+          <button
+            // type="submit"
+            disabled={pending}
+            className="border border-black px-2 py-1">
+            {pending ? "Guardando" : "Guardar Imagen"}
+            {/* Guardar Imagen */}
+          </button>
         )}
       </form >
       {/* )} */}
