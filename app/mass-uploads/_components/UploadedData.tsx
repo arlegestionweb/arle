@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { excelData } from "../fileUpload";
 import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
-import { savePerfumesPremiumInSanityUsingForm } from "../saveProductActions/savePerfumesPremium";
 import { ZodObject } from 'zod';
 import { TError, savePerfumesLujo } from "../saveProductActions/newSavePerfumesLujo";
 
@@ -159,7 +158,6 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
 
 
   const [perfumeDeLujoFormState, perfumeDeLujoFormAction] = useFormState(savePerfumesLujo, { message: undefined, errors: [], success: false });
-  const [perfumePremiumFormState, perfumePremiumFormAction] = useFormState(savePerfumesPremiumInSanityUsingForm, { error: null, success: false });
 
   const keys = data.slice(0, 4).map(row => row.values);
 
@@ -272,7 +270,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           uploadErrors={uploadErrors}
         />
       )}
-      {productType === 'perfumePremium' && (
+      {/* {productType === 'perfumePremium' && (
         <ProductUpload
           formAction={perfumePremiumFormAction}
           formState={perfumePremiumFormState}
@@ -280,7 +278,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
           products={perfumesPremium as TPerfumePremiumExcel[]}
           uploadErrors={uploadErrors}
         />
-      )}
+      )} */}
       {/* {productType === 'gafasLujo' && (
         <ProductUpload
           formAction={gafasLujoFormAction}
