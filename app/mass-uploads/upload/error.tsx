@@ -1,3 +1,4 @@
+"use cliente"
 import { useEffect } from "react"
 
 export default function Error({
