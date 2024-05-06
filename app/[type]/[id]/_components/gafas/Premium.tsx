@@ -64,7 +64,7 @@ const GafaPremium = ({
         ) : (
           <></>
         )}
-        <EspecificacionesGafa product={product} />
+        <EspecificacionesGafa product={product} selectedVariant={selectedVariant} />
         
         {product.garantia.descripcion ? (
           <CollapsibleProductSection title="Descripción de Garantía">
@@ -92,9 +92,10 @@ export default GafaPremium;
 
 type TEspecificacionesProps = {
   product: TGafaPremium;
+  selectedVariant: TVarianteGafa;
 };
 
-const EspecificacionesGafa = ({ product }: TEspecificacionesProps) => {
+const EspecificacionesGafa = ({ product, selectedVariant }: TEspecificacionesProps) => {
   return (
     <CollapsibleProductSection title="Especificaciones">
       <div className="w-full grid grid-cols-2 gap-2">
@@ -120,9 +121,11 @@ const EspecificacionesGafa = ({ product }: TEspecificacionesProps) => {
           title="Tipo de Lente"
           paragraph={product.detalles.lente.tipo}
         />
-        <SeccionEspecificaciones title="Marca" paragraph={product.marca} />
+        <SeccionEspecificaciones title="Color del Lente" paragraph={selectedVariant.colorDelLente.nombre} />
+        <SeccionEspecificaciones title="Color de la Montura" paragraph={selectedVariant.colorDeLaMontura.nombre} />
+        <SeccionEspecificaciones title="Color de la Varilla" paragraph={selectedVariant.colorDeLaVarilla.nombre} />
         <SeccionEspecificaciones
-          title="Tipo"
+          title="Tipo de gafas"
           paragraph={product.detalles.tipoDeGafa}
         />
         <SeccionEspecificaciones

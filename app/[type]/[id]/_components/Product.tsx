@@ -153,7 +153,9 @@ const Product = ({
         />
       )}
       <section className="flex flex-col gap-6">
-        <ProductCardSlide nameSection="Productos Sugeridos" products={recommendedProducts || []} />
+        {recommendedProducts && (
+          <ProductCardSlide nameSection="Productos Sugeridos" products={recommendedProducts} />
+        )}
         <ProductCardSlide nameSection="Vistos recientemente" products={recentlyViewedProducts} />
       </section>
     </>
