@@ -27,7 +27,7 @@ const ProductViewer = ({ product, className, selectedVariant }: ProductViewerPro
     : (selectedVariant as TRelojVariant | TVarianteGafa).imagenes;
 
   return (
-    <>
+    <section className="flex h-full relative">
       <ProductSlide
         slug={product.slug}
         imagesProduct={imagenes}
@@ -36,9 +36,9 @@ const ProductViewer = ({ product, className, selectedVariant }: ProductViewerPro
       />
       <ProductGrid
         imagenes={imagenes}
-        className="hidden lg:flex basis-full max-h-[650px]"
+        className="hidden lg:flex basis-full max-h-[650px] sticky top-20"
       />
-    </>
+    </section>
   );
 };
 
