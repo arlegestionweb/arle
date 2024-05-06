@@ -31,7 +31,7 @@ const ProductViewer = ({ product, className, selectedVariant }: ProductViewerPro
       <ProductSlide
         slug={product.slug}
         imagesProduct={imagenes}
-        className={cn("max-h-[377px] lg:hidden", className)}
+        className={cn("max-h-[377px] lg:hidden w-full", className)}
         isLink={false}
       />
       <ProductGrid

@@ -153,7 +153,7 @@ const Product = ({
         />
       )}
       <section className="flex flex-col gap-6">
-        {recommendedProducts && (
+        {recommendedProducts && recommendedProducts?.length > 0 && (
           <ProductCardSlide nameSection="Productos Sugeridos" products={recommendedProducts} />
         )}
         <ProductCardSlide nameSection="Vistos recientemente" products={recentlyViewedProducts} />
