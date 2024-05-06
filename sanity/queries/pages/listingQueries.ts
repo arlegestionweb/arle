@@ -161,8 +161,8 @@ export const zodProduct = z.union([
 ]);
 
 export const recommendedProductsSchema = z.object({
-  productos: z.array(zodProduct).optional().nullable(),
-});
+  productos: z.array(zodProduct),
+}).optional().nullable();
 
 export type TPerfume = z.infer<typeof zodPerfumeListingQuery>;
 export type TReloj = z.infer<typeof zodRelojListingQuery>;
