@@ -15,6 +15,7 @@ export const coleccionesSchema = defineType({
       name: "descripcion",
       title: "Descripción",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "imagen",
