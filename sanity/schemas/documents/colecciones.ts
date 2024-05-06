@@ -9,6 +9,7 @@ export const coleccionesSchema = defineType({
       name: "titulo",
       title: "Título",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "descripcion",
@@ -19,6 +20,7 @@ export const coleccionesSchema = defineType({
       name: "imagen",
       title: "Imagen",
       type: "imagenObject",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "productos",
