@@ -72,11 +72,11 @@ const ProductSlide = ({
   return (
     <section
       className={cn(
-        "max-w-screen h-[70vh] md:pt-0 overflow-hidden relative group",
+        "max-w-screen h-[70vh] md:pt-0 overflow-hidden relative group ",
         className
       )}>
       <section
-        className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
+        className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory "
         onScroll={handleScroll}
         ref={productRef}>
         {imagesProduct as TImages && (

@@ -53,7 +53,7 @@ const Precio = ({
           </p>
         )}
       </section>
-      {!dontDisplayPaymentOptions && (
+      {/* {!dontDisplayPaymentOptions && (
         <section className=" -mt-1">
           <p className="text-zinc-500 text-sm md:text-base md:leading-none font-normal font-tajawal leading-none">
             Págalo a 4 cuotas de $
@@ -62,7 +62,7 @@ const Precio = ({
             )}{" "}con{" "}[Wompi].
           </p>
         </section>
-      )}
+      )} */}
     </>
   );
 }

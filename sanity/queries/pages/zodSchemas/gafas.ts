@@ -33,7 +33,7 @@ export const gafasLujoSchema = z.object({
       tipo: z.string(),
       material: z.string(),
     }),
-    queIncluye: z.string(),
+    queIncluye: z.string().optional().nullable(),
     montura: z.object({
       formaDeLaMontura: z.string(),
       materialMontura: z.string(),

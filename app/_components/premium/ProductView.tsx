@@ -27,18 +27,18 @@ const ProductViewer = ({ product, className, selectedVariant }: ProductViewerPro
     : (selectedVariant as TRelojVariant | TVarianteGafa).imagenes;
 
   return (
-    <>
+    <section className="flex lg:h-full relative">
       <ProductSlide
         slug={product.slug}
         imagesProduct={imagenes}
-        className={cn("max-h-[377px] lg:hidden", className)}
+        className={cn("max-h-[377px] lg:hidden w-full", className)}
         isLink={false}
       />
       <ProductGrid
         imagenes={imagenes}
-        className="hidden lg:flex basis-full max-h-[650px]"
+        className="hidden lg:flex basis-full max-h-[650px] sticky top-20 z-[200]"
       />
-    </>
+    </section>
   );
 };
 
@@ -112,7 +112,7 @@ const ProductGrid = ({
         ))}
         </section>
         {imagenes.length > 4 && (
-          <div className="absolute bottom-0 h-20 w-full z-10 bg-gradient-to-b from-transparent to-[#00000080] opacity-25"></div>
+          <div className="absolute bottom-0 h-20 w-full z-10"></div>
         )}
       </div>
     </section>

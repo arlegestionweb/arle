@@ -65,7 +65,7 @@ table, th, td, tr {
     @apply font-tajawal font-semibold leading-tight text-gray-500 text-base lg:text-lg lg:leading-tight;
   }
   .content-text{
-    @apply font-tajawal leading-tight text-base font-light text-gray-600 lg:text-lg lg:leading-tight;
+    @apply font-tajawal leading-tight text-base font-light text-gray-600 lg:text-lg lg:leading-tight text-justify;
   }
   .about-title{
     @apply font-jomolhari tracking-tight leading-snug text-2xl xs:text-3xl text-gray-800

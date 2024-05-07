@@ -842,7 +842,7 @@ const Listing = async ({
           />
         )}
       </div>
-        {!coleccionSeleccionada && parsedCollections.success && parsedCollections.data.length > 0 ? (
+        {!coleccionSeleccionada && colecciones && colecciones.length > 0 ? (
           <Colecciones
             colecciones={parsedCollections.success ? parsedCollections.data : []}
           />
