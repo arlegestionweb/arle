@@ -63,7 +63,7 @@ const GalleryProduct = ({
       <div
         onClick={() => setImageOpen(true)}
         className={cn(
-          "relative w-full aspect-square max-h-[370px] md:h-[377px] lg:h-[569px] cursor-zoom-in",
+          "relative w-full aspect-square h-[370px] md:h-[377px] lg:h-[569px] cursor-zoom-in",
           orientation == "vertical" && "md:w-1/2 lg:w-full"
         )}
       >
