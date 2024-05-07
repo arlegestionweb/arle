@@ -236,7 +236,7 @@ const UploadedData = ({ data, productType }: { data: excelData[]; productType: n
       const prods = handleZodValidation(products, perfumeDeLujoExcelSchema, setUploadErrors)
       if (prods) {
 
-        
+
         addPerfumesLujo(prods)
       }
     }
@@ -325,20 +325,15 @@ const ProductUpload = ({ productType, products, formState, formAction, uploadErr
       // console.log(formState.errors)
       setErrors(formState.errors)
     }
+
+    console.log({ formState })
   }, [formState])
 
   // console.log({ formState })
   return (
     <>
-      {formState.success ? (
-        <>
-          {formState.message && <p className="text-green-600 text-base">{formState.message}</p>}
-          {/* <p className="text-green-600 text-base">Productos guardados con éxito</p> */}
-          <Link href="/mass-uploads">
-            Volver al inicio
-          </Link>
-        </>
-      ) : (
+      {!formState.success ? (
+
         !uploadErrors && (
           <section className="pb-10 flex flex-col">
             <ul className="flex flex-col gap-10 w-full">
@@ -383,6 +378,14 @@ const ProductUpload = ({ productType, products, formState, formAction, uploadErr
             </p>)}
           </section>
         )
+      ) : (
+        <>
+          {formState.message && <p className="text-green-600 text-base">{formState.message}</p>}
+          {/* <p className="text-green-600 text-base">Productos guardados con éxito</p> */}
+          <Link href="/mass-uploads">
+            Volver al inicio
+          </Link>
+        </>
       )}
     </>
   )
