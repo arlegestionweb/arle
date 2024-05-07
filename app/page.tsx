@@ -17,14 +17,14 @@ const Home = async function () {
     pageContent.gafas,
     pageContent.relojes,
   ];
-
+  
   return (
     <main className="relative z-10 lg:mb-[100vh] pt-[50px] md:pt-0 bg-white">
       <HeroBanner content={pageContent.hero} />
       {exploreSections.map((section, index) => (
         <ExploreSection key={index + section.titulo} section={section} />
       ))}
-      {pageContent.colecciones && (
+      {pageContent.colecciones && pageContent.colecciones.length > 0 && (
         <Colecciones colecciones={pageContent.colecciones} />
       )}
       <AboutArle sobre={pageContent.sobre} />

@@ -28,7 +28,7 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
                     alt={coleccion.imagen.alt || ""}
                     height={110}
                     width={110}
-                    className="object-cover group-hover:w-[130px] group-hover:h-[130px] transition-all duration-500 z-0 w-[110px] h-[110px] rounded-full "
+                    className="object-cover group-hover:w-[200px] group-hover:h-[200px] transition-all duration-500 z-0 w-[110px] h-[110px] rounded-full "
                     />
                     </div>
                     
