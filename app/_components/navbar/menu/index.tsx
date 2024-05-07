@@ -49,7 +49,12 @@ const Menu = ({
         productType as TProductType,
         gender as TGender
       );
-      setThirdScreenItems(brands?.map((brand) => ({ name: brand })) || []);
+      const uniqueBrandsSet = new Set(brands);
+
+  // Convert the Set back to an array of objects with name property
+  const uniqueBrands = Array.from(uniqueBrandsSet).map(brand => ({ name: brand }));
+
+  setThirdScreenItems(uniqueBrands || [])
     };
     fetchBrands();
   }, [selectedItems]);

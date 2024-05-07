@@ -329,7 +329,7 @@ const Listing = async ({
     ((producto: TProduct) =>
       generoSeleccionado === "todos"
         ? true
-        : producto.genero.toLowerCase().includes(generoSeleccionado)),
+        : producto.genero.toLowerCase().includes(generoSeleccionado) || producto.genero.toLowerCase() === "unisex" ),
     marcasSeleccionadas.length > 0 &&
     ((producto: TProduct) =>
       marcasSeleccionadas.includes("todas")
