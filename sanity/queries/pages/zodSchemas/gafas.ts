@@ -16,7 +16,7 @@ const gafaVariantSchema = z.object({
   colorDeLaMontura: zodColorSchema,
   colorDelLente: zodColorSchema,
   colorDeLaVarilla: zodColorSchema,
-  lenteSchema,
+  lente: lenteSchema,
   talla: z.string().optional().nullable(),
   precio: z.string(),
   precioConDescuento: z.string().optional().nullable(),
@@ -97,10 +97,6 @@ export const gafasPremiumSchema = z.object({
   detalles: z.object({
     tipoDeGafa: z.string(),
     estiloDeGafa: z.string(),
-    lente: z.object({
-      tipo: z.string(),
-      material: z.string(),
-    }),
     montura: z.object({
       formaDeLaMontura: z.string(),
       materialMontura: z.string(),
