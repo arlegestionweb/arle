@@ -146,8 +146,9 @@ const GafaLujo = ({
               especificaciones: {
                 tipoDeGafa: product.especificaciones.tipoDeGafa,
                 estiloDeGafa: product.especificaciones.estiloDeGafa,
-                materialDeLente: product.especificaciones.lente.material,
-                tipoDeLente: product.especificaciones.lente.tipo,
+                materialDeLente: selectedVariant.lenteSchema.material,
+                tipoDeLente: selectedVariant.lenteSchema.tipo,
+                talla: selectedVariant.talla || "",
                 queIncluye: product.especificaciones.queIncluye || "",
                 formaDeLaMontura:
                   product.especificaciones.montura.formaDeLaMontura,

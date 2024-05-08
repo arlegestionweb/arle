@@ -115,12 +115,17 @@ const EspecificacionesGafa = ({ product, selectedVariant }: TEspecificacionesPro
         />
         <SeccionEspecificaciones
           title="Material del Lente"
-          paragraph={product.detalles.lente.material}
+          paragraph={selectedVariant.lenteSchema.material}
         />
         <SeccionEspecificaciones
           title="Tipo de Lente"
-          paragraph={product.detalles.lente.tipo}
+          paragraph={selectedVariant.lenteSchema.tipo}
         />
+        {selectedVariant.talla && (
+        <SeccionEspecificaciones
+          title="Talla"
+          paragraph={selectedVariant.talla}
+        />)}
         <SeccionEspecificaciones title="Color del Lente" paragraph={selectedVariant.colorDelLente.nombre} />
         <SeccionEspecificaciones title="Color de la Montura" paragraph={selectedVariant.colorDeLaMontura.nombre} />
         <SeccionEspecificaciones title="Color de la Varilla" paragraph={selectedVariant.colorDeLaVarilla.nombre} />
