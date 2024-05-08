@@ -88,6 +88,12 @@ const varianteDeGafa = defineField({
     precioSchema,
     precioConDescuentoSchema,
     etiquetaSchema,
+    lenteSchema,
+    defineField({
+      name: "talla",
+      title: "Talla",
+      type: "string",
+    }),
     defineField({
       name: "codigoDeReferencia",
       title: "Código de referencia",
@@ -186,6 +192,5 @@ export const detallesDeGafaSchema = defineField({
       validation: (Rule) => Rule.required(),
     }),
     monturaSchema,
-    lenteSchema,
   ],
 });

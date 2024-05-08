@@ -7,10 +7,17 @@ import {
   zodColorSchema,
 } from "./general";
 
+export const lenteSchema = z.object({
+  tipo: z.string(),
+  material: z.string(),
+});
+
 const gafaVariantSchema = z.object({
   colorDeLaMontura: zodColorSchema,
   colorDelLente: zodColorSchema,
   colorDeLaVarilla: zodColorSchema,
+  lenteSchema,
+  talla: z.string().optional().nullable(),
   precio: z.string(),
   precioConDescuento: z.string().optional().nullable(),
   tag: z.string().optional().nullable(),
@@ -21,7 +28,6 @@ const gafaVariantSchema = z.object({
 });
 export type TVarianteGafa = z.infer<typeof gafaVariantSchema>;
 
-
 export const gafasLujoSchema = z.object({
   date: z.string(),
   banners: z.array(bannerSchema).optional().nullable(),
@@ -29,10 +35,6 @@ export const gafasLujoSchema = z.object({
   especificaciones: z.object({
     tipoDeGafa: z.string(),
     estiloDeGafa: z.string(),
-    lente: z.object({
-      tipo: z.string(),
-      material: z.string(),
-    }),
     queIncluye: z.string().optional().nullable(),
     montura: z.object({
       formaDeLaMontura: z.string(),

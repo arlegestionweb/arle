@@ -46,7 +46,6 @@ export const gafasPremiumSchema = defineType({
     generoSchema,
     mostrarCreditoSchema,
     garantiaSchema,
-
     detallesDeGafaSchema,
     variantesDeGafaPremiumSchema,
     coleccionesDeMarcaSchema,

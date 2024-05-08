@@ -87,7 +87,6 @@ export const gafasLujoSchema = defineType({
           validation: (Rule) => Rule.required(),
         }),
         monturaSchema,
-        lenteSchema,
       ],
     }),
     variantesDeGafaLujoSchema,

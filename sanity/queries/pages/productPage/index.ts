@@ -346,10 +346,6 @@ export const productQuery: Record<TProductType, string> = {
         "materialMontura": materialMontura -> titulo,
         "materialVarilla": materialVarilla -> titulo,
       },
-      "lente": lente {
-        "material": material -> titulo,
-        "tipo": tipo -> titulo,
-      },
     },
     coleccionDeMarca,
     "slug": slug.current,
@@ -370,6 +366,11 @@ export const productQuery: Record<TProductType, string> = {
         alt,
         "url": coalesce(url, asset->url),
       },
+      "lente": lente {
+        "material": material -> titulo,
+        "tipo": tipo -> titulo,
+      },
+      talla,
       codigoDeReferencia,
       unidadesDisponibles,
       precioConDescuento,
@@ -384,10 +385,6 @@ export const productQuery: Record<TProductType, string> = {
     "detalles": detalles {
       "tipoDeGafa": tipoDeGafa -> titulo,
       "estiloDeGafa": estiloDeGafa -> titulo,
-        "lente": lente {
-        "tipo": tipo -> titulo,
-        "material": material -> titulo,
-      },
       "montura": montura {
         "formaDeLaMontura": formaDeLaMontura -> titulo,
         "materialMontura": materialMontura -> titulo,
@@ -419,6 +416,11 @@ export const productQuery: Record<TProductType, string> = {
         alt,
         "url": coalesce(url, asset->url),
       },
+      "lente": lente {
+        "material": material -> titulo,
+        "tipo": tipo -> titulo,
+      },
+      talla,
       codigoDeReferencia,
       unidadesDisponibles,
       precio,
@@ -433,10 +435,6 @@ export const productQuery: Record<TProductType, string> = {
     "detalles": detalles {
       "tipoDeGafa": tipoDeGafa -> titulo,
       "estiloDeGafa": estiloDeGafa -> titulo,
-        "lente": lente {
-        "tipo": tipo -> titulo,
-        "material": material -> titulo,
-      },
       "montura": montura {
         "formaDeLaMontura": formaDeLaMontura -> titulo,
         "materialMontura": materialMontura -> titulo,
