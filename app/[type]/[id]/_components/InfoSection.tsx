@@ -49,7 +49,7 @@ const InfoSection = (props: InfoProps) => {
                   {props.subTitulo}
                 </h3>
               )}
-              <p className="opacity-90 w-full text-lg font-light font-tajawal leading-tight text-justify pr-4">
+              <p className="opacity-90 w-full text-lg font-light font-tajawal leading-tight text-justify pr-4 whitespace-pre-line">
                 {props.descripcion}
               </p>
             </section>

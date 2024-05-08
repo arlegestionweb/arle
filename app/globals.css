@@ -59,25 +59,25 @@ table, th, td, tr {
     @apply font-jomolhari font-normal tracking-wide cursor-default text-3xl;
   }
   .section-text{
-    @apply text-lg font-light font-tajawal leading-tight;
+    @apply text-lg font-light font-tajawal leading-tight text-justify whitespace-pre-line;
   }
   .content-title{
     @apply font-tajawal font-semibold leading-tight text-gray-500 text-base lg:text-lg lg:leading-tight;
   }
   .content-text{
-    @apply font-tajawal leading-tight text-base font-light text-gray-600 lg:text-lg lg:leading-tight text-justify;
+    @apply font-tajawal leading-tight text-base font-light text-gray-600 lg:text-lg lg:leading-tight text-justify whitespace-pre-line;
   }
   .about-title{
     @apply font-jomolhari tracking-tight leading-snug text-2xl xs:text-3xl text-gray-800
   }
   .about-text{
-    @apply font-tajawal leading-tight font-normal text-gray-600 text-base sm:text-lg sm:leading-tight
+    @apply font-tajawal leading-tight font-normal text-gray-600 text-base sm:text-lg sm:leading-tight text-justify whitespace-pre-line
   }
   .about-title-white{
     @apply font-jomolhari tracking-tight leading-snug text-2xl xs:text-3xl text-gray-200
   }
   .about-text-white{
-    @apply font-tajawal leading-tight font-normal text-gray-300 text-base sm:text-lg sm:leading-tight
+    @apply font-tajawal leading-tight font-normal text-gray-300 text-base sm:text-lg sm:leading-tight text-justify whitespace-pre-line
   }
   .portable-text{
     @apply [&_h1]:font-bold [&_h1]:text-2xl [&_h1]:text-gray-800 [&_h2]:font-semibold [&_h2]:text-xl [&_h2]:text-gray-700 [&_p]:font-normal [&_p]:text-base [&_p]:text-gray-700

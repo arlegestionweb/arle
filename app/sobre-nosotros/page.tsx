@@ -65,7 +65,7 @@ const Page = async () => {
           <Image className="w-[215px] h-[215px] sm:w-[300px] sm:h-[300px] xl:h-[350px] xl:w-[350px] absolute object-contain -top-[85px] -left-[80px] md:left-auto md:-right-[155px] lg:-right-[100px] xl:-right-[50px] opacity-70" height={300} width={300} alt="Escudo Logo Arle" src="/escudoArle.svg" />
           <section className=" flex w-full max-w-3xl flex-col items-end md:items-start">
             <h2 className="max-w-[200px] xs:max-w-[300px] about-title whitespace-pre-wrap text-right md:text-left">{pageContent?.howWeHelpOurClients?.titulo}</h2>
-            <p className="max-w-[310px] xs:max-w-[400px] about-text mt-4 text-right md:text-left">{pageContent?.howWeHelpOurClients?.descripcion}</p>
+            <p className="max-w-[310px] xs:max-w-[400px] about-text mt-4 text-right md:text-justify">{pageContent?.howWeHelpOurClients?.descripcion}</p>
           </section>
         </section>
       }
@@ -96,7 +96,7 @@ const Page = async () => {
           </section>
         </section>
       }
-      <section className="w-full p-5 flex justify-center">
+      <section className="w-full pb-8 flex justify-center bg-white">
       <Link
           className="dark-button z-10"
           href="/listing"
