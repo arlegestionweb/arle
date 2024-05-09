@@ -414,6 +414,11 @@ export const productQueryString: Record<string, string> = {
         "reference": true,
         "options": *[_type == "estiloDeReloj"] {"nombre": titulo}
       },
+      "tipoDeCierre": tipoDeCierre -> {
+        "nombre": titulo,
+        "reference": true,
+        "options": *[_type == "tipoDeCierre"] {"nombre": titulo}
+      }
       resistenciaAlAgua,
       "funciones": {
         "nombre": "funciones",
@@ -547,6 +552,11 @@ export const productQueryString: Record<string, string> = {
         "reference": true,
         "options": *[_type == "estiloDeReloj"] {"nombre": titulo}
       },
+      "tipoDeCierre": tipoDeCierre -> {
+        "nombre": titulo,
+        "reference": true,
+        "options": *[_type == "tipoDeCierre"] {"nombre": titulo}
+      }
       "funciones": {
         "nombre": "funciones",
         "array": true,

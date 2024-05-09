@@ -21,6 +21,7 @@ export type TCaja = z.infer<typeof zodCajaSchema>;
 const detallesRelojSchema = z.object({
   tipoDeReloj: z.string(),
   estiloDeReloj: z.string(),
+  tipoDeCierre: z.string(),
   resistenciaAlAgua: z.string(),
   funciones: z
     .array(
@@ -68,6 +69,7 @@ export const relojLujoSchema = z.object({
   especificaciones: z.object({
     tipoDeReloj: z.string(),
     estiloDeReloj: z.string(),
+    tipoDeCierre: z.string(),
     resistenciaAlAgua: z.string(),
     funciones: z
       .array(

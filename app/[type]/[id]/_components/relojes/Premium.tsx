@@ -118,6 +118,10 @@ const EspecificacionesReloj = ({ product }: TEspecificacionesProps) => {
           paragraph={product.detallesReloj.estiloDeReloj}
         />
         <SeccionEspecificaciones
+          title="Tipo de Cierre"
+          paragraph={product.detallesReloj.tipoDeCierre}
+        />
+        <SeccionEspecificaciones
           title="Tipo de Movimiento"
           paragraph={product.detallesReloj.tipoDeMovimiento}
         />

@@ -132,6 +132,7 @@ const RelojLujo = ({
               especificaciones: {
                 "Tipo de reloj": product.especificaciones.tipoDeReloj,
                 "Estilo de reloj": product.especificaciones.estiloDeReloj,
+                "Tipo de cierre": product.especificaciones.tipoDeCierre,
                 "Resistencia al agua":
                   product.especificaciones.resistenciaAlAgua,
                 materialDelPulso: product.especificaciones.material,

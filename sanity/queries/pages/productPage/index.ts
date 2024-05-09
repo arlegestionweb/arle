@@ -110,6 +110,7 @@ export const productQuery: Record<TProductType, string> = {
     "especificaciones": especificaciones {
       "tipoDeReloj": tipoDeReloj -> titulo,
       "estiloDeReloj": estiloDeReloj -> titulo,
+      "tipoDeCierre": tipoDeCierre -> titulo,
       resistenciaAlAgua,
       "funciones": funciones [] -> {
         titulo,
@@ -197,6 +198,7 @@ export const productQuery: Record<TProductType, string> = {
     "detallesReloj": detallesReloj {
       "tipoDeReloj": tipoDeReloj -> titulo,
       "estiloDeReloj": estiloDeReloj -> titulo,
+      "tipoDeCierre": tipoDeCierre -> titulo,
       "funciones": funciones [] -> {
         titulo,
         descripcion
