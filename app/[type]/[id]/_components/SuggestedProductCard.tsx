@@ -4,14 +4,15 @@ import ProductSlide from "@/app/_components/ProductSlide";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
 import {
   TGafa,
+  TPerfume,
   TProduct,
+  TReloj,
   isGafa,
   isPerfume,
   isReloj,
 } from "@/sanity/queries/pages/listingQueries";
 import { isGafaLujo, isPerfumeLujo, isPerfumePremium, isRelojLujo } from "@/sanity/queries/pages/types";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
-import { colombianPriceStringToNumber } from "@/utils/helpers";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -61,21 +62,16 @@ const CardLayout = ({
   selectedVariant: TVariant;
   setSelectedVariant: (variant: TVariant) => void;
 }) => {
-  const firstImage = isPerfume(product) ? product.imagenes[0] : null;
-
 
   return (
     <>
       <section className="w-full h-[150px] overflow-hidden">
-        {(isPerfume(product) && product.imagenes.length > 1) ||
+        {(isPerfume(product) && product.variantes[0].imagenes.length > 1) ||
           (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
           (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
           <ProductSlide
             slug={product.slug}
-            imagesProduct={
-              isPerfume(product)
-                ? product.imagenes
-                : "imagenes" in selectedVariant
+            imagesProduct={ "imagenes" in selectedVariant
                   ? selectedVariant.imagenes
                   : []
             }
@@ -85,17 +81,15 @@ const CardLayout = ({
           <Link href={product.slug} className="h-full w-full">
             <Image
               src={
-                isPerfume(product)
-                  ? (firstImage && firstImage?.url) || ""
-                  : "imagenes" in selectedVariant
+                 "imagenes" in selectedVariant
                     ? selectedVariant.imagenes[0].url || ""
                     : ""
               }
               alt={
                 isPerfume(product)
-                  ? product.imagenes[0].alt
+                  ? (product as TPerfume).variantes[0].imagenes[0].alt!
                   : isReloj(product)
-                    ? product.variantes[0].imagenes[0].alt!
+                    ? (product as TReloj).variantes[0].imagenes[0].alt!
                     : (product as TGafa).variantes[0].imagenes[0].alt!
               }
               width={200}

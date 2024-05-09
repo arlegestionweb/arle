@@ -30,7 +30,7 @@ const PerfumeLujo = ({
     <>
       <HeroProduct
         product={product}
-        images={product.imagenes}
+        images={selectedVariant.imagenes}
         selectedVariant={selectedVariant}
         setSelectedVariant={setSelectedVariant}
         cantidad={cantidad}

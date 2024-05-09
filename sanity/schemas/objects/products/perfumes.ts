@@ -7,6 +7,7 @@ import {
 } from "./generales";
 import { TbPerfume } from "react-icons/tb";
 import { notasOlfativasProdSchema } from "../../products/perfumes";
+import { imageArrayForProducts } from "../image";
 
 export const resenaPerfumesSchema = defineField({
   name: "resena",
@@ -88,6 +89,7 @@ const variantePerfumeSchema = defineField({
           .error("Unidades disponibles no pueden ser menos de 0"),
     }),
     etiquetaSchema,
+    imageArrayForProducts,
   ],
   preview: {
     select: {

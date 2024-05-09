@@ -2,7 +2,9 @@
 import {
   TColor,
   TGafa,
+  TPerfume,
   TProduct,
+  TReloj,
   getTimedDiscountByProductId,
   isGafa,
   isPerfume,
@@ -139,34 +141,29 @@ const CardLayout = ({
     });
   };
 
-  const firstImage = isPerfume(product) ? product.imagenes[0] : null;
-
-  const imgSrc = isPerfume(product)
-    ? firstImage && firstImage?.url || ""
-    : "imagenes" in selectedVariant
+  const imgSrc = 
+   "imagenes" in selectedVariant
       ? selectedVariant.imagenes[0].url
       : "";
 
 
   const imgAlt = isPerfume(product)
-    ? product.imagenes[0].alt
+    ? (product as TPerfume).variantes[0].imagenes[0].alt!
     : isReloj(product)
-      ? product.variantes[0].imagenes[0].alt!
+      ? (product as TReloj).variantes[0].imagenes[0].alt!
       : (product as TGafa).variantes[0].imagenes[0].alt!;
 
 
   return (
     <>
       <section className="h-full w-full overflow-hidden">
-        {(isPerfume(product) && product.imagenes.length > 1) ||
+        {(isPerfume(product) && product.variantes[0].imagenes.length > 1) ||
           (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
           (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
           <ProductSlide
             slug={product.slug}
             imagesProduct={
-              isPerfume(product)
-                ? product.imagenes
-                : "imagenes" in selectedVariant
+                 "imagenes" in selectedVariant
                   ? selectedVariant.imagenes
                   : []
             }
