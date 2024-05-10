@@ -48,11 +48,14 @@ const ProductGrid = ({
   imagenes: TImages;
   className?: string;
 }) => {
-
+  
+  const [isImageOpen, setImageOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+  
   const splitArrayIntoEvenOdd = (array: typeof imagenes): [typeof imagenes, typeof imagenes] => {
     const evenItems: typeof imagenes = [];
     const oddItems: typeof imagenes = [];
-  
+    
     array.forEach((item, index) => {
       if (index % 2 === 0) {
         evenItems.push(item);
@@ -60,13 +63,11 @@ const ProductGrid = ({
         oddItems.push(item);
       }
     });
-  
+    
     return [evenItems, oddItems];
   };
   
   const [evenImages, oddImages] = splitArrayIntoEvenOdd(imagenes);
-  const [isImageOpen, setImageOpen] = useState(false);
-  const [index, setIndex] = useState(0);
 
   return (
     <section className={cn("relative ", className)}>
@@ -79,7 +80,7 @@ const ProductGrid = ({
             setIndex(i*2)
             setImageOpen(true);
           }}
-          key={image.alt}
+          key={`${image.url}-${i}`}
           className="relative">
             <ImageWrapper
               src={image.url}
@@ -98,7 +99,7 @@ const ProductGrid = ({
             setIndex(i*2+1)
             setImageOpen(true);
           }}
-          key={image.alt}
+          key={`${image.url}-${i}`}
           className="relative">
             <ImageWrapper
               src={image.url}
