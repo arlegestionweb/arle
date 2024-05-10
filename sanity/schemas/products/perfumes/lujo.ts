@@ -52,7 +52,6 @@ export const perfumeLujoSchema = defineType({
       group: "general",
       validation: (Rule) => Rule.required(),
     }),
-    imageArrayForProducts,
     // newImagesArrayForProducts,
     mostrarCreditoSchema,
     generoSchema,

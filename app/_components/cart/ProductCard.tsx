@@ -25,13 +25,7 @@ const ProductCard = ({
     variantId: string | number;
   };
 }) => {
-  const image =
-    product._type === "relojesLujo" ||
-      product._type === "relojesPremium" ||
-      product._type === "gafasLujo" ||
-      product._type === "gafasPremium"
-      ? product.variantes[0].imagenes[0]
-      : product.imagenes[0];
+  const image = product.variantes[0].imagenes[0]
 
   const variant = product.variantes.find(
     (variante) => variante.codigoDeReferencia === item.variantId

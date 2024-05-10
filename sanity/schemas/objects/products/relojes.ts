@@ -190,6 +190,7 @@ export const pulsoSchemaRef = defineField({
   validation: (Rule) => Rule.required(),
 });
 
+
 export const especificacionesRelojesLujoSchema = defineField({
   name: "especificaciones",
   title: "Especificaciones",
@@ -203,6 +204,13 @@ export const especificacionesRelojesLujoSchema = defineField({
     }),
     funcionesSchema,
     pulsoSchemaRef,
+    defineField({
+      name: "tipoDeCierre",
+      title: "Tipo de cierre",
+      type: "reference",
+      to: [{ type: "tipoDeCierre"}],
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: "tipoDeReloj",
       title: "Tipo de Reloj",
@@ -274,6 +282,13 @@ export const detallesRelojSchema = defineField({
     }),
     tipoDeMovimientoRefSchema,
     pulsoSchemaRef,
+    defineField({
+      name: "tipoDeCierre",
+      title: "Tipo de cierre",
+      type: "reference",
+      to: [{ type: "tipoDeCierre"}],
+      validation: (Rule) => Rule.required(),
+    }),
     cajaSchema,
     funcionesSchema,
   ],

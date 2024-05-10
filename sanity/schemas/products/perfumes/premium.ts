@@ -30,7 +30,6 @@ export const perfumePremiumSchema = defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
-    imageArrayForProducts,
     defineField({
       name: "descripcion",
       title: "Descripción",

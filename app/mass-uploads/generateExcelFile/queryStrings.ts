@@ -274,18 +274,7 @@ export const productQueryString: Record<string, string> = {
           "options": *[_type == "materialDeLaVarilla"] {"nombre": titulo}
         },
       },
-      "lente": lente {
-        "material": material -> {
-          "nombre": titulo,
-          "reference": true,
-          "options": *[_type == "materialDelLente"] {"nombre": titulo}
-        },
-        "tipo": tipo -> {
-          "nombre": titulo,
-          "reference": true,
-          "options": *[_type == "tipoDeLente"] {"nombre": titulo}
-        },
-      },
+      
     },
     coleccionDeMarca,
     'variante': variantes[0] {
@@ -305,6 +294,19 @@ export const productQueryString: Record<string, string> = {
         "reference": true,
         "options": *[_type == "colores"] {nombre}
       },
+      "lente": lente {
+        "material": material -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "materialDelLente"] {"nombre": titulo}
+        },
+        "tipo": tipo -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "tipoDeLente"] {"nombre": titulo}
+        },
+      },
+      talla,
       ${unidadesDisponibles},
       ${precio},
       ${precioConDescuento},
@@ -331,6 +333,19 @@ export const productQueryString: Record<string, string> = {
         "reference": true,
         "options": *[_type == "colores"] {nombre}
       },
+      "lente": lente {
+        "material": material -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "materialDelLente"] {"nombre": titulo}
+        },
+        "tipo": tipo -> {
+          "nombre": titulo,
+          "reference": true,
+          "options": *[_type == "tipoDeLente"] {"nombre": titulo}
+        },
+      },
+      talla,
       ${precioConDescuento},
       ${codigoDeReferencia},
       ${unidadesDisponibles},
@@ -352,18 +367,7 @@ export const productQueryString: Record<string, string> = {
         "reference": true,
         "options": *[_type == "estiloDeGafa"] {"nombre": titulo}
       },
-      "lente": lente {
-        "material": material -> {
-          "nombre": titulo,
-          "reference": true,
-          "options": *[_type == "materialDelLente"] {"nombre": titulo}
-        },
-        "tipo": tipo -> {
-          "nombre": titulo,
-          "reference": true,
-          "options": *[_type == "tipoDeLente"] {"nombre": titulo}
-        },
-      },
+      
       "montura": montura {
         "formaDeLaMontura": formaDeLaMontura -> {
           "nombre": titulo,
@@ -414,6 +418,11 @@ export const productQueryString: Record<string, string> = {
         "reference": true,
         "options": *[_type == "estiloDeReloj"] {"nombre": titulo}
       },
+      "tipoDeCierre": tipoDeCierre -> {
+        "nombre": titulo,
+        "reference": true,
+        "options": *[_type == "tipoDeCierre"] {"nombre": titulo}
+      }
       resistenciaAlAgua,
       "funciones": {
         "nombre": "funciones",
@@ -547,6 +556,11 @@ export const productQueryString: Record<string, string> = {
         "reference": true,
         "options": *[_type == "estiloDeReloj"] {"nombre": titulo}
       },
+      "tipoDeCierre": tipoDeCierre -> {
+        "nombre": titulo,
+        "reference": true,
+        "options": *[_type == "tipoDeCierre"] {"nombre": titulo}
+      }
       "funciones": {
         "nombre": "funciones",
         "array": true,

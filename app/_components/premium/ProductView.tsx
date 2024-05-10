@@ -14,6 +14,7 @@ import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 import ImageModal from "../ImageModal";
 import ImageWrapper from "@/app/listing/_components/ImageWrapper";
+import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 
 type ProductViewerProps = {
   product: TGafaPremium | TRelojPremium | TPerfumePremium;
@@ -22,9 +23,7 @@ type ProductViewerProps = {
 };
 
 const ProductViewer = ({ product, className, selectedVariant }: ProductViewerProps) => {
-  const imagenes = isPerfumePremium(product)
-    ? product.imagenes
-    : (selectedVariant as TRelojVariant | TVarianteGafa).imagenes;
+  const imagenes = (selectedVariant as TRelojVariant | TVarianteGafa | TPerfumeVariant ).imagenes;
 
   return (
     <section className="flex lg:h-full relative">

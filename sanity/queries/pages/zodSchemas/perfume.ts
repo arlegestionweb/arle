@@ -46,6 +46,9 @@ const perfumeVariantSchema = z.object({
   mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   unidadesDisponibles: z.number(),
   tag: z.string().optional().nullable(),
+  imagenes: z.array(
+    imageSchema
+  ),
 });
 
 export type TPerfumeVariant = z.infer<typeof perfumeVariantSchema>;
@@ -63,12 +66,7 @@ export const perfumePremiumSchema = z.object({
   titulo: z.string(),
   _type: z.literal("perfumePremium"),
   mostrarCredito: z.boolean().optional().nullable(),
-  imagenes: z.array(
-    z.object({
-      alt: z.string(),
-      url: z.string(),
-    })
-  ),
+  
   marca: z.string(),
   variantes: z.array(perfumeVariantSchema),
   parteDeUnSet: z.boolean().optional().nullable(),
@@ -87,9 +85,6 @@ export const perfumeLujoSchema = z.object({
   _id: z.string(),
   parteDeUnSet: z.boolean().optional().nullable(),
   concentracion: z.string(),
-  imagenes: z.array(
-    imageSchema
-  ),
   notasOlfativas: notasSchema,
   ingredientes: z.array(z.string()).optional().nullable(),
   mostrarCredito: z.boolean().optional().nullable(),

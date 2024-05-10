@@ -46,13 +46,7 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
 
   if (!product || variantIndex === undefined) return null;
 
-  const image =
-    product._type === "relojesLujo" ||
-      product._type === "relojesPremium" ||
-      product._type === "gafasLujo" ||
-      product._type === "gafasPremium"
-      ? product.variantes[variantIndex].imagenes[0]
-      : product.imagenes[0];
+  const image = product.variantes[variantIndex].imagenes[0]
 
   const productTitle =
     product._type === "relojesLujo" ||

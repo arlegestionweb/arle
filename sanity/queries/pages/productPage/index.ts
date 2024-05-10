@@ -110,6 +110,7 @@ export const productQuery: Record<TProductType, string> = {
     "especificaciones": especificaciones {
       "tipoDeReloj": tipoDeReloj -> titulo,
       "estiloDeReloj": estiloDeReloj -> titulo,
+      "tipoDeCierre": tipoDeCierre -> titulo,
       resistenciaAlAgua,
       "funciones": funciones [] -> {
         titulo,
@@ -197,6 +198,7 @@ export const productQuery: Record<TProductType, string> = {
     "detallesReloj": detallesReloj {
       "tipoDeReloj": tipoDeReloj -> titulo,
       "estiloDeReloj": estiloDeReloj -> titulo,
+      "tipoDeCierre": tipoDeCierre -> titulo,
       "funciones": funciones [] -> {
         titulo,
         descripcion
@@ -227,7 +229,11 @@ export const productQuery: Record<TProductType, string> = {
       precioConDescuento,
       mostrarUnidadesDisponibles,
       tamano,
-      precio
+      precio,
+      "imagenes": imagenes[] {
+        alt, 
+        "url": coalesce(url, asset->url),
+      },
     },
     genero,
     _type,
@@ -235,12 +241,6 @@ export const productQuery: Record<TProductType, string> = {
     _id,
     parteDeUnSet,
     "concentracion": concentracion -> nombre,
-    "imagenes": imagenes[] {
-      ...,
-      alt, 
-      "url": coalesce(url, asset->url),
-      "aqui": "aqio"
-    },
     "notasOlfativas": notasOlfativas {
       "notasDeBase": notasDeBase [] -> nombre,
       "notasDeSalida": notasDeSalida [] -> nombre,
@@ -285,10 +285,6 @@ export const productQuery: Record<TProductType, string> = {
     titulo,
     _type,
     mostrarCredito,
-    "imagenes": imagenes[]{
-      alt,
-      "url": coalesce(url, asset->url),
-    },
     "marca": marca->titulo,
     "variantes": variantes[]{
       precioConDescuento,
@@ -299,6 +295,10 @@ export const productQuery: Record<TProductType, string> = {
       registroInvima,
       unidadesDisponibles,
       mostrarUnidadesDisponibles,
+      "imagenes": imagenes[]{
+        alt,
+        "url": coalesce(url, asset->url),
+      },
     },
     parteDeUnSet,
     descripcion,

@@ -57,6 +57,21 @@ export const estiloDeRelojSchema = defineType({
   ],
 });
 
+export const tipoDeCierreSchema = defineType({
+  name: "tipoDeCierre",
+  title: "Tipo de Cierre",
+  type: "document",
+  validation: (Rule) => Rule.required(),
+  fields: [
+    defineField({
+      name: "titulo",
+      title: "Título",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+});
+
 export const cristalSchema = defineType({
   name: "cristal",
   title: "Cristal",

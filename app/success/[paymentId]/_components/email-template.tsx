@@ -40,14 +40,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
 
               const variant = product.variantes.find(variante => variante.codigoDeReferencia === item.variantId)
 
-              const image =
-                product._type === "relojesLujo" ||
-                  product._type === "relojesPremium" ||
-                  product._type === "gafasLujo" ||
-                  product._type === "gafasPremium"
-                  // @ts-ignore
-                  ? variant.imagenes[0]
-                  : product.imagenes[0];
+              const image = variant?.imagenes[0] 
 
 
               return (
@@ -57,7 +50,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
                   <Text>Precio: {item.price}</Text>
                   <Text>Cantidad: {item.quantity}</Text>
                   {/* <Img src={image.url} sizes="3rem" /> */}
-                  <img src={image.url} alt={product.marca} className="w-5 h-5 object-cover" />
+                  <img src={image?.url} alt={product.marca} className="w-5 h-5 object-cover" />
                 </Container>
               )
             })}
