@@ -2,15 +2,16 @@
 import React, { useRef, useState } from "react";
 import GradientImage from "../GradientImage";
 import { cn } from "@/app/_lib/utils";
-import { TlistingContent, TBanner } from "@/sanity/queries/pages/listingQueries";
+import { TlistingContent, TBanner, TBannerBrands } from "@/sanity/queries/pages/listingQueries";
 import { useSearchParams } from "next/navigation";
 
 type BannerProps = {
   banners: TlistingContent;
+  bannersByBrand: TBannerBrands | null | undefined;
   className?: string;
 };
 
-const Banner = ({ banners, className }: BannerProps) => {
+const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const bannerRef = useRef<HTMLElement>(null);
 
@@ -38,7 +39,13 @@ const Banner = ({ banners, className }: BannerProps) => {
 
   const selectedProductType = searchParams.get("type");
 
+  
   const selectedBanners = selectedProductType === "gafa" ? banners.gafasBanners : selectedProductType === "reloj" ? banners.relojesBanners : selectedProductType === "perfume" ? banners.perfumesBanners : banners.generalBanners
+  
+  const filteredBrands = bannersByBrand?.filter(brand => brand.banners)
+
+
+  console.log({filteredBrands})
 
   return (
     <section
@@ -50,7 +57,25 @@ const Banner = ({ banners, className }: BannerProps) => {
         className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory bg-gray-100"
         onScroll={handleScroll}
         ref={bannerRef}>
-        {selectedBanners && selectedBanners.map((banner, index) => (
+        {filteredBrands && filteredBrands.length > 0 ? filteredBrands.map((brand, index) => (
+          brand.banners?.map((banner, index) => (
+            <React.Fragment key={index + banner?.imagen?.url}>
+              <GradientImage
+                src={banner.imagen.url}
+                alt={banner.imagen.alt || ""}
+                layout="fill"
+                height={300}
+                width={2000}
+                quality={90}
+                gradientOff
+                imageClassName="object-cover object-center w-full h-full"
+                containerclassName={`snap-center snap-always ${
+                  index === 1 && "snap-mandatory"
+                } min-w-full justify-center items-center flex`}>
+              </GradientImage>
+          </React.Fragment>
+          ))
+        )) : selectedBanners && selectedBanners.map((banner, index) => (
           banner.imagen &&
           <React.Fragment key={index + banner?.imagen?.url}>
               <GradientImage

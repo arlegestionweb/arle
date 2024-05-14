@@ -1,5 +1,6 @@
 import {
   TProduct,
+  getBannersByBrands,
   getListingInitialLoadContent,
   zodCollectionsWithoutProducts,
 } from "@/sanity/queries/pages/listingQueries";
@@ -62,30 +63,30 @@ const Listing = async ({
 }) => {
   noStore();
   const pageContent = await getListingInitialLoadContent();
-
+  
   // GENERAL PARAMS
-
+  
   const sortSeleccionado = (searchParams.sort as string) || "recientes";
-
+  
   if (!(sortSeleccionado in sortingFunctions)) {
     throw new Error(`Invalid sort option: ${sortSeleccionado}`);
   }
-
+  
   const lineaSeleccionada = searchParams.linea as string;
   const coleccionSeleccionada = searchParams.coleccion as string;
   const tipoDeProductoSeleccionado = searchParams.type as string;
   const campoDeBusquedaSeleccionado = searchParams.search as string;
   const generoSeleccionado = searchParams.genero as string;
-
+  
   const marcasSeleccionadas = searchParams.marcas
-    ? Array.isArray(searchParams.marcas)
-      ? searchParams.marcas
-      : (searchParams.marcas as string)
-        .split("&")
-        .map((marca) => marca.trim())
-        .filter((marca) => marca !== "")
-    : [];
-
+  ? Array.isArray(searchParams.marcas)
+  ? searchParams.marcas
+  : (searchParams.marcas as string)
+  .split("&")
+  .map((marca) => marca.trim())
+  .filter((marca) => marca !== "")
+  : [];
+    
   const selectedMinPrice = searchParams.minPrice as string;
   const selectedMaxPrice = searchParams.maxPrice as string;
   const selectedColeccionesDeMarca = searchParams.coleccionesDeMarca
@@ -832,11 +833,17 @@ const Listing = async ({
   const parsedCollections =
     zodCollectionsWithoutProducts.safeParse(colecciones);
 
+  //Banners por marcas
+
+  const bannersByBrand = await getBannersByBrands(marcasSeleccionadas);
+
+
   return (
     <Main extraClasses=" lg:mb-[100vh] bg-white min-h-screen">
       <div className="h-[140px] md:h-[160px] lg:h-[180px] flex justify-center bg-gray-950">
         {pageContent.listingContent && (
           <Banner
+          bannersByBrand = {bannersByBrand}
           banners={pageContent.listingContent}
           className="h-full max-w-[1600px] w-full"
           />
