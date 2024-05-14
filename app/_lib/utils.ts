@@ -55,7 +55,6 @@ export const getAllMarcas = (products: TProduct[]) => {
   return uniqueMarcas;
 }
 
-
 export const getAllColeccionesDeMarca = (products: TProduct[]) =>
   products
     .map((product) => product.coleccionDeMarca)

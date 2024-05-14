@@ -103,6 +103,7 @@ const listingMainString = `
 }
 `;
 
+
 export type TColor = z.infer<typeof zodColorSchema>;
 
 // const zodgafasListingQuery = z.union([gafasLujoSchema, gafasPremiumSchema])
@@ -221,6 +222,49 @@ export const getListingInitialLoadContent = async () => {
     console.error(error);
   }
 };
+
+const zodBannerByBrandSchema = z.object({
+    banners: z.array(
+      z.object({
+        imagen: z.object({
+          alt: z.string().optional().nullable(),
+          url: z.string(),
+        })
+      })
+    ).optional().nullable()
+  })
+
+type TBrandBanner = z.infer<typeof zodBannerByBrandSchema>
+
+const bannerBrandParser = z.array(zodBannerByBrandSchema)
+
+export type TBannerBrands = z.infer<typeof bannerBrandParser>
+
+export const getBannersByBrands = async (marcasSeleccionadas: string[] | null) => {
+  if(marcasSeleccionadas === null) return
+  
+  const bannersArray: TBrandBanner[] = await Promise.all(marcasSeleccionadas.map(async brand => {
+    const bannersDeMarcasQueryString = `
+    *[_type == "marca" && titulo == "${brand}" ][0] {
+      "banners" : banners[] {
+        "imagen": imagen {
+          alt,
+          "url": asset->url
+        }
+      }
+    }
+    `;
+    const marcas = await sanityClient.fetch(bannersDeMarcasQueryString);
+    return marcas;
+  }));
+  
+  const parser = bannerBrandParser.safeParse(bannersArray);
+
+  if(!parser.success) return null
+
+  return parser.data;
+}
+
 
 export const getTimedDiscountByProductId = async (productId: string) => {
   const params = { productId };
