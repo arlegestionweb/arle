@@ -97,7 +97,7 @@ export const productQuery: Record<TProductType, string> = {
     "marca": marca->titulo,
     _type,
     _id,
-    "detalles": detalles {
+    "detalles": detallesGafaLujo {
       usarDetalles,
       "contenido": contenido {
         texto,
@@ -315,7 +315,7 @@ export const productQuery: Record<TProductType, string> = {
     mostrarCredito,
     ${garantiaQuery},
     "inspiracion": ${inspiracionQuery},    
-    "detalles": detalles {
+    "detallesGafaLujo": detallesGafaLujo {
       usarDetalles,
       "contenido": contenido {
         texto,

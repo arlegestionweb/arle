@@ -5,7 +5,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 type ImageType = ({
   url: string;
-  alt: string;
+  alt?: string | null | undefined;
 });
 
 type CarouselProductProps = {

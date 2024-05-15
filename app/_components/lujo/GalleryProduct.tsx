@@ -10,7 +10,7 @@ import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 type GalleryProductProps = {
   imagesProduct: ({
     url: string;
-    alt: string;
+    alt?: string | null | undefined;
   })[]
   className?: string;
   orientation?: "vertical" | "horizontal";

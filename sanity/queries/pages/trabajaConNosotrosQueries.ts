@@ -47,8 +47,8 @@ const trabajaConNosotrosQuery = `*[_type == "trabajaConNosotros"] [0] {
 
 
 const imagenSchema = z.object({
-  alt: z.string(),
   url: z.string(),
+  alt: z.string().optional().nullable(),
 });
 
 const imagenesSchema = z.array(imagenSchema)

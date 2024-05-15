@@ -7,7 +7,7 @@ import ImageWrapper from "../listing/_components/ImageWrapper";
 type Props = {
   images: ({
     url: string;
-    alt: string;
+    alt?: string | null | undefined;
 })[];
   index: number;
   isImageOpen: boolean | false;
@@ -52,7 +52,7 @@ const ImageModal = ({ images, index, isImageOpen, closeImage }: Props) => {
           width={1200}
           quality={85}
           src={image.url}
-          alt={image.alt}
+          alt={image.alt || ""}
           className=" h-full w-auto object-contain pointer-events-auto"
         />
         <button

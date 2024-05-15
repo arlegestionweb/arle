@@ -17,12 +17,13 @@ import Precio from "../Precio";
 import { TPricing } from "@/app/[type]/[id]/_components/Product";
 import { GoChevronLeft } from "react-icons/go";
 import { isGafa, isReloj } from "@/sanity/queries/pages/listingQueries";
+import CollapsibleProductSection from "@/app/[type]/[id]/_components/CollapsibleSection";
 
 type HeroProductProps = {
   product: TPerfumeLujo | TRelojLujo | TGafaLujo;
   images: ({
     url: string;
-    alt: string;
+    alt?: string | null | undefined;
   })[];
   selectedVariant: TVariant;
   setSelectedVariant: (variant: TVariant) => void;
@@ -87,9 +88,10 @@ const HeroProduct = ({
             {isPerfumeLujo(product) ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo}` : product.modelo}
           </h1>
           {isGafa(product) && product.descripcion && (
-            <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 ">
-              {product.descripcion}
-            </p>
+            <CollapsibleProductSection title="Descripción" collapsed={true}>
+            <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 text-justify">{product.descripcion}</p>
+            </CollapsibleProductSection>
+            
           )}
           {isReloj(product) && product.descripcion && (
             <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 ">
