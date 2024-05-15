@@ -26,6 +26,7 @@ const GafaLujo = ({
   setCantidad,
   pricing,
 }: TGafaLujoProps) => {
+  // Testing redeployment
 
   return (
     <>
