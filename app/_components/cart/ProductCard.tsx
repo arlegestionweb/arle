@@ -36,7 +36,7 @@ const ProductCard = ({
       {image && (
         <ImageWrapper
           src={image.url}
-          alt={image?.alt}
+          alt={image?.alt || ""}
           width={110}
           height={110}
           className="object-contain h-28 w-28"

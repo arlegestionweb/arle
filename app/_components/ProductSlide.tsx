@@ -9,7 +9,7 @@ import ImageWrapper from "../listing/_components/ImageWrapper";
 
 export type ProductImage = ({
   url: string;
-  alt: string;
+  alt?: string | null | undefined;
 })
 
 export type ProductVideo = {
@@ -24,7 +24,7 @@ type ProductSlideProps = {
     imagen?:
     ({
       url: string;
-      alt: string;
+      alt?: string | null | undefined;
     }) | null | undefined;
     video?:
     | {
@@ -125,18 +125,16 @@ const ProductSlide = ({
               className={cn(
                 `relative h-full w-full`,
                 `snap-center snap-always ${index === 1 && "snap-mandatory"
-                } min-w-full flex-col justify-end items-center gap-2.5 inline-flex`
+                } min-w-full h-full flex-col justify-end items-center gap-2.5 inline-flex`
               )}>
               {product.imagenOVideo ? (
-                <div>
                   <ImageWrapper
                     alt={product.imagen?.alt || "product"}
                     src={product.imagen?.url || ""}
                     width={250}
                     height={250}
-                    className={`object-contain w-full h-full fit object-center`}
+                    className={`object-contain w-full h-full object-center`}
                   />
-                </div>
               ) : (
                 <>
                   {product && <ProductVideo url={product.video?.url || ""} />}

@@ -32,7 +32,7 @@ const DetallesProducto = ({
   };
   return (
     <section className="w-full h-full">
-      <nav className="no-scrollbar flex md:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full">
+      <nav className="no-scrollbar flex justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full">
         {detalles &&
           Object.keys(detalles).map((detalle, index) => (
             <h4
@@ -61,7 +61,7 @@ const DetallesProducto = ({
             if (typeof detalles[detalle] === "string") {
               arrDetalles.push(
                 <p className=" w-full text-lg font-normal font-tajawal leading-snug">
-                  {detalles[detalle] as string} 
+                  {detalles[detalle] as string}
                 </p>
               );
             } else if (Array.isArray(detalles[detalle])) {
@@ -82,14 +82,14 @@ const DetallesProducto = ({
                     <section key={index + object + Math.random()}>
                       <div className="pb-3">
                         <h4 className="w-full text-lg font-bold font-tajawal leading-snug">
-                          {convertirCamelCaseATitulo(object)}
+                          {object === "queIncluye" ? "¿Qué incluye?" :convertirCamelCaseATitulo(object)}
                         </h4>
-                        <p className="w-full text-lg font-normal font-tajawal leading-snug">
+                        <p className="w-full text-lg font-normal font-tajawal leading-snug text-justify">
                           {Array.isArray((detalles[detalle] as any)[object])
                             ? (
                                 detalles[detalle] as { [key: string]: string[] }
                               )[object].map(obj => <span key={obj}>{obj}{", "}</span>)
-                            : (detalles[detalle] as any)[object]}
+                            : (detalles[detalle] as any)[object]}.
                         </p>
                       </div>
                     </section>

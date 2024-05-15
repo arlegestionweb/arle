@@ -102,7 +102,7 @@ const AddedToCartModal = () => {
             {image && (
               <ImageWrapper
                 src={image.url}
-                alt={image?.alt}
+                alt={image?.alt || ""}
                 width={180}
                 height={180}
                 className="object-contain w-[150px] h-[150px]"

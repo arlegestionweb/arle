@@ -59,7 +59,7 @@ export const gafasLujoSchema = z.object({
   modelo: z.string(),
   slug: z.string(),
   genero: z.string(),
-  detalles: z.object({
+  detallesGafaLujo: z.object({
       usarDetalles: z.boolean().optional().nullable(),
       contenido: z.object({
           texto: z.string().optional().nullable(),

@@ -74,7 +74,7 @@ export const bannersDeProductoSchema = defineField({
 });
 
 export const detallesLujoSchema = defineField({
-  name: "detalles",
+  name: "detallesGafaLujo",
   title: "Detalles",
   type: "object",
   group: "detalles",

@@ -26,6 +26,7 @@ const GafaLujo = ({
   setCantidad,
   pricing,
 }: TGafaLujoProps) => {
+
   return (
     <>
       <HeroProduct
@@ -63,13 +64,14 @@ const GafaLujo = ({
           className=""
         />
       )}
-
-      {product.detalles?.usarDetalles && (
+      
+      {
+      product.detallesGafaLujo?.usarDetalles && (
         <InfoSection
           titulo="Detalles"
-          descripcion={product.detalles?.contenido?.texto || ""}
-          alt={product.detalles?.contenido?.imagen?.alt || ""}
-          url={product.detalles?.contenido?.imagen?.url || ""}
+          descripcion={product.detallesGafaLujo?.contenido?.texto || ""}
+          alt={product.detallesGafaLujo?.contenido?.imagen?.alt || ""}
+          url={product.detallesGafaLujo?.contenido?.imagen?.url || ""}
           labelType={product.inspiracion.usarInspiracion ? "light" : "dark"}
           className={product.inspiracion.usarInspiracion ? "lg:flex-row-reverse" : ""}
         />
@@ -79,22 +81,22 @@ const GafaLujo = ({
         <InfoSection
           titulo="Detalles de Montura"
           descripcion={product.monturaDetalles.contenido?.texto || ""}
-          alt={product.monturaDetalles.contenido?.imagen?.alt}
+          alt={product.monturaDetalles.contenido?.imagen?.alt || ""}
           url={product.monturaDetalles.contenido?.imagen?.url}
           labelType={
             product.inspiracion.usarInspiracion &&
-              !product.detalles?.usarDetalles
+              !product.detallesGafaLujo?.usarDetalles
               ? "light"
               : !product.inspiracion.usarInspiracion &&
-                product.detalles?.usarDetalles
+                product.detallesGafaLujo?.usarDetalles
                 ? "light"
                 : "dark"
           }
           className={product.inspiracion.usarInspiracion &&
-            !product.detalles?.usarDetalles
+            !product.detallesGafaLujo?.usarDetalles
             ? "lg:flex-row-reverse"
             : !product.inspiracion.usarInspiracion &&
-              product.detalles?.usarDetalles
+              product.detallesGafaLujo?.usarDetalles
               ? "lg:flex-row-reverse"
               : ""}
         />
@@ -103,19 +105,19 @@ const GafaLujo = ({
       <InfoSection
         labelType={
           !product.inspiracion.usarInspiracion &&
-            !product.detalles?.usarDetalles &&
+            !product.detallesGafaLujo?.usarDetalles &&
             !product.monturaDetalles?.usarDetalles
             ? "dark"
             : product.inspiracion.usarInspiracion &&
-              product.detalles?.usarDetalles &&
+              product.detallesGafaLujo?.usarDetalles &&
               !product.monturaDetalles?.usarDetalles
               ? "dark"
               : product.inspiracion.usarInspiracion &&
-                !product.detalles?.usarDetalles &&
+                !product.detallesGafaLujo?.usarDetalles &&
                 product.monturaDetalles?.usarDetalles
                 ? "dark"
                 : !product.inspiracion.usarInspiracion &&
-                  product.detalles?.usarDetalles &&
+                  product.detallesGafaLujo?.usarDetalles &&
                   product.monturaDetalles?.usarDetalles
                   ? "dark"
                   : "light"
@@ -125,19 +127,19 @@ const GafaLujo = ({
           <DetallesProducto
             theme={
               !product.inspiracion.usarInspiracion &&
-                !product.detalles?.usarDetalles &&
+                !product.detallesGafaLujo?.usarDetalles &&
                 !product.monturaDetalles?.usarDetalles
                 ? "dark"
                 : product.inspiracion.usarInspiracion &&
-                  product.detalles?.usarDetalles &&
+                  product.detallesGafaLujo?.usarDetalles &&
                   !product.monturaDetalles?.usarDetalles
                   ? "dark"
                   : product.inspiracion.usarInspiracion &&
-                    !product.detalles?.usarDetalles &&
+                    !product.detallesGafaLujo?.usarDetalles &&
                     product.monturaDetalles?.usarDetalles
                     ? "dark"
                     : !product.inspiracion.usarInspiracion &&
-                      product.detalles?.usarDetalles &&
+                      product.detallesGafaLujo?.usarDetalles &&
                       product.monturaDetalles?.usarDetalles
                       ? "dark"
                       : "light"
@@ -168,14 +170,15 @@ const GafaLujo = ({
         ImageComp={
           product.banners ? (
             <ProductSlide
-              imagesProduct={(product.banners &&
-                product.banners.map(
-                  (element) => ({
-                    url: element.imagen?.url,
-                    alt: element.imagen?.alt,
-                  } as ProductImage)
-                )) ||
-                []}
+              // imagesProduct={(product.banners &&
+              //   product.banners.map(
+              //     (element) => ({
+              //       url: element.imagen?.url,
+              //       alt: element.imagen?.alt,
+              //     } as ProductImage)
+              //   )) ||
+              //   []}
+              imageVideoProducts={product.banners}
               className="w-full h-[60vw] max-h-[350px]"
               isLink={false} />
           ) : (
@@ -183,19 +186,19 @@ const GafaLujo = ({
           )
         }
         className={!product.inspiracion.usarInspiracion &&
-          !product.detalles?.usarDetalles &&
+          !product.detallesGafaLujo?.usarDetalles &&
           !product.monturaDetalles?.usarDetalles
           ? ""
           : product.inspiracion.usarInspiracion &&
-            product.detalles?.usarDetalles &&
+            product.detallesGafaLujo?.usarDetalles &&
             !product.monturaDetalles?.usarDetalles
             ? ""
             : product.inspiracion.usarInspiracion &&
-              !product.detalles?.usarDetalles &&
+              !product.detallesGafaLujo?.usarDetalles &&
               product.monturaDetalles?.usarDetalles
               ? ""
               : !product.inspiracion.usarInspiracion &&
-                product.detalles?.usarDetalles &&
+                product.detallesGafaLujo?.usarDetalles &&
                 product.monturaDetalles?.usarDetalles
                 ? ""
                 : "lg:flex-row-reverse"}

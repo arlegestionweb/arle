@@ -10,7 +10,7 @@ type AboutArleProps = {
     descripcion: string;
     imagenes: {
       url: string;
-      alt: string;
+      alt?: string | null | undefined;
     }[];
   };
 };
@@ -69,11 +69,11 @@ const AboutArle = ({ sobre }: AboutArleProps) => {
           ref={bannerRef}
         >
           {sobre.imagenes.map((banner, index) => (
-            <React.Fragment key={index + banner.alt}>
+            <React.Fragment key={index + banner.url}>
               {banner && (
                 <GradientImage
                   src={banner.url}
-                  alt={banner.alt}
+                  alt={banner.alt || ""}
                   layout="fill"
                   gradientOff
                   imageClassName="object-cover object-center"

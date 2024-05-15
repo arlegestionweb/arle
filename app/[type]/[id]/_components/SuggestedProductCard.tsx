@@ -83,7 +83,7 @@ const CardLayout = ({
                     ? selectedVariant.imagenes[0].url || ""
                     : ""
               }
-              alt={product.variantes[0].imagenes[0].alt}
+              alt={product.variantes[0].imagenes[0].alt || ""}
               width={200}
               height={200}
               className="h-full w-full object-contain"

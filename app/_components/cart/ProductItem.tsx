@@ -68,7 +68,7 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
       {image && (
         <ImageWrapper
           src={image.url}
-          alt={image?.alt}
+          alt={image?.alt || ""}
           width={115}
           height={115}
           className="object-contain h-24 w-24 bg-white"

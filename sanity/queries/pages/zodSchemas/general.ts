@@ -4,7 +4,7 @@ import { TRelojVariant } from "./reloj";
 import { TPerfumeVariant } from "./perfume";
 
 export const imageSchema = z.object({
-  alt: z.string(),
+  alt: z.string().optional().nullable(),
   url: z.string(),
 });
 

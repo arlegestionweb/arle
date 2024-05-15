@@ -15,6 +15,7 @@ import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 import ImageModal from "../ImageModal";
 import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
+import GalleryProduct from "../lujo/GalleryProduct";
 
 type ProductViewerProps = {
   product: TGafaPremium | TRelojPremium | TPerfumePremium;
@@ -33,9 +34,14 @@ const ProductViewer = ({ product, className, selectedVariant }: ProductViewerPro
         className={cn("max-h-[377px] lg:hidden w-full", className)}
         isLink={false}
       />
-      <ProductGrid
+      {/* <ProductGrid
         imagenes={imagenes}
         className="hidden lg:flex basis-full max-h-[650px] sticky top-20 z-[200]"
+      /> */}
+      <GalleryProduct
+        className="hidden lg:flex basis-full max-h-[650px] sticky top-20 z-[200] lg:mt-0"
+        imagesProduct={imagenes}
+        orientation={"horizontal"}
       />
     </section>
   );
@@ -84,7 +90,7 @@ const ProductGrid = ({
           className="relative">
             <ImageWrapper
               src={image.url}
-              alt={image.alt}
+              alt={image.alt || ""}
               height={900}
               width={900}
               className={`object-contain w-full object-center cursor-zoom-in`}
@@ -103,7 +109,7 @@ const ProductGrid = ({
           className="relative">
             <ImageWrapper
               src={image.url}
-              alt={image.alt}
+              alt={image.alt || ""}
               height={900}
               width={900}
               className={`object-contain w-full object-center cursor-zoom-in`}
