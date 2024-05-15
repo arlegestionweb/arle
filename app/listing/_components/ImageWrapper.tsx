@@ -4,7 +4,7 @@ import { DetailedHTMLProps, ImgHTMLAttributes } from 'react';
 type ImageWrapperProps = Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>,
   "alt" | "ref" | "height" | "width" | "loading" | "src" | "srcSet"> & {
     src: string;
-    alt: string;
+    alt?: string | null | undefined;
     height: number;
     width: number;
     quality?: number;
@@ -20,7 +20,7 @@ const ImageWrapper = ({ src, alt, height, width, quality, ...rest }: ImageWrappe
       <Image
         {...rest}
         src={src}
-        alt={alt}
+        alt={alt || ""}
         height={height}
         width={width}
         quality={quality || 80}
@@ -32,7 +32,7 @@ const ImageWrapper = ({ src, alt, height, width, quality, ...rest }: ImageWrappe
     <img
       {...rest}
       src={src}
-      alt={alt}
+      alt={alt || ""}
       height={height}
       width={width}
     />
