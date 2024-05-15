@@ -10,3 +10,6 @@ export const sanityAdminConfig = {
 };
 
 export const studioConfig = defineConfig(sanityAdminConfig);
+
+
+// HERE
