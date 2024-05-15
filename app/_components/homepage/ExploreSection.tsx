@@ -7,7 +7,7 @@ type ExploreSectionProps = {
     titulo: string;
     descripcion: string;
     imagen: {
-      alt: string;
+      alt?: string | null | undefined;
       url: string;
     };
   };
@@ -26,7 +26,7 @@ function ExploreSection({
     <section className=" max-w-screen h-[75vh] md:h-[70vh] relative">
       <GradientImage
         src={imagen.url}
-        alt={imagen.alt}
+        alt={imagen.alt || ""}
         layout="fill"
         width={2000}
         height={1000}
