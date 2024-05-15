@@ -131,7 +131,7 @@
 //       | {
 //           _type: "imagenObject";
 //           url: string;
-//           alt: string;
+//           alt: string | null;
 //         }
 //       | {
 //           alt: string | null;
