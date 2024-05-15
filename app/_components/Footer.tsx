@@ -108,7 +108,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
                       <div className="flex gap-1 items-start">
                       <SlLocationPin className="w-4 h-4"/>
                         <h3 className="w-[268px] text-white font-normal font-tajawal leading-snug group-hover:underline underline-offset-2">
-                          {sede.nombre}
+                          {sede.nombre} - {sede.local}
                         </h3>
                       </div>
                       <div className="w-72 section-text">

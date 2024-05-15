@@ -44,9 +44,6 @@ const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
   
   const filteredBrands = bannersByBrand?.filter(brand => brand.banners)
 
-
-  console.log({filteredBrands})
-
   return (
     <section
       className={cn(
