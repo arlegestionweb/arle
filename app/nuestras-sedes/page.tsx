@@ -1,5 +1,4 @@
 import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQueries";
-import Image from "next/image";
 import Map from "./_components/Map";
 import Link from "next/link";
 import { toKebabCase } from "@/utils/helpers";
@@ -27,7 +26,7 @@ const Page = async () => {
       <section className="flex w-full">
         <section className="relative pb-8 flex flex-col w-full h-fit overflow-hidden items-center">
           <header className="relative w-full z-10 h-[200px] md:h-[250px] xl:h-[280px] overflow-hidden flex flex-col justify-end items-center pb-3 bg-[#E5E8ED]">
-            <Image
+            <img
               className="absolute -top-[90%] sm:h-[450px] sm:-top-[100%] md:h-[600px] md:-top-[110%] lg:h-[800px] lg:-top-[170%] xl:h-[900px] xl:-top-[160%] 2xl:h-[1000px] 2xl:-top-[180%] h-[400px] object-cover z-0"
               width={2000}
               height={300}
@@ -41,7 +40,7 @@ const Page = async () => {
               {pageContent.subtitulo}
             </h2>
           </header>
-          <Image
+          <img
             className="absolute z-0 h-[1500px] max-w-[1500px] -top-[40%] md:-top-[25%] object-cover"
             width={1500}
             height={1500}
@@ -65,7 +64,7 @@ const Page = async () => {
                         className="justify-self-center w-full bg-white border border-[#E6E1E6] flex md:flex-col max-w-md"
                         key={item.nombre}
                       >
-                        <Image
+                        <img
                           className="w-[40%] sm:w-[35%] h-full md:w-full md:h-[250px] object-cover"
                           height={200}
                           width={200}

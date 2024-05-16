@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { DetailedHTMLProps, ImgHTMLAttributes } from 'react';
 
 type ImageWrapperProps = Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>,
@@ -17,13 +16,13 @@ const ImageWrapper = ({ src, alt, height, width, quality, ...rest }: ImageWrappe
 
   if (isSanityImage) {
     return (
-      <Image
+      <img
         {...rest}
         src={src}
         alt={alt || ""}
         height={height}
         width={width}
-        quality={quality || 80}
+        // quality={quality || 80}
       />
     );
   }

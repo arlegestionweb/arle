@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Burger from "./Burger";
 import { useState } from "react";
 import { usePathname } from "next/navigation";

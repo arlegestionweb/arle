@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 
 type GradientImageProps = {
@@ -18,12 +17,12 @@ type GradientImageProps = {
 function GradientImage({src, alt, layout, height, width, imageClassName, containerclassName, children, gradientOff, specialOpacity, quality}: GradientImageProps) {
   return (
     <div className={`relative h-full w-full ${containerclassName}`}>
-      <Image
+      <img
         src={src}
         alt={alt}
         width={width || 800}
         height={height || 400}
-        quality={quality || 80}
+        // quality={quality || 80}
         className={`object-cover absolute h-full w-full ${imageClassName}`}
       />
       {/* Gradient */}

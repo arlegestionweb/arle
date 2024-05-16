@@ -1,6 +1,5 @@
 "use client";
 import { cn } from "@/app/_lib/utils";
-import Image from "next/image";
 import React, { useState } from "react";
 import CarouselProduct from "./CarouselProduct";
 import ImageModal from "../ImageModal";

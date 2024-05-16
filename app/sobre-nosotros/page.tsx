@@ -1,5 +1,4 @@
 import { getSobreNosotrosContent } from "@/sanity/queries/pages/sobreNosotrosQueries";
-import Image from "next/image";
 import Main from "../_components/Main";
 import { Metadata } from "next";
 import AboutSubMenu from "../_components/AboutSubMenu";
@@ -25,11 +24,11 @@ const Page = async () => {
       {pageContent?.whyWeDoWhatWeDo?.on &&
         <section className="flex min-h-20 h- flex-col md:flex-row items-center bg-white">
           <section className="relative h-full w-full md:w-1/2">
-            <Image className="w-[45%] max-w-[260px] drop-shadow-[0_0_8px_rgba(0,0,0,100)] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 object-cover" width={400} height={400} alt="Arle-logo-Complete" src="/logo-footer.svg" />
+            <img className="w-[45%] max-w-[260px] drop-shadow-[0_0_8px_rgba(0,0,0,100)] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 object-cover" width={400} height={400} alt="Arle-logo-Complete" src="/logo-footer.svg" />
             {pageContent?.whyWeDoWhatWeDo?.imagenOVideo ?
               <video src={pageContent?.whyWeDoWhatWeDo?.video?.url}></video>
               :
-              <Image className="h-full filter brightness-[70%] w-full object-cover" width={400} height={400} alt={pageContent?.whyWeDoWhatWeDo?.imagen?.alt || ""} src={pageContent?.whyWeDoWhatWeDo?.imagen?.url || ""} />
+              <img className="h-full filter brightness-[70%] w-full object-cover" width={400} height={400} alt={pageContent?.whyWeDoWhatWeDo?.imagen?.alt || ""} src={pageContent?.whyWeDoWhatWeDo?.imagen?.url || ""} />
             }
           </section>
           <section className="p-8 sm:py-11 sm:px-14 w-full md:w-[50vw] md:py-10 md:pl-14 md:pr-14 max-w-3xl">
@@ -48,7 +47,7 @@ const Page = async () => {
             {pageContent?.whyUs?.imagenOVideo ?
               <video src={pageContent?.whyUs?.video?.url}></video>
               :
-              <Image className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.whyUs?.imagen?.alt || ""} src={pageContent?.whyUs?.imagen?.url || ""} />
+              <img className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.whyUs?.imagen?.alt || ""} src={pageContent?.whyUs?.imagen?.url || ""} />
             }
           </section>
         </section>
@@ -59,10 +58,10 @@ const Page = async () => {
             {pageContent?.howWeHelpOurClients?.imagenOVideo ?
               <video src={pageContent?.howWeHelpOurClients?.video?.url}></video>
               :
-              <Image className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.howWeHelpOurClients?.imagen?.alt || ""} src={pageContent?.howWeHelpOurClients?.imagen?.url || ""} />
+              <img className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.howWeHelpOurClients?.imagen?.alt || ""} src={pageContent?.howWeHelpOurClients?.imagen?.url || ""} />
             }
           </section>
-          <Image className="w-[215px] h-[215px] sm:w-[300px] sm:h-[300px] xl:h-[350px] xl:w-[350px] absolute object-contain -top-[85px] -left-[80px] md:left-auto md:-right-[155px] lg:-right-[100px] xl:-right-[50px] opacity-70" height={300} width={300} alt="Escudo Logo Arle" src="/escudoArle.svg" />
+          <img className="w-[215px] h-[215px] sm:w-[300px] sm:h-[300px] xl:h-[350px] xl:w-[350px] absolute object-contain -top-[85px] -left-[80px] md:left-auto md:-right-[155px] lg:-right-[100px] xl:-right-[50px] opacity-70" height={300} width={300} alt="Escudo Logo Arle" src="/escudoArle.svg" />
           <section className=" flex w-full max-w-3xl flex-col items-end md:items-start">
             <h2 className="max-w-[200px] xs:max-w-[300px] about-title whitespace-pre-wrap text-right md:text-left">{pageContent?.howWeHelpOurClients?.titulo}</h2>
             <p className="max-w-[310px] xs:max-w-[400px] about-text mt-4 text-right md:text-justify">{pageContent?.howWeHelpOurClients?.descripcion}</p>
@@ -79,7 +78,7 @@ const Page = async () => {
             {pageContent?.ourStory?.imagenOVideo ?
               <video src={pageContent?.ourStory?.video?.url}></video>
               :
-              <Image className=" filter brightness-[70%] w-full max-h-[500px] object-cover z-0" width={400} height={400} alt={pageContent?.ourStory?.imagen?.alt || ""} src={pageContent?.ourStory?.imagen?.url || ""} />
+              <img className=" filter brightness-[70%] w-full max-h-[500px] object-cover z-0" width={400} height={400} alt={pageContent?.ourStory?.imagen?.alt || ""} src={pageContent?.ourStory?.imagen?.url || ""} />
             }
           </section>
         </section>
@@ -90,7 +89,7 @@ const Page = async () => {
           <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(4,minmax(128px,288px))] place-items-center gap-y-6 gap-x-4 items-center justify-center">
             {pageContent?.marcasAliadas?.map((item, i) => (
               <article key={i} className="w-40">
-                <Image className="object-cover" width={200} height={200} alt={`marca ${item?.titulo} logo`} src={item?.logo?.url} />
+                <img className="object-cover" width={200} height={200} alt={`marca ${item?.titulo} logo`} src={item?.logo?.url} />
               </article>
             ))}
           </section>

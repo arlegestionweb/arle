@@ -1,5 +1,3 @@
-import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward, IoMdClose } from "react-icons/io";
 import ImageWrapper from "../listing/_components/ImageWrapper";

@@ -28,7 +28,7 @@ const SingleImageUpload = ({ title, product, onImageUpload }: {
     <section className="flex flex-col">
       <h4 className="font-bold">{title}</h4>
       {/* {formState.status === "success" && formState.image?.url ? (
-        <Image src={formState.image?.url} alt="Uploaded Image" width={200} height={200} />
+        <img src={formState.image?.url} alt="Uploaded Image" width={200} height={200} />
       ) : ( */}
       <form className="max-w-1/3" action={formAction}>
         <label htmlFor="imageUpload" id="imageUpload" className="flex flex-col items-center p-5 gap-2  bg-gray-200 border border-dashed border-black ">
