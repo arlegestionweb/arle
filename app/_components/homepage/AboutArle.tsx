@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import GradientImage from "../GradientImage";
-import Image from "next/image";
 import React, { useRef, useState } from "react";
 
 type AboutArleProps = {
@@ -40,11 +39,11 @@ const AboutArle = ({ sobre }: AboutArleProps) => {
   return (
     <section className="relative w-screen bg-arle-blue flex flex-col md:flex-row md:items-center md:justify-end md:pl-14 overflow-hidden">
       <section className=" md:w-1/2 px-6 xs:px-8 sm:pl-14 md:pl-0 pt-20 pb-8 md:py-0 md:max-w-screen-sm flex flex-col gap-4 overflow-hidden">
-        <Image
+        <img
           className="h-[500px] w-[500px] absolute z-0 -top-[150px] xs:-top-[200px] md:-top-[45%] left-[30%] sm:left-[45%] md:left-[20%] lg:left-[25%] 2xl:left-[35%]"
           width={500}
           height={500}
-          quality={100}
+          // quality={100}
           src="/ArleEscudoSobreAzul.svg"
           alt="Escudo de Arlé"
         />

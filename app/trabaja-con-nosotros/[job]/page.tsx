@@ -1,5 +1,4 @@
 import { getJobByTitle } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
-import Image from "next/image";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import Main from "@/app/_components/Main";
@@ -28,7 +27,7 @@ const Page = async ({ params }: { params: { job: string } }) => {
             Volver
           </span>
         </Link>
-        <Image
+        <img
           className="-z-10 -right-[70px] md:-right-[120px] w-[200px] md:w-[350px] top-[5px] absolute md:top-0"
           width={400}
           height={380}

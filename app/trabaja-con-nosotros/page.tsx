@@ -1,6 +1,5 @@
 import { getTrabajaConNosotrosContent } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 import { toKebabCase } from "@/utils/helpers";
-import Image from "next/image";
 import Link from "next/link";
 import Main from "../_components/Main";
 import { Metadata } from "next";
@@ -61,7 +60,7 @@ const Page = async ({searchParams}: {
   return (
     <Main extraClasses="min-h-screen bg-white md:mt-[53px]">
       <AboutSubMenu />
-      <Image
+      <img
         className="w-full h-[200px] md:h-[300px] 2xl:h-[350px] object-cover"
         width={1000}
         height={500}

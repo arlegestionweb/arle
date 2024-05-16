@@ -3,7 +3,6 @@ import { useClickOutside } from "@/app/_lib/hooks";
 import { GoChevronLeft } from "react-icons/go";
 import ModalContent from "./ModalContent";
 import { getBrandsByProductTypeAndGender } from "@/sanity/queries/menu";
-import Image from "next/image";
 import { IoCloseSharp } from "react-icons/io5";
 import ArleBasicLogo from "../../ArleBasicLogo";
 
@@ -177,7 +176,7 @@ const Menu = ({
             <ArleBasicLogo />
           </div>
           ) : (
-            <Image
+            <img
               className="opacity-80"
               src="/isoLogoDark.svg"
               alt="IsoLogo de Arlé"

@@ -13,7 +13,6 @@ import {
 } from "@/sanity/queries/pages/listingQueries";
 import { isGafaLujo, isPerfumeLujo, isPerfumePremium, isRelojLujo } from "@/sanity/queries/pages/types";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -77,7 +76,7 @@ const CardLayout = ({
           />
         ) : (
           <Link href={product.slug} className="h-full w-full">
-            <Image
+            <img
               src={
                  "imagenes" in selectedVariant
                     ? selectedVariant.imagenes[0].url || ""
