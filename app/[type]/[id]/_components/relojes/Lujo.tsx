@@ -126,7 +126,7 @@ const RelojLujo = ({
             detalles={{
               caja: {
                 cristal: product.caja.cristal,
-                "Diámetro de la caja": product.caja.diametro + "mm",
+                "Diámetro de la caja": product.caja.diametro + " mm",
                 "Material de la caja": product.caja.material,
               },
               especificaciones: {
@@ -138,9 +138,7 @@ const RelojLujo = ({
                 materialDelPulso: product.especificaciones.material,
                 ...(product.especificaciones.funciones
                   ? {
-                    funciones: product.especificaciones.funciones.map(
-                      (funcion) => `${funcion.titulo}: ${funcion.descripcion}`
-                    ),
+                    funciones: product.especificaciones.funciones.map(funcion => `${funcion.titulo}`).join(", "),
                   }
                   : {}),
               },
