@@ -65,7 +65,7 @@ const Page = async ({searchParams}: {
         width={1000}
         height={500}
         alt={pageContent?.imagen?.alt || ""}
-        src={pageContent?.imagen?.url || ""}
+        src={`${pageContent?.imagen?.url}?fit=max&q=75&w=400&h=400&fm=webp` || ""}
       />
       <section className="flex w-full bg-[#E5E8ED] justify-center">
         <section className="py-8 px-8 sm:px-14 lg:py-14 gap-5 flex flex-col max-w-screen-lg w-full">
