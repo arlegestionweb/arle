@@ -9,9 +9,7 @@ import {
   TRelojLujo,
   isPerfumeLujo,
 } from "@/sanity/queries/pages/types";
-import {
-  TVariant,
-} from "@/sanity/queries/pages/zodSchemas/general";
+import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
 import Precio from "../Precio";
 import { TPricing } from "@/app/[type]/[id]/_components/Product";
@@ -21,10 +19,10 @@ import CollapsibleProductSection from "@/app/[type]/[id]/_components/Collapsible
 
 type HeroProductProps = {
   product: TPerfumeLujo | TRelojLujo | TGafaLujo;
-  images: ({
+  images: {
     url: string;
     alt?: string | null | undefined;
-  })[];
+  }[];
   selectedVariant: TVariant;
   setSelectedVariant: (variant: TVariant) => void;
   cantidad: number;
@@ -85,22 +83,21 @@ const HeroProduct = ({
             {product.marca}
           </h1>
           <h1 className="text-2xl text-gray-600 font-jomolhari capitalize leading-none ">
-            {isPerfumeLujo(product) ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo}` : product.modelo}
+            {isPerfumeLujo(product)
+              ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo}`
+              : product.modelo}
           </h1>
-          {isGafa(product) && product.descripcion && (
+          {product.descripcion && isGafa(product) || isReloj(product) && (
             <CollapsibleProductSection title="Descripción" collapsed={true}>
-            <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 text-justify">{product.descripcion}</p>
+              <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 text-justify whitespace-pre-line">
+                {product.descripcion}
+              </p>
             </CollapsibleProductSection>
-            
-          )}
-          {isReloj(product) && product.descripcion && (
-            <p className="font-tajawal leading-tight lg:leading-tight text-base lg:text-lg text-gray-600 ">
-              {product.descripcion}
-            </p>
           )}
           {isPerfumeLujo(product) && (
             <h2 className="text-gray-600 text-xl font-normal font-tajawal leading-none mt-0.5">
-              {product.concentracion} - {"tamano" in selectedVariant && selectedVariant.tamano}ml
+              {product.concentracion} -{" "}
+              {"tamano" in selectedVariant && selectedVariant.tamano}ml
             </h2>
           )}
           <p className="text-zinc-500 text-sm md:text-base font-normal font-tajawal leading-none md:leading-none">
@@ -121,12 +118,13 @@ const HeroProduct = ({
         </header>
 
         <section className="default-paddings lg:px-4 py-2 pb-6 lg:pb-2 flex first:flex-col gap-6 font-tajawal">
-          {product.variantes.length > 1 &&
+          {product.variantes.length > 1 && (
             <VariantSelector
               product={product}
               selectedVariant={selectedVariant}
               setSelectedVariant={setSelectedVariant}
-            />}
+            />
+          )}
           <Cantidad
             cantidad={cantidad}
             anadirACantidad={() => setCantidad(cantidad + 1)}
