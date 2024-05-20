@@ -158,7 +158,7 @@ export const perfumeLujoSchema = defineType({
     },
     prepare(selection) {
       const { title, media } = selection;
-      if (!title || !media) return { title: "Sin título" };
+      if (!title ) return { title: "Sin título" };
       if (!media) return { title };
       return {
         title,
