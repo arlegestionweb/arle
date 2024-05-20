@@ -207,15 +207,18 @@ export const inspiracionSchema = defineField({
             parent && (parent as TParentWithSubirImagen).subirImagen !== false,
           validation: (Rule) =>
             Rule.custom((field, context) => {
+              if (!(context.parent as {usarInspiracion: boolean})?.usarInspiracion) {
+                return true;
+              }
               if (
                 !(context.parent as TParentWithSubirImagen).subirImagen &&
                 !field
               ) {
-                return "La imagen es requerida cuando 'Subir imagen' está seleccionado";
+                // console.log({context})
+                return "La imagen es requerida cuando 'Subir imagen aca' está seleccionado";
               }
               return true;
-            }),
-        }),
+            }),        }),
         defineField({
           name: "imagenExterna",
           description: "Usar imagen de un URL externo",
@@ -242,11 +245,14 @@ export const inspiracionSchema = defineField({
             parent && (parent as TParentWithSubirImagen).subirImagen === false,
           validation: (Rule) =>
             Rule.custom((field, context) => {
+              if (!(context.parent as {usarInspiracion: boolean})?.usarInspiracion) {
+                return true;
+              }
               if (
                 (context.parent as TParentWithSubirImagen).subirImagen &&
                 !field
               ) {
-                return "La URL es requerida cuando 'Subir imagen' no está seleccionado";
+                return "La URL es requerida cuando 'Subir imagen exter' no está seleccionado";
               }
               return true;
             }),
