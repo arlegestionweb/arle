@@ -66,13 +66,15 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
         <IoMdClose className="text-zinc-500 w-4 h-4" />
       </button>
       {image && (
+        <section className=" h-24 w-24 relative">
         <ImageWrapper
           src={image.url}
           alt={image?.alt || ""}
           width={115}
           height={115}
-          className="object-contain h-24 w-24 bg-white"
-        />
+          className="object-contain"
+          />
+        </section>
       )}
       <section className="w-full flex flex-col self-center gap-1 justify-start font-tajawal">
         <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize">
