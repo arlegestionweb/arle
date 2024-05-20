@@ -17,7 +17,7 @@ const ImageWrapper = ({ src, alt, height, width, quality, ...rest }: ImageWrappe
   if (isSanityImage) {
     return (
       <picture
-                className={`object-cover absolute h-full w-full object-center`}
+                className={`object-cover absolute h-full w-full object-center `}
               >
                 <source
                   sizes={`(max-width: 608px) ${width ? `${width}px` : `85vw`}, 608px`}

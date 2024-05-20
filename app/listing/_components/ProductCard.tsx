@@ -170,7 +170,7 @@ const CardLayout = ({
             className=" h-[180px] sm:h-[250px]"
           />
         ) : (
-          <Link href={product.slug} className="h-full w-full">
+          <section className="relative h-[180px] sm:h-[250px]">
             <ImageWrapper
               src={
                 imgSrc
@@ -178,11 +178,11 @@ const CardLayout = ({
               alt={
                 imgAlt
               }
-              width={288}
-              height={288}
-              className="object-contain h-full sm:h-[250px] w-full"
-            />
-          </Link>
+              width={250}
+              height={250}
+              className="object-contain h-full w-full"
+              />
+          </section>
         )}
       </section >
 
