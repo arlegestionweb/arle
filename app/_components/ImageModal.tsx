@@ -51,7 +51,7 @@ const ImageModal = ({ images, index, isImageOpen, closeImage }: Props) => {
           quality={85}
           src={image.url}
           alt={image.alt || ""}
-          className=" h-full w-auto object-contain pointer-events-auto"
+          className=" h-full w-full object-contain object-center pointer-events-auto"
         />
         <button
         onClick={()=>setImageIndex(imageIndex+1)}
