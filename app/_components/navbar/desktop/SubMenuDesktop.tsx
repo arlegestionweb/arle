@@ -34,7 +34,9 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
   useEffect(() => {
     const getBrands = async () => {
       const brands = await getAllBrands();
-      setBrands(brands);
+      const sortedBrands = brands?.sort((a, b) => a.titulo.toLowerCase().localeCompare(b.titulo.toLowerCase()));
+      console.log(sortedBrands);
+      setBrands(sortedBrands);
     }
 
     getBrands();
