@@ -68,7 +68,7 @@ const Page = async () => {
                           className="w-[40%] sm:w-[35%] h-full md:w-full md:h-[250px] object-cover"
                           height={200}
                           width={200}
-                          src={item.imagenes[0].url}
+                          src={`${item.imagenes[0].url}?fit=max&q=75&w=200&h=200&fm=webp`}
                           alt={`imagen de Sede de Arle ${item.nombre} - ${item.ciudad}`}
                         />
                         <section className="flex flex-col justify-end p-5 gap-1.5 w-full">

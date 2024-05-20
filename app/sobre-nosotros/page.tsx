@@ -28,7 +28,8 @@ const Page = async () => {
             {pageContent?.whyWeDoWhatWeDo?.imagenOVideo ?
               <video src={pageContent?.whyWeDoWhatWeDo?.video?.url}></video>
               :
-              <img className="h-full filter brightness-[70%] w-full object-cover" width={400} height={400} alt={pageContent?.whyWeDoWhatWeDo?.imagen?.alt || ""} src={pageContent?.whyWeDoWhatWeDo?.imagen?.url || ""} />
+              <img className="h-full filter brightness-[70%] w-full object-cover" width={400} height={400} alt={pageContent?.whyWeDoWhatWeDo?.imagen?.alt || ""} 
+              src={`${pageContent?.whyWeDoWhatWeDo?.imagen?.url}?fit=max&q=75&w=400&h=400&fm=webp` || ""} />
             }
           </section>
           <section className="p-8 sm:py-11 sm:px-14 w-full md:w-[50vw] md:py-10 md:pl-14 md:pr-14 max-w-3xl">
@@ -47,7 +48,7 @@ const Page = async () => {
             {pageContent?.whyUs?.imagenOVideo ?
               <video src={pageContent?.whyUs?.video?.url}></video>
               :
-              <img className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.whyUs?.imagen?.alt || ""} src={pageContent?.whyUs?.imagen?.url || ""} />
+              <img className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.whyUs?.imagen?.alt || ""} src={`${pageContent?.whyUs?.imagen?.url}?fit=max&q=75&w=400&h=400&fm=webp` || ""} />
             }
           </section>
         </section>
@@ -58,7 +59,7 @@ const Page = async () => {
             {pageContent?.howWeHelpOurClients?.imagenOVideo ?
               <video src={pageContent?.howWeHelpOurClients?.video?.url}></video>
               :
-              <img className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.howWeHelpOurClients?.imagen?.alt || ""} src={pageContent?.howWeHelpOurClients?.imagen?.url || ""} />
+              <img className="filter brightness-[70%] w-full object-cover z-0" width={400} height={400} alt={pageContent?.howWeHelpOurClients?.imagen?.alt || ""} src={`${pageContent?.howWeHelpOurClients?.imagen?.url}?fit=max&q=75&w=400&h=400&fm=webp` || ""} />
             }
           </section>
           <img className="w-[215px] h-[215px] sm:w-[300px] sm:h-[300px] xl:h-[350px] xl:w-[350px] absolute object-contain -top-[85px] -left-[80px] md:left-auto md:-right-[155px] lg:-right-[100px] xl:-right-[50px] opacity-70" height={300} width={300} alt="Escudo Logo Arle" src="/escudoArle.svg" />
@@ -78,7 +79,7 @@ const Page = async () => {
             {pageContent?.ourStory?.imagenOVideo ?
               <video src={pageContent?.ourStory?.video?.url}></video>
               :
-              <img className=" filter brightness-[70%] w-full max-h-[500px] object-cover z-0" width={400} height={400} alt={pageContent?.ourStory?.imagen?.alt || ""} src={pageContent?.ourStory?.imagen?.url || ""} />
+              <img className=" filter brightness-[70%] w-full max-h-[500px] object-cover z-0" width={400} height={400} alt={pageContent?.ourStory?.imagen?.alt || ""} src={`${pageContent?.ourStory?.imagen?.url}?fit=max&q=75&w=400&h=400&fm=webp` || ""} />
             }
           </section>
         </section>
