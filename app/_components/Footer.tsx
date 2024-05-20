@@ -44,6 +44,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
   const pathname = usePathname();
 
   if (pathname.includes("admin") || pathname.includes("mass-uploads")) return;
+
   return (
     <section className="lg:fixed ">
       <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-20 xs:px-8 sm:px-14 md:pt-20  text-white bg-arle-blue pointer-events-auto">
@@ -56,17 +57,17 @@ const Footer = ({ settings, sedes }: FooterProps) => {
               <Link className="text-arle-beige text-2xl lux-title cursor-pointer" href={"/listing"}>Productos</Link>
             </h2>
             <ul className="flex flex-col gap-4 text-lg">
-              <li className="section-text underline-offset-2 hover:underline">
+              <li className="section-text text-left underline-offset-2 hover:underline">
                 <Link href="/listing?type=perfume">Perfumes</Link>
               </li>
-              <li className="section-text underline-offset-2 hover:underline">
+              <li className="section-text text-left underline-offset-2 hover:underline">
                 <Link href="/listing?type=reloj">Relojes</Link>
               </li>
-              <li className="section-text underline-offset-2 hover:underline">
+              <li className="section-text text-left underline-offset-2 hover:underline">
                 <Link href="/listing?type=gafa">Gafas</Link>
               </li>
               <li>
-                <Link className="section-text underline-offset-2 hover:underline flex gap-1" href="/estadodecompra">
+                <Link className="section-text text-left underline-offset-2 hover:underline flex gap-1" href="/estadodecompra">
                 <GoArrowUpRight className="w-5 h-5 -mt-0.5" />
                   Estado de compra
                 </Link>
@@ -78,17 +79,17 @@ const Footer = ({ settings, sedes }: FooterProps) => {
               Arlé
             </h2>
             <ul className="flex flex-col gap-4 text-lg">
-              <li className="section-text underline-offset-2 hover:underline">
+              <li className="section-text text-left underline-offset-2 hover:underline">
                 <Link href="/sobre-nosotros">Sobre Nosotros</Link>
               </li>
-              <li className="section-text underline-offset-2 hover:underline">
+              <li className="section-text text-left underline-offset-2 hover:underline">
                 <Link href="/nuestras-sedes">Nuestras Sedes</Link>
               </li>
-              <li className="section-text underline-offset-2 hover:underline">
+              <li className="section-text text-left underline-offset-2 hover:underline">
                 <Link href="/trabaja-con-nosotros">Trabaja con Nosotros</Link>
               </li>
               <li>
-                <Link className="section-text underline-offset-2 hover:underline flex gap-1" href="https://wa.me/573160700015?text=Hola,%20estoy%20interesad@%20en%20recibir%20una%20asesoría%20personalizada%20con%20Arlé!" target="_blank">
+                <Link className="section-text text-left  underline-offset-2 hover:underline flex gap-1" href="https://wa.me/573160700015?text=Hola,%20estoy%20interesad@%20en%20recibir%20una%20asesoría%20personalizada%20con%20Arlé!" target="_blank">
                 <GoArrowUpRight className="w-5 h-5 -mt-0.5" />
                   Recibe una Asesoría
                 </Link>
@@ -110,7 +111,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
                           {sede.nombre} - {sede.local}
                         </h3>
                       </div>
-                      <div className="w-72 section-text">
+                      <div className="w-72 section-text text-left">
                         {`${sede.direccion}, ${sede.ciudad}`}
                       </div>
                     </Link>
@@ -128,7 +129,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
                 {Object.entries(settings.legal).map(([key, value], index) => {
                   if (!value || !titulosLegales[key]) return null;
                   return (
-                    <li className="section-text underline-offset-2 hover:underline" key={`${index}-${titulosLegales[key]}`}>
+                    <li className="section-text text-left underline-offset-2 hover:underline" key={`${index}-${titulosLegales[key]}`}>
                       <Link href={`/legal/${key}`}>{titulosLegales[key]}</Link>
                     </li>
                   );

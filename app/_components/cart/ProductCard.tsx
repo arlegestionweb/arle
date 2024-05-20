@@ -34,13 +34,15 @@ const ProductCard = ({
   return (
     <li key={image.url} className="flex items-center gap-4">
       {image && (
+        <section className="h-28 w-28 relative">
         <ImageWrapper
           src={image.url}
           alt={image?.alt || ""}
           width={110}
           height={110}
-          className="object-contain h-28 w-28"
-        />
+          className="object-contain "
+          />
+        </section>
       )}
       <section className="flex flex-col font-tajawal">
         {/* <h4 className="text-zinc-800 text-xl font-medium font-tajawal leading-normal">

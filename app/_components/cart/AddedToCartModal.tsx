@@ -100,13 +100,15 @@ const AddedToCartModal = () => {
           </header>
           <section className="flex flex-col sm:flex-row w-full gap-5 items-center sm:items-start justify-between">
             {image && (
+              <section className="w-[150px] h-[150px] relative">
               <ImageWrapper
                 src={image.url}
                 alt={image?.alt || ""}
                 width={180}
                 height={180}
-                className="object-contain w-[150px] h-[150px]"
-              />
+                className=""
+                />
+              </section>
             )}
             <section className="w-full flex flex-col self-center gap-1 justify-start font-tajawal">
               <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize">
@@ -205,7 +207,7 @@ const AddedToCartModal = () => {
                 <FaArrowRight className="text-base" />
               </Button>
             </div>
-            <div className="w-[5.5rem]">
+            <div className="w-[5.5rem] pt-2">
               <ArleBasicLogo />
             </div>
           </footer>
