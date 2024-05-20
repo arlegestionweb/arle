@@ -22,6 +22,31 @@ const zodParsedQuery = z.array(z.object({
   genero: z.string()
 }))
 
+const zodBrand = z.array(z.object({
+  titulo: z.string()
+})).optional().nullable();
+
+export type TBrand = z.infer<typeof zodBrand>;
+
+export const getAllBrands = async () => {
+  try {
+    const result = await sanityClient.fetch(`
+    *[_type == "marca"][]{
+      titulo
+    }
+    `)
+
+    const parsedResult = zodBrand.safeParse(result);
+
+    if(!parsedResult.success) {
+      throw new Error(parsedResult.error.message);
+    }
+    return parsedResult.data;
+  } catch(error){
+    console.error(error);
+  }
+}
+
 export const getBrandsByProductTypeAndGender = async (
   productType: TProductType,
   gender: TGender

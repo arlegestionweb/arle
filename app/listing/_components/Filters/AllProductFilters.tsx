@@ -6,6 +6,7 @@ import GeneroFilter from "./GeneroFilter";
 import MarcaFilters from "./MarcaFilters";
 import PrecioFilters from "./PrecioFilters";
 import ColeccionDeMarcaFilter from "./ColeccionDeMarcaFilter";
+import TipoFilter from "./TipoFilter";
 
 type TAllProductFiltersProps = {
   marcas: string[];
@@ -20,44 +21,7 @@ const AllProductFilters = ({
 
   return (
     <>
-      <FilterSection
-        title="Tipo de Producto"
-        active={
-          !!searchParams.get("type") && searchParams.get("type") !== "todos"
-        }
-      >
-        <InputBox
-          name="type"
-          title="Todos"
-          defaultChecked={
-            searchParams.get("type")?.includes("todos") ||
-            !searchParams.get("type")
-          }
-          type="radio"
-          value={"todos"}
-        />
-        <InputBox
-          name="type"
-          title="Gafas"
-          defaultChecked={searchParams.get("type")?.includes("gafa")}
-          type="radio"
-          value={"gafa"}
-        />
-        <InputBox
-          name="type"
-          title="Reloj"
-          defaultChecked={searchParams.get("type")?.includes("reloj")}
-          type="radio"
-          value={"reloj"}
-        />
-        <InputBox
-          name="type"
-          title="Perfume"
-          defaultChecked={searchParams.get("type")?.includes("perfume")}
-          type="radio"
-          value={"perfume"}
-        />
-      </FilterSection>
+      <TipoFilter />
       <LineaFilter />
       <GeneroFilter />
       <MarcaFilters marcas={marcas} />

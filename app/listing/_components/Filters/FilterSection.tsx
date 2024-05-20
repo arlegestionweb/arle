@@ -5,17 +5,21 @@ type FilterSectionProps = {
   title: string;
   children: React.ReactNode;
   active?: boolean;
+  initialOpen?: boolean;
 };
 const FilterSection = ({
   title,
   children,
   active = false,
+  initialOpen = false,
 }: FilterSectionProps) => {
-  const [isOpen, setIsOpen] = useState(active);
+
+  const [isOpen, setIsOpen] = useState(initialOpen);
   return (
-    <section className={`w-full h-fit px-6 py-3 border-b border-gray-300  flex-col justify-center items-start gap-3 group ${!isOpen && "cursor-pointer"}`} onClick={() => !isOpen && setIsOpen(true)}>
-      <section className={`flex justify-between items-center w-full ${isOpen && "pb-2"}`}>
-        <h3 className={`font-inter font-normal text-gray-700 text-sm relative underline-offset-2 ${!isOpen && "group-hover:text-gray-600 group-hover:underline"}`}>
+    <section className={`w-full h-fit px-6 py-3 border-b border-gray-300  flex-col justify-center items-start gap-3 ${!isOpen && "cursor-pointer"}`} >
+      <section className={`flex justify-between items-center group cursor-pointer w-full ${"pb-2"}`}
+      onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)}>
+        <h3 className={`font-inter font-normal text-gray-700 text-sm relative underline-offset-2 ${ "group-hover:text-gray-600 group-hover:underline"}`}>
           {title} {active ? <RedDot position="centerRight" /> : ""}
         </h3>
         <OpenCloseFilterButton

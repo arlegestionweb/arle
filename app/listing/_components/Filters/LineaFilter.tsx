@@ -11,6 +11,7 @@ const LineaFilter = () => {
       active={
         !!searchParams.get("linea") && searchParams.get("linea") !== "todos"
       }
+      initialOpen
     >
       <InputBox
         name="linea"
