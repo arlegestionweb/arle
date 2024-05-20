@@ -80,9 +80,9 @@ const PerfumeLujo = ({
             detalles={{
               notasOlfativas: {
                 familiaOlfativa: product.notasOlfativas.familiaOlfativa || "",
-                notasDeSalida: product.notasOlfativas.notasDeSalida?.toString().replaceAll(",",", ") + "." || "",
-                notasDeCorazon: product.notasOlfativas.notasDeCorazon?.toString().replaceAll(",",", ") + "." || "",
-                notasDeBase: product.notasOlfativas.notasDeBase?.toString().replaceAll(",",", ") + "." || "",
+                notasDeSalida: product.notasOlfativas.notasDeSalida?.toString().replaceAll(",",", ") || "",
+                notasDeCorazon: product.notasOlfativas.notasDeCorazon?.toString().replaceAll(",",", ") || "",
+                notasDeBase: product.notasOlfativas.notasDeBase?.toString().replaceAll(",",", ") || "",
               },
               ingredientes: {
                 ingredientes: product.ingredientes?.join(", ") || "",
@@ -92,7 +92,9 @@ const PerfumeLujo = ({
                 tamaño: selectedVariant.tamano.toString() + "ml" || "",
                 concentración: product.concentracion || "",
                 paísDeOrigen: product.paisDeOrigen || "",
-                registroInvima: selectedVariant.registroInvima || "",
+                ...(selectedVariant.registroInvima ? {
+                  registroInvima: selectedVariant.registroInvima,
+                } : {})
               }
             }}
           />

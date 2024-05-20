@@ -41,8 +41,6 @@ const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
 
   
   const selectedBanners = selectedProductType === "gafa" ? banners.gafasBanners : selectedProductType === "reloj" ? banners.relojesBanners : selectedProductType === "perfume" ? banners.perfumesBanners : banners.generalBanners
-  
-  const filteredBrands = bannersByBrand?.filter(brand => brand.banners)
 
   return (
     <section
@@ -54,7 +52,7 @@ const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
         className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory bg-gray-100"
         onScroll={handleScroll}
         ref={bannerRef}>
-        {filteredBrands && filteredBrands.length > 0 ? filteredBrands.map((brand, index) => (
+        {bannersByBrand && bannersByBrand.length > 0 ? bannersByBrand.map((brand, index) => (
           brand.banners?.map((banner, index) => (
             <React.Fragment key={index + banner?.imagen?.url}>
               <GradientImage

@@ -103,7 +103,7 @@ const Filters = ({
       if(key === "sort" || key === "maxPrice" || key === "minPrice" || value === "todas" ) return
       breadCrumbs.push({
         param: key,
-        label: `${value === "reloj" ? "relojes" : value === "premium" ? "excelencia" : value === "lujo" ? "elite" : value === "gafa" ? "gafas" : value === "perfume" ? "perfumes" : key === "marcas" ? value : value}`,
+        label: `${value === "reloj" ? "relojes" : value === "premium" ? "élite" : value === "lujo" ? "excelencia" : value === "gafa" ? "gafas" : value === "perfume" ? "perfumes" : key === "marcas" ? value : value}`,
         href: href.slice(0, -1), // remove the trailing '&'
       });
     });

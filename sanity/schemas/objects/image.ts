@@ -1,5 +1,7 @@
 import { defineField, defineArrayMember } from "sanity";
 import ImageUrl, { Image } from "../../components/ImageUrl";
+
+
 export const imageObjectSchema = defineField({
   name: "imagenObject",
   title: "Imagen",
@@ -19,6 +21,8 @@ export const imageObjectSchema = defineField({
     }),
   ],
 });
+
+
 export const imageUrlObjectSchema = defineField({
   name: "imageUrlObject",
   title: "URL de la imagen",

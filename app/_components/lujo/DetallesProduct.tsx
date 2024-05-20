@@ -89,7 +89,7 @@ const DetallesProducto = ({
                             ? (
                                 detalles[detalle] as { [key: string]: string[] }
                               )[object].map(obj => <span key={obj}>{obj}{", "}</span>)
-                            : (detalles[detalle] as any)[object]}.
+                            : object === "descripción" || object ===  "ingredientes" ? `${(detalles[detalle] as any)[object]}` : `${(detalles[detalle] as any)[object]}.`}
                         </p>
                       </div>
                     </section>
