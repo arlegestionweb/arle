@@ -5,6 +5,7 @@ import GeneroFilter from "./GeneroFilter";
 import LineaFilter from "./LineaFilter";
 import MarcaFilters from "./MarcaFilters";
 import PrecioFilters from "./PrecioFilters";
+import TipoFilter from "./TipoFilter";
 
 const PerfumeFilters = ({
   marcas,
@@ -17,6 +18,7 @@ const PerfumeFilters = ({
 }) => {
   return (
     <>
+      <TipoFilter />
       <LineaFilter />
       <GeneroFilter />
       <MarcaFilters marcas={marcas} />

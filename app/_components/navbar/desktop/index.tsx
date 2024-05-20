@@ -8,6 +8,7 @@ import { useCartStore } from "../../cart/store";
 import { LuShoppingCart } from "react-icons/lu";
 import Menu from "../menu";
 import ArleBasicLogo from "../../ArleBasicLogo";
+import { getAllBrands } from "@/sanity/queries/menu";
 
 type NavDesktopProps = {
   className?: string;
@@ -21,7 +22,7 @@ const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
   return (
     <nav className={className}>
       <section
-        className={`w-full flex fixed z-30 top-0 h-[53px] px-8 justify-center bg-background border-b border-zinc-200`}
+        className={`w-full flex fixed z-50 top-0 h-[53px] px-8 justify-center bg-background border-b border-zinc-200`}
       >
         <section className="w-full flex h-full justify-between items-center max-w-screen-xl">
           <Link href={"/"} className="h-fit self-center">
@@ -60,7 +61,7 @@ const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
           </section>
         </section>
       </section>
-      <section className="relative z-10">
+      <section className="relative z-30">
         <Suspense>
           <SubMenuDesktop marca={marca} />
         </Suspense>

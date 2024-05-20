@@ -5,6 +5,7 @@ import LineaFilter from "./LineaFilter";
 import MarcaFilters from "./MarcaFilters";
 import PrecioFilters from "./PrecioFilters";
 import CheckboxSection from "./CheckBoxSection";
+import TipoFilter from "./TipoFilter";
 
 const RelojFilters = ({
   marcas,
@@ -17,6 +18,7 @@ const RelojFilters = ({
 }) => {
   return (
     <>
+      <TipoFilter />
       <LineaFilter />
       <GeneroFilter />
       <MarcaFilters marcas={marcas} />
