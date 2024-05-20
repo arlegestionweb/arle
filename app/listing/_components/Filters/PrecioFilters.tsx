@@ -9,6 +9,7 @@ const PrecioFilters = () => {
     <FilterSection
       title="Precio"
       active={!!searchParams.get("minPrice") || !!searchParams.get("maxPrice")}
+      initialOpen
     >
       <div className="flex gap-2 justify-between pt-2">
         <InputBox
