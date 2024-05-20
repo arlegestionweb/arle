@@ -51,15 +51,15 @@ export const perfumePremiumSchema = defineType({
   preview: {
     select: {
       title: "titulo",
-      media: "imagenes",
+      media: "variantes",
     },
     prepare(selection) {
       const { title, media } = selection;
-      if (!title || !media) return { title: "Sin título" };
+      if (!title) return { title: "Sin título" };
       if (!media) return {title}
       return {
         title,
-        media: media[0],
+        media: media[0].imagenes[0],
       };
     },
   },
