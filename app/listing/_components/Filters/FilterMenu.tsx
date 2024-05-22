@@ -86,51 +86,51 @@ const FilterMenu = ({
   return (
     <div
       className={`${isFilterOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-    } fixed z-[78] top-0 left-0 transition-all duration-500 w-screen h-full bg-black bg-opacity-50 backdrop-blur-md`}
+        } fixed z-[78] top-0 left-0 transition-all duration-500 w-screen h-full bg-black bg-opacity-50 backdrop-blur-md`}
     >
       <aside
         className={`${isFilterOpen ? "left-0" : "-left-[400px]"
-      } w-screen fixed top-0 z-[80] mt-[50px] md:mt-[53px] bottom-0 max-h-[calc(100%-53px)] max-w-[400px] flex flex-col bg-white transition-all duration-300 ease-out overflow-hidden`}
+          } w-screen fixed top-0 z-[80] mt-[50px] md:mt-[53px] bottom-0 max-h-[calc(100%-53px)] max-w-[400px] flex flex-col bg-white transition-all duration-300 ease-out overflow-hidden`}
       >
-          <header className="flex justify-between items-center px-6 min-h-[60px] border-b border-gray-300">
+        <header className="flex justify-between items-center px-6 min-h-[60px] border-b border-gray-300">
           <h1 className=" capitalize text-arle-blue text-base font-semibold font-inter cursor-default">
-              Filtros
-            </h1>
+            Filtros
+          </h1>
           <IoCloseSharp
             className="cursor-pointer w-5 h-5"
             onClick={toggleFilter}
           />
-          </header>
+        </header>
         <form className="w-full h-[calc(100%-60px)] flex flex-col justify-between" onSubmit={onFormSubmit} ref={formRef}>
           <section className="w-full basis-full flex flex-col justify-start overflow-y-scroll no-scrollbar">
 
-          {!searchParams.get("type") && (
-            <AllProductFilters
-            marcas={marcas}
-            coleccionesDeMarca={coleccionesDeMarca}
-            />
+            {!searchParams.get("type") && (
+              <AllProductFilters
+                marcas={marcas}
+                coleccionesDeMarca={coleccionesDeMarca}
+              />
             )}
 
-          {searchParams.get("type")?.includes("reloj") && (
-            <RelojFilters
-            marcas={marcas}
-            coleccionesDeMarca={coleccionesDeMarca}
-            relojFilters={relojFilters}
-            />
+            {searchParams.get("type")?.includes("reloj") && (
+              <RelojFilters
+                marcas={marcas}
+                coleccionesDeMarca={coleccionesDeMarca}
+                relojFilters={relojFilters}
+              />
             )}
-          {searchParams.get("type")?.includes("gafa") && (
-            <GafaFilters
-            coleccionesDeMarca={coleccionesDeMarca}
-            marcas={marcas}
-            gafaFilters={gafaFilters}
-            />
+            {searchParams.get("type")?.includes("gafa") && (
+              <GafaFilters
+                coleccionesDeMarca={coleccionesDeMarca}
+                marcas={marcas}
+                gafaFilters={gafaFilters}
+              />
             )}
-          {searchParams.get("type")?.includes("perfume") && (
-            <PerfumeFilters
-            marcas={marcas}
-            coleccionesDeMarca={coleccionesDeMarca}
-            perfumeFilters={perfumeFilters}
-            />
+            {searchParams.get("type")?.includes("perfume") && (
+              <PerfumeFilters
+                marcas={marcas}
+                coleccionesDeMarca={coleccionesDeMarca}
+                perfumeFilters={perfumeFilters}
+              />
             )}
           </section>
 

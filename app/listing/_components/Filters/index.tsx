@@ -10,6 +10,8 @@ import FilterMenu from "./FilterMenu";
 import { createUrl, makeNewParams } from "@/app/_lib/utils";
 import BreadCrumbs, { TBreadCrumb } from "./BreadCrumbs";
 import Dropdown, { TDropdownOption } from "@/app/_components/Dropdown";
+import { useRouter } from 'next/navigation'
+
 
 
 type TColor = {
@@ -70,6 +72,8 @@ const Filters = ({
   const searchParams = useSearchParams();
   const allParams: { [key: string]: any } = {};
 
+  const { push } = useRouter()
+
   searchParams.forEach((value, param) => {
     if (!allParams[param]) {
       allParams[param] = [];
@@ -100,7 +104,7 @@ const Filters = ({
           href += `${encodeURIComponent(paramKey)}=${encodeURIComponent(paramValue)}&`;
         });
       });
-      if(key === "sort" || key === "maxPrice" || key === "minPrice" || value === "todas" ) return
+      if (key === "sort" || key === "maxPrice" || key === "minPrice" || value === "todas" || key === "currentPage" || key === "prodsPerPage") return
       breadCrumbs.push({
         param: key,
         label: `${value === "reloj" ? "relojes" : value === "premium" ? "élite" : value === "lujo" ? "excelencia" : value === "gafa" ? "gafas" : value === "perfume" ? "perfumes" : key === "marcas" ? value : value}`,
@@ -113,6 +117,20 @@ const Filters = ({
     { label: "Mayor precio", value: "precio_mayor_menor", href: createUrl("/listing", makeNewParams("sort", "precio_mayor_menor", searchParams)) },
     { label: "Menor precio", value: "price_menor_mayor", href: createUrl("/listing", makeNewParams("sort", "price_menor_mayor", searchParams)) },
   ];
+
+
+  const prodsPerPageOptions = [
+    10,
+    20,
+    30
+  ]
+
+  const handleProdsPerPageChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    push(
+      createUrl("/listing", makeNewParams("prodsPerPage", event.currentTarget.value, searchParams))
+    );
+  };
+
 
   return (
     <>
@@ -135,6 +153,16 @@ const Filters = ({
           </Button>
         </section>
         <BreadCrumbs breadCrumbs={breadCrumbs} />
+        <label htmlFor="">
+          Productos por página:
+        </label>
+        <select onChange={(e) => handleProdsPerPageChanged(e)}>
+          {prodsPerPageOptions.map((option, index) => (
+            <option key={`option-${index}`}>
+              {option}
+            </option>
+          ))}
+        </select>
       </section>
       <FilterMenu
         areFiltersActive={areFiltersActive}
