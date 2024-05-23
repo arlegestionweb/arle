@@ -9,7 +9,7 @@ import AboutSubMenu from "../_components/AboutSubMenu";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Arlé | Nuestras Sedes",
+  title: "ARLÉ | Nuestras Sedes",
 };
 
 const Page = async () => {

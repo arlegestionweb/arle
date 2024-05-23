@@ -10,7 +10,7 @@ import WorkWithUsFilters from "./_components/WorkWithUsFilters";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Arlé | Trabaja con Nosotros",
+  title: "ARLÉ | Trabaja con Nosotros",
 };
 
 const Page = async ({searchParams}: {
