@@ -50,7 +50,7 @@ const sortingFunctions: Record<
   },
 };
 export const metadata: Metadata = {
-  title: "Arlé | Productos",
+  title: "ARLÉ | Productos",
 };
 
 const Listing = async ({

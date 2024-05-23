@@ -76,7 +76,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
           </section>
           <section>
             <h2 className="pb-4 text-arle-beige text-2xl lux-title cursor-default">
-              Arlé
+              ARLÉ
             </h2>
             <ul className="flex flex-col gap-4 text-lg">
               <li className="section-text text-left underline-offset-2 hover:underline">
