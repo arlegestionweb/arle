@@ -30,6 +30,11 @@ export const marcasSchema = defineType({
       title: "Descripción",
       type: "text",
     }),
+    defineField({
+      name: "sugerida",
+      title: "Marca Sugerida",
+      type: "boolean",
+    }),
     bannersSchema,
     defineField({
       name: "colecciones",
