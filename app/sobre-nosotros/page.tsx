@@ -7,7 +7,7 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: 'Arlé | Sobre Nosotros',
+  title: 'ARLÉ | Sobre Nosotros',
 }
 
 const Page = async () => {

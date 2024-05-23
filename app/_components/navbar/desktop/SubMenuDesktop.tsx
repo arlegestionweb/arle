@@ -28,7 +28,6 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
   const selectedProducto = searchParams.get("type");
   const selectedMarca = searchParams.get("marcas");
   const [brandsFilter, setBrandsFilter] = useState(false);
-  const toggleBrandsFilter = () => {setBrandsFilter(!brandsFilter)};
   const [brands, setBrands] = useState<TBrand>([])
 
   useEffect(() => {
@@ -68,11 +67,13 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
             <p className="text-gray-700 font-inter text-sm font-medium hover:text-gray-500">{marca}</p>
           </Link>
         )}
-        <Button className={`text-gray-700 font-inter text-sm flex items-center gap-0.5 border-none bg-transparent font-medium p-0 px-4 ${!brandsFilter && "hover:text-gray-500" }`} type="button" onClick={toggleBrandsFilter} >
+        <section className="flex w-fit relative" >
+          <Button className={`text-gray-700 font-inter text-sm flex items-center gap-0.5 border-none bg-transparent font-medium p-0 px-4 ${!brandsFilter && "hover:text-gray-500" }`} type="button" onClick={()=> setBrandsFilter(true)}>
               Marcas
               <IoIosArrowDown className="h-4 w-4" width={14} height={14} />
+          </Button>
               <SimpleDropdown options={brands} isOpen={brandsFilter} onClose={() => setBrandsFilter(false)} />
-        </Button>
+        </section>
       </section>
     </section>
   );

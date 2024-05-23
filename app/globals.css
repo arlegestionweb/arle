@@ -43,6 +43,20 @@ table, th, td, tr {
   .no-scrollbar::-webkit-scrollbar-button{
     display: none;
   }
+  .small-scrollbar::-webkit-scrollbar{
+    width: 7px;
+    height: 10px;
+  }
+  .small-scrollbar::-webkit-scrollbar-thumb{
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+  }
+  .small-scrollbar::-webkit-scrollbar-corner{
+    background-color: #f1f1f1;
+  }
+  .small-scrollbar::-webkit-scrollbar-button{
+    display: none;
+  }
   .lux-title{
     @apply font-jomolhari font-normal tracking-wide drop-shadow-[-1px_2px_4px_rgba(0,0,0,0.5)] cursor-default;
   }

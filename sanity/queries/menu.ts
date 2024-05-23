@@ -23,7 +23,8 @@ const zodParsedQuery = z.array(z.object({
 }))
 
 const zodBrand = z.array(z.object({
-  titulo: z.string()
+  titulo: z.string(),
+  sugerida: z.boolean().optional().nullable(),
 })).optional().nullable();
 
 export type TBrand = z.infer<typeof zodBrand>;
@@ -32,7 +33,8 @@ export const getAllBrands = async () => {
   try {
     const result = await sanityClient.fetch(`
     *[_type == "marca"][]{
-      titulo
+      titulo,
+      sugerida
     }
     `)
 
