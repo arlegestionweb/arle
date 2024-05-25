@@ -65,7 +65,7 @@ const ModalContent = ({
     <section
       className={`w-screen max-w-[400px] h-full flex-col flex relative no-scrollbar transition-all`}
     >
-      <section className="py-[18px] px-6 flex w-full flex-col gap-[12px]">
+      <section className="py-[18px] px-6 flex w-full flex-col gap-[12px]  overflow-y-scroll small-scrollbar">
         {search && (
           <Suspense>
             <div className="md:hidden pb-4">
@@ -78,7 +78,7 @@ const ModalContent = ({
         </h2>
         
         { !marcasFilter && items.length > 0 ? (
-          <ul className="flex flex-col gap-[15px] ">
+          <ul className="flex flex-col gap-[15px]">
             {items.map((item) => (
               <li 
                 className="cursor-pointer items-center flex gap-2 group"
