@@ -26,17 +26,17 @@ const TipoFilter = () => {
         />
         <InputBox
           name="type"
-          title="Gafas"
-          defaultChecked={searchParams.get("type")?.includes("gafa")}
-          type="radio"
-          value={"gafa"}
-        />
-        <InputBox
-          name="type"
           title="Perfumes"
           defaultChecked={searchParams.get("type")?.includes("perfume")}
           type="radio"
           value={"perfume"}
+        />
+        <InputBox
+          name="type"
+          title="Gafas"
+          defaultChecked={searchParams.get("type")?.includes("gafa")}
+          type="radio"
+          value={"gafa"}
         />
         <InputBox
           name="type"

@@ -3,7 +3,8 @@ import Link from "next/link";
 import { GoArrowUpRight } from "react-icons/go";
 import { useRouter } from "next/navigation";
 import Spinner from "../../Spinner";
-import { Suspense } from "react";
+import { Dispatch, SetStateAction, Suspense, useEffect, useState } from "react";
+import { TBrand, getAllBrands } from "@/sanity/queries/menu";
 
 type ModalContentProps = {
   marca?: string | null;
@@ -12,6 +13,9 @@ type ModalContentProps = {
   subtitle: string;
   items: { name: string }[];
   setSelectedItems: (arg0: any) => void;
+  setCurrentScreen: Dispatch<SetStateAction<number>>;
+  marcasFilter: boolean;
+  setMarcasFilter: (arg0: boolean) => void;
   selectedItems: { name: string }[];
   currentScreen: number;
   bottomSection: boolean;
@@ -24,13 +28,30 @@ const ModalContent = ({
   currentScreen,
   setIsMenu,
   isMenuOpen,
+  marcasFilter, 
+  setMarcasFilter,
   items,
   setSelectedItems,
+  setCurrentScreen,
   subtitle,
   bottomSection,
   search,
 }: ModalContentProps) => {
   const [productType, gender] = selectedItems.map((item) => item.name);
+  const [brands, setBrands] = useState<TBrand>([]);
+  const [allBrands, setAllBrands] = useState(false);
+
+  useEffect(() => {
+    if( marcasFilter ){
+      const getBrands = async () => {
+        const brands = await getAllBrands();
+        const sortedBrands = brands?.sort((a, b) => a.titulo.toLowerCase().localeCompare(b.titulo.toLowerCase()));
+        setBrands(sortedBrands);
+      }
+      getBrands();
+    }
+    else return
+  },[marcasFilter])
 
   const { push } = useRouter();
   const linkToAll =
@@ -55,10 +76,11 @@ const ModalContent = ({
         <h2 className="text-zinc-800 text-lg font-medium font-tajawal leading-snug capitalize cursor-default pb-4">
           {subtitle === "perfume" ? "perfumes" : subtitle}
         </h2>
-        {items.length > 0 ? (
+        
+        { !marcasFilter && items.length > 0 ? (
           <ul className="flex flex-col gap-[15px] ">
             {items.map((item) => (
-              <li
+              <li 
                 className="cursor-pointer items-center flex gap-2 group"
                 key={item.name}
                 onClick={() => {
@@ -82,6 +104,14 @@ const ModalContent = ({
                 </h3>
               </li>
             ))}
+            {currentScreen === 0 && (
+              <li className="cursor-pointer items-center flex gap-2 group"
+              onClick={() => {setMarcasFilter(true); setCurrentScreen(1);}}>
+                  <h3 className="capitalize text-gray-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
+                    marcas
+                  </h3>
+              </li>
+            )}
             <li className="">
               <Link
                 href={linkToAll}
@@ -95,7 +125,39 @@ const ModalContent = ({
               </Link>
             </li>
           </ul>
-        ) : (
+        ) : ( !marcasFilter &&
+          <Spinner />
+        )}
+        {marcasFilter && brands && brands?.length > 0 ? (
+          <ul className="flex flex-col gap-[15px]">
+            {!allBrands ? brands.filter(option => option.sugerida === true).map((option, index) => 
+        (
+          <li key={index + option.titulo } onClick={()=> {setIsMenu(false); setMarcasFilter(false)}} className="px-2 group w-fit min-w-full">
+          <Link href={`/listing?marcas=${option.titulo}`} scroll={false} >
+          <p className="whitespace-nowrap text-gray-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
+          {option.titulo}
+          </p>
+          </Link>
+          </li>
+        )): brands.map((option, index) => (
+              <li key={index + option.titulo } onClick={()=> {setIsMenu(false); setMarcasFilter(false)}} className="px-2 group w-fit min-w-full">
+              <Link href={`/listing?marcas=${option.titulo}`} scroll={false} >
+              <p className="whitespace-nowrap text-gray-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
+              {option.titulo}
+              </p>
+              </Link>
+              </li>
+            )
+          )}
+          {marcasFilter && !allBrands && (
+            <li className="px-2 group w-fit min-w-full cursor-pointer" onClick={()=> setAllBrands(true)}>
+            <p className="whitespace-nowrap text-gray-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
+            Ver todas...
+            </p>
+            </li>
+          )}
+          </ul>
+        ) : ( marcasFilter &&
           <Spinner />
         )}
       </section>
