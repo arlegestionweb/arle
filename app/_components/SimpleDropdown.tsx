@@ -44,8 +44,6 @@ const SimpleDropdown = ({ options, isOpen, onClose, ignoreRef }: {
   const [newOptions, setNewOptions] = useState<TBrand>([]);
 
   useEffect(()=> {
-    console.log({viewAll})
-    console.log(options)
     if(!viewAll) options && setNewOptions(options.filter(option => option.sugerida === true))
     else options && setNewOptions(options)
   }, [viewAll, options])
@@ -55,12 +53,12 @@ const SimpleDropdown = ({ options, isOpen, onClose, ignoreRef }: {
   if (!isOpen) return null;
 
   return (
-    <ul ref={dropdownRef} className="absolute top-5 translate-y-1 left-0 min-w-full w-fit text-left flex flex-col z-30 bg-white border border-black max-h-[60svh] overflow-y-scroll p-1 gap-0.5 small-scrollbar font-inter text-sm ">
+    <ul ref={dropdownRef} className="absolute top-5 translate-y-1 left-0 min-w-full w-fit text-left flex flex-col z-30 bg-white border border-black max-h-[60svh] overflow-y-scroll px-1 py-2 gap-1 small-scrollbar font-tajawal font-normal text-base ">
       {newOptions && newOptions.map((option, index) => 
         (
-          <li key={index + option.titulo } onClick={onClose} className="hover:bg-gray-200 px-2 w-fit min-w-full">
+          <li key={index + option.titulo } onClick={onClose} className="px-2 group w-fit min-w-full">
           <Link href={`/listing?marcas=${option.titulo}`} scroll={false} >
-          <p className="whitespace-nowrap">
+          <p className="whitespace-nowrap text-gray-800 leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
           {option.titulo}
           </p>
           </Link>

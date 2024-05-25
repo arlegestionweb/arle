@@ -103,8 +103,6 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                   return <ProductItem key={item.variantId} item={item} />;
                 })}
               </ul>
-            </>
-          )}
 
           <section className="flex flex-col items-end gap-2">
             {showDiscountCode && <CodigoDeDescuento />}
@@ -116,21 +114,21 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                 name="items"
                 hidden
                 readOnly
-              />
+                />
               <input
                 readOnly
                 hidden
                 name="reference"
                 value={payment_reference}
                 type="text"
-              />
+                />
               <input
                 readOnly
                 hidden
                 name="subtotal"
                 value={getCartTotalWithoutDiscountsOrTax()}
                 type="number"
-              />
+                />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 Subtotal
               </h5>
@@ -148,7 +146,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                 value={getProductDiscountAmount()}
                 type="number"
                 readOnly
-              />
+                />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 Descuento
               </h5>
@@ -163,7 +161,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                 name="tax"
                 value={getCartTax()}
                 readOnly
-              />
+                />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 IVA
               </h5>
@@ -176,7 +174,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                 name="shipping"
                 readOnly
                 value={0}
-              />
+                />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 Envío
               </h5>
@@ -191,7 +189,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                 type="number"
                 name="total"
                 value={getCartTotal()}
-              />
+                />
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                 Total
               </h5>
@@ -199,7 +197,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
             </label>
             {/* <label className="flex w-full justify-between">
               <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
-                id
+              id
               </h5>
               <span>{id}</span>
             </label> */}
@@ -208,7 +206,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
               labelType={"dark"}
               // onClick={() => formState && formState.data && setIsWompipaymentOpen(true)}
               className="flex justify-center items-center gap-2 w-full max-w-sm button-float"
-            >
+              >
               <MdOutlinePayments className="text-base" />
               <span className="font-inter text-base font-medium leading-6">
                 Ir a pagar
@@ -225,7 +223,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                     <section
                       ref={wompiRef}
                       className="w-full max-w-screen-xs z-[102] pointer-events-auto px-8 pt-4 pb-3 bg-white flex flex-col items-center justify-center gap-4 "
-                    >
+                      >
                       <header className="flex w-full justify-center relative">
                         <h2 className="leading-none text-xl md:text-2xl md:leading-none font-bold font-tajawal text-gray-800">
                           Confirma tus datos
@@ -233,7 +231,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                         <IoMdClose
                           className="text-lg cursor-pointer absolute right-0"
                           onClick={() => setIsWompipaymentOpen(false) }
-                        />
+                          />
                       </header>
                       {formState?.data ? (
                         <div className="w-full flex flex-col gap-3 font-tajawal">
@@ -296,7 +294,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                         amount={getCartTotal()}
                         reference={payment_reference}
                         redirectUrl={`${baseUrl}/success/${payment_reference}/is-payment-successful`}
-                      />
+                        />
                       <footer>
                         <div className="w-[5.5rem]">
                         <ArleBasicLogo />
@@ -308,6 +306,8 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
               )
             )}
           </section>
+              </>
+            )}
         </section>
       </form>
     </>
