@@ -37,6 +37,7 @@ const Menu = ({
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
   const [currentScreen, setCurrentScreen] = useState(0);
   const [thirdScreenItems, setThirdScreenItems] = useState<Item[]>([]);
+  const [marcasFilter, setMarcasFilter] = useState(false);
 
   useEffect(() => {
     if (selectedItems.length <= 1) return;
@@ -75,8 +76,8 @@ const Menu = ({
 
   const goBack = () => {
     setSelectedItems(selectedItems.slice(0, -1)); // Remove the last item
-
     setCurrentScreen((currentScreen) => currentScreen - 1);
+    setMarcasFilter(false);
   };
 
   return (
@@ -126,7 +127,10 @@ const Menu = ({
               setIsMenu={setIsMenu}
               subtitle="Productos"
               setSelectedItems={selectItems}
+              setCurrentScreen={setCurrentScreen}
               selectedItems={selectedItems}
+              marcasFilter={marcasFilter}
+              setMarcasFilter={setMarcasFilter}
               bottomSection={true}
               search={true}
             />
@@ -144,8 +148,11 @@ const Menu = ({
               items={secondScreenItems}
               setIsMenu={setIsMenu}
               subtitle={selectedItems[0]?.name}
+              setCurrentScreen={setCurrentScreen}
               setSelectedItems={selectItems}
               bottomSection={false}
+              marcasFilter={marcasFilter}
+              setMarcasFilter={setMarcasFilter}
               selectedItems={selectedItems}
               search={false}
             />
@@ -163,8 +170,11 @@ const Menu = ({
               items={thirdScreenItems}
               setIsMenu={setIsMenu}
               subtitle={selectedItems[1]?.name}
+              setCurrentScreen={setCurrentScreen}
               setSelectedItems={selectItems}
               bottomSection={false}
+              marcasFilter={marcasFilter}
+              setMarcasFilter={setMarcasFilter}
               selectedItems={selectedItems}
               search={false}
             />
