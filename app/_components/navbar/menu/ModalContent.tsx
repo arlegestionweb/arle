@@ -50,7 +50,7 @@ const ModalContent = ({
       }
       getBrands();
     }
-    else return
+    else setAllBrands(false);
   },[marcasFilter])
 
   const { push } = useRouter();
@@ -65,7 +65,7 @@ const ModalContent = ({
     <section
       className={`w-screen max-w-[400px] h-full flex-col flex relative no-scrollbar transition-all`}
     >
-      <section className="py-[18px] px-6 flex w-full flex-col gap-[12px]  overflow-y-scroll small-scrollbar">
+      <section className="py-[18px] px-6 flex w-full flex-col gap-[12px] small-scrollbar">
         {search && (
           <Suspense>
             <div className="md:hidden pb-4">
