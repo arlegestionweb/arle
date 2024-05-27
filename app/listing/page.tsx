@@ -843,13 +843,11 @@ const Listing = async ({
       {marcasSeleccionadas?.length > 0 && filteredBanners?.length == 0
         ? <></>
         : pageContent.listingContent && (
-            <div className="h-[140px] md:h-[160px] lg:h-[180px] flex justify-center bg-gray-950">
               <Banner
                 bannersByBrand={filteredBanners}
                 banners={pageContent.listingContent}
                 className="h-full max-w-[1600px] w-full"
               />
-            </div>
           )}
       {!coleccionSeleccionada && colecciones && colecciones.length > 0 ? (
         <Colecciones
