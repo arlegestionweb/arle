@@ -170,6 +170,7 @@ const CardLayout = ({
             className=" h-[180px] sm:h-[250px]"
           />
         ) : (
+          <Link href={product.slug} >
           <section className="relative h-[180px] sm:h-[250px]">
             <ImageWrapper
               src={
@@ -183,12 +184,13 @@ const CardLayout = ({
               className="object-contain h-full w-full"
               />
           </section>
+          </Link>
         )}
       </section >
 
       <section className=" flex-1 justify-end font-tajawal flex flex-col gap-1">
         <Link href={product.slug} className="flex flex-col gap-0.5">
-          <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize">
+          <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize group-hover:underline underline-offset-2">
             {product.marca}
           </h2>
           <h3 className="text-md md:text-lg md:leading-none font-medium text-gray-700 leading-none">
