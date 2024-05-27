@@ -109,10 +109,10 @@ const Menu = ({
           )}
           <IoCloseSharp
             className="cursor-pointer w-5 h-5"
-            onClick={() => setIsMenu(false)}
+            onClick={() => {setIsMenu(false); setCurrentScreen(0); setMarcasFilter(false)}}
           />
         </header>
-        <div className={`flex overflow-x-hidden basis-full w-full h-full`}>
+        <div className={`flex overflow-x-hidden basis-full w-full h-full small-scrollbar`}>
           <div
             style={{
               transform: `translateX(-${currentScreen * 100}%)`,
