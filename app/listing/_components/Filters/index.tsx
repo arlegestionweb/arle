@@ -109,6 +109,7 @@ const Filters = ({
     });
   });
   const sortingOptions: TSortingOption[] = [
+    { label: "Aleatorio", value: "aleatorio" , href: createUrl("/listing", makeNewParams("sort", "aleatorio", searchParams)) },
     { label: "Recientes", value: "recientes", href: createUrl("/listing", makeNewParams("sort", "recientes", searchParams)) },
     { label: "Mayor precio", value: "precio_mayor_menor", href: createUrl("/listing", makeNewParams("sort", "precio_mayor_menor", searchParams)) },
     { label: "Menor precio", value: "price_menor_mayor", href: createUrl("/listing", makeNewParams("sort", "price_menor_mayor", searchParams)) },
@@ -130,7 +131,7 @@ const Filters = ({
           </Button>
           <Button className="flex items-center gap-1 relative text-ellipsis whitespace-nowrap" labelType={"lightSmall"} type="button" onClick={toggleSorting} >
             <LuSettings2 className="h-3 w-3" width={14} height={14} />
-            Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recientes"}
+            Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Aleatorio"}
             <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
           </Button>
         </section>
@@ -155,5 +156,5 @@ export default Filters;
 
 
 export type TSortingOption = TDropdownOption & {
-  value: "recientes" | "precio_mayor_menor" | "price_menor_mayor";
+  value: "recientes" | "precio_mayor_menor" | "price_menor_mayor" | "aleatorio";
 }

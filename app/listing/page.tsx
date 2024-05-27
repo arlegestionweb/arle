@@ -21,34 +21,66 @@ const sortingFunctions: Record<
   TSortingOption["value"],
   (a: TProduct, b: TProduct) => number
 > = {
-  recientes: (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  recientes: (a, b) => {
+    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
+    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
+
+    if (aIsOutOfStock && !bIsOutOfStock) return 1;
+    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  },
   precio_mayor_menor: (a, b) => {
+    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
+    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
+
+    if (aIsOutOfStock && !bIsOutOfStock) return 1;
+    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+
     const highestPriceA = Math.max(
-      ...a.variantes.map((variant) =>
+      ...a.variantes.map(variant =>
         colombianPriceStringToNumber(variant.precio)
       )
     );
     const highestPriceB = Math.max(
-      ...b.variantes.map((variant) =>
+      ...b.variantes.map(variant =>
         colombianPriceStringToNumber(variant.precio)
       )
     );
+
     return highestPriceB - highestPriceA;
   },
   price_menor_mayor: (a, b) => {
+    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
+    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
+
+    if (aIsOutOfStock && !bIsOutOfStock) return 1;
+    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+
     const lowestPriceA = Math.min(
-      ...a.variantes.map((variant) =>
+      ...a.variantes.map(variant =>
         colombianPriceStringToNumber(variant.precio)
       )
     );
     const lowestPriceB = Math.min(
-      ...b.variantes.map((variant) =>
+      ...b.variantes.map(variant =>
         colombianPriceStringToNumber(variant.precio)
       )
     );
+
     return lowestPriceA - lowestPriceB;
   },
+  aleatorio: (a, b) => {
+    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
+    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
+
+    if (aIsOutOfStock && !bIsOutOfStock) return 1;
+    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+
+    return Math.random() - 0.5; // Random sort
+  },
 };
+
 export const metadata: Metadata = {
   title: "ARLÉ | Productos",
 };
@@ -65,7 +97,7 @@ const Listing = async ({
 
   // GENERAL PARAMS
 
-  const sortSeleccionado = (searchParams.sort as string) || "recientes";
+  const sortSeleccionado = (searchParams.sort as string) || "aleatorio";
 
   if (!(sortSeleccionado in sortingFunctions)) {
     throw new Error(`Invalid sort option: ${sortSeleccionado}`);
