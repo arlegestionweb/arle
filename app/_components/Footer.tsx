@@ -120,7 +120,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
               </ul>
             </section>
           )}
-          {settings.legal && (
+          {/* {settings.legal && (
             <section>
               <h2 className="pb-4 text-arle-beige text-2xl lux-title cursor-default">
                 Legal
@@ -136,7 +136,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
                 })}
               </ul>
             </section>
-          )}
+          )} */}
         </section>
         <section className="border-b-[1px] pb-3 border-white text-white flex justify-center md:justify-end space-x-5">
           {settings.linksSociales &&
