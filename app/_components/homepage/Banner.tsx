@@ -56,7 +56,7 @@ const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
       {bannersByBrand && bannersByBrand.length > 0
         ? bannersByBrand.map((brand, index) =>
             brand.banners?.map((banner, index) => (
-              <div className="h-[140px] md:h-[160px] lg:h-[180px] flex justify-center bg-gray-950">
+              <div className="h-[140px] md:h-[160px] lg:h-[180px] flex justify-center bg-gray-950" key={index + banner?.imagen?.url}>
                 <section
                   className={cn("w-screen overflow-hidden relative", className)}
                 >
@@ -65,7 +65,7 @@ const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
                     onScroll={handleScroll}
                     ref={bannerRef}
                   >
-                    <React.Fragment key={index + banner?.imagen?.url}>
+                    <React.Fragment >
                       <GradientImage
                         src={banner.imagen.url}
                         alt={banner.imagen.alt || ""}
@@ -89,7 +89,7 @@ const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
           selectedBanners.map(
             (banner, index) =>
               banner.imagen && (
-                <div className="h-[140px] md:h-[160px] lg:h-[180px] flex justify-center bg-gray-950">
+                <div className="h-[140px] md:h-[160px] lg:h-[180px] flex justify-center bg-gray-950" key={index + banner?.imagen?.url}>
                   <section
                     className={cn(
                       "w-screen overflow-hidden relative",
@@ -101,7 +101,7 @@ const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
                       onScroll={handleScroll}
                       ref={bannerRef}
                     >
-                      <React.Fragment key={index + banner?.imagen?.url}>
+                      <React.Fragment >
                         <GradientImage
                           src={banner.imagen.url}
                           alt={banner.imagen.alt || ""}
