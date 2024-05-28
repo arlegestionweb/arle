@@ -30,25 +30,26 @@ const Productos = ({ productos }: { productos: TProduct[] }) => {
           </li>
         ))}
       </ul>
-      <PaginationFooter totalPages={totalPages} />
+      <PaginationFooter totalPages={totalPages} currentPage={currentPage} />
     </>
   );
 };
 
 export default Productos;
 
-const PaginationFooter = ({ totalPages }: {
+const PaginationFooter = ({ totalPages, currentPage }: {
   totalPages: number;
+  currentPage: number;
 }) => {
   const searchParams = useSearchParams()
 
   const pagesArray = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <section>
+    <section className='flex gap-2 w-full justify-center py-5'>
       {pagesArray.map((page, index) => (
-        <Link key={page} href={createUrl("/listing", makeNewParams("currentPage", `${page}`, searchParams))} className="mr-1">
-          {`${page} ${index !== pagesArray.length - 1 ? '-' : ''}`}
+        <Link key={page + index} href={createUrl("/listing", makeNewParams("currentPage", `${page}`, searchParams))} className={`border border-black w-10 h-10 flex items-center justify-center ${page === currentPage ? "border-arle-beige" : ""}`}>
+          {`${page}`}
         </Link>
       ))}
     </section>
