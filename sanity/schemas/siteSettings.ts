@@ -80,6 +80,7 @@ export const siteSettings = defineType({
           title: "Términos y condiciones",
           type: "array",
           of: [{type: "block"}],
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "politicasPrivacidad",
