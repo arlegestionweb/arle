@@ -120,9 +120,9 @@ const Filters = ({
 
 
   const prodsPerPageOptions = [
-    10,
-    20,
-    30
+    12,
+    24,
+    36
   ]
 
   const handleProdsPerPageChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -153,7 +153,7 @@ const Filters = ({
           </Button>
         </section>
         <BreadCrumbs breadCrumbs={breadCrumbs} />
-        <label htmlFor="">
+        {/* <label htmlFor="">
           Productos por página:
         </label>
         <select onChange={(e) => handleProdsPerPageChanged(e)}>
@@ -162,7 +162,7 @@ const Filters = ({
               {option}
             </option>
           ))}
-        </select>
+        </select> */}
       </section>
       <FilterMenu
         areFiltersActive={areFiltersActive}
