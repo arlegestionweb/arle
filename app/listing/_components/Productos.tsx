@@ -78,15 +78,15 @@ const PaginationFooter = ({ totalPages, currentPage }: {
 
   return (
     <section className='flex gap-2 w-full justify-center py-5'>
-        <Link href={createUrl("/listing", makeNewParams("currentPage", `${currentPage - 1}`, searchParams))} className={`border border-black w-10 h-10 flex items-center justify-center ${currentPage === 1 && "pointer-events-none border-gray-300 text-gray-300"} `}>
+        <Link href={createUrl("/listing", makeNewParams("currentPage", `${currentPage - 1}`, searchParams))} className={`border border-black w-7 h-7 text-sm sm:text-base sm:w-10 sm:h-10 flex items-center justify-center ${currentPage === 1 && "pointer-events-none border-gray-300 text-gray-300"} `}>
         <IoIosArrowBack className="text-base" />
         </Link>
       {visiblePages.map((page, index) => (
-        <Link key={index} href={createUrl("/listing", makeNewParams("currentPage", `${page}`, searchParams))} className={`border border-black w-10 h-10 flex items-center justify-center hover:underline underline-offset-2 hover:text-gray-600 ${page === currentPage ? "bg-black text-white pointer-events-none" : "text-black bg-white"} ${page === "..." && "pointer-events-none border-gray-500 text-gray-500"}`}>
+        <Link key={index} href={createUrl("/listing", makeNewParams("currentPage", `${page}`, searchParams))} className={`border border-black w-7 h-7 text-sm sm:text-base sm:w-10 sm:h-10 flex items-center justify-center hover:underline underline-offset-2 hover:text-gray-600 ${page === currentPage ? "bg-black text-white pointer-events-none" : "text-black bg-white"} ${page === "..." && "pointer-events-none border-gray-500 text-gray-500"}`}>
           {`${page}`}
         </Link>
       ))}
-        <Link href={createUrl("/listing", makeNewParams("currentPage", `${currentPage + 1}`, searchParams))} className={`border border-black w-10 h-10 flex items-center justify-center ${currentPage === totalPages && "pointer-events-none border-gray-300 text-gray-300"} `}>
+        <Link href={createUrl("/listing", makeNewParams("currentPage", `${currentPage + 1}`, searchParams))} className={`border border-black w-7 h-7 text-sm sm:text-base sm:w-10 sm:h-10 flex items-center justify-center ${currentPage === totalPages && "pointer-events-none border-gray-300 text-gray-300"} `}>
         <IoIosArrowForward className="text-base"/>
         </Link>
     </section>
