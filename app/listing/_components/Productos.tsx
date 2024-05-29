@@ -20,21 +20,6 @@ const Productos = ({ productos }: { productos: TProduct[] }) => {
   
   const totalPages = Math.ceil(productos.length / prodsPerPage);
 
-  console.log({prodsToRender, startingPagination, endingPagination})
-
-const Productos = ({ productos }: { productos: TProduct[] }) => {
-  const searchParams = useSearchParams()
-  const currentPage = Number(searchParams.get('currentPage')) || 1;
-
-  const prodsPerPage = 10;
-  
-  const startingPagination = (currentPage - 1) * prodsPerPage;
-  const endingPagination = currentPage * prodsPerPage;
-  
-  const prodsToRender = productos.slice(startingPagination, endingPagination)
-  
-  const totalPages = Math.ceil(productos.length / prodsPerPage);
-
   return (
     <>
       <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(auto-fill,minmax(128px,288px))] place-content-center gap-y-6 gap-x-4 ">
