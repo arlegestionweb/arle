@@ -114,7 +114,7 @@ const Listing = async ({
       ? searchParams.marcas
       : (searchParams.marcas as string)
           .split("&")
-          .map((marca) => marca.trim())
+          .map((marca) => marca.trim().replace(" AND "," & "))
           .filter((marca) => marca !== "")
     : [];
 

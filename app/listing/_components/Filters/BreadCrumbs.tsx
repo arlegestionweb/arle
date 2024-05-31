@@ -23,7 +23,7 @@ const BreadCrumbs = ({ breadCrumbs }: BreadCrumbsProps) => {
         {breadCrumbs.map((crumb, index) => (
           <li key={crumb.param} className="flex items-center gap-1 capitalize">
             <Link href={`/listing${crumb.href}`} scroll={false} className="whitespace-nowrap font-inter font-light text-gray-700 text-sm hover:underline underline-offset-2">
-              {crumb.label.toLowerCase()} {index < breadCrumbs.length - 1 ? ' >' : ''}
+              {crumb.label.replace(" AND "," & ").toLowerCase()} {index < breadCrumbs.length - 1 ? ' >' : ''}
             </Link>
           </li>
         ))}
