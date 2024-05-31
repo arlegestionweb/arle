@@ -29,11 +29,11 @@ const Page = async ({searchParams}: {
   // Filter the jobs by areaLaboral and sede if they exist
 
   if (areaLaboralParam) {
-    filteredJobs = filteredJobs.filter((job) => job.areaLaboral === areaLaboralParam);
+    filteredJobs = filteredJobs.filter((job) => job && job.areaLaboral === areaLaboralParam);
   }
 
   if (sedeParam) {
-    filteredJobs = filteredJobs.filter((job) => job.sede.nombre === sedeParam);
+    filteredJobs = filteredJobs.filter((job) => job && job.sede.nombre === sedeParam);
   }
 
 
@@ -47,14 +47,14 @@ const Page = async ({searchParams}: {
       index === self.findIndex((t) => t.label === option.label && t.value === option.value)
     );
 
-  const sedes: TDropdownOption[] = jobs
-    .map((job) => ({
+  const sedes: TDropdownOption[] = jobs && jobs
+    .map((job) => (job && {
       label: job.sede.nombre,
       value: job.sede.nombre,
       href: "/trabaja-con-nosotros?sede=" + job.sede.nombre || "",
     }))
     .filter((option, index, self) =>
-      index === self.findIndex((t) => t.label === option.label && t.value === option.value)
+      index === self.findIndex((t) => t?.label === option?.label && t?.value === option?.value)
     );
 
   return (
@@ -74,6 +74,7 @@ const Page = async ({searchParams}: {
           <WorkWithUsFilters areasLaborales={areasLaborales} sedes={sedes} />
         </section>
       </section>
+      {filteredJobs.length > 0 ? (
       <ul className="py-6 px-8 sm:px-14 gap-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 ">
         {filteredJobs?.map((item, i) => (
           <li
@@ -87,13 +88,18 @@ const Page = async ({searchParams}: {
             <p className="font-tajawal font-light text-md  leading-none text-gray-600">{`Sede: ${item?.sede?.nombre} - ${item?.sede?.ciudad}`}</p>
             <Link
               className="dark-button"
-              href={`/trabaja-con-nosotros/${toKebabCase(item?.titulo)}`}
+              href={`/trabaja-con-nosotros/${toKebabCase(item?.titulo || "")}`}
             >
               Ver más
             </Link>
           </li>
         ))}
       </ul>
+      ):(
+        <p className="font-tajawat font-light text-md default-paddings py-10">
+          Lo sentimos. En este momento no tenemos ofertas, pronto estaremos publicando nuevas vacantes.
+        </p>
+      )}
     </Main>
   );
 };

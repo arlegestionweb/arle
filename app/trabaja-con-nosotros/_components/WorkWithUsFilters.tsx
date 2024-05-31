@@ -28,7 +28,7 @@ const WorkWithUsFilters = ({ areasLaborales, sedes }: {
   const areasLaboralesWithLinkWithSearchparams = areasLaborales.map(areaLaboral => ({
     ...areaLaboral,
     // href: createUrl("/trabaja-con-nosotros", makeNewParams(searchParams, { areaLaboral: areaLaboral.value }))
-    href: createUrl("/trabaja-con-nosotros", makeNewParams("areaLaboral", areaLaboral.value, searchParams))
+    href: areaLaboral?.value && createUrl("/trabaja-con-nosotros", makeNewParams("areaLaboral", areaLaboral.value, searchParams))
   }));
 
 
@@ -43,7 +43,7 @@ const WorkWithUsFilters = ({ areasLaborales, sedes }: {
   const sedesWithLinkWithSearchparams = sedes.map(sede => ({
     ...sede,
     // href: createUrl("/trabaja-con-nosotros", makeNewParams(searchParams, { sede: sede.value }))
-    href: createUrl("/trabaja-con-nosotros", makeNewParams("sede", sede.value, searchParams))
+    href: sede?.value && createUrl("/trabaja-con-nosotros", makeNewParams("sede", sede.value, searchParams))
   }));
   // adds "todas option to sedes"
   sedesWithLinkWithSearchparams.push({
@@ -66,7 +66,7 @@ const WorkWithUsFilters = ({ areasLaborales, sedes }: {
         onClick={toggleAreasLaborales}
       >
         <LuSettings2 className="h-3 w-3" width={14} height={14} />
-        Areas Laborales: {areasLaborales.find(option => option.value === searchParams.get("areaLaboral"))?.label || "Todas"}
+        Areas Laborales: {areasLaborales.find(option => option?.value === searchParams.get("areaLaboral"))?.label || "Todas"}
         <Dropdown
           options={areasLaboralesWithLinkWithSearchparams}
           isOpen={isAreasLaboralesOpen}
@@ -82,7 +82,7 @@ const WorkWithUsFilters = ({ areasLaborales, sedes }: {
         onClick={toggleSedes}
       >
         <IoLocationOutline className="text-lg sm:text-xl" />
-        Sedes: {sedes?.find(option => option.value === searchParams.get("sede"))?.label || "Todas"}
+        Sedes: {sedes?.find(option => option?.value === searchParams.get("sede"))?.label || "Todas"}
         <Dropdown
           options={sedesWithLinkWithSearchparams}
           isOpen={isSedesOpen}

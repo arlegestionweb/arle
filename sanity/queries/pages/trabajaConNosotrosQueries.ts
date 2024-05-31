@@ -85,16 +85,16 @@ const jobSchema = z.object({
   experience: z.string(),
   salary: z.string(),
   skills: z.array(z.string()),
-});
+}).optional().nullable();
 
 const jobByTitleSchema = z.object({
-  jobs: z.array(jobSchema),
+  jobs: z.array(jobSchema).optional().nullable(),
 })
 
 const trabajaConNosotrosSchema = z.object({
   email: z.string(),
   descripcion: z.string(),
-  jobs: z.array(jobSchema),
+  jobs: z.array(jobSchema).optional().nullable(),
   titulo: z.string(),
   imagen: imagenSchema,
 });
@@ -125,7 +125,7 @@ export const getJobByTitle = async (title: string) => {
       throw new Error(validatedData.error.message);
     }
 
-    const job = validatedData.data.jobs.find(j => toKebabCase(j.titulo) === title)
+    const job = validatedData.data.jobs?.find(j => j && toKebabCase(j.titulo) === title)
     
     return job;
   } catch (error) {
