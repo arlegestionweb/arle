@@ -35,7 +35,6 @@ export const trabajaConNosotrosSchema = defineType({
     name: "jobs",
     title: "Empleos",
     type: "array",
-    validation: (Rule) => Rule.required(),
     of: [
       defineArrayMember({
         name: "job",
