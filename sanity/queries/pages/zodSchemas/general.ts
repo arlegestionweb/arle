@@ -29,7 +29,7 @@ const contenidoBase = z.object({
 })
 
 const contenidowithSanityImage = contenidoBase.merge(z.object({
-  subirImagen: z.literal(false).optional().nullable(),
+  subirImagen: z.boolean().optional().nullable(),
   imagen: z
     .object({
       url: z.string().optional().nullable(),
@@ -40,7 +40,7 @@ const contenidowithSanityImage = contenidoBase.merge(z.object({
 }))
 
 const contenidoWithExternalImage = contenidoBase.merge(z.object({
-  subirImagen: z.literal(true),
+  subirImagen: z.boolean(),
   imagenExterna: z
     .object({
       url: z.string().optional().nullable(),
