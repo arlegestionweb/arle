@@ -87,7 +87,7 @@ const ModalContent = ({
                   if (currentScreen === 2) {
                     setIsMenu(false);
                     push(
-                      `/listing?type=${productType}&genero=${gender}&marcas=${item.name}`,
+                      `/listing?type=${productType}&genero=${gender}&marcas=${item.name.replace("&","AND")}`,
                       { scroll: false }
                     );
                   } else {
@@ -133,7 +133,7 @@ const ModalContent = ({
             {!allBrands ? brands.filter(option => option.sugerida === true).map((option, index) => 
         (
           <li key={index + option.titulo } onClick={()=> {setIsMenu(false); setMarcasFilter(false)}} className="px-2 group w-fit min-w-full">
-          <Link href={`/listing?marcas=${option.titulo}`} scroll={false} >
+          <Link href={`/listing?marcas=${option.titulo.replace("&","AND")}`} scroll={false} >
           <p className="whitespace-nowrap text-gray-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
           {option.titulo}
           </p>
@@ -141,7 +141,7 @@ const ModalContent = ({
           </li>
         )): brands.map((option, index) => (
               <li key={index + option.titulo } onClick={()=> {setIsMenu(false); setMarcasFilter(false)}} className="px-2 group w-fit min-w-full">
-              <Link href={`/listing?marcas=${option.titulo}`} scroll={false} >
+              <Link href={`/listing?marcas=${option.titulo.replace("&","AND")}`} scroll={false} >
               <p className="whitespace-nowrap text-gray-800 text-base font-normal font-tajawal leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
               {option.titulo}
               </p>
@@ -165,7 +165,7 @@ const ModalContent = ({
         <section className="pb-6 px-6 w-full basis-full flex flex-col gap-4">
           {marca && (
             <Link
-              href={`/listing?marcas=${marca}`}
+              href={`/listing?marcas=${marca.replace("&","AND")}`}
               className="w-full flex justify-center border-black border py-1 button-float"
               onClick={() => setIsMenu(false)}
             >

@@ -47,24 +47,23 @@ const FilterMenu = ({
     const newParams = new URLSearchParams(searchParams.toString());
 
     const checkboxValues: string[] = [];
+
     val.querySelectorAll("input").forEach((input) => {
       if (input.type === "checkbox" && input.checked) {
-        if (newParams.has(input.name)) {
-          checkboxValues.push(input.value);
-          newParams.set(input.name, checkboxValues.join("& "));
-        } else {
+        // Reemplaza '&' con 'AND' en el valor del input
+        const inputValue = input.value.replace(/&/g, "AND");
+        
+        // Agrega el valor al conjunto de parámetros sin sobrescribir los existentes
+        newParams.append(input.name, inputValue);
+      } else if (input.type === "radio" && input.checked) {
+        if (!(input.name === "type" && input.value === "todos")) {
           newParams.set(input.name, input.value);
         }
-      }
-      if (input.type === "radio" && input.checked) {
-        newParams.set(input.name, input.value);
-      }
-
-      if (
+      } else if (
         (input.name === "minPrice" || input.name === "maxPrice") &&
         input.value !== ""
       ) {
-        newParams.set(input.name, input.value);
+        newParams.set(input.name, input.value.replace(/&/g, "AND"));
       }
     });
 
@@ -86,11 +85,11 @@ const FilterMenu = ({
   return (
     <div
       className={`${isFilterOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        } fixed z-[78] top-0 left-0 transition-all duration-500 w-screen h-full bg-black bg-opacity-50 backdrop-blur-md`}
+        } fixed z-[300] top-0 left-0 transition-all duration-500 w-screen h-full bg-black bg-opacity-50 backdrop-blur-md`}
     >
       <aside
         className={`${isFilterOpen ? "left-0" : "-left-[400px]"
-          } w-screen fixed top-0 z-[80] mt-[50px] md:mt-[53px] bottom-0 max-h-[calc(100%-53px)] max-w-[400px] flex flex-col bg-white transition-all duration-300 ease-out overflow-hidden`}
+          } w-screen fixed top-0 z-[301] mt-[50px] md:mt-[53px] bottom-0 max-h-[calc(100%-53px)] max-w-[400px] flex flex-col bg-white transition-all duration-300 ease-out overflow-hidden`}
       >
         <header className="flex justify-between items-center px-6 min-h-[60px] border-b border-gray-300">
           <h1 className=" capitalize text-arle-blue text-base font-semibold font-inter cursor-default">

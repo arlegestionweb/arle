@@ -57,7 +57,7 @@ const SimpleDropdown = ({ options, isOpen, onClose, ignoreRef }: {
       {newOptions && newOptions.map((option, index) => 
         (
           <li key={index + option.titulo } onClick={onClose} className="px-2 group w-fit min-w-full">
-          <Link href={`/listing?marcas=${option.titulo}`} scroll={false} >
+          <Link href={`/listing?marcas=${option.titulo.replace("&","AND")}`} scroll={false} >
           <p className="whitespace-nowrap text-gray-800 leading-tight underline-offset-2 group-hover:underline group-hover:text-gray-600">
           {option.titulo}
           </p>

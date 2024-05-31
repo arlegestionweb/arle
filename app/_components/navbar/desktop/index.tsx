@@ -61,7 +61,7 @@ const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
           </section>
         </section>
       </section>
-      <section className="relative z-30">
+      <section className="relative z-[1]">
         <Suspense>
           <SubMenuDesktop marca={marca} />
         </Suspense>
