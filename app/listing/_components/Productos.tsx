@@ -44,36 +44,41 @@ const PaginationFooter = ({ totalPages, currentPage }: {
 
   const getVisiblePages = (totalPages: number, currentPage: number) => {
     const visiblePages = [];
-
+  
     // Always show the first page
     visiblePages.push(1);
-
+  
+    // If the total number of pages is 1, return immediately
+    if (totalPages === 1) {
+      return visiblePages;
+    }
+  
     // If the current page is 4 or more, add '...' after the first page
     if (currentPage > 3) {
       visiblePages.push('...');
     }
-
+  
     // Determine the range of pages to show around the current page
     const startPage = Math.max(2, currentPage - 1);
     const endPage = Math.min(totalPages - 1, currentPage + 2);
-
+  
     for (let i = startPage; i <= endPage; i++) {
       visiblePages.push(i);
     }
-
+  
     // If there are more pages after the endPage, show '...'
     if (endPage < totalPages - 1) {
       visiblePages.push('...');
     }
-
+  
     // Always show the last page if it's not already included
     if (endPage !== totalPages) {
       visiblePages.push(totalPages);
     }
-
+  
     return visiblePages;
   };
-
+  
   const visiblePages = getVisiblePages(totalPages, currentPage);
 
   return (

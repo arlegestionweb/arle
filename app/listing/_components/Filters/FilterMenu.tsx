@@ -44,7 +44,7 @@ const FilterMenu = ({
     e.preventDefault();
     const val = e.target as HTMLFormElement;
 
-    const newParams = new URLSearchParams(searchParams.toString());
+    const newParams = new URLSearchParams();
 
     const checkboxValues: string[] = [];
 
