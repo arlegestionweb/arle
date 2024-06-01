@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 type GradientImageProps = {
@@ -12,6 +13,7 @@ type GradientImageProps = {
   gradientOff?: boolean;
   specialOpacity?: number;
   quality?: number;
+  nextImage?: boolean;
 };
 
 function GradientImage({
@@ -26,9 +28,11 @@ function GradientImage({
   gradientOff,
   specialOpacity,
   quality,
+  nextImage,
 }: GradientImageProps) {
   return (
     <div className={`relative h-full w-full ${containerclassName}`}>
+      {!nextImage ? (
       <picture className={`object-cover absolute h-full w-full ${imageClassName}`}>
         <source
           sizes={`(max-width: 608px) ${width ? `${width}px` : `85vw`}, 608px`}
@@ -45,11 +49,18 @@ function GradientImage({
           alt={alt || ""}
           width={width || 800}
           height={height || 400}
-          loading="lazy"
           decoding="async"
           className={`object-cover absolute h-full w-full ${imageClassName}`}
         />
       </picture>
+      ):(
+        <Image src={`${src}?fit=max&q=${quality || 85}&fm=webp`}
+            alt={alt || ""}
+            width={width || 800}
+            height={height || 400}
+            quality={quality || 85}
+            className={`object-cover absolute h-full w-full ${imageClassName}`}/>
+      )}
       {/* Gradient */}
       {!gradientOff && (
         <div className={`w-full h-full left-0 bottom-0 absolute bg-gradient-to-t from-black to-transparent opacity-70`} />

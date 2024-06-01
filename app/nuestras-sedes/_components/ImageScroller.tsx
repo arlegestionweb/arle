@@ -62,7 +62,7 @@ const ImageScroller = ({ images }: Props) => {
       { images.map((item, i) => (
         <section 
         key={i + item.url}
-        className={`w-[60vw] xs:w-[50vw] sm:w-[40vw] md:w-[30vw] lg:w-[20vw] aspect-square flex`}>
+        className={`w-[60vw] xs:w-[50vw] sm:w-[40vw] md:w-[30vw] lg:w-[20vw] aspect-square flex relative`}>
         <ImageWrapper
           onClick={() =>{
             carouselRef?.current?.scrollTo({ left: i * imageWidth + (imageWidth/2) + 2.3 ,
@@ -72,7 +72,7 @@ const ImageScroller = ({ images }: Props) => {
                 setImageOpen(true);
               }
           }}
-            className={`h-full snap-center object-cover scale-75 transition-all w-full ${
+            className={`snap-center object-cover scale-75 transition-all w-full h-full ${
               selectedImage === i ? "scale-95 cursor-zoom-in" : "cursor-pointer"
             }`}
             width={500}
