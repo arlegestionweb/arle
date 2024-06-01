@@ -71,7 +71,8 @@ const GalleryProduct = ({
           src={image.url}
           width={800}
           height={800}
-          className="object-contain object-center h-full w-full"
+          quality={90}
+          imageClassname="object-contain object-center h-full w-full"
         />
       </div>
       <div className=" no-scrollbar flex max-w-[430px] justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">

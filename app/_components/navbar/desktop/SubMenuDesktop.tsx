@@ -72,7 +72,7 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
               Marcas
               <IoIosArrowDown className="h-4 w-4" width={14} height={14} />
           </Button>
-              <SimpleDropdown options={brands} isOpen={brandsFilter} onClose={() => setBrandsFilter(false)} />
+          <SimpleDropdown options={brands} isOpen={brandsFilter} onClose={() => setBrandsFilter(false)} />
         </section>
       </section>
     </section>
