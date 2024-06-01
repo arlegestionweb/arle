@@ -20,7 +20,7 @@ const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
   const { isCartOpen, toggleCart, items } = useCartStore();
 
   return (
-    <nav className={className}>
+    <nav className={className + ""}>
       <section
         className={`w-full flex fixed z-50 top-0 h-[53px] px-8 justify-center bg-background border-b border-zinc-200`}
       >
@@ -61,7 +61,7 @@ const DesktopNavBar = ({ className, marca }: NavDesktopProps) => {
           </section>
         </section>
       </section>
-      <section className="relative z-[1]">
+      <section className="relative z-[11]">
         <Suspense>
           <SubMenuDesktop marca={marca} />
         </Suspense>
