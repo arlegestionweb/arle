@@ -59,7 +59,6 @@ const Banner = ({ content, className }: BannerProps) => {
                 height={1000}
                 quality={90}
                 imageClassName="object-center"
-                nextImage
                 containerclassName={`snap-center snap-always ${
                   index === 1 && "snap-mandatory"
                 } min-w-full px-2 pt-2 flex-col justify-end items-center gap-2.5 inline-flex`}>
