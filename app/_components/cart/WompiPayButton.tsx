@@ -11,9 +11,10 @@ const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "
   redirectUrl: string;
   currency?: string;
 }) => {
+  const amountInCents = amount * 100
   const publicKey = process.env.NEXT_PUBLIC_WOMPI;
 
-  const concatenatedIntegrity = `${reference}${amount}${currency}${process.env.NEXT_PUBLIC_WOMPI_INTEGRITY}`
+  const concatenatedIntegrity = `${reference}${amountInCents}${currency}${process.env.NEXT_PUBLIC_WOMPI_INTEGRITY}`
 
 
   const [hashIntegrity, setHashIntegrity] = useState<string | undefined>();
@@ -35,7 +36,7 @@ const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "
     <form className="w-full max-w-sm" action={"https://checkout.wompi.co/p/"} method="Get">
       <input type="hidden" name="public-key" value={publicKey} />
       <input type="hidden" name="currency" value={currency} />
-      <input type="hidden" name="amount-in-cents" value={amount * 100} />
+      <input type="hidden" name="amount-in-cents" value={amountInCents} />
       <input type="hidden" name="reference" value={reference} />
       <input type="hidden" name="redirect-url" value={redirectUrl} />
       <input type="hidden" name="signature:integrity" value={hashIntegrity} />
