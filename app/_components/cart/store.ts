@@ -262,10 +262,10 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     if(items.length === 0){
       return 0;
     }
-    if (total >= 250000) {
-      return 0;
-    }
-    return 15000;
+    // if (total >= 250000) {
+    //   return 0;
+    // }
+    return 0;
   },
   getCartTotal: () => {
     const total = get().getCartTotalBeforeShipping();
