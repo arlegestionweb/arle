@@ -214,7 +214,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
             </Button>
             {formState && formState.error ? (
               <p className="text-red-500 text-sm">
-                {JSON.parse(formState.error)[0].message}
+                {formState.error}
               </p>
             ) : (
               isWompipaymentOpen && (
