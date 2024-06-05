@@ -10,7 +10,7 @@ import { getProductById } from "@/sanity/queries/pages/productPage";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const ADMIN_EMAIL = "arleweb8@gmail.com";
+const ADMIN_EMAIL = "arle.gestionweb@gmail.com";
 
 export const successAction = async (_: unknown, formData: FormData) => {
   const order = JSON.parse(
