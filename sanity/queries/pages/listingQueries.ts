@@ -6,7 +6,7 @@ import { productQuery, timedDiscountQuery } from "./productPage";
 import { gafasLujoSchema, gafasPremiumSchema } from "./zodSchemas/gafas";
 import { perfumeLujoSchema, perfumePremiumSchema } from "./zodSchemas/perfume";
 import { relojLujoSchema, relojPremiumSchema } from "./zodSchemas/reloj";
-import { zodColorSchema, zodTimedDiscountsSchema } from "./zodSchemas/general";
+import { imageSchema, zodColorSchema, zodTimedDiscountsSchema } from "./zodSchemas/general";
 import { zodHomeSectionSchema } from "./homepageQuery";
 
 const listingMainString = ` 
@@ -75,10 +75,11 @@ const listingMainString = `
   "colecciones": *[_type == "colecciones"] {
     titulo,
     descripcion,
+    "date": _updatedAt,
     ${imageQuery},
     "productos": productos[]->{
       "marca": marca->titulo,
-      "date": createdAt, 
+      "date": _updatedAt, 
       _type,
       _type == "perfumeLujo" =>
         ${productQuery.perfumeLujo}
@@ -153,7 +154,12 @@ const zodRelojListingQuery = z.discriminatedUnion("_type", [
   relojLujoSchema,
 ]);
 
-export const zodCollectionsWithoutProducts = z.array(zodHomeSectionSchema);
+export const zodCollectionsWithoutProducts = z.array(z.object({
+  titulo: z.string(),
+  descripcion: z.string(),
+  imagen: imageSchema,
+  date: z.string(),
+}));
 
 export const zodProduct = z.union([
   zodPerfumeListingQuery,
@@ -175,6 +181,7 @@ const zodCollectiones = z.array(
   z.object({
     titulo: z.string(),
     descripcion: z.string().optional().nullable(),
+    date: z.string(),
     imagen: z.object({
       url: z.string(),
       alt: z.string().optional().nullable(),
