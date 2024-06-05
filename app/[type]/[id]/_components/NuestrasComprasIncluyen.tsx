@@ -31,13 +31,13 @@ const NuestrasComprasIncluyen = ({
         ) : (
           <ItemComprasIncluyen
             title={`Originalidad`}
-            description="Garantizamos Productos 100% Originales"
+            description="Garantizamos productos originales"
             icon={<PiCertificateBold className=" w-5 h-5" />}
           />
         )}
         <ItemComprasIncluyen
           title="Envío gratis"
-          description="Por compras mayores a $250.000."
+          description="Para todos nuestros productos"
           icon={<MdOutlineLocalShipping className=" w-5 h-5" />}
         />
         <ItemComprasIncluyen
