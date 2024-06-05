@@ -83,7 +83,7 @@ export const getBrandsByProductTypeAndGender = async (
       console.error(parsedProcessedResult.error);
       return [];
     }
-    const filteredResult = parsedProcessedResult.data.filter(item => item.genero === gender || "unisex");
+    const filteredResult = parsedProcessedResult.data.filter(item => item.genero === gender);
 
     return filteredResult.map(item => item.marca);
   } catch (error) {

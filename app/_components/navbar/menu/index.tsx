@@ -45,16 +45,17 @@ const Menu = ({
     const [productType, gender] = selectedItems.map((item) => item.name);
 
     const fetchBrands = async () => {
+      console.log(productType, gender)
       const brands = await getBrandsByProductTypeAndGender(
         productType as TProductType,
         gender as TGender
       );
       const uniqueBrandsSet = new Set(brands);
 
-  // Convert the Set back to an array of objects with name property
-  const uniqueBrands = Array.from(uniqueBrandsSet).map(brand => ({ name: brand }));
+      // Convert the Set back to an array of objects with name property
+      const uniqueBrands = Array.from(uniqueBrandsSet).map(brand => ({ name: brand }));
 
-  setThirdScreenItems(uniqueBrands || [])
+      setThirdScreenItems(uniqueBrands.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())) || [])
     };
     fetchBrands();
   }, [selectedItems]);
