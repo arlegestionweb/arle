@@ -883,7 +883,11 @@ const Listing = async ({
           )}
       {!coleccionSeleccionada && colecciones && colecciones.length > 0 ? (
         <Colecciones
-          colecciones={parsedCollections.success ? parsedCollections.data : []}
+          colecciones={parsedCollections.success ? parsedCollections.data.sort((a, b): number => {
+            const dateA: number = new Date(a.date).getTime();
+            const dateB: number = new Date(b.date).getTime();
+            return dateB - dateA;
+          }) : []}
         />
       ) : parsedCollections.success && parsedCollections.data.length > 0 ? (
         <h2 className="text-2xl md:text-3xl w-full pt-3 font-jomolhari font-normal text-center capitalize">
