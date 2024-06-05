@@ -19,22 +19,22 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
           >
             <Link href={`/listing?coleccion=${coleccion.titulo}`} className="group" >
               {coleccion.imagen && (
-                <div className="relative w-[120px] h-[120px] flex items-center justify-center overflow-hidden">
+                <div className="relative w-[120px] h-[120px] flex items-center justify-center overflow-hidden ">
                   <ImageWrapper height={120}
                     width={120} className="absolute z-10 w-full h-full" src="ArleCircle.svg" alt="circulo Arle"/>
-                    <div className="w-[110px] h-[110px] overflow-hidden rounded-full absolute justify-center items-center flex z-0">
+                    <div className="w-[110px] h-[110px] overflow-hidden rounded-full absolute bg-white justify-center items-center flex z-0">
                   <ImageWrapper
                     src={coleccion.imagen.url}
                     alt={coleccion.imagen.alt || ""}
                     height={110}
                     width={110}
-                    className="object-cover group-hover:w-[200px] group-hover:h-[200px] transition-all duration-500 z-0 w-[110px] h-[110px] rounded-full "
+                    imageClassname="object-contain group-hover:w-[200px] group-hover:h-[200px] transition-all duration-500 z-0 w-[110px] h-[110px] rounded-full"
                     />
                     </div>
                     
                 </div>
               )}
-            <p className="text-center mt-1.5 text-gray-600 text-md md:text-xl font-normal font-tajawal truncate leading-none group-hover:text-gray-500">
+            <p className="text-center mt-1.5 text-gray-600 text-md md:text-xl font-normal font-tajawal truncate leading-none group-hover:text-gray-500 group-hover:underline underline-offset-2">
               {coleccion.titulo}
             </p>
             </Link>
