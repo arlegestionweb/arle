@@ -23,7 +23,6 @@ const zodOrderSchemaWithProductReference = zodOrderSchema.merge(
 );
 
 export const createInvoice = async function (_: unknown, formData: FormData) {
-
   if (!formData || !formData.get("reference")) {
     return { error: "No reference provided", status: 400 };
   }
@@ -81,10 +80,27 @@ export const createInvoice = async function (_: unknown, formData: FormData) {
     zodOrderSchemaWithProductReference.safeParse(rawFormData);
 
   if (!parsedFormDataWithProductReference.success) {
-    console.error(parsedFormDataWithProductReference.error);
+    const errorArray = JSON.parse(
+      parsedFormDataWithProductReference.error.message
+    );
+
+    const errorMessages = errorArray.map((err: {message: string}, index: number) => {
+      let message = err.message;
+  
+      // Make the first character of each error message string lowercase, except for the first message
+      if (index !== 0) {
+        message = message.charAt(0).toLowerCase() + message.slice(1);
+      }
+  
+      return message;
+    });
+  
+    // Join the error messages into a single string with commas in between
+    const errorMessageString = errorMessages.join(', ');
+  
     return {
       status: 400,
-      error: parsedFormDataWithProductReference.error.message,
+      error: errorMessageString,
     };
   }
 
@@ -100,5 +116,9 @@ export const createInvoice = async function (_: unknown, formData: FormData) {
     };
   }
 
-  return {data: parsedFormDataWithProductReference.data, status: 200, error: null};
+  return {
+    data: parsedFormDataWithProductReference.data,
+    status: 200,
+    error: null,
+  };
 };
