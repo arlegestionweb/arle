@@ -77,7 +77,9 @@ const sortingFunctions: Record<
     if (aIsOutOfStock && !bIsOutOfStock) return 1;
     if (!aIsOutOfStock && bIsOutOfStock) return -1;
 
-    return Math.random() - 0.5; // Random sort
+    if (a._id < b._id) return -1;
+    if (a._id > b._id) return 1;
+    return 0; // Si los _id son iguales
   },
 };
 
@@ -891,7 +893,7 @@ const Listing = async ({
         />
       ) : parsedCollections.success && parsedCollections.data.length > 0 ? (
         <h2 className="text-2xl md:text-3xl w-full pt-3 font-jomolhari font-normal text-center capitalize">
-          Colección: {coleccionSeleccionada}
+          Colección {coleccionSeleccionada}
         </h2>
       ) : null}
       <section className="bg-white flex flex-col items-center">
