@@ -91,7 +91,7 @@ const garantiaQuery = `
 
 export const productQuery: Record<TProductType, string> = {
   relojesLujo: `{
-    "date": _createdAt,
+    "date": _updatedAt,
     genero,
     mostrarCredito,
     "marca": marca->titulo,
@@ -163,7 +163,7 @@ export const productQuery: Record<TProductType, string> = {
   }
 `,
   relojesPremium: `{
-    "date": _createdAt,
+    "date": _updatedAt,
     "variantes": variantes[]{
       precio,
       precioConDescuento,
@@ -218,7 +218,7 @@ export const productQuery: Record<TProductType, string> = {
   }`,
   perfumeLujo: `{
     ...,
-    "date": _createdAt,
+    "date": _updatedAt,
     titulo,
     "inspiracion": ${inspiracionQuery},    
     "variantes": variantes[] {
@@ -267,7 +267,7 @@ export const productQuery: Record<TProductType, string> = {
    coleccionDeMarca
   }`,
   perfumePremium: `{ 
-    "date": _createdAt,
+    "date": _updatedAt,
     "slug": slug.current,
     "detalles": detalles {
       "concentracion": concentracion -> nombre,
@@ -305,7 +305,7 @@ export const productQuery: Record<TProductType, string> = {
     coleccionDeMarca
   }`,
   gafasLujo: `{
-    "date": _createdAt,
+    "date": _updatedAt,
     _id,
     _type,
     "marca": marca->titulo,
@@ -395,7 +395,7 @@ export const productQuery: Record<TProductType, string> = {
 
   gafasPremium: `{
     mostrarCredito,
-    "date": _createdAt,
+    "date": _updatedAt,
     _type,
     "marca": marca->titulo,
     _id,
