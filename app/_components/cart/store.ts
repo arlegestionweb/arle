@@ -51,6 +51,7 @@ type TCartActions = {
   getProductDiscountAmount: () => number;
   toggleCart: () => void;
   applyDiscountCode: (code: string, discount: number) => void;
+  removeDiscountCode: () => void;
   toggleAddedToCartModal: () => void;
   setItemAddedToCart: (item?: TCartItem) => void;
   getCartTotalWithoutDiscountsOrTax: () => number;
@@ -102,22 +103,33 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
       return { ...state, discountCode: { code, discount } };
     }),
+  removeDiscountCode: () => set((state: TCartState)=>{
+    return { ... state, discountCode: null};
+  }),
   getProductDiscountAmount: () => {
     const items: TCartItem[] = get().items;
     // let total = 0;
+    const discountCode = get().discountCode;
 
     let totalDiscount = 0;
 
-    for (const item of items) {
-      const discountAmountPerItem = item.originalPrice - item.price;
-      const totalDiscountForItem = discountAmountPerItem * item.quantity;
-      totalDiscount += totalDiscountForItem;
+    if(discountCode){
+    const total = get().getCartTotalBeforeShipping();
+      totalDiscount = total * discountCode.discount / 100;
+      return totalDiscount
     }
-  
-    return totalDiscount;    // const discountCode = get().discountCode;
+    else{
+      for (const item of items) {
+        const discountAmountPerItem = item.originalPrice - item.price;
+        const totalDiscountForItem = discountAmountPerItem * item.quantity;
+        totalDiscount += totalDiscountForItem;
+      }
+      return totalDiscount;    
+    }
+    
 
     // if (discountCode) {
-    //   const discountAmount = total * (discountCode.discount / 100);
+    //   const discountAmount = total * (discountCode?.discount || 100 / 100);
     //   return Math.round(discountAmount);
     // }
 
@@ -248,11 +260,15 @@ export const useCartStore = create<TCartStore>((set, get) => ({
   getCartTotalBeforeShipping: () => {
     const items: TCartItem[] = get().items;
     let total = 0;
+    const discountCode = get().discountCode;
 
-    items.forEach((item) => (total += item.price * item.quantity));
-
-
-    return total;
+    if(discountCode){
+      items.forEach((item) => (total += item.originalPrice * item.quantity));
+      return total
+    } else {
+      items.forEach((item) => (total += item.price * item.quantity));
+      return total;
+    }
   },
   
   getShippingCost: () => {
@@ -269,11 +285,14 @@ export const useCartStore = create<TCartStore>((set, get) => ({
   },
   getCartTotal: () => {
     const total = get().getCartTotalBeforeShipping();
-    // const discount = get().getDiscountAmount();
+    const discount = get().discountCode;
     // const tax = get().getCartTax();
     const shipping = get().getShippingCost();
 
-    return total + shipping;
+    if(discount) {
+      return (total * (1 - discount.discount /100)) + shipping
+    }
+    else return total + shipping;
   }
   
 }));
