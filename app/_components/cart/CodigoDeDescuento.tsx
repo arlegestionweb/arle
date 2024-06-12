@@ -64,7 +64,7 @@ const CodigoDeDescuento = () => {
       htmlFor={"discountCode"}
       className="text-zinc-800 text-lg font-medium font-tajawal leading-snug flex justify-between items-center"
       >
-      <h4 className="text-neutral-800 text-lg font-medium font-tajawal leading-normal">
+      <h4 className="text-neutral-800 text-base font-medium font-tajawal leading-normal">
         Código de descuento
       </h4>
 
@@ -73,7 +73,7 @@ const CodigoDeDescuento = () => {
           className="font-sans font-normal text-sm w-40 focus-visible:outline-arle-blue h-9 px-3 bg-white rounded border border-stone-300"
           name={"discountCode"}
           id={"discountCode"}
-          placeholder={"DCTO30"}
+          placeholder={""}
           disabled={enteredDiscount ? true : false}
           onChange={handleDiscountCodeChange}
           />
@@ -99,7 +99,7 @@ const CodigoDeDescuento = () => {
       </div>
     </label>
           ):(
-            <span className="underline hover:cursor-pointer font-sans font-light text-sm w-full text-right" onClick={()=> setIsOpen(true)}>
+            <span className="underline hover:cursor-pointer font-sans font-light text-[13px] w-full text-right" onClick={()=> setIsOpen(true)}>
               ¿Tienes un código de Descuento?
             </span>
           )
