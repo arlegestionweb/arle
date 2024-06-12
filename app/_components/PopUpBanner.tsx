@@ -56,7 +56,7 @@ const PopUpBanner = function ({ popup }: PopupProps) {
                 className=" h-full w-full object-contain object-center pointer-events-auto"
               />
 							<Link
-								className="absolute border border-neutral-900 bottom-[17%] w-[60vw] left-0 right-0 mx-auto light-button button-float z-20"
+								className="absolute border border-neutral-900 bottom-[12%] w-[60vw] left-0 right-0 mx-auto light-button button-float z-20"
 								href={popup.opciones.link}
 								onClick={() => closeBanner()}
 							>
