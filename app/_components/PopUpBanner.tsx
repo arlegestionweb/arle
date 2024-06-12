@@ -12,25 +12,26 @@ type PopupProps = {
 };
 
 const PopUpBanner = function ({ popup }: PopupProps) {
-  const pathname = usePathname();
-  if (pathname.includes("admin") || pathname.includes("mass-uploads")) return;
-
-  const [isOpen, setIsOpen] = useState(false);
-
+	
+	const [isOpen, setIsOpen] = useState(false);
+	
   useEffect(() => {
-    setTimeout(() => {
-      setIsOpen(true);
+		setTimeout(() => {
+			setIsOpen(true);
     }, 500);
   }, []);
-
+	
   const bannerRef = useRef(null);
-
+	
   const closeBanner = () => {
-    setIsOpen(false);
+		setIsOpen(false);
   };
-
+	
   useClickOutside(bannerRef, closeBanner);
-
+	
+	const pathname = usePathname();
+	if (pathname.includes("admin") || pathname.includes("mass-uploads")) return;
+	
   if (popup.opciones)
     return (
       <>
