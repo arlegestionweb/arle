@@ -12,6 +12,22 @@ const zodLegalSchema = z.object({
 
 export type TLegalSchema = z.infer<typeof zodLegalSchema>;
 
+const imagenSchema = z.object({
+  alt: z.string(),
+  url: z.string(),
+});
+
+const popupBannerSchema = z.object({
+  usarPopup: z.boolean(),
+  opciones: z.object({
+    boton: z.string(),
+    link: z.string(),
+    imagen: imagenSchema,
+  }).optional().nullable(),
+});
+
+export type TPopUpBanner = z.infer<typeof popupBannerSchema>;
+
 const zodConfigSchema = z.object({
   marcaPromocionada: z.object({
     titulo: z.string(),
@@ -24,6 +40,8 @@ const zodConfigSchema = z.object({
   ).optional().nullable(),
   mostrarCodigoDeDescuento: z.boolean(),
   legal: zodLegalSchema,
+  popup: popupBannerSchema,
+
 });
 
 
@@ -48,6 +66,17 @@ export const getSiteSettings = async () => {
         garantiasCambiosDevoluciones,
         politicasEnvio,
         politicasCookies,
+      },
+      "popup": popup {
+        usarPopup,
+        "opciones": opciones {
+          boton,
+          link,
+          "imagen": imagen {
+            alt,
+            "url": asset -> url
+          }
+        }
       }
     }
     `);

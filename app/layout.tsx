@@ -9,6 +9,9 @@ import {
 } from "@/sanity/queries/siteSettings";
 import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQueries";
 import PlausibleProvider from 'next-plausible'
+import PopUpBanner from "./_components/PopUpBanner";
+import { unstable_noStore as noStore } from "next/cache";
+
 
 
 const jomolhari = Jomolhari({
@@ -54,6 +57,7 @@ const play = Play({
 })
 
 export async function generateMetadata() {
+  
   // fetch data
   const Metadata = await getSiteSettingsMetadata();
   // optionally access and extend (rather than replace) parent metadata
@@ -69,6 +73,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  
+  noStore();
   const siteSettings = await getSiteSettings();
   const nuestrasSedes = await getNuestrasSedesContent();
 
@@ -85,6 +91,9 @@ export default async function RootLayout({
       <body
         className={`${inter.variable} ${tajawal.variable} ${raleway.variable} ${kanit.variable} ${crimson.variable} ${jomolhari.variable} ${play.variable} overflow-x-hidden no-scrollbar`}
       >
+        { siteSettings?.popup && siteSettings.popup.usarPopup &&
+        <PopUpBanner popup={siteSettings.popup}/>
+        }
         <Navbar
           marca={
             siteSettings?.marcaPromocionada &&
