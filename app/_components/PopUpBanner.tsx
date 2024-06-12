@@ -36,7 +36,7 @@ const PopUpBanner = function ({ popup }: PopupProps) {
     return (
       <>
         {isOpen && (
-          <section className="fixed z-[2000] top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center">
+          <section className="fixed z-[2000] top-0 left-0 right-0 bottom-0 bg-black bg-opacity-40 backdrop-blur-sm flex justify-center items-center">
             <section
               className="w-[85vw] h-[85vw] max-w-[500px] max-h-[500px] bg-white relative"
               ref={bannerRef}

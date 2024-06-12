@@ -85,7 +85,7 @@ const FilterMenu = ({
   return (
     <div
       className={`${isFilterOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        } absolute z-[300] top-0 left-0 bottom-0 transition-all duration-500 w-screen h-[100svh] md:h-[calc(100svh-86px)] -mb-[200px] bg-black bg-opacity-50 backdrop-blur-md`}
+        } absolute z-[300] top-0 left-0 bottom-0 transition-all duration-500 w-screen h-[100svh] md:h-[calc(100svh-86px)] -mb-[200px] bg-black bg-opacity-50 backdrop-blur-sm`}
     >
       <aside
         className={`${isFilterOpen ? "left-0" : "-left-[400px]"

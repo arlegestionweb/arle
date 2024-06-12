@@ -87,7 +87,7 @@ const Menu = ({
       <div
         className={`${
           isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        } fixed z-[100] top-0 left-0 transition-all duration-500 w-screen h-screen bg-black bg-opacity-50 backdrop-blur-md`}
+        } fixed z-[100] top-0 left-0 transition-all duration-500 w-screen h-screen bg-black bg-opacity-50 backdrop-blur-sm`}
       />
       <section
         className={`${
