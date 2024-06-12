@@ -4,10 +4,10 @@ import ExploreSection from "./_components/homepage/ExploreSection";
 import Colecciones from "./_components/Colecciones";
 import AboutArle from "./_components/homepage/AboutArle";
 import Asesoria from "./_components/homepage/Asesoria";
-// import { unstable_noStore as noStore } from "next/cache";
+import { unstable_noStore as noStore } from "next/cache";
 
 const Home = async function () {
-  // noStore();
+  noStore();
   const pageContent = await getHomepageContent();
 
   if (!pageContent) return null;
