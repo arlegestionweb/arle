@@ -114,6 +114,46 @@ export const siteSettings = defineType({
       type: "boolean",
       initialValue: false,
       group: "general",
-    })
+    }),
+    defineField({
+      name: "popup",
+      title: "Pop Up Banner",
+      type: "object",
+      group: "general",
+      fields: [
+        defineField({
+          name: "usarPopup",
+          title: "¿Usar Pop Up?",
+          type: "boolean",
+        }),
+        defineField({
+          name: "opciones",
+          title: "Opciones",
+          type: "object",
+          hidden: ({ parent }) => !parent?.usarPopup,
+          fields: [
+            defineField({
+              name: "boton",
+              title: "Título del botón CTA",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "link",
+              title: "Link del botón",
+              type: "url",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "imagen",
+              title: "Imagen",
+              type: "imagenObject",
+              validation: (Rule) => Rule.required(),
+            })
+          ]
+        }),
+      ]
+    }),
+
   ],
 });
