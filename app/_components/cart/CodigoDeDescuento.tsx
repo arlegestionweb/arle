@@ -23,7 +23,7 @@ const CodigoDeDescuento = () => {
   };
 
   const verifyDiscountCode = async () => {
-    const response = await fetch("checkout/discount-code", {
+    const response = await fetch("/checkout/discount-code", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
