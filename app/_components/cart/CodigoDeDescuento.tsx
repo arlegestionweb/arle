@@ -55,6 +55,13 @@ const CodigoDeDescuento = () => {
     }
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !enteredDiscount) {
+      setEnteredDiscount(true);
+      verifyDiscountCode();
+    }
+  };
+
   return (
     <section className="flex flex-col w-full pb-4 gap-2">
 
@@ -76,6 +83,7 @@ const CodigoDeDescuento = () => {
           placeholder={""}
           disabled={enteredDiscount ? true : false}
           onChange={handleDiscountCodeChange}
+          onKeyDown={handleKeyDown}
           />
         { !enteredDiscount && <div className="px-4 h-9 font-sans font-light text-sm cursor-pointer bg-zinc-200 rounded-tr rounded-br border-r border-t border-b border-stone-300 justify-center items-center gap-1 inline-flex"
         onClick={()=> {setEnteredDiscount(true); verifyDiscountCode()}}>
