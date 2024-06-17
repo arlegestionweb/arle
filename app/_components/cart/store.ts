@@ -116,7 +116,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     if(discountCode){
     const total = get().getCartTotalBeforeShipping();
       totalDiscount = total * discountCode.discount / 100;
-      return totalDiscount
+      return Math.round(totalDiscount)
     }
     else{
       for (const item of items) {
@@ -124,7 +124,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
         const totalDiscountForItem = discountAmountPerItem * item.quantity;
         totalDiscount += totalDiscountForItem;
       }
-      return totalDiscount;    
+      return Math.round(totalDiscount);    
     }
     
 
@@ -273,7 +273,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
   
   getShippingCost: () => {
     const items: TCartItem[] = get().items;
-    const total = get().getCartTotalBeforeShipping();
+    // const total = get().getCartTotalBeforeShipping();
 
     if(items.length === 0){
       return 0;
@@ -290,9 +290,12 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     const shipping = get().getShippingCost();
 
     if(discount) {
-      return (total * (1 - discount.discount /100)) + shipping
+      return Math.round(total * (1 - discount.discount /100)) + shipping
     }
-    else return total + shipping;
+    else {
+      console.log(total);
+      return Math.round(total + shipping);
+    }
   }
   
 }));

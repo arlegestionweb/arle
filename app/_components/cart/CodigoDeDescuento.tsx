@@ -4,7 +4,6 @@ import { zodApiResponseSchema } from "@/app/checkout/discount-code/zod";
 import { FaCheck } from "react-icons/fa6";
 import { cn } from "@/app/_lib/utils";
 import { IoMdClose } from "react-icons/io";
-import Spinner from "../Spinner";
 
 const CodigoDeDescuento = () => {
   const [isDiscountVerified, setIsDiscountVerified] = useState("loading");
