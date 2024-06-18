@@ -6,8 +6,7 @@ import { Metadata } from "next";
 import AboutSubMenu from "../_components/AboutSubMenu";
 import { TDropdownOption } from "../_components/Dropdown";
 import WorkWithUsFilters from "./_components/WorkWithUsFilters";
-
-export const dynamic = "force-dynamic";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata: Metadata = {
   title: "ARLÉ | Trabaja con Nosotros",
@@ -16,6 +15,7 @@ export const metadata: Metadata = {
 const Page = async ({searchParams}: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) => {
+  noStore();
   const pageContent = await getTrabajaConNosotrosContent();
 
   const jobs = pageContent?.jobs || [];
