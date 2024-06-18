@@ -2,7 +2,7 @@
 import { FaArrowRight } from "react-icons/fa6";
 import { MdOutlinePayments } from "react-icons/md";
 import { useState, useEffect } from 'react';
-// import { useCartStore } from "./store";
+import { useCartStore } from "./store";
 
 
 const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "COP" }: {
@@ -13,7 +13,7 @@ const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "
   currency?: string;
 }) => {
 
-  // const { clearCart } = useCartStore();
+  const { clearCart } = useCartStore();
 
   const amountInCents = amount * 100
   const publicKey = process.env.NEXT_PUBLIC_WOMPI;
@@ -35,14 +35,14 @@ const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "
     calculateHashIntegrity();
   }, [concatenatedIntegrity]);
 
-  // useEffect(() => {
-  //   const clearCartBeforeUnload = () => clearCart();
-  //   window.addEventListener('beforeunload', clearCartBeforeUnload);
+  useEffect(() => {
+    const clearCartBeforeUnload = () => clearCart();
+    window.addEventListener('beforeunload', clearCartBeforeUnload);
   
-  //   return () => {
-  //     window.removeEventListener('beforeunload', clearCartBeforeUnload);
-  //   };
-  // }, []);
+    return () => {
+      window.removeEventListener('beforeunload', clearCartBeforeUnload);
+    };
+  }, []);
 
   return (
     <form className="w-full max-w-sm" action={"https://checkout.wompi.co/p/"} method="Get">
