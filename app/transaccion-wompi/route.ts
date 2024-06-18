@@ -4,8 +4,8 @@ export const dynamic = 'force-dynamic' // defaults to auto
 import { getProductsByIds } from "@/sanity/queries/pages/productPage";
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { TProductType } from "../_components/navbar/menu";
-import { sendAdminInvoiceEmail, sendClientInvoiceEmail } from "../success/[paymentId]/actions";
 import { revalidatePath } from "next/cache";
+import { sendAdminInvoiceEmail, sendClientInvoiceEmail } from "../_components/actions/send-email";
 
 type WompiRequest = {
   event: string;
