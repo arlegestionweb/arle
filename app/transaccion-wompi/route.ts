@@ -125,9 +125,6 @@ export const POST = async (req: Request, res: Response) => {
   const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(newSanityOrder);
 
 
-  console.log({data, error, adminData, adminError})
-
-
   if (error || adminError) {
     return Response.json({status: 500})
   }

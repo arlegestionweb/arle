@@ -28,7 +28,6 @@ export const sendClientInvoiceEmail = async (order: TFrontEndOrderSchema) => {
 
   const newOrder = { ...order, items: newItems };
   
-  console.log("inside send client invoice", {newOrder})
   try {
     const { data, error } = await resend.emails.send({
       from: "noreply@arle.co",
@@ -63,7 +62,7 @@ export const sendAdminInvoiceEmail = async (order: TFrontEndOrderSchema) => {
   const newItems = await Promise.all(order.items.map(fetchProduct));
   
   const newOrder = { ...order, items: newItems };
-  console.log("inside send admin invoice", {newOrder})
+
   try {
     const { data, error } = await resend.emails.send({
       from: "noreply@arle.co",
