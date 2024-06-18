@@ -293,7 +293,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                         disabled={formState?.data ? false : true}
                         amount={getCartTotal()}
                         reference={payment_reference}
-                        redirectUrl={`${baseUrl}/success/${payment_reference}/is-payment-successful`}
+                        redirectUrl={`${baseUrl}/success/${payment_reference}`}
                         />
                       <footer>
                         <div className="w-[5.5rem]">
