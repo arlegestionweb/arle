@@ -2,6 +2,7 @@
 import { FaArrowRight } from "react-icons/fa6";
 import { MdOutlinePayments } from "react-icons/md";
 import { useState, useEffect } from 'react';
+import { useCartStore } from "./store";
 
 
 const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "COP" }: {
@@ -11,6 +12,8 @@ const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "
   redirectUrl: string;
   currency?: string;
 }) => {
+
+  const { clearCart } = useCartStore();
 
   const amountInCents = amount * 100
   const publicKey = process.env.NEXT_PUBLIC_WOMPI;
@@ -32,7 +35,6 @@ const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "
     calculateHashIntegrity();
   }, [concatenatedIntegrity]);
 
-
   return (
     <form className="w-full max-w-sm" action={"https://checkout.wompi.co/p/"} method="Get">
       <input type="hidden" name="public-key" value={publicKey} />
@@ -42,7 +44,7 @@ const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "
       <input type="hidden" name="redirect-url" value={redirectUrl} />
       <input type="hidden" name="signature:integrity" value={hashIntegrity} />
 
-      <button type="submit" disabled={disabled} className="dark-button flex gap-2 justify-center items-center">
+      <button type="submit" onClick={clearCart} disabled={disabled} className="dark-button flex gap-2 justify-center items-center">
         <MdOutlinePayments className="text-base" /> Paga con Wompi <FaArrowRight className="text-base" />
       </button>
     </form>
