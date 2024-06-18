@@ -8,7 +8,6 @@ import { PiCoins, PiSuitcaseSimple } from "react-icons/pi";
 import { MdChecklistRtl } from "react-icons/md";
 import { FaRegClock } from "react-icons/fa6";
 import { unstable_noStore as noStore } from "next/cache";
-export const dynamic = "force-dynamic";
 
 const Page = async ({ params }: { params: { job: string } }) => {
   noStore();
