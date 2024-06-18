@@ -53,7 +53,7 @@ const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "
       <input type="hidden" name="redirect-url" value={redirectUrl} />
       <input type="hidden" name="signature:integrity" value={hashIntegrity} />
 
-      <button type="submit" onClick={clearCart} disabled={disabled} className="dark-button flex gap-2 justify-center items-center">
+      <button type="submit" disabled={disabled} className="dark-button flex gap-2 justify-center items-center">
         <MdOutlinePayments className="text-base" /> Paga con Wompi <FaArrowRight className="text-base" />
       </button>
     </form>
