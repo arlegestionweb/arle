@@ -42,6 +42,8 @@ export const sendClientInvoiceEmail = async (order: TFrontEndOrderSchema) => {
   const newItems = await Promise.all(order.items.map(fetchProduct));
 
   const newOrder = { ...order, items: newItems };
+  
+  console.log("inside send client invoice", {newOrder})
   try {
     const { data, error } = await resend.emails.send({
       from: "noreply@arle.co",
@@ -49,20 +51,20 @@ export const sendClientInvoiceEmail = async (order: TFrontEndOrderSchema) => {
       subject: "Factura de tu compra",
       react: EmailTemplate({ order: newOrder }) as React.ReactElement,
     });
-
+    
     if (error) {
       return { error: error };
     }
-
+    
     return { data: data, error: null };
   } catch (error) {
     return { error: error };
   }
 };
 export const sendAdminInvoiceEmail = async (order: TFrontEndOrderSchema) => {
-
+  
   const fetchProduct = async (item: TEmailOrderItemSchema) => {
-
+    
     if (!item.product) {
       const { product } = await getProductById(
         item.productId._ref,
@@ -72,10 +74,11 @@ export const sendAdminInvoiceEmail = async (order: TFrontEndOrderSchema) => {
     }
     return item;
   };
-
+  
   const newItems = await Promise.all(order.items.map(fetchProduct));
-
+  
   const newOrder = { ...order, items: newItems };
+  console.log("inside send admin invoice", {newOrder})
   try {
     const { data, error } = await resend.emails.send({
       from: "noreply@arle.co",

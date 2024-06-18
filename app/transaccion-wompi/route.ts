@@ -1,4 +1,5 @@
 // import { getOrderById } from "@/sanity/queries/orders";
+export const dynamic = 'force-dynamic' // defaults to auto
 
 import { getProductsByIds } from "@/sanity/queries/pages/productPage";
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
@@ -54,8 +55,6 @@ export const POST = async (req: Request, res: Response) => {
 
   const paymentId = request.data.transaction.reference;
 
-  console.log({paymentId})
-  
   const sanityOrder = await sanityClient.fetch(
     `*[_type == "orders" && _id == $id][0]`,
     { id: paymentId }
@@ -66,8 +65,6 @@ export const POST = async (req: Request, res: Response) => {
     wompiReference: request.data.transaction.id,
   };
   
-  console.log({sanityOrder, newSanityOrder})
-
   const updateSanityOrder = await sanityWriteClient
     .patch(newSanityOrder._id)
     .set(newSanityOrder)
@@ -90,7 +87,7 @@ export const POST = async (req: Request, res: Response) => {
   );
 
   const productsToUpdate = await getProductsByIds(cartItemProducts);
-  
+
   for (const product of cartItemProducts) {
     const productToUpdate = productsToUpdate?.find(
       (p) => p._id === product._id
