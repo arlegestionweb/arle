@@ -35,6 +35,15 @@ const WompiPayButton = ({ amount, disabled, redirectUrl, reference, currency = "
     calculateHashIntegrity();
   }, [concatenatedIntegrity]);
 
+  useEffect(() => {
+    const clearCartBeforeUnload = () => clearCart();
+    window.addEventListener('beforeunload', clearCartBeforeUnload);
+  
+    return () => {
+      window.removeEventListener('beforeunload', clearCartBeforeUnload);
+    };
+  }, []);
+
   return (
     <form className="w-full max-w-sm" action={"https://checkout.wompi.co/p/"} method="Get">
       <input type="hidden" name="public-key" value={publicKey} />
