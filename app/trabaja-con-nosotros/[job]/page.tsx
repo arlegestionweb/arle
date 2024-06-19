@@ -1,4 +1,7 @@
-import { getJobByTitle, getTrabajaConNosotrosContent } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
+import {
+  getJobByTitle,
+  getTrabajaConNosotrosContent,
+} from "@/sanity/queries/pages/trabajaConNosotrosQueries";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import Main from "@/app/_components/Main";
@@ -12,7 +15,7 @@ import { unstable_noStore as noStore } from "next/cache";
 const Page = async ({ params }: { params: { job: string } }) => {
   noStore();
   const trabajo = await getJobByTitle(params?.job);
- const pageContent = await getTrabajaConNosotrosContent();
+  const pageContent = await getTrabajaConNosotrosContent();
 
   if (!trabajo) return null;
 
@@ -41,18 +44,46 @@ const Page = async ({ params }: { params: { job: string } }) => {
             <IoLocationOutline className="text-lg" />
             {`Sede: ${trabajo.sede.nombre} - ${trabajo.sede.ciudad}`}
           </p>
-          <p className="about-text flex gap-2"><PiSuitcaseSimple className="text-lg" />{`Experiencia: ${trabajo.experience}`}</p>
-          <p className="about-text flex gap-2"><MdChecklistRtl className="text-lg"/>{`Habilidades: ${trabajo.skills}`}</p>
-          <p className="about-text flex gap-2"><FaRegClock  className="text-base"/>{`Modalidad: ${trabajo.modality}`}</p>
-          <p className="about-text flex gap-2"><PiCoins className="text-lg"/>{`Salario: ${trabajo.salary}`}</p>
+          <p className="about-text flex gap-2">
+            <PiSuitcaseSimple className="text-lg" />
+            {`Experiencia: ${trabajo.experience}`}
+          </p>
+          <div className="about-text">
+            <div className="flex items-center gap-2">
+              <MdChecklistRtl className="text-lg" />
+              <span>Habilidades:</span>
+            </div>
+            <ul className="pl-8 list-disc">
+              {trabajo.skills.map((skill, index) => (
+                <li key={index}>{skill}</li>
+              ))}
+            </ul>
+          </div>
+          <p className="about-text flex gap-2">
+            <FaRegClock className="text-base" />
+            {`Modalidad: ${trabajo.modality}`}
+          </p>
+          <p className="about-text flex gap-2">
+            <PiCoins className="text-lg" />
+            {`Salario: ${trabajo.salary}`}
+          </p>
         </section>
         <section className="flex flex-col gap-3">
-          <h2 className="font-jomolhari tracking-tight leading-snug text-xl xs:text-2xl text-gray-700">Acerca del trabajo:</h2>
+          <h2 className="font-jomolhari tracking-tight leading-snug text-xl xs:text-2xl text-gray-700">
+            Acerca del trabajo:
+          </h2>
           <div className="portable-text flex flex-col gap-0.5">
-          <PortableText value={trabajo.aboutJob} />
+            <PortableText value={trabajo.aboutJob} />
           </div>
         </section>
-        <Link href={`mailto:${pageContent?.email || "selecciongrupoarle@gmail.com"}?Subject=Aplicación trabajo: ${trabajo.titulo}`} className="dark-button" >Aplicar</Link>
+        <Link
+          href={`mailto:${
+            pageContent?.email || "selecciongrupoarle@gmail.com"
+          }?Subject=Aplicación trabajo: ${trabajo.titulo}`}
+          className="dark-button"
+        >
+          Aplicar
+        </Link>
       </section>
       {/* <section className={`z-10 fixed top-[20%] w-[80%] h-[70%] bg-black`}>
             <button onClick={()=>setJobModal(false)}>X</button>
