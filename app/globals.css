@@ -94,7 +94,7 @@ table, th, td, tr {
     @apply font-tajawal leading-tight font-normal text-gray-300 text-base sm:text-lg sm:leading-tight text-justify whitespace-pre-line
   }
   .portable-text{
-    @apply [&_h1]:font-bold [&_h1]:text-2xl [&_h1]:text-gray-800 [&_h2]:font-semibold [&_h2]:text-xl [&_h2]:text-gray-700 [&_p]:font-normal [&_p]:text-base [&_p]:text-gray-700
+    @apply [&_h1]:font-bold [&_h1]:text-2xl [&_h1]:text-gray-800 [&_h2]:font-semibold [&_h2]:text-xl [&_h2]:text-gray-700 [&_p]:font-normal [&_p]:text-base [&_p]:text-gray-700 whitespace-pre-line
   }
   .default-paddings{
     @apply px-4 xs:px-8 sm:px-14 md:px-20;
