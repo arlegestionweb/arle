@@ -29,6 +29,23 @@ export const makeNewParams = (
   return newParams;
 };
 
+export const makeNewMultipleParams = (
+  newFilters: { [key: string]: string | undefined },
+  oldSearchParams: URLSearchParams
+): URLSearchParams => {
+  const newParams = new URLSearchParams(oldSearchParams.toString());
+
+  Object.entries(newFilters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      newParams.set(key, value);
+    } else {
+      newParams.delete(key);
+    }
+  });
+
+  return newParams;
+};
+
 export const formatNumber = function (number: number | string): string {
   let numStr = number.toString();
   let result = "";
