@@ -7,7 +7,7 @@ import { FiFilter } from "react-icons/fi";
 import { LuSettings2 } from "react-icons/lu";
 
 import FilterMenu from "./FilterMenu";
-import { createUrl, makeNewParams } from "@/app/_lib/utils";
+import { createUrl, makeNewMultipleParams, makeNewParams } from "@/app/_lib/utils";
 import BreadCrumbs, { TBreadCrumb } from "./BreadCrumbs";
 import Dropdown, { TDropdownOption } from "@/app/_components/Dropdown";
 import { useRouter } from 'next/navigation'
@@ -113,10 +113,10 @@ const Filters = ({
     });
   });
   const sortingOptions: TSortingOption[] = [
-    { label: "Aleatorio", value: "aleatorio" , href: createUrl("/listing", makeNewParams("sort", "aleatorio", searchParams)) },
-    { label: "Recientes", value: "recientes", href: createUrl("/listing", makeNewParams("sort", "recientes", searchParams)) },
-    { label: "Mayor precio", value: "precio_mayor_menor", href: createUrl("/listing", makeNewParams("sort", "precio_mayor_menor", searchParams)) },
-    { label: "Menor precio", value: "price_menor_mayor", href: createUrl("/listing", makeNewParams("sort", "price_menor_mayor", searchParams)) },
+    { label: "Aleatorio", value: "aleatorio" , href: createUrl("/listing", makeNewMultipleParams({ sort: "aleatorio", currentPage: "1" }, searchParams)) },
+    { label: "Recientes", value: "recientes", href: createUrl("/listing", makeNewMultipleParams({ sort: "recientes", currentPage: "1" }, searchParams)) },
+    { label: "Mayor precio", value: "precio_mayor_menor", href: createUrl("/listing", makeNewMultipleParams({ sort: "precio_mayor_menor", currentPage: "1" }, searchParams)) },
+    { label: "Menor precio", value: "price_menor_mayor", href: createUrl("/listing", makeNewMultipleParams({ sort: "price_menor_mayor", currentPage: "1" }, searchParams)) },
   ];
 
 

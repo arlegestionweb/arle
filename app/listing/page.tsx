@@ -38,14 +38,18 @@ const sortingFunctions: Record<
     if (!aIsOutOfStock && bIsOutOfStock) return -1;
 
     const highestPriceA = Math.max(
-      ...a.variantes.map(variant =>
-        colombianPriceStringToNumber(variant.precio)
-      )
+      ...a.variantes.map(variant => {
+        const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+        const precio = colombianPriceStringToNumber(variant.precio);
+        return precioConDescuento > 0 ? precioConDescuento : precio;
+      })
     );
     const highestPriceB = Math.max(
-      ...b.variantes.map(variant =>
-        colombianPriceStringToNumber(variant.precio)
-      )
+      ...b.variantes.map(variant => {
+          const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+          const precio = colombianPriceStringToNumber(variant.precio);
+          return precioConDescuento > 0 ? precioConDescuento : precio;
+        })
     );
 
     return highestPriceB - highestPriceA;
@@ -58,14 +62,18 @@ const sortingFunctions: Record<
     if (!aIsOutOfStock && bIsOutOfStock) return -1;
 
     const lowestPriceA = Math.min(
-      ...a.variantes.map(variant =>
-        colombianPriceStringToNumber(variant.precio)
-      )
+      ...a.variantes.map(variant => {
+        const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+        const precio = colombianPriceStringToNumber(variant.precio);
+        return precioConDescuento > 0 ? precioConDescuento : precio;
+      })
     );
     const lowestPriceB = Math.min(
-      ...b.variantes.map(variant =>
-        colombianPriceStringToNumber(variant.precio)
-      )
+      ...b.variantes.map(variant => {
+        const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+        const precio = colombianPriceStringToNumber(variant.precio);
+        return precioConDescuento > 0 ? precioConDescuento : precio;
+      })
     );
 
     return lowestPriceA - lowestPriceB;
@@ -376,18 +384,22 @@ const Listing = async ({
 
     selectedMinPrice &&
       ((producto: TProduct) =>
-        producto.variantes.some(
-          (variant) =>
-            Number(variant.precio.split(".").join("")) >=
-            Number(selectedMinPrice)
-        )),
+        producto.variantes.some((variant) => {
+            const precio = colombianPriceStringToNumber(variant.precio);
+            const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+            const precioFinal = precioConDescuento > 0 ? precioConDescuento : precio;
+            const selectedMinPrecio = Number(selectedMinPrice);
+            return precioFinal >= selectedMinPrecio;
+        })),
 
     selectedMaxPrice &&
       ((producto: TProduct) =>
         producto.variantes.some((variant) => {
-          const precio = Number(variant.precio.split(".").join(""));
+          const precio = colombianPriceStringToNumber(variant.precio);
+          const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+          const precioFinal = precioConDescuento > 0 ? precioConDescuento : precio;
           const selectedMaxPrecio = Number(selectedMaxPrice);
-          return precio <= selectedMaxPrecio;
+          return precioFinal <= selectedMaxPrecio;
         })),
 
     selectedColeccionesDeMarca.length > 0 &&
