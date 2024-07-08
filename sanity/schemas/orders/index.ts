@@ -1,10 +1,9 @@
-import { DateTime } from "luxon";
 import { BiSolidWatchAlt } from "react-icons/bi";
 import { IoCash } from "react-icons/io5";
 import { PiSunglassesBold } from "react-icons/pi";
 import { TbPerfume } from "react-icons/tb";
 import { defineField, defineType } from "sanity";
-
+import IdComponent from "./IdComponent";
 const addressSchema = defineField({
   name: "addressObject",
   title: "dirección",
@@ -56,9 +55,18 @@ export const ordersSchema = defineType({
     {
       name: "productos",
       title: "Productos",
-    }
+    },
   ],
   fields: [
+    defineField({
+      name: "id",
+      title: "ID de la orden",
+      type: "string",
+      components: {
+        input: IdComponent,
+      },
+      readOnly: true,
+    }),
     defineField({
       name: "orderDate",
       title: "Fecha de la orden",
@@ -158,17 +166,20 @@ export const ordersSchema = defineType({
         }),
         addressSchema,
         defineField({
-          name: 'status',
-          title: 'Status',
-          type: 'string',
+          name: "status",
+          title: "Status",
+          type: "string",
           options: {
             list: [
-              { title: 'En Proceso', value: 'in_process' },
-              { title: 'Despachado', value: 'sent' },
-              { title: 'No entregado - Devuelto al vendedor', value: 'returned_to_seller' },
-              { title: 'Entregado al comprador', value: 'delivered' },
+              { title: "En Proceso", value: "in_process" },
+              { title: "Despachado", value: "sent" },
+              {
+                title: "No entregado - Devuelto al vendedor",
+                value: "returned_to_seller",
+              },
+              { title: "Entregado al comprador", value: "delivered" },
             ],
-            layout: 'radio',
+            layout: "radio",
           },
         }),
         defineField({
@@ -269,7 +280,6 @@ export const ordersSchema = defineType({
       type: "string",
       group: "general",
     }),
- 
   ],
   preview: {
     select: {
