@@ -86,7 +86,7 @@ export default async function RootLayout({
       <head>
         {/* <PlausibleProvider domain={isProduction ? "arle.co" : "beta.arle.co"} /> */}
         <script defer data-domain={url} src="https://plausible.io/js/script.js"></script>
-        {/* <script
+        <script
         id="fb-pixel"
         // strategy="afterInteractive"
         dangerouslySetInnerHTML={{
@@ -103,7 +103,7 @@ export default async function RootLayout({
             fbq('track', 'PageView');
           `,
         }}
-      /> */}
+      />
 
         {/* EL QUE PASÓ ARLÉ <!-- Meta Pixel Code --> */}
         {/* <script>
@@ -122,7 +122,7 @@ export default async function RootLayout({
         src="https://www.facebook.com/tr?id=2401779836684171&ev=PageView&noscript=1"
         /></noscript> */}
         {/* <!-- End Meta Pixel Code --> */}
-
+      {/* <FacebookPixel /> */}
       </head>
 
       <body
@@ -144,7 +144,6 @@ export default async function RootLayout({
         {siteSettings && nuestrasSedes && (
           <Footer settings={siteSettings} sedes={nuestrasSedes} />
         )}
-        <FacebookPixel />
       </body>
     </html>
   );

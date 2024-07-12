@@ -1,5 +1,4 @@
-// export const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
-export const FB_PIXEL_ID = 2401779836684171;
+export const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
 
 export const pageview = () => {
   window.fbq("track", "PageView");
