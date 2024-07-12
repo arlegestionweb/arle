@@ -20,7 +20,7 @@ const Page = async ({ params }: { params: { job: string } }) => {
   if (!trabajo) return null;
 
   return (
-    <Main extraClasses="bg-white flex flex-col min-h-screen md:mt-[53px] default-paddings">
+    <Main extraClasses="bg-white flex flex-col min-h-screen md:mt-[53px] default-paddings items-center">
       <section className="relative py-5 gap-5 md:gap-8 w-full flex flex-col max-w-screen-xl">
         <Link
           href="/trabaja-con-nosotros"
