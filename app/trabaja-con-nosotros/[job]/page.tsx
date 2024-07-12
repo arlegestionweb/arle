@@ -39,7 +39,7 @@ const Page = async ({ params }: { params: { job: string } }) => {
           src="/isoLogo.svg"
         />
         <h1 className="about-title">{trabajo.titulo}</h1>
-        <section className="flex flex-col text-gray-600 gap-1.5">
+        <section className="flex flex-col text-gray-600 gap-4">
           <p className="about-text flex gap-2">
             <IoLocationOutline className="text-lg" />
             {`Sede: ${trabajo.sede.nombre} - ${trabajo.sede.ciudad}`}
