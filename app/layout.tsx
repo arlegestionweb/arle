@@ -12,6 +12,7 @@ import PlausibleProvider from 'next-plausible'
 import PopUpBanner from "./_components/PopUpBanner";
 import { unstable_noStore as noStore } from "next/cache";
 import FacebookPixel from "./_components/FacebookPixel";
+import Script from "next/script";
 
 
 
@@ -86,9 +87,9 @@ export default async function RootLayout({
       <head>
         {/* <PlausibleProvider domain={isProduction ? "arle.co" : "beta.arle.co"} /> */}
         <script defer data-domain={url} src="https://plausible.io/js/script.js"></script>
-        {/* <script
+        <Script 
         id="fb-pixel"
-        // strategy="afterInteractive"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             !function(f,b,e,v,n,t,s)
@@ -99,11 +100,11 @@ export default async function RootLayout({
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', 2751068101724616);
+            fbq('init', ${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID});
             fbq('track', 'PageView');
           `,
         }}
-      /> */}
+      />
 
         {/* EL QUE PASÓ ARLÉ <!-- Meta Pixel Code --> */}
         {/* <script>
@@ -117,12 +118,12 @@ export default async function RootLayout({
         'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '2401779836684171');
         fbq('track', 'PageView');
-        </script>
+        </cript>
         <noscript><img height="1" width="1" style="display:none"
         src="https://www.facebook.com/tr?id=2401779836684171&ev=PageView&noscript=1"
         /></noscript> */}
         {/* <!-- End Meta Pixel Code --> */}
-      <FacebookPixel />
+      {/* <FacebookPixel /> */}
       </head>
 
       <body
