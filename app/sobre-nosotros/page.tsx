@@ -26,7 +26,7 @@ const Page = async () => {
       {pageContent?.whyWeDoWhatWeDo?.on &&
         <section className="flex min-h-20 h- flex-col md:flex-row items-center bg-white">
           <section className="relative h-full w-full md:w-1/2">
-            <img className="w-[45%] max-w-[260px] drop-shadow-[0_0_8px_rgba(0,0,0,100)] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 object-cover" width={500} height={500} alt="Arle-logo-Complete" src="/logo-footer.svg" />
+            <img className="w-[45%] max-w-[260px] drop-shadow-[0_0_8px_rgba(0,0,0,100)] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 object-cover" width={500} height={500} alt="Arle-logo-Complete" src="/newFooterLogo.svg" />
             {pageContent?.whyWeDoWhatWeDo?.imagenOVideo ?
               <video src={pageContent?.whyWeDoWhatWeDo?.video?.url}></video>
               :
