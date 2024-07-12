@@ -122,7 +122,7 @@ export default async function RootLayout({
         src="https://www.facebook.com/tr?id=2401779836684171&ev=PageView&noscript=1"
         /></noscript> */}
         {/* <!-- End Meta Pixel Code --> */}
-
+      <FacebookPixel />
       </head>
 
       <body
@@ -144,7 +144,6 @@ export default async function RootLayout({
         {siteSettings && nuestrasSedes && (
           <Footer settings={siteSettings} sedes={nuestrasSedes} />
         )}
-        <FacebookPixel />
       </body>
     </html>
   );
