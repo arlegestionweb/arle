@@ -11,7 +11,7 @@ import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQue
 import PlausibleProvider from 'next-plausible'
 import PopUpBanner from "./_components/PopUpBanner";
 import { unstable_noStore as noStore } from "next/cache";
-import FacebookPixel from "./_components/FacebookPixel";
+// import FacebookPixel from "./_components/FacebookPixel";
 import Script from "next/script";
 
 
