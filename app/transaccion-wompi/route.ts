@@ -53,6 +53,12 @@ type WompiRequest = {
 export const POST = async (req: Request, res: Response) => {
   const request: WompiRequest = await req.json();
 
+  if (request.data.transaction.status !== "APPROVED") {
+    return Response.json({
+      status: 500,
+    });
+  }
+  
   const paymentId = request.data.transaction.reference;
 
   const sanityOrder = await sanityClient.fetch(
