@@ -8,6 +8,7 @@ import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
 import { TPricing } from "../Product";
+import ProductViewer from "../ProductViewer";
 
 type TRelojLujoProps = {
   product: TRelojLujo;
@@ -26,8 +27,16 @@ const RelojLujo = ({
   cantidad,
   setCantidad,
 }: TRelojLujoProps) => {
+
+  const productObject = {
+    productName: `${product.marca} ${product.modelo}`,
+    productType: `${product._type}`,
+    productValue: `${selectedVariant.precio}`
+  }
+
   return (
     <>
+      <ProductViewer productObject={productObject} />
       <HeroProduct
         product={product}
         images={selectedVariant.imagenes}

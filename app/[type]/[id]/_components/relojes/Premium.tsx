@@ -9,6 +9,7 @@ import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
+import ProductViewer from "../ProductViewer";
 
 type TRelojPremiumProps = {
   product: TRelojPremium;
@@ -26,8 +27,16 @@ const RelojPremium = ({
   setCantidad,
   pricing,
 }: TRelojPremiumProps) => {
+
+  const productObject = {
+    productName: `${product.marca} ${product.modelo}`,
+    productType: `${product._type}`,
+    productValue: `${selectedVariant.precio}`
+  }
+
   return (
     <>
+      <ProductViewer productObject={productObject} />
       <PremiumLayout
         product={product}
         selectedVariant={selectedVariant}
