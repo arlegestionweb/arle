@@ -6,6 +6,7 @@ import { useCartStore } from "@/app/_components/cart/store";
 import { TPricing } from "./Product";
 import { LuShoppingCart } from "react-icons/lu";
 import { MdOutlinePayments } from "react-icons/md";
+import { addedToCartView } from "@/app/_lib/pixelActions";
 
 type PropsAddToCart = {
   className?: string;
@@ -23,7 +24,7 @@ const AddToCart = ({
   selectedVariant,
 }: PropsAddToCart) => {
   const { addItem, toggleCart, toggleAddedToCartModal } = useCartStore();
-  const addToCart = (
+  const addToCart = async (
     producto: TProduct,
     selectedVariant: TVariant,
     quantity: number = 1
@@ -37,7 +38,14 @@ const AddToCart = ({
       discountType: pricing.discountTypeUsed,
       originalPrice: pricing.precioSinDescuento,
     });
+    const productObject = {
+      productName : `${product.marca} ${product._id}`,
+      productType: `${product._type}`,
+      productValue: `${selectedVariant.precio}`
+    }
+    await addedToCartView(productObject);
   };
+
   return (
     <div
       className={cn(
@@ -45,14 +53,16 @@ const AddToCart = ({
         className
       )}
     >
+      <form onSubmit={() => addToCart(product, selectedVariant, quantity)}>
       <Button
         disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false}
-        onClick={() => addToCart(product, selectedVariant, quantity)}
+        type="submit"
         className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float"
-      >
+        >
         <LuShoppingCart className="text-base" />
         Añadir al Carrito
       </Button>
+      </form>
       <Button
         disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false}
         labelType={"dark"}

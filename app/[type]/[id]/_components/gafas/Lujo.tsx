@@ -8,6 +8,7 @@ import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
 import { TPricing } from "../Product";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import ProductViewer from "../ProductViewer";
 
 type TGafaLujoProps = {
   product: TGafaLujo;
@@ -28,8 +29,15 @@ const GafaLujo = ({
 }: TGafaLujoProps) => {
   // Testing redeployment
 
+  const productObject = {
+    productName: `${product.marca} ${product.modelo}`,
+    productType: `${product._type}`,
+    productValue: `${selectedVariant.precio}`
+  }
+
   return (
     <>
+      <ProductViewer productObject={productObject} />
       <HeroProduct
         product={product}
         images={selectedVariant.imagenes}

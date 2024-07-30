@@ -1,9 +1,10 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GradientImage from "../GradientImage";
 import { cn } from "@/app/_lib/utils";
 import Link from "next/link";
 import { THeroSection } from "@/sanity/queries/pages/homepageQuery";
+import { pageView } from "@/app/_lib/pixelActions";
 
 type BannerProps = {
   content: THeroSection;
@@ -13,6 +14,10 @@ type BannerProps = {
 const Banner = ({ content, className }: BannerProps) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const bannerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    pageView()
+  },[])
 
   const handleScroll = (event: any) => {
     const element = event.target as HTMLElement;
