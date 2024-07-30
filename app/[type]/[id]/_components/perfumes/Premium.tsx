@@ -22,7 +22,7 @@ type TPerfumePremiumProps = {
 };
 
 
-const PerfumePremium = async ({
+const PerfumePremium = ({
   product,
   selectedVariant,
   setSelectedVariant,
