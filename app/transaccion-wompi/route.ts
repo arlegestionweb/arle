@@ -158,7 +158,7 @@ export const POST = async (req: Request, res: Response) => {
   const pixelEvent = {
             "data": [
                 {
-                    "event_name": "Purchase Success",
+                    "event_name": "Purchase",
                     "event_time": new Date().toISOString(),
                     "action_source": "website",
                     "user_data": {
@@ -191,7 +191,7 @@ export const POST = async (req: Request, res: Response) => {
 if (!postReq.ok) {
     console.error('Failed to send event to Pixel API', await postReq.text());
 } else {
-    console.log('Successfully sent event to Pixel API');
+    console.log('Compra exitosa');
 }
 
   return new Response("Transacción exitosa", { status: 200 });
