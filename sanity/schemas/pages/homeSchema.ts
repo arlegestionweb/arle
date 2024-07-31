@@ -55,13 +55,7 @@ export const homeSchema = defineType({
                   type: "imagenObject",
                   hidden: ({ parent }) => !parent?.imagenOVideo,
                 }),
-                defineField({
-                  name: "video",
-                  title: "Video",
-                  type: "object",
-                  hidden: ({ parent }) => parent?.imagenOVideo,
-                  fields: [videoSchema],
-                }),
+                videoSchema,
               ],
               preview: {
                 select: {
@@ -249,13 +243,7 @@ export const homeSchema = defineType({
               type: "imagenObject",
               hidden: ({ parent }) => !parent?.imagenOVideo,
             }),
-            defineField({
-              name: "video",
-              title: "Video",
-              type: "object",
-              hidden: ({ parent }) => parent?.imagenOVideo,
-              fields: [videoSchema],
-            }),
+            videoSchema,
           ],
         }),
       ]

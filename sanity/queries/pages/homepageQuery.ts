@@ -22,9 +22,7 @@ const zodHeroSchema = z.object({
       imagen: imageSchema.optional().nullable(),
       videoObject: z.object({
         video: videoSchema.optional().nullable(),
-        imagenDeCarga: z.object({
-          url: z.string().optional().nullable(),
-        }),
+        imagenDeCarga: imageSchema.optional().nullable(),
       }).optional().nullable()
     }),
   ),
@@ -77,10 +75,13 @@ const homepageQueryString = `*[_type == "homepage"][0]{
         "url": asset->url
       },
       "videoObject": videoObject{
-        "video": video.video {
+        "video": video {
           "url": asset->url,
         },
-        "imagenDeCarga": asset->url,
+        "imagenDeCarga": imagenDeCarga{
+        alt,
+        "url": asset->url
+        },
       },
     },
   },
@@ -123,10 +124,13 @@ const homepageQueryString = `*[_type == "homepage"][0]{
         "url": asset->url,
       },
       "videoObject": videoObject{
-        "video": video.video {
+        "video": video {
           "url": asset->url,
         },
-        "imagenDeCarga": asset->url,
+        "imagenDeCarga": imagenDeCarga{
+        alt,
+        "url": asset->url
+        },
       },
     }
   },

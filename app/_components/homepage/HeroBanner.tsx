@@ -42,6 +42,8 @@ const Banner = ({ content, className }: BannerProps) => {
   const width = 2000;
   const height = null;
 
+  console.log(content.banners)
+
   return (
     <section
       className={cn(
@@ -72,7 +74,7 @@ const Banner = ({ content, className }: BannerProps) => {
                 ) : (
                   <GradientVideo
                   url={banner.videoObject?.video?.url || ""}
-                  imagenUrl={banner.videoObject?.imagenDeCarga.url || ""}
+                  imagenUrl={banner.videoObject?.imagenDeCarga?.url || ""}
                   containerclassName={`snap-center snap-always ${
                     index === 1 && "snap-mandatory"
                   } min-w-full px-2 pt-2 flex-col justify-end items-center gap-2.5 inline-flex`}
