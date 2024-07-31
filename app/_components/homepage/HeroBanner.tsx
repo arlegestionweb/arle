@@ -5,6 +5,7 @@ import { cn } from "@/app/_lib/utils";
 import Link from "next/link";
 import { THeroSection } from "@/sanity/queries/pages/homepageQuery";
 import { pageView } from "@/app/_lib/pixelActions";
+import GradientVideo from "../GradientVideo";
 
 type BannerProps = {
   content: THeroSection;
@@ -16,8 +17,8 @@ const Banner = ({ content, className }: BannerProps) => {
   const bannerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    pageView()
-  },[])
+    pageView();
+  }, []);
 
   const handleScroll = (event: any) => {
     const element = event.target as HTMLElement;
@@ -54,22 +55,29 @@ const Banner = ({ content, className }: BannerProps) => {
         ref={bannerRef}
       >
         {content.banners.map((banner, index) => (
-          <React.Fragment key={index + banner.imagen.url}>
-            {banner.imagen && (
-              <GradientImage
-                src={banner.imagen.url}
-                alt={banner.imagen.alt || ""}
-                layout="fill"
-                width={2000}
-                height={1000}
-                quality={90}
-                imageClassName="object-center"
-                containerclassName={`snap-center snap-always ${
-                  index === 1 && "snap-mandatory"
-                } min-w-full px-2 pt-2 flex-col justify-end items-center gap-2.5 inline-flex`}>
-              </GradientImage>
-            )}
-          </React.Fragment>
+            <React.Fragment key={index + (banner?.imagen?.url || "") }>
+            {banner.imagen && banner.imagenOVideo ? (
+                <GradientImage
+                  src={banner.imagen.url}
+                  alt={banner.imagen.alt || ""}
+                  layout="fill"
+                  width={2000}
+                  height={1000}
+                  quality={100}
+                  imageClassName="object-center"
+                  containerclassName={`snap-center snap-always ${
+                    index === 1 && "snap-mandatory"
+                  } min-w-full px-2 pt-2 flex-col justify-end items-center gap-2.5 inline-flex`}
+                  ></GradientImage>
+                ) : (
+                  <GradientVideo
+                  url={banner.video?.url || ""}
+                  containerclassName={`snap-center snap-always ${
+                    index === 1 && "snap-mandatory"
+                  } min-w-full px-2 pt-2 flex-col justify-end items-center gap-2.5 inline-flex`}
+                  />
+                )}
+                </React.Fragment>
         ))}
         <section className="absolute bottom-20 w-full z-10 flex justify-center default-paddings pointer-events-none">
           <section className="w-full flex flex-col justify-center items-start gap-4 max-w-screen-xl">
