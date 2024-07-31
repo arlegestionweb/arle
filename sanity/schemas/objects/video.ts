@@ -19,6 +19,6 @@ export const videoSchema = defineField({
       title: "Imagen de Carga",
       type: "imagenObject",
     })
-
-  ]
+  ],
+  hidden: ({ parent }) => parent?.imagenOVideo,
 })
