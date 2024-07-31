@@ -37,7 +37,10 @@ const zodAsesoriaSchema = z.object({
   imagenAsesoria: z.object({
     imagenOVideo: z.boolean(),
     imagen: imageSchema.optional().nullable(),
-    video: videoSchema.optional().nullable(),
+    videoObject: z.object({
+      video: videoSchema.optional().nullable(),
+      imagenDeCarga: z.string().optional().nullable(),
+    })
   }),
 });
 export type TAsesoriaSection = z.infer<typeof zodAsesoriaSchema>;
@@ -115,8 +118,11 @@ const homepageQueryString = `*[_type == "homepage"][0]{
         alt,
         "url": asset->url,
       },
-      "video": video.video {
-        "url": asset->url,
+      "videoObject": videoObject{
+        "video": video.video {
+          "url": asset->url,
+        },
+        "imagenDeCarga": asset->url,
       },
     }
   },
