@@ -16,6 +16,7 @@ import { TPricing } from "@/app/[type]/[id]/_components/Product";
 import { GoChevronLeft } from "react-icons/go";
 import { isGafa, isReloj } from "@/sanity/queries/pages/listingQueries";
 import CollapsibleProductSection from "@/app/[type]/[id]/_components/CollapsibleSection";
+import ProductSlide from "../ProductSlide";
 
 type HeroProductProps = {
   product: TPerfumeLujo | TRelojLujo | TGafaLujo;
@@ -42,8 +43,14 @@ const HeroProduct = ({
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 row-auto w-full lg:max-w-screen-xl lg:py-8">
       {/* Product view */}
+      <ProductSlide
+        slug={product.slug}
+        imagesProduct={images}
+        className={"max-h-[377px] lg:hidden w-full"}
+        isLink={false}
+      />
       <GalleryProduct
-        className="col-start-1 col-span-6"
+        className="col-start-1 col-span-6 hidden lg:flex"
         imagesProduct={images}
         orientation={!isReloj(product) ? "horizontal" : "vertical"}
       />
