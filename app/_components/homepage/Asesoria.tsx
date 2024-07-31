@@ -1,6 +1,7 @@
 import Link from "next/link";
 import GradientImage from "../GradientImage";
 import { TAsesoriaSection } from "@/sanity/queries/pages/homepageQuery";
+import GradientVideo from "../GradientVideo";
 
 type PageProps = {
     content: TAsesoriaSection
@@ -11,13 +12,23 @@ const Asesoria = ({content}: PageProps) => {
 		<section className="w-full flex flex-col md:flex-row md:justify-end bg-white">
 			{content.usarImagen && content.imagenAsesoria.imagen && (
 				<section className="w-full md:w-1/2 h-[350px] sm:h-[400px] p-8  md:pr-0 md:max-w-screen-sm">
-					<GradientImage
-					alt={content.imagenAsesoria.imagen.alt || ""}
-					src={content.imagenAsesoria.imagen.url}
-					layout="fill"
-					gradientOff
-					containerclassName="w-full h-[400px] bg-color-bg-surface-1-default self-stretch">
+					{content.imagenAsesoria.imagenOVideo ? (
+						<GradientImage
+						alt={content.imagenAsesoria.imagen.alt || ""}
+						src={content.imagenAsesoria.imagen.url}
+						layout="fill"
+						gradientOff
+						containerclassName="w-full h-[400px] bg-color-bg-surface-1-default self-stretch">
 					</GradientImage>
+					): (
+						<GradientVideo
+							url={content.imagenAsesoria.videoObject?.video?.url || ""}
+							imagenUrl={content.imagenAsesoria.videoObject?.imagenDeCarga?.url || ""}
+							imagenAlt={content.imagenAsesoria.videoObject?.imagenDeCarga?.alt || ""}
+							containerclassName="w-full h-[400px] bg-color-bg-surface-1-default self-stretch"
+							gradientOff
+						/>
+					)}
 				</section>
 			)}
 			<section className={`${content.usarImagen ? 'w-full md:w-1/2 items-start' : 'w-full items-center'} md:pl-14  px-8 sm:px-14 pb-14 md:py-0 flex flex-col justify-center gap-6`}>

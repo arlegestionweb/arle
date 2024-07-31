@@ -1,11 +1,24 @@
 import { defineField } from "sanity";
 
 export const videoSchema = defineField({
-  name: "video",
+  name: "videoObject",
   title: "Video",
-  type: "file",
-  // group: "general",
-  options: {
-    accept: "video/*",
-  },
+  type: "object",
+  fields: [
+    defineField({
+      name: "video",
+      title: "Video",
+      type: "file",
+      // group: "general",
+      options: {
+        accept: "video/*",
+      },
+    }),
+    defineField({
+      name: "imagenDeCarga",
+      title: "Imagen de Carga",
+      type: "imagenObject",
+    })
+
+  ]
 })
