@@ -37,6 +37,7 @@ function GradientVideo({
         // ref={videoRef}
         className="h-full w-full absolute object-cover"
         src={url}
+        playsInline
         loop
         autoPlay
         muted
