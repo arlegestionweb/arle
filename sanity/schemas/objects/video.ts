@@ -17,7 +17,7 @@ export const videoSchema = defineField({
     defineField({
       name: "imagenDeCarga",
       title: "Imagen de Carga",
-      type: "image",
+      type: "imagenObject",
     })
 
   ]

@@ -71,8 +71,8 @@ const Banner = ({ content, className }: BannerProps) => {
                   ></GradientImage>
                 ) : (
                   <GradientVideo
-                  url={banner.videoObject.video?.url || ""}
-                  imagenUrl={banner.videoObject.imagenDeCarga || ""}
+                  url={banner.videoObject?.video?.url || ""}
+                  imagenUrl={banner.videoObject?.imagenDeCarga.url || ""}
                   containerclassName={`snap-center snap-always ${
                     index === 1 && "snap-mandatory"
                   } min-w-full px-2 pt-2 flex-col justify-end items-center gap-2.5 inline-flex`}

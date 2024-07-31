@@ -22,9 +22,11 @@ const zodHeroSchema = z.object({
       imagen: imageSchema.optional().nullable(),
       videoObject: z.object({
         video: videoSchema.optional().nullable(),
-        imagenDeCarga: z.string().optional().nullable(),
-      })
-    })
+        imagenDeCarga: z.object({
+          url: z.string().optional().nullable(),
+        }),
+      }).optional().nullable()
+    }),
   ),
 });
 
@@ -39,8 +41,10 @@ const zodAsesoriaSchema = z.object({
     imagen: imageSchema.optional().nullable(),
     videoObject: z.object({
       video: videoSchema.optional().nullable(),
-      imagenDeCarga: z.string().optional().nullable(),
-    })
+      imagenDeCarga: z.object({
+        url: z.string().optional().nullable(),
+      }),
+    }).optional().nullable()
   }),
 });
 export type TAsesoriaSection = z.infer<typeof zodAsesoriaSchema>;
