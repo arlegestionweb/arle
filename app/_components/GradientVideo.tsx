@@ -4,6 +4,7 @@ import { RiPlayMiniLine } from "react-icons/ri";
 type GradientVideoProps = {
   url: string;
   imagenUrl?: string;
+  imagenAlt?: string;
   containerclassName?: string;
   children?: React.ReactNode;
   gradientOff?: boolean;
@@ -12,6 +13,7 @@ type GradientVideoProps = {
 function GradientVideo({
   url,
   imagenUrl,
+  imagenAlt,
   containerclassName,
   children,
   gradientOff,
@@ -47,7 +49,7 @@ function GradientVideo({
         >
           <source src={url} />
           {imagenUrl && (
-          <img src={imagenUrl} alt="video preload" />
+          <img src={imagenUrl} alt={imagenAlt} />
           )}
       </video>
       {/* <div

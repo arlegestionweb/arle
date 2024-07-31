@@ -39,9 +39,7 @@ const zodAsesoriaSchema = z.object({
     imagen: imageSchema.optional().nullable(),
     videoObject: z.object({
       video: videoSchema.optional().nullable(),
-      imagenDeCarga: z.object({
-        url: z.string().optional().nullable(),
-      }),
+      imagenDeCarga: imageSchema.optional().nullable(),
     }).optional().nullable()
   }),
 });

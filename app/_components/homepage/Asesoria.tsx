@@ -24,6 +24,7 @@ const Asesoria = ({content}: PageProps) => {
 						<GradientVideo
 							url={content.imagenAsesoria.videoObject?.video?.url || ""}
 							imagenUrl={content.imagenAsesoria.videoObject?.imagenDeCarga?.url || ""}
+							imagenAlt={content.imagenAsesoria.videoObject?.imagenDeCarga?.alt || ""}
 							containerclassName="w-full h-[400px] bg-color-bg-surface-1-default self-stretch"
 							gradientOff
 						/>
