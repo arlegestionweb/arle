@@ -42,8 +42,6 @@ const Banner = ({ content, className }: BannerProps) => {
   const width = 2000;
   const height = null;
 
-  console.log(content.banners)
-
   return (
     <section
       className={cn(
