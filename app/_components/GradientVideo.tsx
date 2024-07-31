@@ -3,6 +3,7 @@ import { RiPlayMiniLine } from "react-icons/ri";
 
 type GradientVideoProps = {
   url: string;
+  imagenUrl?: string;
   containerclassName?: string;
   children?: React.ReactNode;
   gradientOff?: boolean;
@@ -10,6 +11,7 @@ type GradientVideoProps = {
 
 function GradientVideo({
   url,
+  imagenUrl,
   containerclassName,
   children,
   gradientOff,
@@ -36,13 +38,17 @@ function GradientVideo({
       <video
         // ref={videoRef}
         className="h-full w-full absolute object-cover"
-        src={url}
         playsInline
         loop
         autoPlay
         muted
+        preload="metadata"
+        poster={imagenUrl}
         >
-        Your browser does not support the video tag.
+          <source src={url} />
+          {imagenUrl && (
+          <img src={imagenUrl} alt="video preload" />
+          )}
       </video>
       {/* <div
         className={cn("absolute top-0 transition-all ease-out duration-200 bg-gradient-to-t from-black to-transparent opacity-80 right-0 w-full h-full  flex justify-center items-center", {"opacity-0": pauseVideo})}
