@@ -83,8 +83,9 @@ export default async function RootLayout({
   const url = process.env.NEXT_PUBLIC_SITE_URL
 
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
+        <meta name="google" content="notranslate" />
         {/* <PlausibleProvider domain={isProduction ? "arle.co" : "beta.arle.co"} /> */}
         <script defer data-domain={url} src="https://plausible.io/js/script.js"></script>
         <Script 
