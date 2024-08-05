@@ -13,7 +13,6 @@ import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import Banner from "../_components/homepage/Banner";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
-import { unstable_noStore as noStore } from "next/cache";
 import Main from "../_components/Main";
 import { Metadata } from "next";
 
@@ -102,7 +101,6 @@ const Listing = async ({
     [key: string]: string | string[] | undefined;
   };
 }) => {
-  noStore();
   const pageContent = await getListingInitialLoadContent();
 
   // GENERAL PARAMS

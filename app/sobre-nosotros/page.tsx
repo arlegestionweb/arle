@@ -3,7 +3,6 @@ import Main from "../_components/Main";
 import { Metadata } from "next";
 import AboutSubMenu from "../_components/AboutSubMenu";
 import Link from "next/link";
-import { unstable_noStore as noStore } from "next/cache";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +11,6 @@ export const metadata: Metadata = {
 }
 
 const Page = async () => {
-  noStore();
   const pageContent = await getSobreNosotrosContent();
   if (!pageContent) {
     return <main>

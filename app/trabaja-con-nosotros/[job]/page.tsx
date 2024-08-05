@@ -10,10 +10,8 @@ import { IoLocationOutline } from "react-icons/io5";
 import { PiCoins, PiSuitcaseSimple } from "react-icons/pi";
 import { MdChecklistRtl } from "react-icons/md";
 import { FaRegClock } from "react-icons/fa6";
-import { unstable_noStore as noStore } from "next/cache";
 
 const Page = async ({ params }: { params: { job: string } }) => {
-  noStore();
   const trabajo = await getJobByTitle(params?.job);
   const pageContent = await getTrabajaConNosotrosContent();
 

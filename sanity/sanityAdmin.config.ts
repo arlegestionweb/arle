@@ -4,6 +4,7 @@ import { deskTool } from "sanity/desk";
 import structure from "./structure";
 import { schemaTypes } from "./schemas/schemaTypes";
 import { colorInput } from "@sanity/color-input";
+import { vercelDeployTool } from "sanity-plugin-vercel-deploy"
 
 
 
@@ -22,6 +23,8 @@ export const sanityAdminConfig = {
     }),
     colorInput(),
     // visionTool()
+    vercelDeployTool(),
+
   ],
   schema: {
     types: schemaTypes,

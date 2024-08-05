@@ -8,9 +8,8 @@ import {
   getSiteSettingsMetadata,
 } from "@/sanity/queries/siteSettings";
 import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQueries";
-import PlausibleProvider from 'next-plausible'
+// import PlausibleProvider from 'next-plausible'
 import PopUpBanner from "./_components/PopUpBanner";
-import { unstable_noStore as noStore } from "next/cache";
 
 
 
@@ -74,7 +73,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   
-  noStore();
   const siteSettings = await getSiteSettings();
   const nuestrasSedes = await getNuestrasSedesContent();
 
