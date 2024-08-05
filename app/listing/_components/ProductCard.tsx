@@ -26,6 +26,7 @@ import { TVarianSelectorProps } from "@/app/_components/types/card";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { isGafaLujo, isPerfumeLujo, isPerfumePremium, isRelojLujo } from "@/sanity/queries/pages/types";
 import ImageWrapper from "./ImageWrapper";
+import { addedToCartView } from "@/app/_lib/pixelActions";
 
 const ProductoCard = ({
   producto,
@@ -125,7 +126,8 @@ const CardLayout = ({
   pricing: TPricing;
 }) => {
   const { addItem } = useCartStore();
-  const addToCart = (
+
+  const addToCart = async (
     producto: TProduct,
     selectedVariant: TVariant,
     quantity: number = 1
@@ -139,6 +141,12 @@ const CardLayout = ({
       discountType: "none",
       originalPrice: pricing.precioSinDescuento,
     });
+    const productObject = {
+      productName : `${product.marca} ${product._id}`,
+      productType: `${product._type}`,
+      productValue: `${selectedVariant.precio}`
+    }
+    await addedToCartView(productObject);
   };
 
   const imgSrc = 

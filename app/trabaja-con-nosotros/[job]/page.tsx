@@ -18,7 +18,7 @@ const Page = async ({ params }: { params: { job: string } }) => {
   if (!trabajo) return null;
 
   return (
-    <Main extraClasses="bg-white flex flex-col min-h-screen md:mt-[53px] default-paddings">
+    <Main extraClasses="bg-white flex flex-col min-h-screen md:mt-[53px] default-paddings items-center">
       <section className="relative py-5 gap-5 md:gap-8 w-full flex flex-col max-w-screen-xl">
         <Link
           href="/trabaja-con-nosotros"
@@ -37,7 +37,7 @@ const Page = async ({ params }: { params: { job: string } }) => {
           src="/isoLogo.svg"
         />
         <h1 className="about-title">{trabajo.titulo}</h1>
-        <section className="flex flex-col text-gray-600 gap-1.5">
+        <section className="flex flex-col text-gray-600 gap-4">
           <p className="about-text flex gap-2">
             <IoLocationOutline className="text-lg" />
             {`Sede: ${trabajo.sede.nombre} - ${trabajo.sede.ciudad}`}

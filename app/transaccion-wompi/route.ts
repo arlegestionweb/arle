@@ -7,6 +7,8 @@ import { TProductType } from "../_components/navbar/menu";
 import { revalidatePath } from "next/cache";
 import { sendAdminInvoiceEmail, sendClientInvoiceEmail } from "../_components/actions/send-email";
 
+
+
 type WompiRequest = {
   event: string;
   data: {
@@ -49,6 +51,15 @@ type WompiRequest = {
   };
   environment: string;
 };
+
+async function hashString(email: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(email);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashHex;
+}
 
 export const POST = async (req: Request, res: Response) => {
   const request: WompiRequest = await req.json();
@@ -137,6 +148,51 @@ export const POST = async (req: Request, res: Response) => {
 
   revalidatePath("/listing", "page")
   revalidatePath("/[type]/[id]/page", "page")
+
+  const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`
+
+  const email = await hashString(request.data.transaction.customer_email);
+  const phone = await hashString(request.data.transaction.customer_data.phone_number);
+  const name = await hashString(request.data.transaction.customer_data.full_name);
+
+  const pixelEvent = {
+            "data": [
+                {
+                    "event_name": "Purchase",
+                    "event_time": new Date().toISOString(),
+                    "action_source": "website",
+                    "user_data": {
+                        "em": [
+                            `${email}`
+                        ],
+                        "ph": [
+                            `${phone}`
+                        ],
+                        "fn": [
+                          `${name}`
+                        ]
+                    },
+                    "custom_data": {
+                        "currency": "COP",
+                        "value": `${request.data.transaction.amount_in_cents / 100}`
+                    }
+                }
+            ],
+      };
+
+  const postReq = await fetch(pixelUrl, {
+    method: 'POST',
+    headers: {
+    'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(pixelEvent),
+});
+
+if (!postReq.ok) {
+    console.error('Failed to send event to Pixel API', await postReq.text());
+} else {
+    console.log('Compra exitosa');
+}
 
   return new Response("Transacción exitosa", { status: 200 });
 };

@@ -9,6 +9,8 @@ import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
+import ProductViewer from "../ProductViewer";
+import { ProductTypes } from "@/app/_lib/pixelActions";
 
 type TPerfumePremiumProps = {
   product: TPerfumePremium;
@@ -19,6 +21,7 @@ type TPerfumePremiumProps = {
   pricing: TPricing;
 };
 
+
 const PerfumePremium = ({
   product,
   selectedVariant,
@@ -27,8 +30,16 @@ const PerfumePremium = ({
   setCantidad,
   pricing,
 }: TPerfumePremiumProps) => {
+
+  const productObject = {
+    productName: `${product.marca} ${product.titulo}`,
+    productType: `${product._type}`,
+    productValue: `${selectedVariant.precio}`
+  }
+
   return (
     <>
+      <ProductViewer productObject={productObject} />
       <PremiumLayout
         product={product}
         selectedVariant={selectedVariant}

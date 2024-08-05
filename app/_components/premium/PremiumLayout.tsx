@@ -35,7 +35,6 @@ const PremiumLayout = ({
       <section className="w-full max-w-screen-xl flex flex-col lg:flex-row-reverse lg:items-center gap-8 ">
         <ProductViewer
           product={product}
-          className=""
           selectedVariant={selectedVariant}
         />
 

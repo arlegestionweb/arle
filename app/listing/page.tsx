@@ -105,7 +105,7 @@ const Listing = async ({
 
   // GENERAL PARAMS
 
-  const sortSeleccionado = (searchParams.sort as string) || "aleatorio";
+  const sortSeleccionado = (searchParams.sort as string) || "recientes";
 
   if (!(sortSeleccionado in sortingFunctions)) {
     throw new Error(`Invalid sort option: ${sortSeleccionado}`);

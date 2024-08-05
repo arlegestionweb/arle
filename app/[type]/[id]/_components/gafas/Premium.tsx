@@ -9,6 +9,7 @@ import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
+import ProductViewer from "../ProductViewer";
 
 type TGafaPremiumProps = {
   product: TGafaPremium;
@@ -27,8 +28,16 @@ const GafaPremium = ({
   setCantidad,
   pricing,
 }: TGafaPremiumProps) => {
+
+  const productObject = {
+    productName: `${product.marca} ${product.modelo}`,
+    productType: `${product._type}`,
+    productValue: `${selectedVariant.precio}`
+  }
+  
   return (
     <>
+      <ProductViewer productObject={productObject} />
       <PremiumLayout
         product={product}
         selectedVariant={selectedVariant}

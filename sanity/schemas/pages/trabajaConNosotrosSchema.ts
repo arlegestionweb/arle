@@ -76,7 +76,7 @@ export const trabajaConNosotrosSchema = defineType({
           defineField({
             name: "modality",
             title: "Modalidad",
-            type: "string",
+            type: "text",
             validation: (Rule) => Rule.required(),
           }),
           defineField({
@@ -91,9 +91,6 @@ export const trabajaConNosotrosSchema = defineType({
             title: "salario",
             type: "string",
             validation: (Rule) => Rule.required(),
-            components: {
-              input: ColombianPrice,
-            }
           }),
           defineField({
             name: "aboutJob",

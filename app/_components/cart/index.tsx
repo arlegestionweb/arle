@@ -20,6 +20,7 @@ import Spinner from "../Spinner";
 import { MdOutlinePayments } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import ArleBasicLogo from "../ArleBasicLogo";
+import { initiateCheckoutView } from "@/app/_lib/pixelActions";
 
 const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
   const pathname = usePathname();
@@ -205,6 +206,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                   type="submit"
                   labelType={"dark"}
                   // onClick={() => formState && formState.data && setIsWompipaymentOpen(true)}
+                  onClick={() => initiateCheckoutView(getCartTotal())}
                   className="flex justify-center items-center gap-2 w-full max-w-sm button-float"
                 >
                   <MdOutlinePayments className="text-base" />

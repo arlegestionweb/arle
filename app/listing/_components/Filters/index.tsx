@@ -149,7 +149,7 @@ const Filters = ({
           </Button>
           <Button className="flex items-center gap-1 relative text-ellipsis whitespace-nowrap" labelType={"lightSmall"} type="button" onClick={toggleSorting} >
             <LuSettings2 className="h-3 w-3" width={14} height={14} />
-            Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Aleatorio"}
+            Ordenar por: {sortingOptions.find(option => option.value === searchParams.get("sort"))?.label || "Recientes"}
             <Dropdown options={sortingOptions} isOpen={isSortingOpen} onClose={() => setIsSortingOpen(false)} />
           </Button>
         </section>
