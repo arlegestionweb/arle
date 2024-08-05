@@ -17,12 +17,14 @@ export const monturaSchema = defineField({
       title: "Forma de la Montura",
       type: "reference",
       validation: (Rule) => Rule.required(),
+      // @ts-ignore
       to: [{ type: "formaDeLaMontura" }],
     }),
     defineField({
       name: "materialMontura",
       title: "Material de la Montura",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "materialDelMarco" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -30,6 +32,7 @@ export const monturaSchema = defineField({
       name: "materialVarilla",
       title: "Material de la Varilla",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "materialDeLaVarilla" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -46,6 +49,7 @@ export const lenteSchema = defineField({
       name: "material",
       title: "Material del Lente",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "materialDelLente" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -53,6 +57,7 @@ export const lenteSchema = defineField({
       name: "tipo",
       title: "Tipo de Lente",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "tipoDeLente" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -68,6 +73,7 @@ const varianteDeGafa = defineField({
       name: "colorDeLaMontura",
       title: "Color de la Montura",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "colores" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -75,6 +81,7 @@ const varianteDeGafa = defineField({
       name: "colorDeLaVarilla",
       title: "Color de la Varilla",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "colores" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -82,6 +89,7 @@ const varianteDeGafa = defineField({
       name: "colorDelLente",
       title: "Color del Lente",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "colores" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -181,6 +189,7 @@ export const detallesDeGafaSchema = defineField({
       name: "tipoDeGafa",
       title: "Tipo de Gafa",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "tipoDeGafa" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -188,6 +197,7 @@ export const detallesDeGafaSchema = defineField({
       name: "estiloDeGafa",
       title: "Estilo de Gafa",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "estiloDeGafa" }],
       validation: (Rule) => Rule.required(),
     }),

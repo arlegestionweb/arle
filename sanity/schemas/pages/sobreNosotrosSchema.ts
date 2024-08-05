@@ -40,6 +40,7 @@ export const sobreNosotrosSchema = defineType({
       title: "Marcas Aliadas",
       type: "array",
       validation: (Rule) => Rule.required(),
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "marca",

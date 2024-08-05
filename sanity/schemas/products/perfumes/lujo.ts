@@ -41,6 +41,7 @@ export const perfumeLujoSchema = defineType({
       name: "marca",
       title: "Marca",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "marca" }],
       group: "general",
       validation: (Rule) => Rule.required(),
@@ -60,6 +61,7 @@ export const perfumeLujoSchema = defineType({
       title: "Concentración",
       type: "reference",
       group: "detalles",
+      // @ts-ignore
       to: [{ type: "concentracion" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -76,6 +78,7 @@ export const perfumeLujoSchema = defineType({
       title: "Descripción",
       type: "object",
       group: "detalles",
+      // @ts-ignore
       fields: [
         defineField({
           name: "texto",
@@ -132,6 +135,7 @@ export const perfumeLujoSchema = defineType({
       title: "Ingredientes",
       group: "detalles",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           type: "reference",
@@ -145,6 +149,7 @@ export const perfumeLujoSchema = defineType({
       type: "reference",
       group: "detalles",
       validation: (Rule) => Rule.required(),
+      // @ts-ignore
       to: [{ type: "paisDeOrigen" }],
     }),
     variantesDePerfumesSchema,

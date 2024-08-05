@@ -11,6 +11,7 @@ export const listingSchema = defineType({
       name: "generalBanners",
       title: "Banners Generales",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "banner",
@@ -45,6 +46,7 @@ export const listingSchema = defineType({
               title: "Video",
               type: "object",
               hidden: ({ parent }) => parent?.imagenOVideo,
+              // @ts-ignore
               fields: [videoSchema],
             }),
           ],
@@ -70,6 +72,7 @@ export const listingSchema = defineType({
       name: "perfumesBanners",
       title: "Banners de Perfumes",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "banner",
@@ -104,6 +107,7 @@ export const listingSchema = defineType({
               title: "Video",
               type: "object",
               hidden: ({ parent }) => parent?.imagenOVideo,
+              // @ts-ignore
               fields: [videoSchema],
             }),
           ],
@@ -129,6 +133,7 @@ export const listingSchema = defineType({
       name: "gafasBanners",
       title: "Banners de Gafas",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "banner",
@@ -163,6 +168,7 @@ export const listingSchema = defineType({
               title: "Video",
               type: "object",
               hidden: ({ parent }) => parent?.imagenOVideo,
+              // @ts-ignore
               fields: [videoSchema],
             }),
           ],
@@ -188,6 +194,7 @@ export const listingSchema = defineType({
       name: "relojesBanners",
       title: "Banners de Relojes",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "banner",
@@ -222,6 +229,7 @@ export const listingSchema = defineType({
               title: "Video",
               type: "object",
               hidden: ({ parent }) => parent?.imagenOVideo,
+              // @ts-ignore
               fields: [videoSchema],
             }),
           ],

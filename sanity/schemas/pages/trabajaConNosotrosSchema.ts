@@ -35,6 +35,7 @@ export const trabajaConNosotrosSchema = defineType({
     name: "jobs",
     title: "Empleos",
     type: "array",
+    // @ts-ignore
     of: [
       defineArrayMember({
         name: "job",
@@ -51,6 +52,7 @@ export const trabajaConNosotrosSchema = defineType({
             name: "sede",
             title: "Sede",
             type: "reference",
+            // @ts-ignore
             to: [{ type: "sede" }],
             validation: (Rule) => Rule.required(),
           }),
@@ -65,6 +67,7 @@ export const trabajaConNosotrosSchema = defineType({
             title: "Habilidades",
             type: "array",
             validation: (Rule) => Rule.required(),
+            // @ts-ignore
             of: [
               defineArrayMember({
                 name: "skill",
@@ -97,6 +100,7 @@ export const trabajaConNosotrosSchema = defineType({
             title: "Acerca del trabajo",
             type: "array",
             validation: (Rule) => Rule.required(),
+            // @ts-ignore
             of: [{type: "block"}]
           })
         ],

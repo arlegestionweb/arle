@@ -33,6 +33,7 @@ const varianteDeRelojes = defineField({
       name: "colorCaja",
       title: "Color de la Caja",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "colores" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -40,6 +41,7 @@ const varianteDeRelojes = defineField({
       name: "colorTablero",
       title: "Color del Tablero",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "colores" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -47,6 +49,7 @@ const varianteDeRelojes = defineField({
       name: "colorPulso",
       title: "Color del Pulso",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "colores" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -116,6 +119,7 @@ export const movimientoObjSchema = defineField({
       name: "contenido",
       title: "Contenido",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "descripcion",
@@ -165,6 +169,7 @@ export const funcionesSchema = defineField({
       name: "funcionDeReloj",
       title: "Función",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "funcionDeReloj" }],
     }),
   ],
@@ -208,6 +213,7 @@ export const especificacionesRelojesLujoSchema = defineField({
       name: "tipoDeCierre",
       title: "Tipo de cierre",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "tipoDeCierre"}],
       validation: (Rule) => Rule.required(),
     }),
@@ -215,6 +221,7 @@ export const especificacionesRelojesLujoSchema = defineField({
       name: "tipoDeReloj",
       title: "Tipo de Reloj",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "tipoDeReloj" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -222,6 +229,7 @@ export const especificacionesRelojesLujoSchema = defineField({
       name: "estiloDeReloj",
       title: "Estilo de Reloj",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "estiloDeReloj" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -238,6 +246,7 @@ export const cajaSchema = defineField({
       name: "cristal",
       title: "Cristal",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "cristal" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -252,6 +261,7 @@ export const cajaSchema = defineField({
       name: "material",
       title: "Material de la Caja",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "materialDeCaja" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -270,6 +280,7 @@ export const detallesRelojSchema = defineField({
       name: "tipoDeReloj",
       title: "Tipo de Reloj",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "tipoDeReloj" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -277,6 +288,7 @@ export const detallesRelojSchema = defineField({
       name: "estiloDeReloj",
       title: "Estilo de Reloj",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "estiloDeReloj" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -286,6 +298,7 @@ export const detallesRelojSchema = defineField({
       name: "tipoDeCierre",
       title: "Tipo de cierre",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "tipoDeCierre"}],
       validation: (Rule) => Rule.required(),
     }),

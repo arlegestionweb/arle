@@ -22,6 +22,7 @@ export const nuestrasSedesSchema = defineType({
       name: "sedes",
       title: "Sedes",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "sede",
@@ -64,6 +65,7 @@ export const sedeSchema = defineType({
       name: "ciudad",
       title: "Ciudad",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "ciudad" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -96,6 +98,7 @@ export const sedeSchema = defineType({
       title: "Imágenes",
       type: "array",
       validation: (Rule) => Rule.required(),
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "image",

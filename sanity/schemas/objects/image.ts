@@ -141,6 +141,7 @@ export const newImagesArrayForProducts = defineField({
       name: "imagen",
       title: "Imagen",
       type: "object",
+      // @ts-ignore
       fields: [
         // defineField({
         //   name: "useExternalImage",

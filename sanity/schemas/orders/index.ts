@@ -84,6 +84,7 @@ export const ordersSchema = defineType({
       title: "Cliente",
       type: "object",
       group: "general",
+      // @ts-ignore
       fields: [
         defineField({
           name: "name",
@@ -125,6 +126,7 @@ export const ordersSchema = defineType({
       title: "Cantidades",
       type: "object",
       group: "general",
+      // @ts-ignore
       fields: [
         defineField({
           name: "subtotal",
@@ -158,6 +160,7 @@ export const ordersSchema = defineType({
       title: "Envío",
       type: "object",
       group: "envio",
+      // @ts-ignore
       fields: [
         defineField({
           name: "price",
@@ -200,6 +203,7 @@ export const ordersSchema = defineType({
       title: "Items",
       type: "array",
       group: "productos",
+      // @ts-ignore
       of: [
         defineField({
           name: "orderItem",
@@ -210,6 +214,7 @@ export const ordersSchema = defineType({
               name: "productId",
               title: "Producto",
               type: "reference",
+              // @ts-ignore
               to: [
                 { type: "gafasLujo" },
                 { type: "gafasPremium" },

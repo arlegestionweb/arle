@@ -18,6 +18,7 @@ export const relojesPremiumSchema = defineType({
       title: "Marca",
       type: "reference",
       group: "general",
+      // @ts-ignore
       to: [{ type: "marca" }],
       validation: (Rule) => Rule.required(),
     }),

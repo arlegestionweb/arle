@@ -25,6 +25,7 @@ export const resenaPerfumesSchema = defineField({
       name: "inspiracion",
       title: "Inspiraicón, historia u otros",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           type: "block",
@@ -35,6 +36,7 @@ export const resenaPerfumesSchema = defineField({
       name: "ingredientes",
       title: "Ingredientes",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "ingrediente",
@@ -140,6 +142,7 @@ export const detallesPerfumeSchema = defineField({
       name: "concentracion",
       title: "Concentración",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "concentracion" }],
       validation: (Rule) => Rule.required(),
     }),

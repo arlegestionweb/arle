@@ -35,6 +35,7 @@ export const bannersDeProductoSchema = defineField({
       title: "Banner",
       type: "object",
       icon: PiFlagBannerFill,
+      // @ts-ignore
       fields: [
         defineField({
           name: "imagenOVideo",
@@ -89,6 +90,7 @@ export const detallesLujoSchema = defineField({
       name: "contenido",
       title: "Contenido",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "texto",
@@ -123,6 +125,7 @@ export const monturaDetallesSchema = defineField({
       name: "contenido",
       title: "Contenido",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "texto",
@@ -153,6 +156,7 @@ export const resenaSchema = defineField({
       name: "inspiracion",
       title: "Inspiraicón, historia u otros",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           type: "block",
@@ -186,6 +190,7 @@ export const inspiracionSchema = defineField({
       name: "contenido",
       title: "Contenido",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "resena",

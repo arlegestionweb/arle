@@ -8,12 +8,14 @@ export const homeSchema = defineType({
   name: "homepage",
   title: "Home",
   type: "document",
+  // @ts-ignore
   icon: HomeIcon,
   fields: [
     defineField({
       name: "hero",
       title: "Sección Principal",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",
@@ -42,6 +44,7 @@ export const homeSchema = defineType({
               title: "Banner",
               type: "object",
               icon: PiFlagBannerFill,
+              // @ts-ignore
               fields: [
                 defineField({
                   name: "imagenOVideo",
@@ -81,6 +84,7 @@ export const homeSchema = defineType({
       name: "perfumes",
       title: "Perfumes",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",
@@ -106,6 +110,7 @@ export const homeSchema = defineType({
       name: "relojes",
       title: "Relojes",
       type: "object",
+      // @ts-ignore   
       fields: [
         defineField({
           name: "titulo",
@@ -131,6 +136,7 @@ export const homeSchema = defineType({
       name: "gafas",
       title: "Gafas",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",
@@ -156,6 +162,7 @@ export const homeSchema = defineType({
       name: "coleccionesDestacadas",
       title: "Colecciones Destacadas",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "coleccion",
@@ -170,6 +177,7 @@ export const homeSchema = defineType({
       name: "sobre",
       title: "Sobre Arlé",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",
@@ -198,6 +206,7 @@ export const homeSchema = defineType({
       name: "asesoria",
       title: "Asesorías",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",

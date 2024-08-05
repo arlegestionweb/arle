@@ -16,6 +16,7 @@ export default defineField({
       title: "Banner",
       type: "object",
       icon: PiFlagBannerFill,
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",

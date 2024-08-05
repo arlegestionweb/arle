@@ -5,6 +5,7 @@ export const siteSettings = defineType({
   name: "configuracion",
   title: "Configuración",
   type: "document",
+  // @ts-ignore
   icon: CogIcon,
     groups: [
     {
@@ -37,6 +38,7 @@ export const siteSettings = defineType({
       title: "Marca Promocionada",
       group: "general",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "marca" }],
     }),
     defineField({
@@ -44,6 +46,7 @@ export const siteSettings = defineType({
       title: "Links Sociales",
       group: "general",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "link",
@@ -74,6 +77,7 @@ export const siteSettings = defineType({
       title: "Legal",
       group: "legal",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "terminosCondiciones",
@@ -120,6 +124,7 @@ export const siteSettings = defineType({
       title: "Pop Up Banner",
       type: "object",
       group: "general",
+      // @ts-ignore
       fields: [
         defineField({
           name: "usarPopup",

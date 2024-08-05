@@ -34,6 +34,7 @@ export const notasOlfativasProdSchema = defineField({
       name: "familiaOlfativa",
       title: "Familia olfativa",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "familiasOlfativas" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -41,6 +42,7 @@ export const notasOlfativasProdSchema = defineField({
       name: "notasDeSalida",
       title: "Notas de salida",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           type: "reference",
@@ -53,6 +55,7 @@ export const notasOlfativasProdSchema = defineField({
       title: "Notas de Base",
       type: "array",
       validation: (Rule) => Rule.required(),
+      // @ts-ignore
       of: [
         defineArrayMember({
           type: "reference",
@@ -65,6 +68,7 @@ export const notasOlfativasProdSchema = defineField({
       title: "Notas de Corazón",
       type: "array",
       validation: (Rule) => Rule.required(),
+      // @ts-ignore
       of: [
         defineArrayMember({
           type: "reference",
