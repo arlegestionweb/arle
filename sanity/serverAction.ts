@@ -1,6 +1,4 @@
-"use server";
-
-const vercelDeployHook = process.env.VERCEL_DEPLOY_HOOK;
+const vercelDeployHook = process.env.NEXT_PUBLIC_VERCEL_DEPLOY_HOOK;
 
 export const deployVercel = () => {
   if (!vercelDeployHook) {
@@ -8,11 +6,11 @@ export const deployVercel = () => {
     return;
   }
 
-  if (process.env.NODE_ENV !== "production") {
-    console.log("Deploying to Vercel...");
-  
-    fetch(vercelDeployHook, {
-      method: "POST",
-    });
-  }
+  // if (process.env.NODE_ENV !== "production") {
+  // console.log("Deploying to Vercel...");
+
+  fetch(vercelDeployHook, {
+    method: "POST",
+  });
+  // }
 };
