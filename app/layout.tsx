@@ -58,7 +58,7 @@ const play = Play({
 })
 
 export async function generateMetadata() {
-  
+
   // fetch data
   const Metadata = await getSiteSettingsMetadata();
   // optionally access and extend (rather than replace) parent metadata
@@ -74,7 +74,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  
+
   const siteSettings = await getSiteSettings();
   const nuestrasSedes = await getNuestrasSedesContent();
 
@@ -86,11 +86,11 @@ export default async function RootLayout({
         <meta name="google" content="notranslate" />
         {/* <PlausibleProvider domain={isProduction ? "arle.co" : "beta.arle.co"} /> */}
         <script defer data-domain={url} src="https://plausible.io/js/script.js"></script>
-        <Script 
-        id="fb-pixel"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
+        <Script
+          id="fb-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -102,16 +102,16 @@ export default async function RootLayout({
             fbq('init', ${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID});
             fbq('track', 'PageView');
           `,
-        }}
-      />
+          }}
+        />
       </head>
 
       <body
         className={`${inter.variable} ${tajawal.variable} ${raleway.variable} ${kanit.variable} ${crimson.variable} ${jomolhari.variable} ${play.variable} overflow-x-hidden no-scrollbar`}
       >
-        { siteSettings?.popup && siteSettings.popup.usarPopup &&
-        <PopUpBanner popup={siteSettings.popup}/>
-      }
+        {siteSettings?.popup && siteSettings.popup.usarPopup &&
+          <PopUpBanner popup={siteSettings.popup} />
+        }
         <Navbar
           marca={
             siteSettings?.marcaPromocionada &&
