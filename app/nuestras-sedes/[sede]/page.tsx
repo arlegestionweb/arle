@@ -4,7 +4,6 @@ import Main from "@/app/_components/Main";
 import { GoChevronLeft } from "react-icons/go";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
 
 const Page = async ({params}: { params: { sede: string }}) => {
 
@@ -29,7 +28,7 @@ const Page = async ({params}: { params: { sede: string }}) => {
 			</header>
 			</section>
 			<ImageScroller images={sede.imagenes}/>
-			<section className="flex flex-col md:flex-row w-full max-w-screen-xl md:h-[400px]">
+			<section className="flex flex-col md:flex-row w-full max-w-screen-xl">
 				<article className="w-full md:w-[50%] flex flex-col p-12 pb-0 md:pb-12 gap-5 justify-center">
 					<h1 className="about-title">{sede.title}</h1>
 					<p className="about-text">{sede.text}</p>

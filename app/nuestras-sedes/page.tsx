@@ -6,7 +6,6 @@ import Main from "../_components/Main";
 import { Metadata } from "next";
 import AboutSubMenu from "../_components/AboutSubMenu";
 
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "ARLÉ | Nuestras Sedes",

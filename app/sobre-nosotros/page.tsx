@@ -4,8 +4,6 @@ import { Metadata } from "next";
 import AboutSubMenu from "../_components/AboutSubMenu";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: 'ARLÉ | Sobre Nosotros',
 }
