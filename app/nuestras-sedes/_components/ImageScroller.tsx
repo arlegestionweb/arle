@@ -72,7 +72,7 @@ const ImageScroller = ({ images }: Props) => {
                 setImageOpen(true);
               }
           }}
-            className={`snap-center object-cover scale-75 transition-all w-full h-full ${
+            imageClassname={`snap-center object-cover scale-75 transition-all ease-out w-full h-full ${
               selectedImage === i ? "scale-95 cursor-zoom-in" : "cursor-pointer"
             }`}
             width={500}
