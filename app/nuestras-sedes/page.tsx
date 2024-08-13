@@ -5,6 +5,7 @@ import { toKebabCase } from "@/utils/helpers";
 import Main from "../_components/Main";
 import { Metadata } from "next";
 import AboutSubMenu from "../_components/AboutSubMenu";
+import { unstable_noStore } from "next/cache";
 
 
 export const metadata: Metadata = {
@@ -12,11 +13,10 @@ export const metadata: Metadata = {
 };
 
 const Page = async () => {
+  unstable_noStore();
   const pageContent = await getNuestrasSedesContent();
 
   if (!pageContent) return null;
-
-  // console.log({ pageContent });
 
   const uniqueCities = new Set(pageContent.sedes.map((sede) => sede.ciudad));
   const uniqueCitiesArray = Array.from(uniqueCities);
