@@ -16,6 +16,8 @@ const Page = async () => {
 
   if (!pageContent) return null;
 
+  // console.log({ pageContent });
+
   const uniqueCities = new Set(pageContent.sedes.map((sede) => sede.ciudad));
   const uniqueCitiesArray = Array.from(uniqueCities);
 

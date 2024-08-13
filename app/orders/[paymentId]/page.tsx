@@ -7,6 +7,7 @@ import Link from "next/link";
 import { DateTime } from "luxon";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import BackButton from "@/app/_components/BackButton";
+import { unstable_noStore } from "next/cache";
 
 const Page = async ({
   params,
@@ -15,6 +16,7 @@ const Page = async ({
     paymentId: string;
   };
 }) => {
+  unstable_noStore();
   const sanityOrder = await getOrderById(params.paymentId);
 
   const orderStatus: Record<string, string> = {

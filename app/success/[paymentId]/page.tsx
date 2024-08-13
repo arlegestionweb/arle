@@ -5,6 +5,7 @@ import React from "react";
 import SuccessIcon from "@/app/_components/SuccessIcon";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import Link from "next/link";
+import { unstable_noStore } from "next/cache";
 
 const Page = async ({
   params,
@@ -15,7 +16,7 @@ const Page = async ({
   }
   // searchParams: { [key: string]: string | string[] | undefined }
 }) => {
-
+  unstable_noStore();
   // const paramError = searchParams.error;
 
   const sanityOrder = await getOrderById(params.paymentId);

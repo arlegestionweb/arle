@@ -3,12 +3,17 @@ import ImageScroller from "../_components/ImageScroller";
 import Main from "@/app/_components/Main";
 import { GoChevronLeft } from "react-icons/go";
 import Link from "next/link";
+import { unstable_noStore } from "next/cache";
 
 
 const Page = async ({params}: { params: { sede: string }}) => {
+	unstable_noStore();
+	// console.log("runnning: " + params.sede);
+
 
 	const sede = await getSedeByTitle(params?.sede);
 	
+	// console.log({sede})
 	if(!sede) return null;
 
 	return(

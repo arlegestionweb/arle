@@ -2,6 +2,7 @@ import { getProductById } from "@/sanity/queries/pages/productPage";
 import Product from "./_components/Product";
 import Main from "@/app/_components/Main";
 import { getRecommendedProducts } from "@/sanity/queries/pages/listingQueries";
+import { unstable_noStore } from "next/cache";
 
 export type TParams = {
   type:
@@ -21,6 +22,7 @@ type TPageProps = {
 };
 
 const ProductPage = async ({ params }: TPageProps) => {
+  unstable_noStore();
   const { product, discount } = await getProductById(params.id, params.type);
   const recommendedProducts = await getRecommendedProducts();
   return (
