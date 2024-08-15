@@ -16,7 +16,7 @@ export const sendClientInvoiceEmail = async (order: TFrontEndOrderSchema) => {
   const fetchProduct = async (item: TEmailOrderItemSchema) => {
     if (!item.product) {
       const { product } = await getProductById(
-        item.productId._ref,
+        item.productId,
         item.productType
       );
       return { ...item, product };
@@ -51,7 +51,7 @@ export const sendAdminInvoiceEmail = async (order: TFrontEndOrderSchema) => {
     
     if (!item.product) {
       const { product } = await getProductById(
-        item.productId._ref,
+        item.productId,
         item.productType
       );
       return { ...item, product };

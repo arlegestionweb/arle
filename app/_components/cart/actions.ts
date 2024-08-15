@@ -7,14 +7,11 @@ import { TCartItem, zodCartItem } from "./store";
 import { nanoid } from "nanoid";
 import { TOrderSchema, zodOrderSchema } from "@/sanity/queries/orders";
 
-const zodOrderSchemaWithProductReference = zodOrderSchema.merge(
+const zodOrderSchemaWithKeys = zodOrderSchema.merge(
   z.object({
     items: z.array(
       zodCartItem.merge(
         z.object({
-          productId: z
-            .string()
-            .transform((refId) => ({ _type: "reference", _ref: refId })),
           _key: z.string(),
         })
       )
@@ -76,14 +73,17 @@ export const createInvoice = async function (_: unknown, formData: FormData) {
     ),
   };
 
+  
+
   const parsedFormDataWithProductReference =
-    zodOrderSchemaWithProductReference.safeParse(rawFormData);
+    zodOrderSchemaWithKeys.safeParse(rawFormData);
 
   if (!parsedFormDataWithProductReference.success) {
     const errorArray = JSON.parse(
       parsedFormDataWithProductReference.error.message
     );
 
+    console.log({path: errorArray[0].path})
     const errorMessages = errorArray.map((err: {message: string}, index: number) => {
       let message = err.message;
   
