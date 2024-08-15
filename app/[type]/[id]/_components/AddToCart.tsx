@@ -53,11 +53,11 @@ const AddToCart = ({
         className
       )}
     >
-      <form onSubmit={() => addToCart(product, selectedVariant, quantity)}>
+      <form onSubmit={() => addToCart(product, selectedVariant, quantity)} className="w-full">
       <Button
         disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false}
         type="submit"
-        className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float"
+        className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float "
         >
         <LuShoppingCart className="text-base" />
         Añadir al Carrito

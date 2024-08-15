@@ -293,7 +293,6 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       return Math.round(total * (1 - discount.discount /100)) + shipping
     }
     else {
-      console.log(total);
       return Math.round(total + shipping);
     }
   }
