@@ -45,7 +45,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
 
               return (
                 <Container key={`${item.variantId}-${item.productId}`} className="flex flex-col">
-                  <Text>Producto: {item.productId._ref}</Text>
+                  <Text>Producto: {item.productId}</Text>
                   <Text>Producto: {item.productType}</Text>
                   <Text>Precio: {item.price}</Text>
                   <Text>Cantidad: {item.quantity}</Text>

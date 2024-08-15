@@ -171,6 +171,6 @@ export const initiateCheckoutView = async (totalValue: number) => {
   if (!postReq.ok) {
     console.error("Failed to send event to Pixel API", await postReq.text());
   } else {
-    console.log("Initiated checkout");
+    // console.log("Initiated checkout");
   }
 };

@@ -210,19 +210,35 @@ export const ordersSchema = defineType({
           title: "Order Item",
           type: "object",
           fields: [
+            // defineField({
+            //   name: "productId",
+            //   title: "Producto",
+              // @ts-ignore
+              // type: "reference",
+              // to: [
+              //   { type: "gafasLujo" },
+              //   { type: "gafasPremium" },
+              //   { type: "relojesLujo" },
+              //   { type: "relojesPremium" },
+              //   { type: "perfumeLujo" },
+              //   { type: "perfumePremium" },
+              // ],
+            // }),
+
             defineField({
               name: "productId",
-              title: "Producto",
-              type: "reference",
-              // @ts-ignore
-              to: [
-                { type: "gafasLujo" },
-                { type: "gafasPremium" },
-                { type: "relojesLujo" },
-                { type: "relojesPremium" },
-                { type: "perfumeLujo" },
-                { type: "perfumePremium" },
-              ],
+              title: "id del producto",
+              type: "string",
+            }),
+            defineField({
+              name: "productName",
+              title: "Nombre del producto",
+              type: "string",
+            }),
+            defineField({
+              name: "productCode",
+              title: "Código del producto",
+              type: "string",
             }),
             defineField({
               name: "quantity",

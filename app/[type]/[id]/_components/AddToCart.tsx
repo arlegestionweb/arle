@@ -31,6 +31,8 @@ const AddToCart = ({
   ) => {
     addItem({
       productId: producto._id,
+      productName: `${product.marca} ${product._type === "gafasLujo" || product._type === "gafasPremium" || product._type === "relojesLujo" || product._type === "relojesPremium" ? product.modelo : product.titulo}`,
+      productCode: selectedVariant.codigoDeReferencia,
       variantId: selectedVariant.codigoDeReferencia,
       price: pricing.finalPrice,
       quantity,

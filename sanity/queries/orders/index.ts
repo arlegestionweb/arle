@@ -48,10 +48,7 @@ export const zodOrderSchema = z.object({
 
 const zodEmailOrderItemSchema = zodCartItem.merge(
   z.object({
-    productId: z.object({
-      _type: z.literal("reference"),
-      _ref: z.string(),
-    }),
+    productId: z.string(),
     product: zodProduct,
   })
 );
@@ -80,7 +77,7 @@ export const getOrderById = async (id: string) => {
       "items": items[] {
         ...,
         "productId": productId,
-        "product": productId -> {
+        "product": *[_id == ^.productId][0]{
           "marca": marca->titulo,
           "date": createdAt, 
           _type,
@@ -109,6 +106,8 @@ export const getOrderById = async (id: string) => {
   );
 
   const parsedOrder = zodSanityOrderSchema.safeParse(order);
+
+  console.log({parsedOrder})
 
   if (!parsedOrder.success) {
     return null;

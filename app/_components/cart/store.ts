@@ -7,6 +7,8 @@ const TAX = 0.19;
 
 export const zodCartItem = z.object({
   productId: z.string(),
+  productName: z.string(),
+  productCode: z.string().or(z.number()),
   variantId: z.string().or(z.number()),
   price: z.number(),
   quantity: z.number(),
@@ -169,6 +171,8 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       }
 
       const inCart = get().isCartOpen;
+
+      console.log(item);
 
       return { items: newItems, isAddedToCartModalOpen: inCart ? false : true, itemAddedToCart: item };
     }),
