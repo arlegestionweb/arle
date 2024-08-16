@@ -12,6 +12,7 @@ import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQue
 import PopUpBanner from "./_components/PopUpBanner";
 // import FacebookPixel from "./_components/FacebookPixel";
 import Script from "next/script";
+import { WhatsappButton } from "./_components/WhatsappButton";
 
 
 
@@ -121,6 +122,7 @@ export default async function RootLayout({
         <Cart
           showDiscountCode={siteSettings?.mostrarCodigoDeDescuento || false}
         />
+        <WhatsappButton />
         {children}
         {siteSettings && nuestrasSedes && (
           <Footer settings={siteSettings} sedes={nuestrasSedes} />
