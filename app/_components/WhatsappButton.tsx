@@ -1,16 +1,16 @@
 "use client"
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaWhatsapp } from "react-icons/fa6"
-
-
 
 export const WhatsappButton = () => {
-    const pathname = usePathname()
 
+  const pathname = usePathname()
   if (pathname.includes("admin") || pathname.includes("mass-uploads")) return;
+
   return (
-    <div className="fixed z-20 bottom-8 right-6 rounded-xl bg-green-400 p-[4px] shadow-[-3px_3px_5px_1px_rgba(0,0,0,0.25)] ">
-        <FaWhatsapp className="text-[50px] text-white" />
-    </div>
+    <Link href="https://wa.me/573160700015?text=Hola,%20estoy%20interesad@%20en%20recibir%20una%20asesoría%20personalizada%20con%20Arlé!" className="fixed z-20 bottom-8 right-6 overflow-hidden w-[65px] h-[65px]">
+        <img className="w-full h-full z-10 drop-shadow-[0_0_0.6px_rgb(0,0,0,0.8)] absolute" src="Whatsapp Negative.svg" alt="Whatsapp Logo" />
+        <img className="w-full h-full drop-shadow-[1px_1px_2px_rgb(0,0,0,0.4)] absolute" src="Whatsapp.svg" alt="Whatsapp Logo" />
+    </Link>
   )
 }
