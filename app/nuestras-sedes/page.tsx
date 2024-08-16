@@ -57,12 +57,12 @@ const Page = async () => {
                 <h2 className="font-jomolhari text-2xl lg:text-3xl pb-3">
                   {city}
                 </h2>
-                <section className=" gap-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full ">
+                <section className=" gap-8 w-full flex justify-center flex-wrap">
                   {pageContent.sedes
                     .filter((sede) => sede.ciudad === city)
                     .map((item) => (
                       <article
-                        className="justify-self-center w-full bg-white border border-[#E6E1E6] flex md:flex-col max-w-md"
+                        className="justify-self-center flex-[1_1_20.3333%] w-full bg-white border border-[#E6E1E6] flex md:flex-col max-w-md min-w-[300px]"
                         key={item.nombre}
                       >
                         <img
