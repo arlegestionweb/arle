@@ -2,7 +2,7 @@
 import ProductItem from "./ProductItem";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import Button from "../Button";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 
 import AddedToCartModal from "./AddedToCartModal";
 import { useClickOutside, useHideBodyOverflow } from "@/app/_lib/hooks";
@@ -11,16 +11,17 @@ import { useCartStore } from "./store";
 import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
 import { GoChevronLeft } from "react-icons/go";
-import { createInvoice } from "./actions";
+import { createInvoice, TOrderSchemaWithKeys } from "./actions";
 import { useFormState } from "react-dom";
 import MenuModal from "../MenuModal";
 import WompiPayButton from "./WompiPayButton";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Spinner from "../Spinner";
 import { MdOutlinePayments } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import ArleBasicLogo from "../ArleBasicLogo";
 import { initiateCheckoutView } from "@/app/_lib/pixelActions";
+import { generateAddiPaymentURL } from "./addiAuthAction";
 
 const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
   const pathname = usePathname();
@@ -40,6 +41,27 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
   const [isWompipaymentOpen, setIsWompipaymentOpen] = useState(false);
 
   const [formState, formAction] = useFormState(createInvoice, null);
+
+  const [addiPaymentUrl, setAddiPaymentUrl] = useState<string | null>(null);
+
+  const handleGenerateAddiPaymentUrl = async (data: TOrderSchemaWithKeys) => {
+    try {
+      const url = await generateAddiPaymentURL(data);
+      if (!url || typeof url !== "string") {
+        throw new Error("No se pudo generar la URL de pago");
+      }
+
+      setAddiPaymentUrl(url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (!addiPaymentUrl) return;
+
+    redirect(addiPaymentUrl);
+  }, [addiPaymentUrl]);
 
   const wompiRef = useRef(null);
 
@@ -214,11 +236,13 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                     Ir a pagar
                   </span>
                 </Button>
+
                 {formState && formState.error ? (
                   <p className="text-red-500 text-sm">
                     {formState.error}
                   </p>
-                ) : (
+                ) : 
+                (
                   isWompipaymentOpen && (
                     <MenuModal isMenuOpen={true}>
                       <section className=" relative z-10 h-full w-full flex items-center justify-center default-paddings">
@@ -297,6 +321,11 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                             reference={payment_reference}
                             redirectUrl={`${baseUrl}/success/${payment_reference}`}
                           />
+                          {formState && formState.data && (
+                            <Button type="button" onClick={()=>     handleGenerateAddiPaymentUrl(formState.data)}>
+                             JWT Addi
+                           </Button>
+                          )}
                           <footer>
                             <div className="w-[5.5rem]">
                               <ArleBasicLogo />

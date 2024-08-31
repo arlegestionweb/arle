@@ -77,6 +77,7 @@ const AddToCart = ({
       >
         <MdOutlinePayments className="text-base" /> Compra Rápida
       </Button>
+      <script src="https://s3.amazonaws.com/widgets.addi.com/bundle.min.js"></script>
     </div>
   );
 };

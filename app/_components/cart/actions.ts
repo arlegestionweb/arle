@@ -19,6 +19,8 @@ const zodOrderSchemaWithKeys = zodOrderSchema.merge(
   })
 );
 
+export type TOrderSchemaWithKeys = z.infer<typeof zodOrderSchemaWithKeys> 
+
 export const createInvoice = async function (_: unknown, formData: FormData) {
   if (!formData || !formData.get("reference")) {
     return { error: "No reference provided", status: 400 };
