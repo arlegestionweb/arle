@@ -882,7 +882,7 @@ const Listing = async ({
   const bannersByBrand = await getBannersByBrands(marcasSeleccionadas);
   const filteredBanners = bannersByBrand?.filter(brand => brand.banners)
 
-  console.log({bannersByBrand, filteredBanners})
+  console.log({ filteredBanners})
 
   return (
     <Main extraClasses=" lg:mb-[100vh] bg-white min-h-screen">
