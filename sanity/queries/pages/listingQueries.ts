@@ -262,6 +262,7 @@ export const getBannersByBrands = async (marcasSeleccionadas: string[] | null) =
     }
     `;
     const marcas = await sanityClient.fetch(bannersDeMarcasQueryString);
+    console.log({marcas})
     return marcas;
   }));
   
