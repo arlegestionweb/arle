@@ -45,7 +45,7 @@ function GradientImage({
           type="image/webp"
         />
         <img
-          src={src}
+          src={`${src}?fit=max&q=${quality || 80}&w=1920&fm=webp 1920w`}
           alt={alt || ""}
           width={width || 800}
           height={height || 400}
@@ -54,7 +54,7 @@ function GradientImage({
         />
       </picture>
       ):(
-        <Image src={`${src}?fit=max&q=${quality || 85}&fm=webp`}
+        <Image src={`${src}?fit=max&q=${quality || 85}&w=1920&fm=webp 1920w`}
             alt={alt || ""}
             width={width || 800}
             height={height || 400}
