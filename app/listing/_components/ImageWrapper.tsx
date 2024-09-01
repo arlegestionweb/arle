@@ -31,7 +31,7 @@ const ImageWrapper = ({ src, alt, height, width, quality, imageClassname, ...res
                 />
       <img
         {...rest}
-        src={src}
+        src={`${src}?fit=max&q=${quality || 80}&w=1280&fm=webp 1280w`}
         alt={alt || ""}
         height={height}
         width={width}
