@@ -50,6 +50,7 @@ function GradientImage({
           width={width || 800}
           height={height || 400}
           decoding="async"
+          loading="lazy"
           className={`object-cover absolute h-full w-full ${imageClassName}`}
         />
       </picture>

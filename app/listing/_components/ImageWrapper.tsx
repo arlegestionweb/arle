@@ -35,6 +35,7 @@ const ImageWrapper = ({ src, alt, height, width, quality, imageClassname, ...res
         alt={alt || ""}
         height={height}
         width={width}
+        loading="lazy"
         className={`${imageClassname} object-contain absolute h-full w-full object-center `}
       />
       </picture>
