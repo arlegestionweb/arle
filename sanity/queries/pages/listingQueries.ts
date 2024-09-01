@@ -248,7 +248,6 @@ const bannerBrandParser = z.array(zodBannerByBrandSchema)
 export type TBannerBrands = z.infer<typeof bannerBrandParser>
 
 export const getBannersByBrands = async (marcasSeleccionadas: string[] | null) => {
-  console.log({marcasSeleccionadas})
   if(marcasSeleccionadas === null) return
   
   const bannersArray: TBrandBanner[] = await Promise.all(marcasSeleccionadas.map(async brand => {
@@ -263,7 +262,6 @@ export const getBannersByBrands = async (marcasSeleccionadas: string[] | null) =
     }
     `;
     const marcas = await sanityClient.fetch(bannersDeMarcasQueryString);
-    console.log({marcas})
     return marcas;
   }));
   
