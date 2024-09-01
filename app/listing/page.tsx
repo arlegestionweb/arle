@@ -15,6 +15,7 @@ import Banner from "../_components/homepage/Banner";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
 import Main from "../_components/Main";
 import { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 
 const sortingFunctions: Record<
   TSortingOption["value"],
@@ -101,7 +102,10 @@ const Listing = async ({
     [key: string]: string | string[] | undefined;
   };
 }) => {
+  noStore()
+
   const pageContent = await getListingInitialLoadContent();
+
 
   // GENERAL PARAMS
 
