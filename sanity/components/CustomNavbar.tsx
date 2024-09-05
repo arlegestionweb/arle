@@ -11,9 +11,6 @@ export function CustomNavbar(props: NavbarProps) {
   const toast = useToast();
   const [isDeploying, setIsDeploying] = useState(false);
 
-
-
-
   const handleDeploy = useCallback(async () => {
     setIsDeploying(true);
     try {
