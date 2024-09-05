@@ -53,12 +53,12 @@ export function CustomNavbar(props: NavbarProps) {
       <Button
         onClick={handleDeploy}
         disabled={isDeploying}
-
         tone="positive"
         mode="ghost"
         style={{
           height: "100%",
           borderRadius: 0,
+          fontWeight: "bold"
         }}
       >
         {isDeploying ? 'Actualizando...' : 'Actualizar Página'}
