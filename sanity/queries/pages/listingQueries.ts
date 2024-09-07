@@ -214,6 +214,8 @@ const zodListPage = z.object({
 
 export type TlistingContent = z.infer<typeof listingContent>
 
+export type TFullPageContent = z.infer<typeof zodListPage>
+
 export const getListingInitialLoadContent = async () => {
   try {
     const result = await sanityClient.fetch(listingMainString);
