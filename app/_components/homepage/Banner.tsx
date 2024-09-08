@@ -71,8 +71,8 @@ const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
                         alt={banner.imagen.alt || ""}
                         layout="fill"
                         height={300}
-                        width={2000}
-                        quality={90}
+                        width={3000}
+                        quality={100}
                         gradientOff
                         imageClassName="object-cover object-center w-full h-full"
                         containerclassName={`snap-center snap-always ${
