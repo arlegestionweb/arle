@@ -38,7 +38,7 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
 
   const requiredParameters = {
     orderId: data._id,
-    totalAmount: "255000.0",
+    totalAmount: data.amounts.total,
     shippingAmount: data.amounts.shipping,
     totalTaxesAmount: data.amounts.taxes,
     currency: "COP",
@@ -46,7 +46,7 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
 				sku: item.variantId,
         name: item.productName,
         quantity: item.quantity,
-        unitPrice: "255000.0",
+        unitPrice: item.price,
         tax: item.price*0.19,
         pictureUrl: "https://picture.example.com/?img=test",
         category: item.productType,
@@ -56,8 +56,7 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
       idType: data.customer.id.type,
       idNumber: data.customer.id.number,
       firstName: data.customer.name.split(" ")[0],
-      lastName: data.customer.name.split(" ")[1],
-			// fullName: data.customer.name,
+      lastName: data.customer.name.split(" ")[1] || "Sin Apellido",
       email: data.customer.email,
       cellphone: data.customer.phone,
       cellphoneCountryCode: "+57",
@@ -85,12 +84,12 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     allyUrlRedirection: {
       logoUrl: "https://picture.example.com/?img=test",
       callbackUrl: "https://ally.callback.url/callback/example",
-      redirectionUrl: "https://redirection.example.com/",
+      redirectionUrl: `https://arle.co/success/${data._id}`,
     },
-    geoLocation: {
-      latitude: "4.624335",
-      longitude: "-74.063644",
-    },
+    // geoLocation: {
+    //   latitude: "4.624335",
+    //   longitude: "-74.063644",
+    // },
   };
 
   const headers = new Headers();
@@ -100,7 +99,9 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     const token = await generateAddiToken();
     
     headers.append("Authorization", `Bearer ${token}`);
-  
+    
+    console.log({requiredParameters});
+
     const requestOptions = {
       method: "POST",
       headers,
