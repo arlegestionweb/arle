@@ -83,8 +83,8 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     },
     allyUrlRedirection: {
       logoUrl: "https://picture.example.com/?img=test",
-      callbackUrl: "https://ally.callback.url/callback/example",
-      redirectionUrl: `https://arle.co/success/${data._id}`,
+      callbackUrl: "https://localhost:3000/transaccion-addi",
+      redirectionUrl: `https://localhost:3000/success/${data._id}`,
     },
     // geoLocation: {
     //   latitude: "4.624335",
@@ -99,6 +99,10 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     const token = await generateAddiToken();
     
     headers.append("Authorization", `Bearer ${token}`);
+    headers.append("Redirect", "follow");
+    headers.append("Referer", "https://arle.co");
+    headers.append("Origin", "https://arle.co");
+    headers.append("User-Agent", "Next.js");
     
     console.log({requiredParameters});
 
@@ -110,6 +114,7 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
 
     const response = await fetch(ADDI_PAYMENT_URL, requestOptions);
     
+    console.log({headers});
 		console.log({response});
 		if(response.status === 400){
 			return {
