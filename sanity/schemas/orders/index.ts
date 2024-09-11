@@ -50,7 +50,6 @@ export const ordersSchema = defineType({
     {
       name: "envio",
       title: "Envío",
-      default: true,
     },
     {
       name: "productos",
