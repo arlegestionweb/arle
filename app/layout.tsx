@@ -105,6 +105,17 @@ export default async function RootLayout({
           `,
           }}
         />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXJ0V1YG06"></script>
+        <Script id="google-analytics" strategy="afterInteractive" dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-GXJ0V1YG06');
+          `,
+        }}>
+        </Script>
       </head>
 
       <body
