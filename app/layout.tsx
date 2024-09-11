@@ -8,9 +8,7 @@ import {
   getSiteSettingsMetadata,
 } from "@/sanity/queries/siteSettings";
 import { getNuestrasSedesContent } from "@/sanity/queries/pages/nuestrasSedesQueries";
-// import PlausibleProvider from 'next-plausible'
 import PopUpBanner from "./_components/PopUpBanner";
-// import FacebookPixel from "./_components/FacebookPixel";
 import Script from "next/script";
 import { WhatsappButton } from "./_components/WhatsappButton";
 
@@ -85,8 +83,6 @@ export default async function RootLayout({
     <html lang="es">
       <head>
         <meta name="google" content="notranslate" />
-        {/* <PlausibleProvider domain={isProduction ? "arle.co" : "beta.arle.co"} /> */}
-        <script defer data-domain={url} src="https://plausible.io/js/script.js"></script>
         <Script
           id="fb-pixel"
           strategy="afterInteractive"
@@ -105,6 +101,17 @@ export default async function RootLayout({
           `,
           }}
         />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXJ0V1YG06"></script>
+        <Script id="google-analytics" strategy="afterInteractive" dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-GXJ0V1YG06');
+          `,
+        }}>
+        </Script>
       </head>
 
       <body
