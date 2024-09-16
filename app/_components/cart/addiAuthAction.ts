@@ -1,10 +1,30 @@
 "use server"
 
-import { TOrderSchemaWithKeys } from "./actions"
+import { checkAddiResponseBodySchema, TOrderSchemaWithKeys } from "@/sanity/queries/orders"
+import { z } from "zod"
 
 const ADDI_TOKEN_URL = "https://auth.addi-staging.com/oauth/token"
 const ADDI_AUDIENCE = "https://api.staging.addi.com"
 const ADDI_PAYMENT_URL = "https://api.addi-staging.com/v1/online-applications"
+const ADDI_CHECKAMOUNTS_ENDPOINT = `https://channels-public-api.addi.com/allies/${process.env.ADDI_ALLY_SLUG}/config?requestedAmount=`
+
+
+
+export const checkAddiAmounts = async (cartAmount: number) => {
+
+  try {
+    const response = await fetch(`${ADDI_CHECKAMOUNTS_ENDPOINT}${cartAmount}`);
+    const body = await response.json();
+    const parsedBody = checkAddiResponseBodySchema.safeParse(body);
+    if (!parsedBody.success) {
+      throw new Error(JSON.stringify(parsedBody.error));
+    }
+    return parsedBody.data;
+  }
+  catch(e) {
+			throw new Error(JSON.stringify(e));
+  }
+}
 
 export const generateAddiToken = async () => {
 
@@ -84,7 +104,7 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     allyUrlRedirection: {
       logoUrl: "https://picture.example.com/?img=test",
       callbackUrl: "https://localhost:3000/transaccion-addi",
-      redirectionUrl: `https://localhost:3000/success/${data._id}`,
+      redirectionUrl: `https://localhost:3000/addi-redirection/${data._id}`,
     },
     // geoLocation: {
     //   latitude: "4.624335",
@@ -104,24 +124,28 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     headers.append("Origin", "https://arle.co");
     headers.append("User-Agent", "Next.js");
     
-    console.log({requiredParameters});
 
     const requestOptions = {
       method: "POST",
       headers,
       body: JSON.stringify(requiredParameters),
+      redirect: 'manual' as RequestRedirect,
     };
 
     const response = await fetch(ADDI_PAYMENT_URL, requestOptions);
+  
     
-    console.log({headers});
-		console.log({response});
-		if(response.status === 400){
-			return {
-				error: response.statusText
-			}
-		}
-    return response.url;
+		if (response.status === 301) {
+      return response.headers.get('Location');
+    } else if (response.status === 400) {
+      return {
+        error: response.statusText
+      }
+    } else {
+      return {
+        error: `Unexpected status: ${response.status}`
+      }
+    }
 		
 
   } catch (error) {

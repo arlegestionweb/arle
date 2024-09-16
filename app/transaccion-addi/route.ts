@@ -17,12 +17,15 @@ type AddiRequest = {
   statusTimestamp: number;
 }
 
-export const POST = async (req: Request, res: Response) => {
+export const POST = async (req: Request) => {
   const request: AddiRequest = await req.json();
 
   if (request.status !== "APPROVED") {
-    return Response.json({
-      status: 500,
+    return new Response(JSON.stringify(request), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
   }
 
@@ -135,6 +138,12 @@ if (!postReq.ok) {
     console.log('Compra exitosa');
 }
 
-  return new Response("Transacción exitosa", { status: 200 });
+  // Return the request body
+  return new Response(JSON.stringify(request), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 };
 

@@ -8,12 +8,10 @@ import { unstable_noStore } from "next/cache";
 
 const Page = async ({params}: { params: { sede: string }}) => {
 	unstable_noStore();
-	// console.log("runnning: " + params.sede);
 
 
 	const sede = await getSedeByTitle(params?.sede);
 	
-	// console.log({sede})
 	if(!sede) return null;
 
 	return(

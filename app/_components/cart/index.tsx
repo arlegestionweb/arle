@@ -11,17 +11,20 @@ import { useCartStore } from "./store";
 import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
 import { GoChevronLeft } from "react-icons/go";
-import { createInvoice, TOrderSchemaWithKeys } from "./actions";
+import { createInvoice } from "./actions";
 import { useFormState } from "react-dom";
 import MenuModal from "../MenuModal";
 import WompiPayButton from "./WompiPayButton";
 import { useEffect, useRef, useState } from "react";
-import Spinner from "../Spinner";
 import { MdOutlinePayments } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import ArleBasicLogo from "../ArleBasicLogo";
 import { initiateCheckoutView } from "@/app/_lib/pixelActions";
 import { generateAddiPaymentURL } from "./addiAuthAction";
+import AddiPayButton from "./AddiPayButton";
+import { TOrderSchemaWithKeys } from "@/sanity/queries/orders";
+import SmallWhiteSpinner from "../SmallWhiteSpinner";
+import { FaArrowRight } from "react-icons/fa6";
 
 const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
   const pathname = usePathname();
@@ -40,21 +43,39 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
 
   const [isWompipaymentOpen, setIsWompipaymentOpen] = useState(false);
 
+  const [paymentLoading, setPaymentLoading] = useState(false);
+
   const [formState, formAction] = useFormState(createInvoice, null);
 
   const [addiPaymentUrl, setAddiPaymentUrl] = useState<string | null>(null);
 
-  const handleGenerateAddiPaymentUrl = async (data: TOrderSchemaWithKeys) => {
-    try {
-      const url = await generateAddiPaymentURL(data);
-      if (!url || typeof url !== "string") {
-        throw new Error("No se pudo generar la URL de pago");
-      }
+  const [triggerAddiPayment, setTriggerAddiPayment] = useState(false);
+  const [addiPaymentData, setAddiPaymentData] = useState<TOrderSchemaWithKeys | null>(null);
 
-      setAddiPaymentUrl(url);
-    } catch (error) {
-      console.error(error);
-    }
+  useEffect(() => {
+    const handleGenerateAddiPaymentUrl = async () => {
+      if (!triggerAddiPayment || !addiPaymentData) return;
+
+      try {
+        const url = await generateAddiPaymentURL(addiPaymentData);
+        if (!url || typeof url !== "string") {
+          throw new Error("No se pudo generar la URL de pago");
+        }
+
+        setAddiPaymentUrl(url);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setTriggerAddiPayment(false);
+      }
+    };
+
+    handleGenerateAddiPaymentUrl();
+  }, [triggerAddiPayment, addiPaymentData]);
+
+  const initiateAddiPayment = (data: TOrderSchemaWithKeys) => {
+    setAddiPaymentData(data);
+    setTriggerAddiPayment(true);
   };
 
   useEffect(() => {
@@ -62,6 +83,17 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
 
     redirect(addiPaymentUrl);
   }, [addiPaymentUrl]);
+
+  useEffect(()=>{
+    if (formState && formState.status === 200 && !isWompipaymentOpen){
+      setPaymentLoading(false);
+      setIsWompipaymentOpen(true);
+    } 
+  },[formState])
+
+  useEffect(()=>{
+    if (formState && formState.status !== 200 ) setPaymentLoading(false);
+  },[formState])
 
   const wompiRef = useRef(null);
 
@@ -87,7 +119,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
 
   const baseUrl = `${urlSegments[0]}//${urlSegments[2]}`
 
-  if (formState && formState.status === 200 && !isWompipaymentOpen) setIsWompipaymentOpen(true);
+  const addiDisabled = formState?.data?.addiAmounts && formState.data.amounts.total < formState.data.addiAmounts.maxAmount && formState.data.amounts.total > formState.data.addiAmounts.minAmount;
 
   return (
     <>
@@ -228,13 +260,20 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                   type="submit"
                   labelType={"dark"}
                   // onClick={() => formState && formState.data && setIsWompipaymentOpen(true)}
-                  onClick={() => initiateCheckoutView(getCartTotal())}
+                  onClick={() => {
+                    initiateCheckoutView(getCartTotal());
+                    setPaymentLoading(true);
+                  }}
                   className="flex justify-center items-center gap-2 w-full max-w-sm button-float"
                 >
-                  <MdOutlinePayments className="text-base" />
-                  <span className="font-inter text-base font-medium leading-6">
+                  {paymentLoading ? <SmallWhiteSpinner/> : (
+                    <>
+                    <MdOutlinePayments className="text-base" />
+                    <span className="font-inter text-base font-medium leading-6">
                     Ir a pagar
-                  </span>
+                    </span>
+                    </>
+                   )}
                 </Button>
 
                 {formState && formState.error ? (
@@ -244,7 +283,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                 ) : 
                 (
                   isWompipaymentOpen && (
-                    <MenuModal isMenuOpen={true}>
+                    <MenuModal isMenuOpen={isWompipaymentOpen} >
                       <section className=" relative z-10 h-full w-full flex items-center justify-center default-paddings">
                         <section
                           ref={wompiRef}
@@ -259,7 +298,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                               onClick={() => setIsWompipaymentOpen(false)}
                             />
                           </header>
-                          {formState?.data ? (
+                          {formState?.data && (
                             <div className="w-full flex flex-col gap-3 font-tajawal">
                               <div className="flex w-full justify-between border-b border-stone-200">
                                 <p>Nombre:</p>
@@ -312,8 +351,6 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                                 </p>
                               </div>
                             </div>
-                          ) : (
-                            <Spinner />
                           )}
                           <WompiPayButton
                             disabled={formState?.data ? false : true}
@@ -322,9 +359,21 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                             redirectUrl={`${baseUrl}/success/${payment_reference}`}
                           />
                           {formState && formState.data && (
-                            <Button type="button" onClick={()=>     handleGenerateAddiPaymentUrl(formState.data)}>
-                             JWT Addi
-                           </Button>
+                            <>
+                            <button 
+                              className="dark-button flex gap-2 justify-center items-center" 
+                              disabled={!addiDisabled} 
+                              type="button" 
+                              onClick={() => initiateAddiPayment(formState.data)}
+                            >
+                            <MdOutlinePayments className="text-base" /> Paga a cuotas con Addi <FaArrowRight className="text-base" />
+                           </button>
+                            {!addiDisabled && (
+                              <span className="-mt-4 ml-2 text-xs text-red-500">
+                                * El monto para pago con Addi debe estar entre ${formState.data.addiAmounts?.minAmount && numberToColombianPriceString( formState.data.addiAmounts?.minAmount)} y ${formState.data.addiAmounts?.maxAmount && numberToColombianPriceString( formState.data.addiAmounts?.maxAmount)}
+                              </span>
+                            )}
+                          </>
                           )}
                           <footer>
                             <div className="w-[5.5rem]">

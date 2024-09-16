@@ -5,7 +5,8 @@ import { z } from "zod";
 import { DateTime } from "luxon";
 import { TCartItem, zodCartItem } from "./store";
 import { nanoid } from "nanoid";
-import { TOrderSchema, zodOrderSchema } from "@/sanity/queries/orders";
+import { checkAddiResponseBodySchema, TOrderSchemaWithKeys, zodOrderSchema } from "@/sanity/queries/orders";
+import { checkAddiAmounts } from "./addiAuthAction";
 
 const zodOrderSchemaWithKeys = zodOrderSchema.merge(
   z.object({
@@ -16,19 +17,20 @@ const zodOrderSchemaWithKeys = zodOrderSchema.merge(
         })
       )
     ),
+    addiAmounts: checkAddiResponseBodySchema.optional().nullable(),
   })
 );
-
-export type TOrderSchemaWithKeys = z.infer<typeof zodOrderSchemaWithKeys> 
 
 export const createInvoice = async function (_: unknown, formData: FormData) {
   if (!formData || !formData.get("reference")) {
     return { error: "No reference provided", status: 400 };
   }
-
+  
   const now = DateTime.now().toISO();
+  
+  const addiValidAmounts = await checkAddiAmounts(Number(formData.get("total")))
 
-  const rawFormData: TOrderSchema = {
+  const rawFormData: TOrderSchemaWithKeys = {
     _id: formData.get("reference") as string,
     _type: "orders",
     orderDate: now,
@@ -73,37 +75,39 @@ export const createInvoice = async function (_: unknown, formData: FormData) {
         _key: nanoid(),
       })
     ),
+    addiAmounts: addiValidAmounts,
   };
 
   
-
+  
   const parsedFormDataWithProductReference =
-    zodOrderSchemaWithKeys.safeParse(rawFormData);
+  zodOrderSchemaWithKeys.safeParse(rawFormData);
 
+  
   if (!parsedFormDataWithProductReference.success) {
     const errorArray = JSON.parse(
       parsedFormDataWithProductReference.error.message
     );
     const errorMessages = errorArray.map((err: {message: string}, index: number) => {
       let message = err.message;
-  
+      
       // Make the first character of each error message string lowercase, except for the first message
       if (index !== 0) {
         message = message.charAt(0).toLowerCase() + message.slice(1);
       }
-  
+      
       return message;
     });
-  
+    
     // Join the error messages into a single string with commas in between
     const errorMessageString = errorMessages.join(', ');
-  
+    
     return {
       status: 400,
       error: errorMessageString,
     };
   }
-
+  
   try {
     await sanityWriteClient.createOrReplace({
       ...parsedFormDataWithProductReference.data,
@@ -115,10 +119,20 @@ export const createInvoice = async function (_: unknown, formData: FormData) {
       error: "Failed to create invoice",
     };
   }
+  
+  try {
+    
+    return {
+      data: parsedFormDataWithProductReference.data,
+      status: 200,
+      error: null,
+    };
+  } catch (error) {    
+    console.error(error);
+    return {
+      status: 500,
+      error: "Failed to create invoice",
+    };
+  }
 
-  return {
-    data: parsedFormDataWithProductReference.data,
-    status: 200,
-    error: null,
-  };
 };
