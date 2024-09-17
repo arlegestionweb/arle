@@ -45,7 +45,6 @@ const Menu = ({
     const [productType, gender] = selectedItems.map((item) => item.name);
 
     const fetchBrands = async () => {
-      console.log(productType, gender)
       const brands = await getBrandsByProductTypeAndGender(
         productType as TProductType,
         gender as TGender

@@ -8,6 +8,11 @@ import { DateTime } from "luxon";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import BackButton from "@/app/_components/BackButton";
 import { unstable_noStore } from "next/cache";
+import { GoArrowUpRight } from "react-icons/go";
+import { LiaShippingFastSolid } from "react-icons/lia";
+import { IoIosTimer } from "react-icons/io";
+import { IoReturnDownBack } from "react-icons/io5";
+import { GiPresent } from "react-icons/gi";
 
 const Page = async ({
   params,
@@ -19,11 +24,34 @@ const Page = async ({
   unstable_noStore();
   const sanityOrder = await getOrderById(params.paymentId);
 
-  const orderStatus: Record<string, string> = {
-    in_process: "En Proceso",
-    sent: "Despachado",
-    returned_to_seller: "No entregado - Devuelto al vendedor",
-    delivered: "Entregado al Comprador",
+  const orderStatus: Record<
+    string,
+    {
+      mensaje: string;
+      icono: React.ReactElement;
+      color: string;
+    }
+  > = {
+    in_process: {
+      mensaje: "En Proceso",
+      icono: <IoIosTimer />,
+      color: "bg-blue-600",
+    },
+    sent: {
+      mensaje: "Despachado",
+      icono: <LiaShippingFastSolid />,
+      color: "bg-green-400",
+    },
+    returned_to_seller: {
+      mensaje: "No entregado - Devuelto al vendedor",
+      icono: <IoReturnDownBack />,
+      color: "bg-yellow-400",
+    },
+    delivered: {
+      mensaje: "Entregado al Comprador",
+      icono: <GiPresent />,
+      color: "bg-green-500",
+    },
   };
 
   if (!sanityOrder)
@@ -53,10 +81,11 @@ const Page = async ({
       </Main>
     );
   DateTime.fromSQL(sanityOrder.orderDate);
+
+  console.log({shipping: orderStatus[sanityOrder.shipping.status].icono});
   return (
     <Main extraClasses="bg-white md:mt-[53px] default-paddings pb-10 min-h-screen flex justify-center">
       <section className="w-full max-w-screen-sm flex flex-col gap-2 pt-20">
-
         <BackButton />
         <div className="flex gap-2 font-tajawal items-center">
           <h1 className="text-gray-800 text-xl md:text-2xl font-bold ">
@@ -67,17 +96,58 @@ const Page = async ({
           </h2>
         </div>
         <p className="-mt-3 font-tajawal font-light text-lg">
-          Fecha de compra: {DateTime.fromISO(sanityOrder.orderDate, {zone: 'America/Bogota'}).toLocaleString(DateTime.DATE_MED)}
+          Fecha de compra:{" "}
+          {DateTime.fromISO(sanityOrder.orderDate).toLocaleString(
+            DateTime.DATE_MED
+          )}
         </p>
 
         {/* <h3 className="font-tajawal text-gray-800 text-xl font-medium">Detalles del pedido:</h3> */}
+        {sanityOrder.shipping.status && (
+          <>
+            <div className="flex gap-2 font-tajawal items-center">
+              <p className="text-gray-800 text-lg font-medium">
+                Estado del envío:{" "}
+              </p>
+              <span
+                className={`flex items-center gap-2 ${
+                  orderStatus[sanityOrder.shipping.status].color
+                } text-white px-6 rounded-full pointer-events-none`}
+              >
+                <span className="w-5 h-5 mt-1">
+                  {orderStatus[sanityOrder.shipping.status].icono}
+                </span>
+                <p className="text-md font-normal">
+                  {orderStatus[sanityOrder.shipping.status].mensaje}
+                </p>
+              </span>
+            </div>
+            <div className="flex gap-2 font-tajawal items-center">
+              <p className="text-gray-800 text-lg font-medium">
+                Número de guía del envío:{" "}
+              </p>
+              <p className="text-gray-700 text-lg font-normal">
+                {sanityOrder.shipping.trackingNumber}
+              </p>
+            </div>
+          </>
+        )}
         <div className="flex gap-2 font-tajawal items-center">
           <p className="text-gray-800 text-lg font-medium">
-            Estado del envío:{" "}
+            Rastrea tu envío en el siguiente link:{" "}
           </p>
-          <p className="text-gray-700 text-lg font-normal">
-            {orderStatus[sanityOrder.shipping.status]}
-          </p>
+          <Link
+            href={
+              sanityOrder.shipping.trackingLink
+                ? sanityOrder.shipping.trackingLink
+                : sanityOrder.shipping.trackingNumber
+                ? `https://coordinadora.com/rastreo/rastreo-de-guia/detalle-de-rastreo-de-guia/?guia=${sanityOrder.shipping.trackingNumber}`
+                : "https://coordinadora.com/"
+            }
+            className="text-gray-700 underline hover:text-gray-500 text-lg font-normal flex items-end"
+          >
+            Envíos Coordinadora <GoArrowUpRight className="w-5 h-5 mb-1" />
+          </Link>
         </div>
         <h3 className="text-gray-800 text-lg font-medium font-tajawal">
           Productos:
@@ -99,7 +169,9 @@ const Page = async ({
             ${numberToColombianPriceString(sanityOrder.amounts.total)}
           </p>
         </div>
-      <Link className="dark-button mt-8 button-float" href={'/listing'}> Ver más productos </Link>
+        <Link className="dark-button mt-8 button-float" href={"/listing"}>
+          Sigue Comprando
+        </Link>
       </section>
     </Main>
   );

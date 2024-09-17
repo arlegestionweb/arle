@@ -82,8 +82,6 @@ export const createInvoice = async function (_: unknown, formData: FormData) {
     const errorArray = JSON.parse(
       parsedFormDataWithProductReference.error.message
     );
-
-    console.log({path: errorArray[0].path})
     const errorMessages = errorArray.map((err: {message: string}, index: number) => {
       let message = err.message;
   

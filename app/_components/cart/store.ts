@@ -172,8 +172,6 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
       const inCart = get().isCartOpen;
 
-      console.log(item);
-
       return { items: newItems, isAddedToCartModalOpen: inCart ? false : true, itemAddedToCart: item };
     }),
   clearCart: () =>
