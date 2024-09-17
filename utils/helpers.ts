@@ -21,6 +21,8 @@ export const colombianPriceStringToNumber = (price: string) => {
   );
 };
 
+
+
 export const numberToColombianPriceString = (price: number) => {
   if (!price) return "";
   let [integerPart, decimalPart] = price.toString().split(".");
@@ -92,4 +94,14 @@ export const incrementColumnLetter = function (columnLetter: string): string {
       String.fromCharCode(columnLetter.charCodeAt(columnLetter.length - 1) + 1)
     );
   }
+};
+
+export function formatDateStringToMMMDDYYYY(dateStr: string): string {
+  // Create a Date object from the date string
+  const date = new Date(dateStr);
+
+  // Format the date
+  const formattedDate = date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  return formattedDate;
 };
