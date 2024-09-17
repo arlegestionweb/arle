@@ -170,8 +170,7 @@ const Page = async ({
           </p>
         </div>
         <Link className="dark-button mt-8 button-float" href={"/listing"}>
-          {" "}
-          Ver más productos{" "}
+          Sigue Comprando
         </Link>
       </section>
     </Main>
