@@ -169,19 +169,7 @@ export const POST = async (req: Request, res: Response) => {
         .commit();
     }
   }
-
-  const { data, error } = await sendClientInvoiceEmail(newSanityOrder);
-  const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(
-    newSanityOrder
-  );
-
-  if (error || adminError) {
-    return Response.json({ status: 500 });
-  }
-
-  revalidatePath("/listing", "page");
-  revalidatePath("/[type]/[id]/page", "page");
-
+  
   const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
 
   const email = await hashString(request.data.transaction.customer_email);
@@ -224,6 +212,19 @@ export const POST = async (req: Request, res: Response) => {
   } else {
     console.log("Compra exitosa");
   }
+
+  const { data, error } = await sendClientInvoiceEmail(newSanityOrder);
+  const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(
+    newSanityOrder
+  );
+
+  if (error || adminError) {
+    return Response.json({ status: 500 });
+  }
+
+  revalidatePath("/listing", "page");
+  revalidatePath("/[type]/[id]/page", "page");
+
 
   return new Response("Transacción exitosa", { status: 200 });
 };
