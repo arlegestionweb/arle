@@ -112,7 +112,7 @@ const Page = async ({
               <span
                 className={`flex items-center gap-2 ${
                   orderStatus[sanityOrder.shipping.status].color
-                } text-white px-6 rounded-full`}
+                } text-white px-6 rounded-full pointer-events-none`}
               >
                 <span className="w-5 h-5 mt-1">
                   {orderStatus[sanityOrder.shipping.status].icono}
