@@ -19,8 +19,8 @@ export const VoidedEmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
       <Html>
         <Body>
         <Container>
-            <Heading className=" text-white text-xl" style={{ backgroundColor: "#3a1439" }}>{DateTime.fromSQL(order.orderDate).toLocaleString(DateTime.DATE_MED)}</Heading>
-            <Img className="ml-auto mr-auto" src={'/ArleBasicLogo.svg'} alt="Arle Logo" width="690" height="200"></Img>
+            <Heading className=" text-white text-xl" style={{ backgroundColor: "#3a1439" }}>{DateTime.fromISO(order.orderDate).toLocaleString(DateTime.DATE_MED)}</Heading>
+            <Img className="ml-auto mr-auto" src={'/ARLEBasicLogo.png'} alt="Arle Logo" width="719" height="150"></Img>
             <Heading>TU PEDIDO FUE ANULADO</Heading>
             <Text>Código de Compra: {order._id}</Text>
             <Text>Estado: ANULADO</Text>
@@ -49,7 +49,7 @@ export const VoidedEmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
                   <Text>Precio: {item.price}</Text>
                   <Text>Cantidad: {item.quantity}</Text>
                   {/* <Img src={image.url} sizes="3rem" /> */}
-                  <Img src={image?.url} alt='product image' width="300" height="300" />
+                  <Img src={image?.url} alt='product image' width="300" height="300" className="object-contain"/>
                 </Container>
               )
             })}

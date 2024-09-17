@@ -8,6 +8,7 @@ import { DateTime } from "luxon";
 import { numberToColombianPriceString } from "@/utils/helpers";
 import BackButton from "@/app/_components/BackButton";
 import { unstable_noStore } from "next/cache";
+import { GoArrowUpRight } from "react-icons/go";
 
 const Page = async ({
   params,
@@ -67,7 +68,7 @@ const Page = async ({
           </h2>
         </div>
         <p className="-mt-3 font-tajawal font-light text-lg">
-          Fecha de compra: {DateTime.fromISO(sanityOrder.orderDate, {zone: 'America/Bogota'}).toLocaleString(DateTime.DATE_MED)}
+          Fecha de compra: {DateTime.fromISO(sanityOrder.orderDate).toLocaleString(DateTime.DATE_MED)}
         </p>
 
         {/* <h3 className="font-tajawal text-gray-800 text-xl font-medium">Detalles del pedido:</h3> */}
@@ -78,6 +79,22 @@ const Page = async ({
           <p className="text-gray-700 text-lg font-normal">
             {orderStatus[sanityOrder.shipping.status]}
           </p>
+        </div>
+        <div className="flex gap-2 font-tajawal items-center">
+          <p className="text-gray-800 text-lg font-medium">
+            Número de guía del envío:{" "}
+          </p>
+          <p className="text-gray-700 text-lg font-normal">
+            {sanityOrder.shipping.trackingNumber}
+          </p>
+        </div>
+        <div className="flex gap-2 font-tajawal items-center">
+          <p className="text-gray-800 text-lg font-medium">
+            Rastrea tu envío en el siguiente link:{" "}
+          </p>
+          <Link href={sanityOrder.shipping.trackingLink?.toString() || "https://coordinadora.com/"} className="text-gray-700 underline hover:text-gray-500 text-lg font-normal flex items-end">
+            Envíos Coordinadora <GoArrowUpRight className="w-5 h-5 mb-1" />
+          </Link>
         </div>
         <h3 className="text-gray-800 text-lg font-medium font-tajawal">
           Productos:

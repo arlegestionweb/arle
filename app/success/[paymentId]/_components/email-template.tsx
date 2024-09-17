@@ -20,12 +20,12 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
       <Html>
         <Body>
           <Container>
-            <Heading className=" text-white text-xl" style={{ backgroundColor: "#3a1439" }}>{DateTime.fromSQL(order.orderDate).toLocaleString(DateTime.DATE_MED)}</Heading>
-            <Img className="ml-auto mr-auto" src={'/ArleBasicLogo.svg'} alt="Arle Logo" width="690" height="200"></Img>
+            <Heading className=" text-white text-xl" style={{ backgroundColor: "#101432" }}>{DateTime.fromISO(order.orderDate).toLocaleString(DateTime.DATE_MED)}</Heading>
+            <Img className="ml-auto mr-auto" src={'/ARLEBasicLogo.png'} alt="Arle Logo" width="719" height="150"></Img>
             <Heading>¡Gracias por tu compra!</Heading>
             <Heading>Estamos preparando tu pedido.</Heading>
             <Text>Haz click en el siguiente enlace para hacerle seguimiento a tu pedido:</Text>
-            <Link href={`https://www.arle.co/orders/${order._id}`}>Estado de Compra</Link>
+            <Link className="bg-arle-blue text-white text-2xl p-3" href={`https://www.arle.co/orders/${order._id}`}>Estado de Compra</Link>
             <Text>También puedes ver el estado de tu compra en https://www.arle.co/estadodecompra ingresando tu código de compra.</Text>
             <Text>Código de compra: {order._id}</Text>
             <Text>Revisa que tus datos sean correctos</Text>
@@ -58,7 +58,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
                   <Text>Precio: {item.price}</Text>
                   <Text>Cantidad: {item.quantity}</Text>
                   {/* <Img src={image.url} sizes="3rem" /> */}
-                  <Img src={image?.url} alt='product image' width="300" height="300" />
+                  <Img src={image?.url} alt='product image' width="300" height="300" className="object-contain" />
                 </Container>
               )
             })}
