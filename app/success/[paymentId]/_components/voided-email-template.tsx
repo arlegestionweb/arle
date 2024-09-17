@@ -9,30 +9,21 @@ type EmailTemplateProps = {
   order: TFrontEndOrderSchema;
 };
 
-export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
+export const VoidedEmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   order,
 }) => {
   DateTime.fromSQL(order.orderDate);
   return (
 
     <Tailwind>
-
       <Html>
         <Body>
-          <Container>
+        <Container>
             <Heading className=" text-white text-xl" style={{ backgroundColor: "#3a1439" }}>{DateTime.fromSQL(order.orderDate).toLocaleString(DateTime.DATE_MED)}</Heading>
             <Img className="ml-auto mr-auto" src={'/ArleBasicLogo.svg'} alt="Arle Logo" width="690" height="200"></Img>
-            <Heading>¡Gracias por tu compra!</Heading>
-            <Heading>Estamos preparando tu pedido.</Heading>
-            <Text>Haz click en el siguiente enlace para hacerle seguimiento a tu pedido:</Text>
-            <Link href={`https://www.arle.co/orders/${order._id}`}>Estado de Compra</Link>
-            <Text>También puedes ver el estado de tu compra en https://www.arle.co/estadodecompra ingresando tu código de compra.</Text>
-            <Text>Código de compra: {order._id}</Text>
-            <Text>Revisa que tus datos sean correctos</Text>
-            <Text>Cliente: {order.customer.name}</Text>
-            <Text>Email: {order.customer.email}</Text>
-            <Text>Teléfono: {order.customer.phone}</Text>
-            <Text>Dirección: {order.customer.addressObject?.address}</Text>
+            <Heading>TU PEDIDO FUE ANULADO</Heading>
+            <Text>Código de Compra: {order._id}</Text>
+            <Text>Estado: ANULADO</Text>
             <Text>Total: {order.amounts.total}</Text>
             <Text>Para cualquier inquietud comunícate con nosotros a través de nuestra línea de atención al cliente: </Text>
             <Link href={`https://api.whatsapp.com/send/?phone=573160700015&text=Hola%2C+necesito+informacion+sobre+mi+pedido.+Mi+codigo+de+compra+es:+${order._id}.&type=phone_number&app_absent=0`}>Whatsapp 3160700015</Link>

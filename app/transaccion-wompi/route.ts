@@ -1,13 +1,15 @@
 // import { getOrderById } from "@/sanity/queries/orders";
-export const dynamic = 'force-dynamic' // defaults to auto
+export const dynamic = "force-dynamic"; // defaults to auto
 
 import { getProductsByIds } from "@/sanity/queries/pages/productPage";
 import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { TProductType } from "../_components/navbar/menu";
 import { revalidatePath } from "next/cache";
-import { sendAdminInvoiceEmail, sendClientInvoiceEmail } from "../_components/actions/send-email";
-
-
+import {
+  sendAdminInvoiceEmail,
+  sendClientInvoiceEmail,
+  sendClientVoidedInvoiceEmail,
+} from "../_components/actions/send-email";
 
 type WompiRequest = {
   event: string;
@@ -55,14 +57,44 @@ type WompiRequest = {
 async function hashString(email: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(email);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  const hashHex = hashArray
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
   return hashHex;
 }
 
 export const POST = async (req: Request, res: Response) => {
   const request: WompiRequest = await req.json();
+
+  if (request.data.transaction.status === "VOIDED") {
+    const paymentId = request.data.transaction.reference;
+
+    const sanityOrder = await sanityClient.fetch(
+      `*[_type == "orders" && _id == $id][0]`,
+      { id: paymentId }
+    );
+    const newSanityOrder = {
+      ...sanityOrder,
+      status: "ANULADO",
+      wompiReference: request.data.transaction.id,
+    };
+
+    const updateSanityOrder = await sanityWriteClient
+      .patch(newSanityOrder._id)
+      .set(newSanityOrder)
+      .commit();
+
+    const { data, error } = await sendClientVoidedInvoiceEmail(newSanityOrder);
+
+    if (error) {
+      return Response.json({status: 500})
+    }
+  
+    revalidatePath("/listing", "page")
+    revalidatePath("/[type]/[id]/page", "page")
+  }
 
   if (request.data.transaction.status !== "APPROVED") {
     return Response.json({
@@ -78,10 +110,10 @@ export const POST = async (req: Request, res: Response) => {
   );
   const newSanityOrder = {
     ...sanityOrder,
-    status: "PAID",
+    status: "PAGADO",
     wompiReference: request.data.transaction.id,
   };
-  
+
   const updateSanityOrder = await sanityWriteClient
     .patch(newSanityOrder._id)
     .set(newSanityOrder)
@@ -139,60 +171,59 @@ export const POST = async (req: Request, res: Response) => {
   }
 
   const { data, error } = await sendClientInvoiceEmail(newSanityOrder);
-  const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(newSanityOrder);
-
+  const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(
+    newSanityOrder
+  );
 
   if (error || adminError) {
-    return Response.json({status: 500})
+    return Response.json({ status: 500 });
   }
 
-  revalidatePath("/listing", "page")
-  revalidatePath("/[type]/[id]/page", "page")
+  revalidatePath("/listing", "page");
+  revalidatePath("/[type]/[id]/page", "page");
 
-  const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`
+  const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
 
   const email = await hashString(request.data.transaction.customer_email);
-  const phone = await hashString(request.data.transaction.customer_data.phone_number);
-  const name = await hashString(request.data.transaction.customer_data.full_name);
+  const phone = await hashString(
+    request.data.transaction.customer_data.phone_number
+  );
+  const name = await hashString(
+    request.data.transaction.customer_data.full_name
+  );
 
   const pixelEvent = {
-            "data": [
-                {
-                    "event_name": "Purchase",
-                    "event_time": new Date().toISOString(),
-                    "action_source": "website",
-                    "user_data": {
-                        "em": [
-                            `${email}`
-                        ],
-                        "ph": [
-                            `${phone}`
-                        ],
-                        "fn": [
-                          `${name}`
-                        ]
-                    },
-                    "custom_data": {
-                        "currency": "COP",
-                        "value": `${request.data.transaction.amount_in_cents / 100}`
-                    }
-                }
-            ],
-      };
+    data: [
+      {
+        event_name: "Purchase",
+        event_time: new Date().toISOString(),
+        action_source: "website",
+        user_data: {
+          em: [`${email}`],
+          ph: [`${phone}`],
+          fn: [`${name}`],
+        },
+        custom_data: {
+          currency: "COP",
+          value: `${request.data.transaction.amount_in_cents / 100}`,
+        },
+      },
+    ],
+  };
 
   const postReq = await fetch(pixelUrl, {
-    method: 'POST',
+    method: "POST",
     headers: {
-    'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(pixelEvent),
-});
+  });
 
-if (!postReq.ok) {
-    console.error('Failed to send event to Pixel API', await postReq.text());
-} else {
-    console.log('Compra exitosa');
-}
+  if (!postReq.ok) {
+    console.error("Failed to send event to Pixel API", await postReq.text());
+  } else {
+    console.log("Compra exitosa");
+  }
 
   return new Response("Transacción exitosa", { status: 200 });
 };

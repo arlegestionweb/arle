@@ -67,7 +67,7 @@ const Page = async ({
           </h2>
         </div>
         <p className="-mt-3 font-tajawal font-light text-lg">
-          Fecha de compra: {DateTime.now().toLocaleString(DateTime.DATE_MED)}
+          Fecha de compra: {DateTime.fromISO(sanityOrder.orderDate, {zone: 'America/Bogota'}).toLocaleString(DateTime.DATE_MED)}
         </p>
 
         {/* <h3 className="font-tajawal text-gray-800 text-xl font-medium">Detalles del pedido:</h3> */}
@@ -99,6 +99,7 @@ const Page = async ({
             ${numberToColombianPriceString(sanityOrder.amounts.total)}
           </p>
         </div>
+      <Link className="dark-button mt-8 button-float" href={'/listing'}> Ver más productos </Link>
       </section>
     </Main>
   );
