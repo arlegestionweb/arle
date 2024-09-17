@@ -191,7 +191,7 @@ export const ordersSchema = defineType({
         }),
         defineField({
           name: "trackingLink",
-          title: "Link de Transportadora",
+          title: "(Link de Transportadora) SOLO INGRESAR LINK SI ES DIFERENTE A COORDINADORA",
           type: "url",
         }),
       ],
