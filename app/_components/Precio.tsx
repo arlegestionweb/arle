@@ -32,13 +32,13 @@ const Precio = ({
       <section className="flex pt-1 gap-1 sm:gap-1.5 items-center justify-start">
         {discountedPrice ? (
           <>
-            <p className={` ${fontSizings[fontSizes.payingPrice]} text-gray-600 text-base xs:text-xl font-medium whitespace-nowrap font-tajawal leading-none xs:leading-none`}>
+            <p className={` ${fontSizings[fontSizes.payingPrice]} text-gray-600 text-[17px] xs:text-lg font-medium whitespace-nowrap font-tajawal leading-none xs:leading-none`}>
               ${numberToColombianPriceString(
                 discountedPrice
               )}
             </p>
             {discountedPrice && (
-              <p className={` ${fontSizings[fontSizes.lineThroughPrice]} text-gray-500 whitespace-nowrap text-xs xs:text-sm sm:text-lg -mt-1 sm:-mt-2 font-medium font-raleway line-through leading-none xs:leading-none sm:leading-none`}>
+              <p className={` ${fontSizings[fontSizes.lineThroughPrice]} text-gray-500 whitespace-nowrap text-xs xs:text-sm sm:text-base -mt-1 sm:-mt-2 font-medium font-raleway line-through leading-none xs:leading-none sm:leading-none`}>
                 ${numberToColombianPriceString(
                   fullPrice
                 )}
@@ -46,7 +46,7 @@ const Precio = ({
             )}
           </>
         ) : (
-          <p className={` ${fontSizings[fontSizes.payingPrice]} text-gray-600 text-xl font-medium whitespace-nowrap font-tajawal leading-none`}>
+          <p className={` ${fontSizings[fontSizes.payingPrice]} text-gray-600 text-[17px] xs:text-lg font-medium whitespace-nowrap font-tajawal leading-none`}>
             ${numberToColombianPriceString(
               fullPrice
             )}

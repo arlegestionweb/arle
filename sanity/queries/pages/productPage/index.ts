@@ -4,6 +4,7 @@ import { relojLujoSchema, relojPremiumSchema } from "../zodSchemas/reloj";
 import { gafasLujoSchema, gafasPremiumSchema } from "../zodSchemas/gafas";
 import { perfumeLujoSchema, perfumePremiumSchema } from "../zodSchemas/perfume";
 import { zodTimedDiscountsSchema } from "../zodSchemas/general";
+import { groq } from "next-sanity";
 
 type TProductType =
   | "relojesLujo"
@@ -468,20 +469,19 @@ export const getProductById = async (id: string, productType: TProductType) => {
   const fetchResult =
     await sanityClient.fetch(`*[_type == "${productType}" && _id == "${id}"][0]
   ${query}`);
-  
+
   const productSchema = schemas[productType];
-  
+
   const params = { productId: id };
-  
+
   const discounts = await sanityClient.fetch(timedDiscountQuery, params);
-  
+
   const product = productSchema.safeParse(fetchResult);
 
   const parsedDiscounts = zodTimedDiscountsSchema.safeParse(discounts);
   //
 
   if (!parsedDiscounts.success) {
-    
     throw new Error(parsedDiscounts.error.message);
   }
 
@@ -517,7 +517,7 @@ const zodPorudctWithVariants = z.object({
 const zodProductsWithVariants = z.array(zodPorudctWithVariants);
 
 export const getProductsByIds = async (
-  products: { _id: string; _type: TProductType }[]
+  products: { _id: string }[]
 ) => {
   const result = await Promise.all(
     products.map(async (product) => {
@@ -531,8 +531,36 @@ export const getProductsByIds = async (
   const parsedResult = zodProductsWithVariants.safeParse(result);
 
   if (!parsedResult.success) {
-    return console.error(parsedResult.error.message);
+    console.error(parsedResult.error.message);
+    return [];
   }
 
   return parsedResult.data;
 };
+
+// Function to get products by type
+export const getProductsByType = async (productType: TProductType) => {
+  const result = await sanityClient.fetch(
+    groq`*[_type == $productType ]{
+    _id, 
+    "marca": marca->titulo
+    }`,
+    {productType}
+  );
+
+  console.log({result});
+
+  const parsedResult = zodProductsWithMarcas.safeParse(result);
+
+  if (!parsedResult.success) {
+    console.error(parsedResult.error.message);
+    return [];
+  }
+
+  return parsedResult.data;
+};
+
+const zodProductsWithMarcas = z.array(z.object({
+  _id: z.string(),
+  marca: z.string(),
+}));

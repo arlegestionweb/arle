@@ -654,7 +654,7 @@ const Listing = async ({
   );
   const newFilteredProducts = filteredProducts;
 
-  const marcas = getAllMarcas(filteredProducts);
+  const marcas = await getAllMarcas(filteredProducts);
 
   const relojes = newFilteredProducts.filter(
     (p) => p._type === "relojesLujo" || p._type === "relojesPremium"

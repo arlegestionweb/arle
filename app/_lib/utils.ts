@@ -2,6 +2,7 @@ import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import { ReadonlyURLSearchParams } from "next/navigation";
+import { getProductsByType } from "@/sanity/queries/pages/productPage";
 
 export const createUrl = (
   pathname: string,
@@ -62,14 +63,19 @@ export const formatNumber = function (number: number | string): string {
   return result;
 };
 
-export const getAllMarcas = (products: TProduct[]) => {
-  const uniqueMarcas: string[] = [];
-  products.forEach((product) => {
-    if (uniqueMarcas.indexOf(product.marca) === -1) {
-      uniqueMarcas.push(product.marca);
-    }
-  });
-  return uniqueMarcas;
+export const getAllMarcas = async (products: TProduct[]): Promise<string[]> => {
+  // Obtener todos los tipos de productos en el array de entrada
+  const tiposDeProductos = Array.from(new Set(products.map(product => product._type)));
+  // Fetch todos los productos de los tipos encontrados
+  const todosLosProductos = await Promise.all(tiposDeProductos.map(tipo => getProductsByType(tipo)));
+  // Obtener todas las marcas únicas de los productos fetched
+  const todasLasMarcas = Array.from(new Set(
+    todosLosProductos.flatMap(productos => 
+      productos.map(product => (product as any).marca)
+    ).filter(marca => marca !== undefined && marca !== null)
+  )) as string[];
+
+  return todasLasMarcas;
 }
 
 export const getAllColeccionesDeMarca = (products: TProduct[]) =>
