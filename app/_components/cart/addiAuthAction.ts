@@ -1,19 +1,11 @@
 "use server"
 
 import { checkAddiResponseBodySchema, TOrderSchemaWithKeys } from "@/sanity/queries/orders"
-import { z } from "zod"
-
-const ADDI_TOKEN_URL = "https://auth.addi-staging.com/oauth/token"
-const ADDI_AUDIENCE = "https://api.staging.addi.com"
-const ADDI_PAYMENT_URL = "https://api.addi-staging.com/v1/online-applications"
-const ADDI_CHECKAMOUNTS_ENDPOINT = `https://channels-public-api.addi.com/allies/${process.env.ADDI_ALLY_SLUG}/config?requestedAmount=`
-
-
 
 export const checkAddiAmounts = async (cartAmount: number) => {
 
   try {
-    const response = await fetch(`${ADDI_CHECKAMOUNTS_ENDPOINT}${cartAmount}`);
+    const response = await fetch(`${process.env.ADDI_CHECKAMOUNTS_ENDPOINT}/config?requestedAmount=${cartAmount}`);
     const body = await response.json();
     const parsedBody = checkAddiResponseBodySchema.safeParse(body);
     if (!parsedBody.success) {
@@ -32,14 +24,16 @@ export const generateAddiToken = async () => {
 	myHeaders.append("Content-Type", "application/json");
 
 	const body = {
-		audience: ADDI_AUDIENCE,
+		audience: process.env.ADDI_AUDIENCE,
 		grant_type: "client_credentials",
 		client_id: process.env.ADDI_CLIENT_ID,
 		client_secret: process.env.ADDI_CLIENT_SECRET,    
 	}
-
+  if(!process.env.ADDI_TOKEN_URL){
+    return
+  }
 	try {
-		const response = await fetch(ADDI_TOKEN_URL, {
+		const response = await fetch(process.env.ADDI_TOKEN_URL, {
 			method: "POST",
 			headers: myHeaders,
 			body: JSON.stringify(body),
@@ -103,8 +97,8 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     },
     allyUrlRedirection: {
       logoUrl: "https://picture.example.com/?img=test",
-      callbackUrl: "https://arle.co/transaccion-addi",
-      redirectionUrl: `https://arle.co/addi-redirection/${data._id}`,
+      callbackUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/transaccion-addi`,
+      redirectionUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/addi-redirection/${data._id}`,
     },
     // geoLocation: {
     //   latitude: "4.624335",
@@ -132,7 +126,9 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
       redirect: 'manual' as RequestRedirect,
     };
 
-    const response = await fetch(ADDI_PAYMENT_URL, requestOptions);
+    if(!process.env.ADDI_PAYMENT_URL) return
+
+    const response = await fetch(process.env.ADDI_PAYMENT_URL, requestOptions);
   
     
 		if (response.status === 301) {
