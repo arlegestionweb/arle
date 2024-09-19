@@ -5,8 +5,13 @@ type Params = {
     paymentId: string
   }
 
-  export async function GET( context: { params: Params }) {
-    const paymentId = context.params.paymentId // '1'
+    export async function GET(
+      request: Request,
+      { params }: { params: Params }
+    ) {
+    const paymentId = params.paymentId // '1'
+
+    console.log({paymentId});
 
     const order = await getOrderById(paymentId);
 
