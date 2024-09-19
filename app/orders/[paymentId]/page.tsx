@@ -82,7 +82,6 @@ const Page = async ({
     );
   DateTime.fromSQL(sanityOrder.orderDate);
 
-  console.log({shipping: orderStatus[sanityOrder.shipping.status].icono});
   return (
     <Main extraClasses="bg-white md:mt-[53px] default-paddings pb-10 min-h-screen flex justify-center">
       <section className="w-full max-w-screen-sm flex flex-col gap-2 pt-20">
