@@ -103,8 +103,8 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     },
     allyUrlRedirection: {
       logoUrl: "https://picture.example.com/?img=test",
-      callbackUrl: "https://localhost:3000/transaccion-addi",
-      redirectionUrl: `https://localhost:3000/addi-redirection/${data._id}`,
+      callbackUrl: "https://arle.co/transaccion-addi",
+      redirectionUrl: `https://arle.co/addi-redirection/${data._id}`,
     },
     // geoLocation: {
     //   latitude: "4.624335",
