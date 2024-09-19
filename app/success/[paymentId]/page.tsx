@@ -21,7 +21,7 @@ const Page = async ({
 
   const sanityOrder = await getOrderById(params.paymentId);
 
-  if (!sanityOrder) return <div>no sanity order found</div>;
+  if (!sanityOrder) return <div>no order found</div>;
 
 
   return (

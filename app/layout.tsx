@@ -77,7 +77,6 @@ export default async function RootLayout({
   const siteSettings = await getSiteSettings();
   const nuestrasSedes = await getNuestrasSedesContent();
 
-  const url = process.env.NEXT_PUBLIC_SITE_URL
 
   return (
     <html lang="es">

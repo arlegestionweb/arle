@@ -219,7 +219,6 @@ export const inspiracionSchema = defineField({
                 !(context.parent as TParentWithSubirImagen).subirImagen &&
                 !field
               ) {
-                // console.log({context})
                 return "La imagen es requerida cuando 'Subir imagen aca' está seleccionado";
               }
               return true;

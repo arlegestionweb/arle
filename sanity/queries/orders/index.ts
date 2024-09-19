@@ -14,6 +14,26 @@ const zodAddressSchema = z.object({
   city: z.string().min(1, "La ciudad es requerida"),
 });
 
+export const checkAddiResponseBodySchema = z.object({
+  minAmount: z.number(),
+  maxAmount: z.number(),
+  policy: z.object({
+    discount: z.number(),
+    productType: z.string(),
+    policyMaxAmount: z.number()
+  }).optional().nullable(),
+  policies: z.array(z.object({})),
+  widgetConfig: z.object({
+    widgetVersion: z.string(),
+    widgetShowPreapproval: z.boolean()
+  }),
+  checkoutConfig: z.object({
+    version: z.string()
+  }),
+  isActiveAlly: z.boolean(),
+  isActivePayNow: z.boolean()
+})
+
 export const zodOrderSchema = z.object({
   _id: z.string().min(1, "El id es requerido"),
   _type: z.literal("orders"),
@@ -45,6 +65,21 @@ export const zodOrderSchema = z.object({
   }),
   items: z.array(zodCartItem),
 });
+
+export const zodOrderSchemaWithKeys = zodOrderSchema.merge(
+  z.object({
+    items: z.array(
+      zodCartItem.merge(
+        z.object({
+          _key: z.string(),
+        })
+      )
+    ),
+    addiAmounts: checkAddiResponseBodySchema.optional().nullable(),
+  })
+);
+
+export type TOrderSchemaWithKeys = z.infer<typeof zodOrderSchemaWithKeys> 
 
 const zodEmailOrderItemSchema = zodCartItem.merge(
   z.object({
@@ -108,6 +143,7 @@ export const getOrderById = async (id: string) => {
   const parsedOrder = zodSanityOrderSchema.safeParse(order);
 
   if (!parsedOrder.success) {
+    console.log({error: parsedOrder.error})
     return null;
   }
   return parsedOrder.data;

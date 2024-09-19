@@ -80,7 +80,6 @@ export const getNuestrasSedesContent = async () => {
     if (!validatedData.success) {
       throw new Error(validatedData.error.message);
     }
-    // console.log({validatedData})
     return validatedData.data;
     
   } catch (error) {
