@@ -548,8 +548,6 @@ export const getProductsByType = async (productType: TProductType) => {
     {productType}
   );
 
-  console.log({result});
-
   const parsedResult = zodProductsWithMarcas.safeParse(result);
 
   if (!parsedResult.success) {
