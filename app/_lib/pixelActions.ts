@@ -28,7 +28,7 @@ export const pageView = async () => {
         },
       },
     ],
-    // "test_event_code":"TEST91220"
+    // "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -68,16 +68,19 @@ export const productView = async ({
         user_data: {
           zp: [`${hashedZp}`],
           ph: [null],
+          fbc: null,
+          client_ip_address: null,
+          client_user_agent: null
         },
         custom_data: {
           content_name: `${productName}`,
           content_category: `${productType}`,
           currency: "COP",
-          value: `${parseInt(productValue.toString(), 10)}`,
+          value: `${parseInt(productValue.toString(), 10) * 1000}`,
         },
       },
     ],
-    // "test_event_code":"TEST91220"
+    // "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -116,11 +119,11 @@ export const addedToCartView = async ({
           content_name: `${productName}`,
           content_category: `${productType}`,
           currency: "COP",
-          value: `${parseInt(productValue.toString(), 10)}`,
+          value: `${parseInt(productValue.toString(), 10) * 1000}`,
         },
       },
     ],
-    // "test_event_code":"TEST99852"
+    // "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -157,7 +160,7 @@ export const initiateCheckoutView = async (totalValue: number) => {
         },
       },
     ],
-    // "test_event_code":"TEST99852"
+    // "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
