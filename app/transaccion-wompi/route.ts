@@ -55,17 +55,6 @@ export type TWompiRequest = {
   environment: string;
 };
 
-async function hashString(email: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(email);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-  return hashHex;
-}
-
 export const POST = async (req: Request, res: Response) => {
 
   const request: TWompiRequest = await req.json();

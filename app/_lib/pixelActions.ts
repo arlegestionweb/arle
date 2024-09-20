@@ -30,7 +30,7 @@ export const pagePixelView = async () => {
         },
       },
     ],
-    //// "test_event_code":"TEST7037"
+   "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -72,7 +72,7 @@ export const productPixelView = async ({
           ph: [null],
           fbc: null,
           client_ip_address: null,
-          client_user_agent: null
+          client_user_agent: null,
         },
         custom_data: {
           content_name: `${productName}`,
@@ -82,7 +82,7 @@ export const productPixelView = async ({
         },
       },
     ],
-   // "test_event_code":"TEST7037"
+    "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -125,7 +125,7 @@ export const addedToCartPixelView = async ({
         },
       },
     ],
-   // "test_event_code":"TEST7037"
+    "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -158,11 +158,11 @@ export const initiatePixelCheckoutView = async (totalValue: number) => {
         },
         custom_data: {
           currency: "COP",
-          value: `${parseInt(totalValue.toString(),10)}`,
+          value: `${parseInt(totalValue.toString(), 10)}`,
         },
       },
     ],
-   // "test_event_code":"TEST7037"
+    "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -180,19 +180,66 @@ export const initiatePixelCheckoutView = async (totalValue: number) => {
   }
 };
 
-export const initiatePixelPurchaseView = async (data: TWompiRequest["data"]) => {
+type TAddiPurchaseData = {
+  name: string,
+  email: string,
+  phone: string,
+  amount: number
+}
+export const initiatePixelAddiPurchaseView = async (data: TAddiPurchaseData) => {
+  const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
 
-  console.log("initiating Pixel view")
-    
+  const email = await hashString(data.email);
+  const phone = await hashString(data.phone);
+  const name = await hashString(data.name);
+  
+  const pixelEvent = {
+    data: [
+      {
+        event_name: "Purchase",
+        event_time: new Date().toISOString(),
+        action_source: "website",
+        user_data: {
+          em: [`${email}`],
+          ph: [`${phone}`],
+          fn: [`${name}`],
+        },
+        custom_data: {
+          currency: "COP",
+          value: `${data.amount}`,
+        },
+      },
+    ],
+    "test_event_code":"TEST7037"
+  };
+
+  console.log(pixelEvent)
+
+  const postReq = await fetch(pixelUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(pixelEvent),
+  });
+
+  if (!postReq.ok) {
+    console.error("Failed to send event to Pixel API", await postReq.text());
+  } else {
+    console.log("Compra exitosa");
+  }
+};
+
+export const initiatePixelPurchaseView = async (
+  data: TWompiRequest["data"]
+) => {
+  console.log("initiating Pixel view");
+
   const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
 
   const email = await hashString(data.transaction.customer_email);
-  const phone = await hashString(
-    data.transaction.customer_data.phone_number
-  );
-  const name = await hashString(
-    data.transaction.customer_data.full_name
-  );
+  const phone = await hashString(data.transaction.customer_data.phone_number);
+  const name = await hashString(data.transaction.customer_data.full_name);
 
   const pixelEvent = {
     data: [
@@ -214,8 +261,8 @@ export const initiatePixelPurchaseView = async (data: TWompiRequest["data"]) => 
     // "test_event_code":"TEST7037"
   };
 
-  console.log({pixelEvent});
-  
+  console.log({ pixelEvent });
+
   const postReq = await fetch(pixelUrl, {
     method: "POST",
     headers: {
@@ -223,10 +270,10 @@ export const initiatePixelPurchaseView = async (data: TWompiRequest["data"]) => 
     },
     body: JSON.stringify(pixelEvent),
   });
-  
+
   if (!postReq.ok) {
     console.error("Failed to send event to Pixel API", await postReq.text());
   } else {
     console.log("Compra exitosa");
   }
-}
+};
