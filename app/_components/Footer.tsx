@@ -46,7 +46,7 @@ const Footer = ({ settings, sedes }: FooterProps) => {
   if (pathname.includes("admin") || pathname.includes("mass-uploads")) return;
 
   return (
-    <section className="lg:fixed ">
+    <section className="lg:fixed -z-10">
       <footer className=" flex flex-col lg:fixed bottom-0 -z-10 min-h-[100vh] w-screen p-6 md:px-20 xs:px-8 sm:px-14 md:pt-20  text-white bg-arle-blue pointer-events-auto">
         <div className="flex-1 pt-10 pb-20 w-[210px] md:w-[260px] flex justify-center self-center items-center">
           <img src={"/newFooterLogo.svg"} width={280} height={200} alt="logo" />
