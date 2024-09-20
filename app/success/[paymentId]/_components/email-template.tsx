@@ -21,11 +21,11 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
         <Body>
           <Container>
             <Heading className=" text-white text-xl" style={{ backgroundColor: "#101432" }}>{DateTime.fromISO(order.orderDate).toLocaleString(DateTime.DATE_MED)}</Heading>
-            <Img className="ml-auto mr-auto" src={'/ARLEBasicLogo.png'} alt="Arle Logo" width="719" height="150"></Img>
+            <Img className="ml-auto mr-auto object-contain" src={'https://cdn.sanity.io/images/qhszuxx1/production/150d5369dff5ba5338b63b9e794d7c91fad6d6da-751x183.png'} alt="Arle Logo" width="719" height="150"></Img>
             <Heading>¡Gracias por tu compra!</Heading>
             <Heading>Estamos preparando tu pedido.</Heading>
             <Text>Haz click en el siguiente enlace para hacerle seguimiento a tu pedido:</Text>
-            <Link className="bg-arle-blue text-white text-2xl p-3" href={`https://www.arle.co/orders/${order._id}`}>Estado de Compra</Link>
+            <Link className=" text-white text-2xl p-3" style={{ backgroundColor: "#101432" }} href={`https://www.arle.co/orders/${order._id}`}>Estado de Compra</Link>
             <Text>También puedes ver el estado de tu compra en https://www.arle.co/estadodecompra ingresando tu código de compra.</Text>
             <Text>Código de compra: {order._id}</Text>
             <Text>Revisa que tus datos sean correctos</Text>
@@ -47,7 +47,6 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
 
               return (
                 <Container key={`${item.variantId}-${item.productId}`} className="flex flex-col">
-                  <Text>Código de Producto: {item.productId}</Text>
                   <Text>{item.product.marca} {isPerfumePremium(item.product)
               ? `${item.product.parteDeUnSet ? "Set " : ""}${item.product.titulo} - ${item.product.detalles.concentracion}`
               : isPerfumeLujo(item.product)
@@ -55,6 +54,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
                 : isReloj(item.product)
                   ? item.product.modelo
                   : item.product.modelo}</Text>
+                  <Text>Código de Producto: {item.productId}</Text>
                   <Text>Precio: {item.price}</Text>
                   <Text>Cantidad: {item.quantity}</Text>
                   {/* <Img src={image.url} sizes="3rem" /> */}
