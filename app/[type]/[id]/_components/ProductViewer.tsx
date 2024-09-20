@@ -1,5 +1,5 @@
 "use client"
-import { ProductTypes, productView } from "@/app/_lib/pixelActions"
+import { ProductTypes, productPixelView } from "@/app/_lib/pixelActions"
 import { useEffect } from "react"
 
 type ObjectType = {
@@ -8,7 +8,7 @@ type ObjectType = {
 const ProductViewer = ({productObject}: ObjectType) => {
 
 	useEffect( () => {
-		productView(productObject);
+		productPixelView(productObject);
 	}, [])
 
   return (<></>)

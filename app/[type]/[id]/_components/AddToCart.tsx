@@ -6,7 +6,7 @@ import { useCartStore } from "@/app/_components/cart/store";
 import { TPricing } from "./Product";
 import { LuShoppingCart } from "react-icons/lu";
 import { MdOutlinePayments } from "react-icons/md";
-import { addedToCartView } from "@/app/_lib/pixelActions";
+import { addedToCartPixelView } from "@/app/_lib/pixelActions";
 
 type PropsAddToCart = {
   className?: string;
@@ -45,7 +45,7 @@ const AddToCart = ({
       productType: `${product._type}`,
       productValue: `${selectedVariant.precio}`
     }
-    await addedToCartView(productObject);
+    await addedToCartPixelView(productObject);
   };
 
   return (

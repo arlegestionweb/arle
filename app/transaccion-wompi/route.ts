@@ -10,8 +10,9 @@ import {
   sendClientInvoiceEmail,
   sendClientVoidedInvoiceEmail,
 } from "../_components/actions/send-email";
+import { initiatePixelPurchaseView } from "../_lib/pixelActions";
 
-type WompiRequest = {
+export type TWompiRequest = {
   event: string;
   data: {
     transaction: {
@@ -66,8 +67,9 @@ async function hashString(email: string): Promise<string> {
 }
 
 export const POST = async (req: Request, res: Response) => {
-  const request: WompiRequest = await req.json();
 
+  const request: TWompiRequest = await req.json();
+  
   if (request.data.transaction.status === "VOIDED") {
     const paymentId = request.data.transaction.reference;
 
@@ -110,7 +112,7 @@ export const POST = async (req: Request, res: Response) => {
   );
   const newSanityOrder = {
     ...sanityOrder,
-    status: "PAGADO",
+    status: "PAID",
     wompiReference: request.data.transaction.id,
   };
 
@@ -169,105 +171,21 @@ export const POST = async (req: Request, res: Response) => {
         .commit();
     }
   }
-  
-  const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
 
-  const email = await hashString(request.data.transaction.customer_email);
-  const phone = await hashString(
-    request.data.transaction.customer_data.phone_number
-  );
-  const name = await hashString(
-    request.data.transaction.customer_data.full_name
-  );
-
-  const pixelEvent = {
-    data: [
-      {
-        event_name: "Purchase",
-        event_time: new Date().toISOString(),
-        action_source: "website",
-        user_data: {
-          em: [`${email}`],
-          ph: [`${phone}`],
-          fn: [`${name}`],
-        },
-        custom_data: {
-          currency: "COP",
-          value: `${request.data.transaction.amount_in_cents / 100}`,
-        },
-      },
-    ],
-  };
-
-  const postReq = await fetch(pixelUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(pixelEvent),
-  });
-
-  if (!postReq.ok) {
-    console.error("Failed to send event to Pixel API", await postReq.text());
-  } else {
-    console.log("Compra exitosa");
-  }
+  const purchaseView = await initiatePixelPurchaseView(request.data);
 
   const { data, error } = await sendClientInvoiceEmail(newSanityOrder);
   const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(
     newSanityOrder
   );
-
+  
   if (error || adminError) {
     return Response.json({ status: 500 });
   }
-
+  
   revalidatePath("/listing", "page");
   revalidatePath("/[type]/[id]/page", "page");
-
-
+  
+  
   return new Response("Transacción exitosa", { status: 200 });
-};
-
-// const resObj = {
-//   request: {
-//     event: "transaction.updated",
-//     data: { transaction: [Object] },
-//     sent_at: "2024-06-18T10:01:13.602Z",
-//     timestamp: 1718704873,
-//     signature: {
-//       checksum:
-//         "11d8955ec4046ec8f703cac7d9c0cd26fd7293eff78caa8bc1eb87903410b696",
-//       properties: [Array],
-//     },
-//     environment: "test",
-//   },
-//   transaction: {
-//     id: "179512-1718704872-31367",
-//     created_at: "2024-06-18T10:01:13.021Z",
-//     finalized_at: "2024-06-18T10:01:13.486Z",
-//     amount_in_cents: 120000000,
-//     reference: "EQKxYF7wDBN9rFcyNoEOT", //paymentId
-//     customer_email: "a@a.com",
-//     currency: "COP",
-//     payment_method_type: "CARD",
-//     payment_method: {
-//       type: "CARD",
-//       extra: [Object],
-//       token: "tok_test_79512_7f522aE06b6a1F3D1d51a7f446886Ac0",
-//       installments: 1,
-//     },
-//     status: "APPROVED",
-//     status_message: null,
-//     shipping_address: null,
-//     redirect_url:
-//       "http://localhost:3000/success/EQKxYF7wDBN9rFcyNoEOT/is-payment-successful",
-//     payment_source_id: null,
-//     payment_link_id: null,
-//     customer_data: {
-//       full_name: "asdasd asdasd",
-//       phone_number: "+572131231231",
-//     },
-//     billing_data: { legal_id_type: "CE", legal_id: "1231231" },
-//   },
-// };
+}
