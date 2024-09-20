@@ -6,6 +6,7 @@ import sanityClient, { sanityWriteClient } from "@/sanity/sanityClient";
 import { TProductType } from "../_components/navbar/menu";
 import { revalidatePath } from "next/cache";
 import { sendAdminInvoiceEmail, sendClientInvoiceEmail } from "../_components/actions/send-email";
+import { initiatePixelAddiPurchaseView } from "../_lib/pixelActions";
 
 
 type AddiRequest = {
@@ -108,35 +109,14 @@ export const POST = async (req: Request) => {
   revalidatePath("/listing", "page")
   revalidatePath("/[type]/[id]/page", "page")
 
-  const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`
+  const pixelInfo = {
+    name: sanityOrder.customer.name as string,
+    email: sanityOrder.customer.email as string,
+    phone: sanityOrder.customer.phone as string,
+    amount: request.approvedAmount
+  }
 
-  const pixelEvent = {
-            "data": [
-                {
-                    "event_name": "Purchase",
-                    "event_time": new Date().toISOString(),
-                    "action_source": "website",
-                    "custom_data": {
-                        "currency": "COP",
-                        "value": `${request.approvedAmount / 100}`
-                    }
-                }
-            ],
-      };
-
-  const postReq = await fetch(pixelUrl, {
-    method: 'POST',
-    headers: {
-    'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(pixelEvent),
-});
-
-if (!postReq.ok) {
-    console.error('Failed to send event to Pixel API', await postReq.text());
-} else {
-    console.log('Compra exitosa');
-}
+  const pixelView = initiatePixelAddiPurchaseView(pixelInfo);
 
   // Return the request body
   return new Response(JSON.stringify(request), {

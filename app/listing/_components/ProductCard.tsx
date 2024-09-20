@@ -26,7 +26,7 @@ import { TVarianSelectorProps } from "@/app/_components/types/card";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { isGafaLujo, isPerfumeLujo, isPerfumePremium, isRelojLujo } from "@/sanity/queries/pages/types";
 import ImageWrapper from "./ImageWrapper";
-import { addedToCartView } from "@/app/_lib/pixelActions";
+import { addedToCartPixelView } from "@/app/_lib/pixelActions";
 
 const ProductoCard = ({
   producto,
@@ -148,7 +148,7 @@ const CardLayout = ({
       productType: `${product._type}`,
       productValue: `${selectedVariant.precio}`
     }
-    await addedToCartView(productObject);
+    await addedToCartPixelView(productObject);
   };
 
   const imgSrc = 

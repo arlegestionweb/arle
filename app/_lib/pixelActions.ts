@@ -1,5 +1,7 @@
 "use server";
 
+import { TWompiRequest } from "../transaccion-wompi/route";
+
 const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
 
 async function hashString(text: string): Promise<string> {
@@ -13,7 +15,7 @@ async function hashString(text: string): Promise<string> {
   return hashHex;
 }
 
-export const pageView = async () => {
+export const pagePixelView = async () => {
   const hashedZp = await hashString("760001");
 
   const pixelEvent = {
@@ -28,7 +30,7 @@ export const pageView = async () => {
         },
       },
     ],
-    // "test_event_code":"TEST91220"
+   "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -52,7 +54,7 @@ export type ProductTypes = {
   productValue: String;
 };
 
-export const productView = async ({
+export const productPixelView = async ({
   productName,
   productType,
   productValue,
@@ -68,16 +70,19 @@ export const productView = async ({
         user_data: {
           zp: [`${hashedZp}`],
           ph: [null],
+          fbc: null,
+          client_ip_address: null,
+          client_user_agent: null,
         },
         custom_data: {
           content_name: `${productName}`,
           content_category: `${productType}`,
           currency: "COP",
-          value: `${parseInt(productValue.toString(), 10)}`,
+          value: `${parseInt(productValue.toString(), 10) * 1000}`,
         },
       },
     ],
-    // "test_event_code":"TEST91220"
+    "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -95,7 +100,7 @@ export const productView = async ({
   }
 };
 
-export const addedToCartView = async ({
+export const addedToCartPixelView = async ({
   productName,
   productType,
   productValue,
@@ -116,11 +121,11 @@ export const addedToCartView = async ({
           content_name: `${productName}`,
           content_category: `${productType}`,
           currency: "COP",
-          value: `${parseInt(productValue.toString(), 10)}`,
+          value: `${parseInt(productValue.toString(), 10) * 1000}`,
         },
       },
     ],
-    // "test_event_code":"TEST99852"
+    "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -138,7 +143,7 @@ export const addedToCartView = async ({
   }
 };
 
-export const initiateCheckoutView = async (totalValue: number) => {
+export const initiatePixelCheckoutView = async (totalValue: number) => {
   const hashedZp = await hashString("760001");
 
   const pixelEvent = {
@@ -153,11 +158,11 @@ export const initiateCheckoutView = async (totalValue: number) => {
         },
         custom_data: {
           currency: "COP",
-          value: `${parseInt(totalValue.toString(),10)}`,
+          value: `${parseInt(totalValue.toString(), 10)}`,
         },
       },
     ],
-    // "test_event_code":"TEST99852"
+    "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -171,6 +176,104 @@ export const initiateCheckoutView = async (totalValue: number) => {
   if (!postReq.ok) {
     console.error("Failed to send event to Pixel API", await postReq.text());
   } else {
-    // console.log("Initiated checkout");
+    console.log("Initiated checkout");
+  }
+};
+
+type TAddiPurchaseData = {
+  name: string,
+  email: string,
+  phone: string,
+  amount: number
+}
+export const initiatePixelAddiPurchaseView = async (data: TAddiPurchaseData) => {
+  const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
+
+  const email = await hashString(data.email);
+  const phone = await hashString(data.phone);
+  const name = await hashString(data.name);
+  
+  const pixelEvent = {
+    data: [
+      {
+        event_name: "Purchase",
+        event_time: new Date().toISOString(),
+        action_source: "website",
+        user_data: {
+          em: [`${email}`],
+          ph: [`${phone}`],
+          fn: [`${name}`],
+        },
+        custom_data: {
+          currency: "COP",
+          value: `${data.amount}`,
+        },
+      },
+    ],
+    "test_event_code":"TEST7037"
+  };
+
+  console.log(pixelEvent)
+
+  const postReq = await fetch(pixelUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(pixelEvent),
+  });
+
+  if (!postReq.ok) {
+    console.error("Failed to send event to Pixel API", await postReq.text());
+  } else {
+    console.log("Compra exitosa");
+  }
+};
+
+export const initiatePixelPurchaseView = async (
+  data: TWompiRequest["data"]
+) => {
+  console.log("initiating Pixel view");
+
+  const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
+
+  const email = await hashString(data.transaction.customer_email);
+  const phone = await hashString(data.transaction.customer_data.phone_number);
+  const name = await hashString(data.transaction.customer_data.full_name);
+
+  const pixelEvent = {
+    data: [
+      {
+        event_name: "Purchase",
+        event_time: new Date().toISOString(),
+        action_source: "website",
+        user_data: {
+          em: [`${email}`],
+          ph: [`${phone}`],
+          fn: [`${name}`],
+        },
+        custom_data: {
+          currency: "COP",
+          value: `${data.transaction.amount_in_cents / 100}`,
+        },
+      },
+    ],
+    // "test_event_code":"TEST7037"
+  };
+
+  console.log({ pixelEvent });
+
+  const postReq = await fetch(pixelUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(pixelEvent),
+  });
+
+  if (!postReq.ok) {
+    console.error("Failed to send event to Pixel API", await postReq.text());
+  } else {
+    console.log("Compra exitosa");
   }
 };

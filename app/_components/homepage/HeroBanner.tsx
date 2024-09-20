@@ -4,7 +4,7 @@ import GradientImage from "../GradientImage";
 import { cn } from "@/app/_lib/utils";
 import Link from "next/link";
 import { THeroSection } from "@/sanity/queries/pages/homepageQuery";
-import { pageView } from "@/app/_lib/pixelActions";
+import { pagePixelView } from "@/app/_lib/pixelActions";
 import GradientVideo from "../GradientVideo";
 
 type BannerProps = {
@@ -17,7 +17,7 @@ const Banner = ({ content, className }: BannerProps) => {
   const bannerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    pageView();
+    pagePixelView();
   }, []);
 
   const handleScroll = (event: any) => {

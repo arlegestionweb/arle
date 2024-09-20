@@ -19,7 +19,7 @@ import { useEffect, useRef, useState } from "react";
 import { MdOutlinePayments } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import ArleBasicLogo from "../ArleBasicLogo";
-import { initiateCheckoutView } from "@/app/_lib/pixelActions";
+import { initiatePixelCheckoutView } from "@/app/_lib/pixelActions";
 import { generateAddiPaymentURL } from "./addiAuthAction";
 import AddiPayButton from "./AddiPayButton";
 import { TOrderSchemaWithKeys } from "@/sanity/queries/orders";
@@ -261,7 +261,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                   labelType={"dark"}
                   // onClick={() => formState && formState.data && setIsWompipaymentOpen(true)}
                   onClick={() => {
-                    initiateCheckoutView(getCartTotal());
+                    initiatePixelCheckoutView(getCartTotal());
                     setPaymentLoading(true);
                   }}
                   className="flex justify-center items-center gap-2 w-full max-w-sm button-float"

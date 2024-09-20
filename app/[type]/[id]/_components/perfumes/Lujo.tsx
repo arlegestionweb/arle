@@ -8,8 +8,6 @@ import HeroProduct from "@/app/_components/lujo/HeroProduct";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
-import { productView } from "@/app/_lib/pixelActions";
-import { useEffect } from "react";
 import ProductViewer from "../ProductViewer";
 
 type TPerfumeLujoProps = {
