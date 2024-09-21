@@ -49,7 +49,7 @@ export const pagePixelView = async () => {
         user_data: {
           zp: [`${hashedZp}`],
           ph: [null],
-          client_ip_adress: ip,
+          // client_ip_adress: ip,
           client_user_agent: userAgent,
           fbc: fbc?.value,
           fbp: fbp?.value,
