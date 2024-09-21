@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies, headers } from "next/headers";
 import { TWompiRequest } from "../transaccion-wompi/route";
 
 const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
@@ -15,8 +16,20 @@ async function hashString(text: string): Promise<string> {
   return hashHex;
 }
 
+
+
 export const pagePixelView = async () => {
   const hashedZp = await hashString("760001");
+
+  const headersList = headers();
+  const userAgent = headersList.get('user-agent');
+  const ip = headersList.get('x-forwarded-for');
+  const cookieStore = cookies();
+  const fbc = cookieStore.get('_fbc') || null;
+  const fbp = cookieStore.get('_fbp') || null;
+  const fbLoginId = cookieStore.get('_fb_login_id') || null;
+
+  console.log({fbc});
 
   const pixelEvent = {
     data: [
@@ -27,10 +40,15 @@ export const pagePixelView = async () => {
         user_data: {
           zp: [`${hashedZp}`],
           ph: [null],
+          client_ip_adress: ip,
+          client_user_agent: userAgent,
+          fbc: fbc,
+          fbp: fbp,
+          fb_login_id: fbLoginId,
         },
       },
     ],
-   "test_event_code":"TEST7037"
+  //  "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -82,7 +100,7 @@ export const productPixelView = async ({
         },
       },
     ],
-    "test_event_code":"TEST7037"
+    // "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -125,7 +143,7 @@ export const addedToCartPixelView = async ({
         },
       },
     ],
-    "test_event_code":"TEST7037"
+    // "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -162,7 +180,7 @@ export const initiatePixelCheckoutView = async (totalValue: number) => {
         },
       },
     ],
-    "test_event_code":"TEST7037"
+    // "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -210,7 +228,7 @@ export const initiatePixelAddiPurchaseView = async (data: TAddiPurchaseData) => 
         },
       },
     ],
-    "test_event_code":"TEST7037"
+    // "test_event_code":"TEST7037"
   };
 
   console.log(pixelEvent)
