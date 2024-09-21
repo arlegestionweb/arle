@@ -34,11 +34,13 @@ export const pagePixelView = async () => {
   const userAgent = headersList.get('user-agent');
   const ip = getIp();
   const cookieStore = cookies();
-  const fbc = cookieStore.get('_fbc') || null;
-  const fbp = cookieStore.get('_fbp') || null;
-  const fbLoginId = cookieStore.get('_fb_login_id') || null;
+  const fbc = cookieStore.get('_fbc')?.value || null;
+  const fbp = cookieStore.get('_fbp')?.value || null;
+  const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 
-  console.log({ip});
+  console.log({fbc});
+  console.log({fbp});
+  console.log({fbLoginId});
 
   const pixelEvent = {
     data: [
@@ -51,9 +53,9 @@ export const pagePixelView = async () => {
           ph: [null],
           // client_ip_adress: ip,
           client_user_agent: userAgent,
-          fbc: fbc?.value,
-          fbp: fbp?.value,
-          fb_login_id: fbLoginId?.value,
+          fbc: fbc,
+          fbp: fbp,
+          fb_login_id: fbLoginId,
         },
       },
     ],
