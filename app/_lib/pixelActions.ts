@@ -214,7 +214,7 @@ export const initiatePixelCheckoutView = async (data: TPurchaseData) => {
         },
       },
     ],
-    "test_event_code":"TEST7037"
+    // "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -275,8 +275,6 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
     ],
     // "test_event_code":"TEST7037"
   };
-
-  console.log(pixelEvent)
 
   const postReq = await fetch(pixelUrl, {
     method: "POST",
