@@ -121,6 +121,13 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
 
   const addiDisabled = formState?.data?.addiAmounts && formState.data.amounts.total < formState.data.addiAmounts.maxAmount && formState.data.amounts.total > formState.data.addiAmounts.minAmount;
 
+  const pixelInfo = {
+    name: formState?.data?.customer.name as string,
+    email: formState?.data?.customer.email as string,
+    phone: formState?.data?.customer.phone as string,
+    amount: getCartTotal(),
+  }
+
   return (
     <>
       <form
@@ -261,7 +268,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                   labelType={"dark"}
                   // onClick={() => formState && formState.data && setIsWompipaymentOpen(true)}
                   onClick={() => {
-                    initiatePixelCheckoutView(getCartTotal());
+                    initiatePixelCheckoutView(pixelInfo);
                     setPaymentLoading(true);
                   }}
                   className="flex justify-center items-center gap-2 w-full max-w-sm button-float"
