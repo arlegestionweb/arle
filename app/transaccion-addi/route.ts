@@ -74,27 +74,23 @@ export const POST = async (req: Request) => {
       const variantToUpdate = productToUpdate.variantes.find(
         (v) => v.codigoDeReferencia === product.variantId
       );
-
-      if (!variantToUpdate) {
-        return Response.json({
-          status: 500,
-        });
-      }
-
-      const newVariantInfo = {
-        ...variantToUpdate,
-        unidadesDisponibles:
+      if (variantToUpdate) {
+        
+        const newVariantInfo = {
+          ...variantToUpdate,
+          unidadesDisponibles:
           variantToUpdate.unidadesDisponibles - product.quantity,
-      };
-
-      const variantIndex = productToUpdate.variantes.indexOf(variantToUpdate);
-      const updateProduct = await sanityWriteClient
+        };
+        
+        const variantIndex = productToUpdate.variantes.indexOf(variantToUpdate);
+        const updateProduct = await sanityWriteClient
         .patch(productToUpdate._id)
         .set({
           [`variantes[${variantIndex}].unidadesDisponibles`]:
-            newVariantInfo.unidadesDisponibles,
+          newVariantInfo.unidadesDisponibles,
         })
         .commit();
+      }
     }
   }
 
@@ -103,8 +99,10 @@ export const POST = async (req: Request) => {
 
 
   if (error || adminError) {
-    return Response.json({status: 500})
+    console.log("email no enviado.");
   }
+
+  console.log("is it updating or not");
 
   revalidatePath("/listing", "page")
   revalidatePath("/[type]/[id]/page", "page")
