@@ -16,20 +16,29 @@ async function hashString(text: string): Promise<string> {
   return hashHex;
 }
 
-
+const getIp = () => {
+  const FALLBACK_IP_ADDRESS = '0.0.0.0'
+  const forwardedFor = headers().get('x-forwarded-for')
+ 
+  if (forwardedFor) {
+    return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
+  }
+ 
+  return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
+}
 
 export const pagePixelView = async () => {
   const hashedZp = await hashString("760001");
 
   const headersList = headers();
   const userAgent = headersList.get('user-agent');
-  const ip = headersList.get('x-forwarded-for');
+  const ip = getIp();
   const cookieStore = cookies();
   const fbc = cookieStore.get('_fbc') || null;
   const fbp = cookieStore.get('_fbp') || null;
   const fbLoginId = cookieStore.get('_fb_login_id') || null;
 
-  console.log({fbc});
+  console.log({ip});
 
   const pixelEvent = {
     data: [
