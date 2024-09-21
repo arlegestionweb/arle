@@ -28,19 +28,13 @@ const getIp = () => {
 }
 
 export const pagePixelView = async () => {
-  const hashedZp = await hashString("760001");
 
-  const headersList = headers();
-  const userAgent = headersList.get('user-agent');
+  const userAgent = headers().get('user-agent');
   const ip = getIp();
   const cookieStore = cookies();
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
-
-  console.log({fbc});
-  console.log({fbp});
-  console.log({fbLoginId});
 
   const pixelEvent = {
     data: [
@@ -49,9 +43,7 @@ export const pagePixelView = async () => {
         event_time: new Date().toISOString(),
         action_source: "website",
         user_data: {
-          zp: [`${hashedZp}`],
-          ph: [null],
-          // client_ip_adress: ip,
+          client_ip_adress: ip,
           client_user_agent: userAgent,
           fbc: fbc,
           fbp: fbp,
@@ -59,7 +51,7 @@ export const pagePixelView = async () => {
         },
       },
     ],
-   "test_event_code":"TEST7037"
+  //  "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -88,7 +80,13 @@ export const productPixelView = async ({
   productType,
   productValue,
 }: ProductTypes) => {
-  const hashedZp = await hashString("760001");
+
+  const userAgent = headers().get('user-agent');
+  const ip = getIp();
+  const cookieStore = cookies();
+  const fbc = cookieStore.get('_fbc')?.value || null;
+  const fbp = cookieStore.get('_fbp')?.value || null;
+  const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 
   const pixelEvent = {
     data: [
@@ -97,11 +95,11 @@ export const productPixelView = async ({
         event_time: new Date().toISOString(),
         action_source: "website",
         user_data: {
-          zp: [`${hashedZp}`],
-          ph: [null],
-          fbc: null,
-          client_ip_address: null,
-          client_user_agent: null,
+          client_user_agent: userAgent,
+          client_ip_address: ip,
+          fbc: fbc,
+          fbp: fbp,
+          fb_login_id: fbLoginId,
         },
         custom_data: {
           content_name: `${productName}`,
@@ -134,7 +132,13 @@ export const addedToCartPixelView = async ({
   productType,
   productValue,
 }: ProductTypes) => {
-  const hashedZp = await hashString("760001");
+
+  const userAgent = headers().get('user-agent');
+  const ip = getIp();
+  const cookieStore = cookies();
+  const fbc = cookieStore.get('_fbc')?.value || null;
+  const fbp = cookieStore.get('_fbp')?.value || null;
+  const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 
   const pixelEvent = {
     data: [
@@ -143,8 +147,11 @@ export const addedToCartPixelView = async ({
         event_time: new Date().toISOString(),
         action_source: "website",
         user_data: {
-          zp: [`${hashedZp}`],
-          ph: [null],
+          client_user_agent: userAgent,
+          client_ip_address: ip,
+          fbc: fbc,
+          fbp: fbp,
+          fb_login_id: fbLoginId,
         },
         custom_data: {
           content_name: `${productName}`,
@@ -172,8 +179,18 @@ export const addedToCartPixelView = async ({
   }
 };
 
-export const initiatePixelCheckoutView = async (totalValue: number) => {
-  const hashedZp = await hashString("760001");
+export const initiatePixelCheckoutView = async (data: TPurchaseData) => {
+
+  const userAgent = headers().get('user-agent');
+  const ip = getIp();
+  const cookieStore = cookies();
+  const fbc = cookieStore.get('_fbc')?.value || null;
+  const fbp = cookieStore.get('_fbp')?.value || null;
+  const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
+
+  const email = await hashString(data.email);
+  const phone = await hashString(data.phone);
+  const name = await hashString(data.name);
 
   const pixelEvent = {
     data: [
@@ -182,12 +199,18 @@ export const initiatePixelCheckoutView = async (totalValue: number) => {
         event_time: new Date().toISOString(),
         action_source: "website",
         user_data: {
-          zp: [`${hashedZp}`],
-          ph: [null],
+          em: [`${email}`],
+          ph: [`${phone}`],
+          fn: [`${name}`],
+          client_user_agent: userAgent,
+          client_ip_address: ip,
+          fbc: fbc,
+          fbp: fbp,
+          fb_login_id: fbLoginId,
         },
         custom_data: {
           currency: "COP",
-          value: `${parseInt(totalValue.toString(), 10)}`,
+          value: `${parseInt(data.amount.toString(), 10)}`,
         },
       },
     ],
@@ -209,14 +232,20 @@ export const initiatePixelCheckoutView = async (totalValue: number) => {
   }
 };
 
-type TAddiPurchaseData = {
+type TPurchaseData = {
   name: string,
   email: string,
   phone: string,
   amount: number
 }
-export const initiatePixelAddiPurchaseView = async (data: TAddiPurchaseData) => {
-  const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
+export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
+
+  const userAgent = headers().get('user-agent');
+  const ip = getIp();
+  const cookieStore = cookies();
+  const fbc = cookieStore.get('_fbc')?.value || null;
+  const fbp = cookieStore.get('_fbp')?.value || null;
+  const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 
   const email = await hashString(data.email);
   const phone = await hashString(data.phone);
@@ -232,6 +261,11 @@ export const initiatePixelAddiPurchaseView = async (data: TAddiPurchaseData) => 
           em: [`${email}`],
           ph: [`${phone}`],
           fn: [`${name}`],
+          client_user_agent: userAgent,
+          client_ip_address: ip,
+          fbc: fbc,
+          fbp: fbp,
+          fb_login_id: fbLoginId,
         },
         custom_data: {
           currency: "COP",
@@ -241,8 +275,6 @@ export const initiatePixelAddiPurchaseView = async (data: TAddiPurchaseData) => 
     ],
     // "test_event_code":"TEST7037"
   };
-
-  console.log(pixelEvent)
 
   const postReq = await fetch(pixelUrl, {
     method: "POST",
@@ -262,9 +294,12 @@ export const initiatePixelAddiPurchaseView = async (data: TAddiPurchaseData) => 
 export const initiatePixelPurchaseView = async (
   data: TWompiRequest["data"]
 ) => {
-  console.log("initiating Pixel view");
-
-  const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
+  const userAgent = headers().get('user-agent');
+  const ip = getIp();
+  const cookieStore = cookies();
+  const fbc = cookieStore.get('_fbc')?.value || null;
+  const fbp = cookieStore.get('_fbp')?.value || null;
+  const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 
   const email = await hashString(data.transaction.customer_email);
   const phone = await hashString(data.transaction.customer_data.phone_number);
@@ -280,6 +315,11 @@ export const initiatePixelPurchaseView = async (
           em: [`${email}`],
           ph: [`${phone}`],
           fn: [`${name}`],
+          client_user_agent: userAgent,
+          client_ip_address: ip,
+          fbc: fbc,
+          fbp: fbp,
+          fb_login_id: fbLoginId,
         },
         custom_data: {
           currency: "COP",
@@ -289,8 +329,6 @@ export const initiatePixelPurchaseView = async (
     ],
     // "test_event_code":"TEST7037"
   };
-
-  console.log({ pixelEvent });
 
   const postReq = await fetch(pixelUrl, {
     method: "POST",
