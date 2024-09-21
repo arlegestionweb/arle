@@ -48,7 +48,7 @@ export const pagePixelView = async () => {
         },
       },
     ],
-  //  "test_event_code":"TEST7037"
+   "test_event_code":"TEST7037"
   };
 
   const postReq = await fetch(pixelUrl, {
