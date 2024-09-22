@@ -27,6 +27,33 @@ const getIp = () => {
   return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
 }
 
+// Función para generar un external ID (UUID simple)
+const generateExternalId = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0,
+      v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+};
+
+// Función para guardar el external ID en el localStorage por 180 días
+const getOrSetExternalId = () => {
+  const localStorageKey = 'external_id';
+  let externalId = localStorage.getItem(localStorageKey);
+
+  if (!externalId) {
+    externalId = generateExternalId();
+    const expirationDays = 180;
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + expirationDays);
+    
+    localStorage.setItem(localStorageKey, externalId); // Guardar en localStorage
+    localStorage.setItem(`${localStorageKey}_expires`, expirationDate.toISOString()); // Guardar la fecha de expiración
+  }
+
+  return externalId;
+};
+
 export const pagePixelView = async () => {
 
   const userAgent = headers().get('user-agent');
@@ -35,6 +62,7 @@ export const pagePixelView = async () => {
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
+  const externalId = getOrSetExternalId();
 
   const pixelEvent = {
     data: [
@@ -48,6 +76,7 @@ export const pagePixelView = async () => {
           fbc: fbc,
           fbp: fbp,
           fb_login_id: fbLoginId,
+          external_id: externalId,
         },
       },
     ],
@@ -87,6 +116,7 @@ export const productPixelView = async ({
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
+  const externalId = getOrSetExternalId();
 
   const pixelEvent = {
     data: [
@@ -100,6 +130,7 @@ export const productPixelView = async ({
           fbc: fbc,
           fbp: fbp,
           fb_login_id: fbLoginId,
+          external_id: externalId,
         },
         custom_data: {
           content_name: `${productName}`,
@@ -139,6 +170,7 @@ export const addedToCartPixelView = async ({
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
+  const externalId = getOrSetExternalId();
 
   const pixelEvent = {
     data: [
@@ -152,6 +184,7 @@ export const addedToCartPixelView = async ({
           fbc: fbc,
           fbp: fbp,
           fb_login_id: fbLoginId,
+          external_id: externalId,
         },
         custom_data: {
           content_name: `${productName}`,
@@ -187,6 +220,7 @@ export const initiatePixelCheckoutView = async (data: TPurchaseData) => {
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
+  const externalId = getOrSetExternalId();
 
   const email = await hashString(data.email);
   const phone = await hashString(data.phone);
@@ -207,6 +241,7 @@ export const initiatePixelCheckoutView = async (data: TPurchaseData) => {
           fbc: fbc,
           fbp: fbp,
           fb_login_id: fbLoginId,
+          external_id: externalId,
         },
         custom_data: {
           currency: "COP",
@@ -246,6 +281,7 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
+  const externalId = getOrSetExternalId();
 
   const email = await hashString(data.email);
   const phone = await hashString(data.phone);
@@ -266,6 +302,7 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
           fbc: fbc,
           fbp: fbp,
           fb_login_id: fbLoginId,
+          external_id: externalId,
         },
         custom_data: {
           currency: "COP",
@@ -300,6 +337,7 @@ export const initiatePixelPurchaseView = async (
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
+  const externalId = getOrSetExternalId();
 
   const email = await hashString(data.transaction.customer_email);
   const phone = await hashString(data.transaction.customer_data.phone_number);
@@ -320,6 +358,7 @@ export const initiatePixelPurchaseView = async (
           fbc: fbc,
           fbp: fbp,
           fb_login_id: fbLoginId,
+          external_id: externalId,
         },
         custom_data: {
           currency: "COP",

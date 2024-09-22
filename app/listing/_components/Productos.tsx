@@ -7,13 +7,13 @@ import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import { createUrl, makeNewParams } from '@/app/_lib/utils';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { useEffect } from 'react';
-// import { listingView } from '@/app/_lib/pixelActions';
+import { pagePixelView } from '@/app/_lib/pixelActions';
 
 const Productos = ({ productos }: { productos: TProduct[] }) => {
 
-  // useEffect(() => {
-  //   listingView();
-  // }, [])
+  useEffect(() => {
+    pagePixelView();
+  }, [])
 
   const searchParams = useSearchParams()
   const currentPage = Number(searchParams.get('currentPage')) || 1;
