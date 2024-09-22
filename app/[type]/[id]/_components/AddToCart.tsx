@@ -1,5 +1,5 @@
 import Button from "@/app/_components/Button";
-import { cn } from "@/app/_lib/utils";
+import { cn, getOrSetExternalIdPixel } from "@/app/_lib/utils";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { useCartStore } from "@/app/_components/cart/store";
@@ -45,7 +45,8 @@ const AddToCart = ({
       productType: `${product._type}`,
       productValue: `${selectedVariant.precio}`
     }
-    await addedToCartPixelView(productObject);
+    const externalId = getOrSetExternalIdPixel();
+    addedToCartPixelView(productObject, externalId);
   };
 
   return (

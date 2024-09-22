@@ -25,6 +25,7 @@ import AddiPayButton from "./AddiPayButton";
 import { TOrderSchemaWithKeys } from "@/sanity/queries/orders";
 import SmallWhiteSpinner from "../SmallWhiteSpinner";
 import { FaArrowRight } from "react-icons/fa6";
+import { getOrSetExternalIdPixel } from "@/app/_lib/utils";
 
 const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
   const pathname = usePathname();
@@ -268,7 +269,8 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                   labelType={"dark"}
                   // onClick={() => formState && formState.data && setIsWompipaymentOpen(true)}
                   onClick={() => {
-                    initiatePixelCheckoutView(pixelInfo);
+                    const externalId = getOrSetExternalIdPixel();
+                    initiatePixelCheckoutView(pixelInfo, externalId);
                     setPaymentLoading(true);
                   }}
                   className="flex justify-center items-center gap-2 w-full max-w-sm button-float"

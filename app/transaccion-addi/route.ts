@@ -7,6 +7,7 @@ import { TProductType } from "../_components/navbar/menu";
 import { revalidatePath } from "next/cache";
 import { sendAdminInvoiceEmail, sendClientInvoiceEmail } from "../_components/actions/send-email";
 import { initiatePixelAddiPurchaseView } from "../_lib/pixelActions";
+import { getOrSetExternalIdPixel } from "../_lib/utils";
 
 
 type AddiRequest = {
@@ -113,8 +114,8 @@ export const POST = async (req: Request) => {
     phone: sanityOrder.customer.phone as string,
     amount: request.approvedAmount
   }
-
-  const pixelView = initiatePixelAddiPurchaseView(pixelInfo);
+  const externalId = getOrSetExternalIdPixel();
+  initiatePixelAddiPurchaseView(pixelInfo, externalId);
 
   // Return the request body
   return new Response(JSON.stringify(request), {

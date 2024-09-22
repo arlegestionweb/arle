@@ -1,5 +1,6 @@
 "use client"
 import { ProductTypes, productPixelView } from "@/app/_lib/pixelActions"
+import { getOrSetExternalIdPixel } from "@/app/_lib/utils"
 import { useEffect } from "react"
 
 type ObjectType = {
@@ -8,7 +9,8 @@ type ObjectType = {
 const ProductViewer = ({productObject}: ObjectType) => {
 
 	useEffect( () => {
-		productPixelView(productObject);
+		const externalId = getOrSetExternalIdPixel()
+		productPixelView(productObject, externalId);
 	}, [])
 
   return (<></>)

@@ -184,6 +184,5 @@ export const getOrSetExternalIdPixel = () => {
     setExternalIdInLocalStorage(localStorageKey, externalId); // Guardar en localStorage
   }
 
-  console.log({externalId});
   return externalId;
 }

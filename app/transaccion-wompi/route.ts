@@ -11,6 +11,7 @@ import {
   sendClientVoidedInvoiceEmail,
 } from "../_components/actions/send-email";
 import { initiatePixelPurchaseView } from "../_lib/pixelActions";
+import { getOrSetExternalIdPixel } from "../_lib/utils";
 
 export type TWompiRequest = {
   event: string;
@@ -158,7 +159,8 @@ export const POST = async (req: Request, res: Response) => {
     }
   }
 
-  const purchaseView = await initiatePixelPurchaseView(request.data);
+  const externalId = getOrSetExternalIdPixel();
+  initiatePixelPurchaseView(request.data, externalId);
 
   const { data, error } = await sendClientInvoiceEmail(newSanityOrder);
   const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(
