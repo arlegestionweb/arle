@@ -54,6 +54,25 @@ const getOrSetExternalId = () => {
   return externalId;
 };
 
+// Función para validar una dirección IP (IPv4 e IPv6)
+const isValidIp = (ip: string) => {
+  const ipv4Pattern = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+  const ipv6Pattern = /^[0-9a-fA-F:]{2,39}$/;
+  return ipv4Pattern.test(ip) || ipv6Pattern.test(ip);
+};
+
+type TUserData = {
+  em?: string[];
+  ph?: string[];
+  fn?: string[];
+  client_user_agent: string | null;
+  fbc: string | null;
+  fbp: string | null;
+  fb_login_id: string | null;
+  external_id: string;
+  client_ip_address?: string; // Hacemos este campo opcional
+}
+
 export const pagePixelView = async () => {
 
   const userAgent = headers().get('user-agent');
@@ -64,20 +83,26 @@ export const pagePixelView = async () => {
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
   const externalId = getOrSetExternalId();
 
+  const userData: TUserData = {
+    client_user_agent: userAgent,
+    fbc: fbc,
+    fbp: fbp,
+    fb_login_id: fbLoginId,
+    external_id: externalId,
+  };
+
+  // Solo agregamos la IP si es válida
+  if (isValidIp(ip)) {
+    userData.client_ip_address = ip;
+  }
+
   const pixelEvent = {
     data: [
       {
         event_name: "PageView",
         event_time: new Date().toISOString(),
         action_source: "website",
-        user_data: {
-          client_ip_adress: ip,
-          client_user_agent: userAgent,
-          fbc: fbc,
-          fbp: fbp,
-          fb_login_id: fbLoginId,
-          external_id: externalId,
-        },
+        user_data: userData,
       },
     ],
   //  "test_event_code":"TEST7037"
@@ -118,20 +143,26 @@ export const productPixelView = async ({
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
   const externalId = getOrSetExternalId();
 
+  const userData: TUserData = {
+    client_user_agent: userAgent,
+    fbc: fbc,
+    fbp: fbp,
+    fb_login_id: fbLoginId,
+    external_id: externalId,
+  };
+
+  // Solo agregamos la IP si es válida
+  if (isValidIp(ip)) {
+    userData.client_ip_address = ip;
+  }
+
   const pixelEvent = {
     data: [
       {
         event_name: "ViewContent",
         event_time: new Date().toISOString(),
         action_source: "website",
-        user_data: {
-          client_user_agent: userAgent,
-          client_ip_address: ip,
-          fbc: fbc,
-          fbp: fbp,
-          fb_login_id: fbLoginId,
-          external_id: externalId,
-        },
+        user_data: userData,
         custom_data: {
           content_name: `${productName}`,
           content_category: `${productType}`,
@@ -172,20 +203,26 @@ export const addedToCartPixelView = async ({
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
   const externalId = getOrSetExternalId();
 
+  const userData: TUserData = {
+    client_user_agent: userAgent,
+    fbc: fbc,
+    fbp: fbp,
+    fb_login_id: fbLoginId,
+    external_id: externalId,
+  };
+
+  // Solo agregamos la IP si es válida
+  if (isValidIp(ip)) {
+    userData.client_ip_address = ip;
+  }
+
   const pixelEvent = {
     data: [
       {
         event_name: "AddToCart",
         event_time: new Date().toISOString(),
         action_source: "website",
-        user_data: {
-          client_user_agent: userAgent,
-          client_ip_address: ip,
-          fbc: fbc,
-          fbp: fbp,
-          fb_login_id: fbLoginId,
-          external_id: externalId,
-        },
+        user_data: userData,
         custom_data: {
           content_name: `${productName}`,
           content_category: `${productType}`,
@@ -226,23 +263,29 @@ export const initiatePixelCheckoutView = async (data: TPurchaseData) => {
   const phone = await hashString(data.phone);
   const name = await hashString(data.name);
 
+  const userData: TUserData = {
+    em: [`${email}`],
+    ph: [`${phone}`],
+    fn: [`${name}`],
+    client_user_agent: userAgent,
+    fbc: fbc,
+    fbp: fbp,
+    fb_login_id: fbLoginId,
+    external_id: externalId,
+  };
+
+  // Solo agregamos la IP si es válida
+  if (isValidIp(ip)) {
+    userData.client_ip_address = ip;
+  }
+
   const pixelEvent = {
     data: [
       {
         event_name: "InitiateCheckout",
         event_time: new Date().toISOString(),
         action_source: "website",
-        user_data: {
-          em: [`${email}`],
-          ph: [`${phone}`],
-          fn: [`${name}`],
-          client_user_agent: userAgent,
-          client_ip_address: ip,
-          fbc: fbc,
-          fbp: fbp,
-          fb_login_id: fbLoginId,
-          external_id: externalId,
-        },
+        user_data: userData,
         custom_data: {
           currency: "COP",
           value: `${parseInt(data.amount.toString(), 10)}`,
@@ -287,23 +330,29 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
   const phone = await hashString(data.phone);
   const name = await hashString(data.name);
   
+  const userData: TUserData = {
+    em: [`${email}`],
+    ph: [`${phone}`],
+    fn: [`${name}`],
+    client_user_agent: userAgent,
+    fbc: fbc,
+    fbp: fbp,
+    fb_login_id: fbLoginId,
+    external_id: externalId,
+  };
+
+  // Solo agregamos la IP si es válida
+  if (isValidIp(ip)) {
+    userData.client_ip_address = ip;
+  }
+
   const pixelEvent = {
     data: [
       {
         event_name: "Purchase",
         event_time: new Date().toISOString(),
         action_source: "website",
-        user_data: {
-          em: [`${email}`],
-          ph: [`${phone}`],
-          fn: [`${name}`],
-          client_user_agent: userAgent,
-          client_ip_address: ip,
-          fbc: fbc,
-          fbp: fbp,
-          fb_login_id: fbLoginId,
-          external_id: externalId,
-        },
+        user_data: userData,
         custom_data: {
           currency: "COP",
           value: `${data.amount}`,
@@ -343,23 +392,29 @@ export const initiatePixelPurchaseView = async (
   const phone = await hashString(data.transaction.customer_data.phone_number);
   const name = await hashString(data.transaction.customer_data.full_name);
 
+  const userData: TUserData = {
+    em: [`${email}`],
+    ph: [`${phone}`],
+    fn: [`${name}`],
+    client_user_agent: userAgent,
+    fbc: fbc,
+    fbp: fbp,
+    fb_login_id: fbLoginId,
+    external_id: externalId,
+  };
+
+  // Solo agregamos la IP si es válida
+  if (isValidIp(ip)) {
+    userData.client_ip_address = ip;
+  }
+
   const pixelEvent = {
     data: [
       {
         event_name: "Purchase",
         event_time: new Date().toISOString(),
         action_source: "website",
-        user_data: {
-          em: [`${email}`],
-          ph: [`${phone}`],
-          fn: [`${name}`],
-          client_user_agent: userAgent,
-          client_ip_address: ip,
-          fbc: fbc,
-          fbp: fbp,
-          fb_login_id: fbLoginId,
-          external_id: externalId,
-        },
+        user_data: userData,
         custom_data: {
           currency: "COP",
           value: `${data.transaction.amount_in_cents / 100}`,
