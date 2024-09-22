@@ -38,7 +38,6 @@ const generateExternalId = () => {
 
 // Función para guardar el external ID en el localStorage por 180 días
 const getOrSetExternalId = () => {
-  if (typeof window !== 'undefined') {
   const localStorageKey = 'external_id';
   
   let externalId = localStorage.getItem(localStorageKey);
@@ -49,10 +48,10 @@ const getOrSetExternalId = () => {
     localStorage.setItem(localStorageKey, externalId); // Guardar en localStorage
   }
 
+  console.log({externalId});
   return externalId;
-  }
-  return "123456"
-};
+}
+;
 
 // Función para validar una dirección IP (IPv4 e IPv6)
 const isValidIp = (ip: string) => {
