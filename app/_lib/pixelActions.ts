@@ -2,6 +2,7 @@
 
 import { cookies, headers } from "next/headers";
 import { TWompiRequest } from "../transaccion-wompi/route";
+import { getOrSetExternalIdPixel } from "./utils";
 
 const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
 
@@ -27,43 +28,6 @@ const getIp = () => {
   return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
 }
 
-// Función para generar un external ID (UUID simple)
-const generateExternalId = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const r = Math.random() * 16 | 0,
-      v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-};
-
-const getExternalIdFromLocalStorage = (localStorageKey: string) => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem(localStorageKey);
-  }
-}
-
-const setExternalIdInLocalStorage = (externalId: string, localStorageKey: string) => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(localStorageKey, externalId);
-  }
-};
-
-// Función para guardar el external ID en el localStorage
-const getOrSetExternalId = () => {
-  const localStorageKey = 'external_id';
-  
-  let externalId = getExternalIdFromLocalStorage(localStorageKey);
-
-  if (!externalId) {
-    externalId = generateExternalId();
-    console.log({externalId});
-    setExternalIdInLocalStorage(localStorageKey, externalId); // Guardar en localStorage
-  }
-
-  console.log({externalId});
-  return externalId;
-}
-;
 
 // Función para validar una dirección IP (IPv4 e IPv6)
 const isValidIp = (ip: string) => {
@@ -92,7 +56,7 @@ export const pagePixelView = async () => {
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
-  const externalId = getOrSetExternalId();
+  const externalId = getOrSetExternalIdPixel();
 
   const userData: TUserData = {
     client_user_agent: userAgent,
@@ -152,7 +116,7 @@ export const productPixelView = async ({
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
-  const externalId = getOrSetExternalId();
+  const externalId = getOrSetExternalIdPixel();
 
   const userData: TUserData = {
     client_user_agent: userAgent,
@@ -212,7 +176,7 @@ export const addedToCartPixelView = async ({
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
-  const externalId = getOrSetExternalId();
+  const externalId = getOrSetExternalIdPixel();
 
   const userData: TUserData = {
     client_user_agent: userAgent,
@@ -268,7 +232,7 @@ export const initiatePixelCheckoutView = async (data: TPurchaseData) => {
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
-  const externalId = getOrSetExternalId();
+  const externalId = getOrSetExternalIdPixel();
 
   const email = await hashString(data.email);
   const phone = await hashString(data.phone);
@@ -335,7 +299,7 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
-  const externalId = getOrSetExternalId();
+  const externalId = getOrSetExternalIdPixel();
 
   const email = await hashString(data.email);
   const phone = await hashString(data.phone);
@@ -397,7 +361,7 @@ export const initiatePixelPurchaseView = async (
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
-  const externalId = getOrSetExternalId();
+  const externalId = getOrSetExternalIdPixel();
 
   const email = await hashString(data.transaction.customer_email);
   const phone = await hashString(data.transaction.customer_data.phone_number);

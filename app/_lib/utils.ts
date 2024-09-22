@@ -151,3 +151,39 @@ export async function fetchWithRetry(
     });
   }
 }
+
+// Función para generar un external ID para FACEBOOK PIXEL (UUID simple)
+const generateExternalId = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0,
+      v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+};
+
+const getExternalIdFromLocalStorage = (localStorageKey: string) => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem(localStorageKey);
+  }
+}
+
+const setExternalIdInLocalStorage = (externalId: string, localStorageKey: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(localStorageKey, externalId);
+  }
+};
+
+// Función para guardar el external ID en el localStorage
+export const getOrSetExternalIdPixel = () => {
+  const localStorageKey = 'external_id';
+  
+  let externalId = getExternalIdFromLocalStorage(localStorageKey);
+
+  if (!externalId) {
+    externalId = generateExternalId();
+    setExternalIdInLocalStorage(localStorageKey, externalId); // Guardar en localStorage
+  }
+
+  console.log({externalId});
+  return externalId;
+}
