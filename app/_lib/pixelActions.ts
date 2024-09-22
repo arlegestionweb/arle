@@ -36,16 +36,28 @@ const generateExternalId = () => {
   });
 };
 
-// Función para guardar el external ID en el localStorage por 180 días
+const getExternalIdFromLocalStorage = (localStorageKey: string) => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem(localStorageKey);
+  }
+}
+
+const setExternalIdInLocalStorage = (externalId: string, localStorageKey: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(localStorageKey, externalId);
+  }
+};
+
+// Función para guardar el external ID en el localStorage
 const getOrSetExternalId = () => {
   const localStorageKey = 'external_id';
   
-  let externalId = localStorage.getItem(localStorageKey);
+  let externalId = getExternalIdFromLocalStorage(localStorageKey);
 
   if (!externalId) {
     externalId = generateExternalId();
     console.log({externalId});
-    localStorage.setItem(localStorageKey, externalId); // Guardar en localStorage
+    setExternalIdInLocalStorage(localStorageKey, externalId); // Guardar en localStorage
   }
 
   console.log({externalId});
