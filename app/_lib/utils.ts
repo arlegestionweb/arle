@@ -167,7 +167,7 @@ const getExternalIdFromLocalStorage = (localStorageKey: string) => {
   }
 }
 
-const setExternalIdInLocalStorage = (externalId: string, localStorageKey: string) => {
+const setExternalIdInLocalStorage = (localStorageKey: string, externalId: string) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem(localStorageKey, externalId);
   }
