@@ -18,6 +18,7 @@ import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { useRecentlyViewedProductsStore } from "./recentlyViewedProductsStore";
 import { ProductCardSlide } from "./ProductCardSlide";
 import { pagePixelView } from "@/app/_lib/pixelActions";
+import { getOrSetExternalIdPixel } from "@/app/_lib/utils";
 
 export type TPricing = {
   precioConDescuento?: number;
@@ -55,7 +56,8 @@ const Product = ({
   const { addProduct, recentlyViewedProducts, getProductsFromLocalStorage } = useRecentlyViewedProductsStore();
 
   useEffect(() => {
-    pagePixelView();
+    const externalId = getOrSetExternalIdPixel();
+    pagePixelView(externalId);
     const fetchRecentlyViewedProductsFromLocalStorage = async () =>{
       return await getProductsFromLocalStorage();
     };

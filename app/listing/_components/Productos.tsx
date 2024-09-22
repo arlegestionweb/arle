@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import Link from "next/link";
 import ProductCard from "./ProductCard";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
-import { createUrl, makeNewParams } from '@/app/_lib/utils';
+import { createUrl, getOrSetExternalIdPixel, makeNewParams } from '@/app/_lib/utils';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { useEffect } from 'react';
 import { pagePixelView } from '@/app/_lib/pixelActions';
@@ -12,7 +12,8 @@ import { pagePixelView } from '@/app/_lib/pixelActions';
 const Productos = ({ productos }: { productos: TProduct[] }) => {
 
   useEffect(() => {
-    pagePixelView();
+    const externalId = getOrSetExternalIdPixel();
+    pagePixelView(externalId);
   }, [])
 
   const searchParams = useSearchParams()

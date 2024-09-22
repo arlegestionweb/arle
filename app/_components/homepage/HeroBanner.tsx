@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import GradientImage from "../GradientImage";
-import { cn } from "@/app/_lib/utils";
+import { cn, getOrSetExternalIdPixel } from "@/app/_lib/utils";
 import Link from "next/link";
 import { THeroSection } from "@/sanity/queries/pages/homepageQuery";
 import { pagePixelView } from "@/app/_lib/pixelActions";
@@ -17,7 +17,8 @@ const Banner = ({ content, className }: BannerProps) => {
   const bannerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    pagePixelView();
+    const externalId = getOrSetExternalIdPixel();
+    pagePixelView(externalId);
   }, []);
 
   const handleScroll = (event: any) => {

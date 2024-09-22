@@ -48,7 +48,7 @@ type TUserData = {
   client_ip_address?: string; // Hacemos este campo opcional
 }
 
-export const pagePixelView = async () => {
+export const pagePixelView = async (externalId: string) => {
 
   const userAgent = headers().get('user-agent');
   const ip = getIp();
@@ -56,9 +56,7 @@ export const pagePixelView = async () => {
   const fbc = cookieStore.get('_fbc')?.value || null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
-  const externalId = getOrSetExternalIdPixel();
 
-  console.log({ip});
   
   const userData: TUserData = {
     client_user_agent: userAgent,
@@ -67,11 +65,13 @@ export const pagePixelView = async () => {
     fb_login_id: fbLoginId,
     external_id: externalId,
   };
-
+  
   // Solo agregamos la IP si es válida
   if (isValidIp(ip)) {
     userData.client_ip_address = ip;
   }
+  
+  console.log({userData});
 
   const pixelEvent = {
     data: [
