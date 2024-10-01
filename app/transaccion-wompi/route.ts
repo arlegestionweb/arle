@@ -113,13 +113,13 @@ export const POST = async (req: Request, res: Response) => {
 
   const cartItemProducts = newSanityOrder.items.map(
     (item: {
-      productId: { _ref: string };
+      productId: string ;
       productType: TProductType;
       variantId: string;
       quantity: number;
     }) => {
       return {
-        _id: item.productId._ref,
+        _id: item.productId,
         _type: item.productType,
         variantId: item.variantId,
         quantity: item.quantity,

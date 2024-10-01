@@ -37,6 +37,9 @@ export const POST = async (req: Request) => {
     `*[_type == "orders" && _id == $id][0]`,
     { id: paymentId }
   );
+
+  // console.log({sanityOrder});
+
   const newSanityOrder = {
     ...sanityOrder,
     status: "PAID",
@@ -50,13 +53,13 @@ export const POST = async (req: Request) => {
 
   const cartItemProducts = newSanityOrder.items.map(
     (item: {
-      productId: { _ref: string };
+      productId: string;
       productType: TProductType;
       variantId: string;
       quantity: number;
     }) => {
       return {
-        _id: item.productId._ref,
+        _id: item.productId,
         _type: item.productType,
         variantId: item.variantId,
         quantity: item.quantity,

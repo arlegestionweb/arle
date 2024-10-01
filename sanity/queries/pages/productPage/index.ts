@@ -519,10 +519,11 @@ const zodProductsWithVariants = z.array(zodPorudctWithVariants);
 export const getProductsByIds = async (
   products: { _id: string }[]
 ) => {
+
   const result = await Promise.all(
     products.map(async (product) => {
       const productWithVariants = await sanityClient.fetch(
-        `*[_id == "${product._id}"][0]{_id, "variantes": variantes[]{unidadesDisponibles, codigoDeReferencia}}`
+        groq`*[_id == "${product._id}"][0]{_id, "variantes": variantes[]{unidadesDisponibles, codigoDeReferencia}}`
       );
       return productWithVariants;
     })
