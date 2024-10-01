@@ -11,8 +11,6 @@ type Params = {
     ) {
     const paymentId = params.paymentId // '1'
 
-    console.log({paymentId});
-
     const order = await getOrderById(paymentId);
 
     if (!order) return new Response("Order not found", { status: 404 });
