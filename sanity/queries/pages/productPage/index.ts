@@ -523,7 +523,8 @@ export const getProductsByIds = async (
   const result = await Promise.all(
     products.map(async (product) => {
       const productWithVariants = await sanityClient.fetch(
-        groq`*[_id == "${product._id}"][0]{_id, "variantes": variantes[]{unidadesDisponibles, codigoDeReferencia}}`
+        groq`*[_id == $product._id][0]{_id, "variantes": variantes[]{unidadesDisponibles, codigoDeReferencia}}`,
+        {product}
       );
       return productWithVariants;
     })
