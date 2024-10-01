@@ -38,7 +38,6 @@ export const POST = async (req: Request) => {
     { id: paymentId }
   );
 
-  // console.log({sanityOrder});
 
   const newSanityOrder = {
     ...sanityOrder,
