@@ -22,13 +22,6 @@ const isIPv4 = (ip: string) => ip.includes('.'); // Verifica si es una direcció
 const getIp = () => {
   const FALLBACK_IP_ADDRESS = '0.0.0.0'
   const forwardedFor = headers().get('x-forwarded-for')
-  console.log({forwardedFor});
-  console.log(headers().get('x-forwarded'))
-  console.log(headers().get('client-ip'))
-  console.log(headers().get('x-real-ip'))
-  console.log(headers().get('x-forwarded-port'))
-  console.log(headers().get('x-forwarded-proto'))
-
  
   if (forwardedFor) {
     const ips = forwardedFor.split(',').map(ip => ip.trim());
@@ -36,14 +29,12 @@ const getIp = () => {
     // Prioriza la primera IPv6 que encuentre
     const ipv6 = ips.find(isIPv6);
     if (ipv6) {
-      console.log("ipv6")
       return ipv6;
     }
     
     // Si no hay IPv6, retorna la primera IPv4
     const ipv4 = ips.find(isIPv4);
     if (ipv4) {
-      console.log("ipv4")
       return ipv4;
     }
   }
