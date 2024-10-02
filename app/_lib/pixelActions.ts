@@ -22,6 +22,7 @@ const isIPv4 = (ip: string) => ip.includes('.'); // Verifica si es una direcció
 const getIp = () => {
   const FALLBACK_IP_ADDRESS = '0.0.0.0'
   const forwardedFor = headers().get('x-forwarded-for')
+  console.log({forwardedFor});
  
   if (forwardedFor) {
     const ips = forwardedFor.split(',').map(ip => ip.trim());
