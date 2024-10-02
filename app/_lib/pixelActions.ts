@@ -16,16 +16,32 @@ async function hashString(text: string): Promise<string> {
   return hashHex;
 }
 
+const isIPv6 = (ip: string) => ip.includes(':'); // Verifica si es una dirección IPv6
+const isIPv4 = (ip: string) => ip.includes('.'); // Verifica si es una dirección IPv4
+
 const getIp = () => {
   const FALLBACK_IP_ADDRESS = '0.0.0.0'
   const forwardedFor = headers().get('x-forwarded-for')
  
   if (forwardedFor) {
-    return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
+    const ips = forwardedFor.split(',').map(ip => ip.trim());
+    
+    // Prioriza la primera IPv6 que encuentre
+    const ipv6 = ips.find(isIPv6);
+    if (ipv6) {
+      return ipv6;
+    }
+    
+    // Si no hay IPv6, retorna la primera IPv4
+    const ipv4 = ips.find(isIPv4);
+    if (ipv4) {
+      return ipv4;
+    }
   }
  
   return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
 }
+
 
 
 // Función para validar una dirección IP (IPv4 e IPv6)
