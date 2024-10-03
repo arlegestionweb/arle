@@ -7,6 +7,7 @@ import { TPricing } from "./Product";
 import { LuShoppingCart } from "react-icons/lu";
 import { MdOutlinePayments } from "react-icons/md";
 import { addedToCartPixelView } from "@/app/_lib/pixelActions";
+import Script from "next/script";
 
 type PropsAddToCart = {
   className?: string;
@@ -78,6 +79,17 @@ const AddToCart = ({
       >
         <MdOutlinePayments className="text-base" /> Compra Rápida
       </Button>
+      {/* Addi Widget */}
+      {product.mostrarCredito && (
+        <>
+        <Script src="https://s3.amazonaws.com/widgets.addi.com/bundle.min.js" id="addi-widget" strategy="afterInteractive"></Script>
+      <div dangerouslySetInnerHTML={{
+        __html: `
+        <addi-widget price="${pricing.finalPrice}" ally-slug="${process.env.ADDI_ALLY_SLUG}"></addi-widget>
+        `
+      }}></div>
+      </>
+    )}
     </div>
   );
 };
