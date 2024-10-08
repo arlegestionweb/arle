@@ -4,7 +4,6 @@ import { cookies, headers } from "next/headers";
 import { TWompiRequest } from "../transaccion-wompi/route";
 
 const pixelUrl = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.PIXEL_API_TOKEN}`;
-
 async function hashString(text: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(text);

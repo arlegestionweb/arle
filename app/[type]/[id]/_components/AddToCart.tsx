@@ -56,7 +56,18 @@ const AddToCart = ({
         "w-[90vw] max-w-lg lg:max-w-none flex flex-col gap-2.5 sticky bottom-5 items-center bg-white shadow py-2 px-2 z-50",
         className
       )}
-    >
+      >
+      {/* Addi Widget */}
+      {product.mostrarCredito && (
+        <>
+        <Script src="https://s3.amazonaws.com/widgets.addi.com/bundle.min.js" id="addi-widget" strategy="afterInteractive"></Script>
+      <div className="h-fit" dangerouslySetInnerHTML={{
+        __html: `
+        <addi-widget price="${pricing.finalPrice}" ally-slug="${process.env.ADDI_ALLY_SLUG}"></addi-widget>
+        `
+      }}></div>
+      </>
+    )}
       <form onSubmit={() => addToCart(product, selectedVariant, quantity)} className="w-full">
       <Button
         disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false}
@@ -79,17 +90,6 @@ const AddToCart = ({
       >
         <MdOutlinePayments className="text-base" /> Compra Rápida
       </Button>
-      {/* Addi Widget */}
-      {product.mostrarCredito && (
-        <>
-        <Script src="https://s3.amazonaws.com/widgets.addi.com/bundle.min.js" id="addi-widget" strategy="afterInteractive"></Script>
-      <div dangerouslySetInnerHTML={{
-        __html: `
-        <addi-widget price="${pricing.finalPrice}" ally-slug="${process.env.ADDI_ALLY_SLUG}"></addi-widget>
-        `
-      }}></div>
-      </>
-    )}
     </div>
   );
 };
