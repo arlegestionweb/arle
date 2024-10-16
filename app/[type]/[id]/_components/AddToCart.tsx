@@ -25,6 +25,8 @@ const AddToCart = ({
   selectedVariant,
 }: PropsAddToCart) => {
   const { addItem, toggleCart, toggleAddedToCartModal } = useCartStore();
+
+
   const addToCart = async (
     producto: TProduct,
     selectedVariant: TVariant,
@@ -68,16 +70,14 @@ const AddToCart = ({
       }}></div>
       </>
     )}
-      <form onSubmit={() => addToCart(product, selectedVariant, quantity)} className="w-full">
       <Button
         disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false}
-        type="submit"
+        onClick={() => addToCart(product, selectedVariant, quantity)}
         className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float "
         >
         <LuShoppingCart className="text-base" />
         Añadir al Carrito
       </Button>
-      </form>
       <Button
         disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false}
         labelType={"dark"}
