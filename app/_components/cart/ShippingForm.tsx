@@ -15,22 +15,26 @@ const ShippingForm = () => {
     departamento: "",
     direccion: "",
   });
-
+  
+  
+  
   // Cargar datos del localStorage cuando se monta el componente
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
-    setFormData((prevData) => ({ ...prevData, ...savedData }));
+    if(savedData){
+      setFormData((prevData) => ({ ...prevData, ...savedData }));
+      console.log("checking saved data");
+    }
   }, []);
-
-  // Guardar datos en localStorage cuando el formData cambie
-  useEffect(() => {
-    localStorage.setItem("shippingData", JSON.stringify(formData));
-  }, [formData]);
-
+  
   // Manejar el cambio en los inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData((prevData) => {
+      const updatedData = { ...prevData, [name]: value };
+      localStorage.setItem("shippingData", JSON.stringify(updatedData)); // Guardar en localStorage cada vez que se actualiza
+      return updatedData;
+    });
   };
 
   return (
