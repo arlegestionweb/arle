@@ -9,7 +9,7 @@ const CodigoDeDescuento = () => {
   const [isDiscountVerified, setIsDiscountVerified] = useState("loading");
   const [isOpen, setIsOpen] = useState(false);
   const [enteredDiscount, setEnteredDiscount] = useState(false);
-  const [inputValue, setInputValue] = useState<String>("")
+  const [inputValue, setInputValue] = useState<string | number | readonly string[] | undefined>("")
   const { applyDiscountCode, removeDiscountCode } = useCartStore((state) => state);
 
   // const [discountCodes, setDiscountCodes] = useState<TDiscountCode[] | undefined>(undefined);
@@ -17,6 +17,8 @@ const CodigoDeDescuento = () => {
   const handleDiscountCodeChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
+    setIsDiscountVerified("loading");
+    setEnteredDiscount(false);
     const value = e.target.value;
     setInputValue(value);
   };
@@ -55,9 +57,13 @@ const CodigoDeDescuento = () => {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && !enteredDiscount) {
-      setEnteredDiscount(true);
-      verifyDiscountCode();
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      if(!enteredDiscount) {
+        setEnteredDiscount(true);
+        verifyDiscountCode();
+      }
     }
   };
 
@@ -80,9 +86,9 @@ const CodigoDeDescuento = () => {
           name={"discountCode"}
           id={"discountCode"}
           placeholder={""}
-          disabled={enteredDiscount ? true : false}
           onChange={handleDiscountCodeChange}
           onKeyDown={handleKeyDown}
+          value={inputValue}
           />
         { !enteredDiscount && <div className="px-4 h-9 font-sans font-light text-sm cursor-pointer bg-zinc-200 rounded-tr rounded-br border-r border-t border-b border-stone-300 justify-center items-center gap-1 inline-flex"
         onClick={()=> {setEnteredDiscount(true); verifyDiscountCode()}}>
@@ -101,7 +107,7 @@ const CodigoDeDescuento = () => {
           }
         </div>}
         <div className="flex">
-        <IoMdClose className="text-zinc-400 w-3 h-3 ml-3 cursor-pointer" onClick={() => {setIsOpen(false); setEnteredDiscount(false); setInputValue(""); setIsDiscountVerified("loading"); removeDiscountCode()}}/>
+        <IoMdClose className="text-zinc-400 w-3 h-3 ml-3 cursor-pointer" onClick={() => {setEnteredDiscount(false); setInputValue(""); setIsDiscountVerified("loading"); removeDiscountCode()}}/>
       </div>
       </div>
     </label>
