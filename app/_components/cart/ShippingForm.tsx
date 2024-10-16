@@ -122,6 +122,7 @@ const InputComponent = ({
             className="w-[58px] h-9 pl-2 py-[5px] bg-zinc-200 rounded-tl rounded-bl border-l border-t border-b border-stone-300"
           >
             <option value="cc">CC</option>
+            <option value="cc">NIT</option>
             <option value="ti">TI</option>
             <option value="ce">CE</option>
             <option value="pp">Pasaporte</option>
