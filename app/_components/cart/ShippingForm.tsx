@@ -105,6 +105,11 @@ const InputComponent = ({
           type={type}
           name={name}
           id={name}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault(); // Deshabilitar el "Enter" en este campo
+            }
+          }}
           placeholder={placeholder || ""}
         />
       </label>
@@ -134,6 +139,11 @@ const InputComponent = ({
             type="number"
             name={name}
             id={name}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); // Deshabilitar el "Enter" en este campo
+              }
+            }}
             placeholder={placeholder}
           />
         </div>
