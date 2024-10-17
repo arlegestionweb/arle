@@ -13,7 +13,13 @@ const Productos = ({ productos }: { productos: TProduct[] }) => {
 
   useEffect(() => {
     const externalId = getOrSetExternalIdPixel();
-    pagePixelView(externalId);
+    const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+    const clientData = {
+      name: savedData.name as string,
+      email: savedData.email as string,
+      phone: savedData.phone as string
+    }
+    pagePixelView(clientData, externalId);
   }, [])
 
   const searchParams = useSearchParams()

@@ -10,7 +10,13 @@ const ProductViewer = ({productObject}: ObjectType) => {
 
 	useEffect( () => {
 		const externalId = getOrSetExternalIdPixel()
-		productPixelView(productObject, externalId);
+		const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+    const clientData = {
+      name: savedData.name as string,
+      email: savedData.email as string,
+      phone: savedData.phone as string
+    }
+		productPixelView(productObject, clientData, externalId);
 	}, [])
 
   return (<></>)
