@@ -62,7 +62,13 @@ type TUserData = {
   client_ip_address?: string; // Hacemos este campo opcional
 }
 
-export const pagePixelView = async (externalId: string) => {
+type TClientData = {
+  name?: string,
+  email?: string,
+  phone?: string,
+}
+
+export const pagePixelView = async (clientData: TClientData, externalId: string) => {
 
   const userAgent = headers().get('user-agent');
   const ip = getIp();
@@ -79,6 +85,20 @@ export const pagePixelView = async (externalId: string) => {
     fb_login_id: fbLoginId,
     external_id: externalId,
   };
+
+  // agregamos los datos del cliente si están disponibles
+  if(clientData.email){
+    const email = await hashString(clientData.email);
+    userData.em = [`${email}`];
+  }
+  if(clientData.name){
+    const name = await hashString(clientData.name);
+    userData.fn = [`${name}`];
+  }
+  if(clientData.phone){
+    const phone = await hashString(clientData.phone);
+    userData.ph = [`${phone}`];
+  }
   
   // Solo agregamos la IP si es válida
   if (isValidIp(ip)) {
@@ -94,7 +114,7 @@ export const pagePixelView = async (externalId: string) => {
         user_data: userData,
       },
     ],
-  //  "test_event_code":"TEST7037"
+  //  "test_event_code":"TEST23406"
   };
 
   const postReq = await fetch(pixelUrl, {
@@ -122,7 +142,7 @@ export const productPixelView = async ({
   productName,
   productType,
   productValue,
-}: ProductTypes, externalId: string) => {
+}: ProductTypes, clientData: TClientData, externalId: string) => {
 
   const userAgent = headers().get('user-agent');
   const ip = getIp();
@@ -138,6 +158,20 @@ export const productPixelView = async ({
     fb_login_id: fbLoginId,
     external_id: externalId,
   };
+
+  // agregamos los datos del cliente si están disponibles
+  if(clientData.email){
+    const email = await hashString(clientData.email);
+    userData.em = [`${email}`];
+  }
+  if(clientData.name){
+    const name = await hashString(clientData.name);
+    userData.fn = [`${name}`];
+  }
+  if(clientData.phone){
+    const phone = await hashString(clientData.phone);
+    userData.ph = [`${phone}`];
+  }
 
   // Solo agregamos la IP si es válida
   if (isValidIp(ip)) {
@@ -181,7 +215,7 @@ export const addedToCartPixelView = async ({
   productName,
   productType,
   productValue,
-}: ProductTypes, externalId: string) => {
+}: ProductTypes, clientData: TClientData, externalId: string) => {
 
   const userAgent = headers().get('user-agent');
   const ip = getIp();
@@ -197,6 +231,20 @@ export const addedToCartPixelView = async ({
     fb_login_id: fbLoginId,
     external_id: externalId,
   };
+
+  // agregamos los datos del cliente si están disponibles
+  if(clientData.email){
+    const email = await hashString(clientData.email);
+    userData.em = [`${email}`];
+  }
+  if(clientData.name){
+    const name = await hashString(clientData.name);
+    userData.fn = [`${name}`];
+  }
+  if(clientData.phone){
+    const phone = await hashString(clientData.phone);
+    userData.ph = [`${phone}`];
+  }
 
   // Solo agregamos la IP si es válida
   if (isValidIp(ip)) {

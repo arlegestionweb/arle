@@ -49,7 +49,13 @@ const AddToCart = ({
       productValue: `${selectedVariant.precio}`
     }
     const externalId = getOrSetExternalIdPixel();
-    addedToCartPixelView(productObject, externalId);
+    const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+    const clientData = {
+      name: savedData.name as string,
+      email: savedData.email as string,
+      phone: savedData.phone as string
+    }
+    addedToCartPixelView(productObject, clientData, externalId);
   };
 
   return (
