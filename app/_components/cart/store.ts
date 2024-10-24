@@ -1,7 +1,8 @@
 import { customAlphabet } from 'nanoid';
+import { BooleanSchemaType } from 'sanity';
 import { z } from "zod";
 import { create } from "zustand";
-
+import { checkAddiAmounts } from './addiAuthAction';
 
 const TAX = 0.19;
 
@@ -32,8 +33,8 @@ export type TCartItem = z.infer<typeof zodCartItem>;
 
 type TCartState = {
   id: string;
-  isCartOpen: boolean;
   items: TCartItem[];
+  isCartOpen: boolean;
   discountCode: {
     code: string;
     discount: number;
@@ -52,6 +53,7 @@ type TCartActions = {
   getCartTotal: () => number;
   getProductDiscountAmount: () => number;
   toggleCart: () => void;
+  initializeCartState: () => void;
   applyDiscountCode: (code: string, discount: number) => void;
   removeDiscountCode: () => void;
   toggleAddedToCartModal: () => void;
@@ -142,38 +144,43 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       ? JSON.parse(localStorage.getItem("arle-cart")!)
       : [],
 
-  addItem: (item: TCartItem) =>
-    set((state: TCartState) => {
+  addItem: async (item: TCartItem) => {
+    const addiValidAmounts = await checkAddiAmounts(get().getCartTotal())
+    if (typeof window !== "undefined") {
+      localStorage.setItem('addiAmounts', JSON.stringify(addiValidAmounts));
+    }
+    set( (state: TCartState) => {
       if (item.quantity <= 0) {
         return state;
       }
-
+      
       const existingItemIndex = state.items.findIndex(
         (i) => i.productId === item.productId && i.variantId === item.variantId
       );
-
+      
       let newItems: TCartItem[];
-
+      
       if (existingItemIndex >= 0) {
         // Item already exists in the cart, update the quantity
         newItems = state.items.map((i, index) =>
           index !== existingItemIndex
-            ? i
-            : { ...i, quantity: i.quantity + 1 }
-        );
-      } else {
-        // Item is not in the cart, add it
-        newItems = [...state.items, item];
-      }
-
-      if (typeof window !== "undefined") {
+        ? i
+        : { ...i, quantity: i.quantity + 1 }
+      );
+    } else {
+      // Item is not in the cart, add it
+      newItems = [...state.items, item];
+    }
+    
+    if (typeof window !== "undefined") {
         localStorage.setItem("arle-cart", JSON.stringify(newItems));
       }
 
       const inCart = get().isCartOpen;
 
       return { items: newItems, isAddedToCartModalOpen: inCart ? false : true, itemAddedToCart: item };
-    }),
+    })
+  },
   clearCart: () =>
     set(() => {
       localStorage.removeItem("arle-cart");
@@ -227,8 +234,29 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
       return { items: newItems };
     }),
+
   isCartOpen: false,
-  toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen })),
+
+  toggleCart: async () => {
+    const currentCartOpen = get().isCartOpen;
+    const newCartOpenState = !currentCartOpen;
+
+    // Actualizar el estado global del carrito
+    set({ isCartOpen: newCartOpenState });
+
+    // Guardar el nuevo estado en localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("arle-cartOpen", JSON.stringify(newCartOpenState));
+    }
+  },
+  initializeCartState: () => {
+    if (typeof window !== "undefined") {
+      const storedCartOpen = localStorage.getItem("arle-cartOpen");
+      if (storedCartOpen !== null) {
+        set({ isCartOpen: JSON.parse(storedCartOpen) });
+      }
+    }
+  },
   getCartTax: () => {
     const items: TCartItem[] = get().items;
     let total = 0;

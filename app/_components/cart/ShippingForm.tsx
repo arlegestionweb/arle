@@ -38,9 +38,9 @@ const ShippingForm = () => {
   };
 
   return (
-    <section className="flex flex-col gap-3 py-6">
+    <section className="flex flex-col gap-3 py-4">
       <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
-        Información de envío
+        Ingresa la información de envío
       </h3>
       <p className="-mt-4 font-tajawal font-light text-base text-gray-600">(*) Campo requerido</p>
 
