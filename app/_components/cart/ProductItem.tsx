@@ -66,7 +66,7 @@ const ProductItem = ({ item, withoutQuantity = false }: { item: TCartItem, witho
         <IoMdClose className="text-zinc-500 w-4 h-4" />
       </button>
       {image && (
-        <section className=" h-24 w-24 relative">
+        <section className=" h-full aspect-square relative">
         <ImageWrapper
           src={image.url}
           alt={image?.alt || ""}

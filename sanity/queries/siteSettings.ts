@@ -51,15 +51,13 @@ export const getSiteSettings = async () => {
   try {
     const result = await sanityClient.fetch(`
     *[_type == "configuracion"][0]{
-      mostrarCodigoDeDescuento,
       "marcaPromocionada": marcaPromocionada->{
         titulo,
-      },
+        },
       "linksSociales": socialLinks[]{
         redSocial,
         url,
       },
-      mostrarCodigoDeDescuento,
       "legal": legal {
         terminosCondiciones,
         politicasPrivacidad,
@@ -67,6 +65,7 @@ export const getSiteSettings = async () => {
         politicasEnvio,
         politicasCookies,
       },
+      mostrarCodigoDeDescuento,
       "popup": popup {
         usarPopup,
         "opciones": opciones {

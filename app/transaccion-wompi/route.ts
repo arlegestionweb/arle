@@ -168,7 +168,7 @@ export const POST = async (req: Request, res: Response) => {
   );
   
   if (error || adminError) {
-    console.log("email no enviado");
+    console.error("email no enviado");
   }
   
   revalidatePath("/listing", "page");

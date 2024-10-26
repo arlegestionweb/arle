@@ -77,7 +77,6 @@ export default async function RootLayout({
   const siteSettings = await getSiteSettings();
   const nuestrasSedes = await getNuestrasSedesContent();
 
-
   return (
     <html lang="es">
       <head>
