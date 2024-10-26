@@ -1,53 +1,23 @@
 "use client";
 import ProductItem from "./ProductItem";
 import { numberToColombianPriceString } from "@/utils/helpers";
-import Button from "../Button";
 import { redirect, usePathname } from "next/navigation";
-
 import AddedToCartModal from "./AddedToCartModal";
-import { useClickOutside, useHideBodyOverflow } from "@/app/_lib/hooks";
-
 import { useCartStore } from "./store";
 import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
 import { GoChevronLeft } from "react-icons/go";
-import { createInvoice } from "./actions"
 import { useFormState } from "react-dom";
-import MenuModal from "../MenuModal";
-import WompiPayButton from "./WompiPayButton";
-import { useEffect, useRef, useState } from "react";
-import { MdOutlinePayments, MdOutlineSendToMobile } from "react-icons/md";
-import { IoMdClose } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { MdOutlinePayments } from "react-icons/md";
 import ArleBasicLogo from "../ArleBasicLogo";
-import { initiatePixelCheckoutView } from "@/app/_lib/pixelActions";
-import { generateAddiPaymentURL } from "./addiAuthAction";
-import { TOrderSchemaWithKeys } from "@/sanity/queries/orders";
 import SmallWhiteSpinner from "../SmallWhiteSpinner";
-import {
-  FaArrowRight,
-  FaCcAmex,
-  FaCcDinersClub,
-  FaCcMastercard,
-  FaCcVisa,
-} from "react-icons/fa6";
-import { getOrSetExternalIdPixel } from "@/app/_lib/utils";
-import { RiSecurePaymentLine } from "react-icons/ri";
+import { FaArrowRight } from "react-icons/fa6";
 import { LuExternalLink } from "react-icons/lu";
-import Link from "next/link";
 import { createInvoiceAction } from "./createInvoiceAction";
+import { TAddiAmounts } from "./types";
 
-type TAddiAmounts = {
-  minAmount: number;
-  maxAmount: number;
-  policy: object;
-  policies: object[];
-  widgetConfig: object;
-  checkoutConfig: object;
-  isActiveAlly: boolean;
-  isActivePayNow: boolean;
-};
-
-const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
+const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
   const pathname = usePathname();
   const {
     items,
@@ -111,7 +81,6 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
     initializeCartState();
   }, [initializeCartState]);
 
-
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
       if (!isMobile) {
@@ -139,18 +108,13 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
     };
   }, [isCartOpen, cartWindow, toggleCart, isMobile]);
 
-
   const handlePaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedPayment(event.target.value);
   };
 
-
   if (pathname.includes("/admin")) return null;
-
   if (isAddedToCartModalOpen) return <AddedToCartModal />;
-
   if (!isCartOpen) return null;
-
 
   const addiDisabled =
     (addiAmounts && cartTotal > addiAmounts.maxAmount) ||
@@ -457,6 +421,7 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                       </span>
                     </label>
                   </section>
+                  {showDiscountCode && <CodigoDeDescuento />}
                   <section className="w-full flex flex-col pt-3 h-36 items-center justify-start gap-2">
                     <button
                       className="dark-button max-w-screen-md w-full flex gap-2 text-lg justify-center items-center py-4"
@@ -475,19 +440,6 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                         </>
                       )}
                     </button>
-                    {/* {formState && formState.errors && !formState.success && (
-                      <p className="w-full text-red-500 text-sm pb-6 font-light">
-                        Para continuar, por favor ingresa{" "}
-                        {formState.errors
-                          .map((error, index, array) =>
-                            index === array.length - 1 && array.length > 1
-                              ? `y ${error.message.toLowerCase()}`
-                              : error.message.toLowerCase()
-                          )
-                          .join(", ")}
-                        .
-                      </p>
-                    )} */}
                   </section>
                 </div>
               </div>

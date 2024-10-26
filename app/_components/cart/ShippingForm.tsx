@@ -1,4 +1,4 @@
-import { LegacyRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ShippingFormProps {
   errorPaths: string[];
@@ -19,16 +19,13 @@ const ShippingForm: React.FC<ShippingFormProps> = ({errorPaths}) => {
     direccion: "",
   });
   
-  // Cargar datos del localStorage cuando se monta el componente
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
     if(savedData){
       setFormData((prevData) => ({ ...prevData, ...savedData }));
-      console.log("checking saved data");
     }
   }, []);
   
-  // Manejar el cambio en los inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => {
@@ -282,8 +279,8 @@ const InputComponent = ({
             type="number"
             name={name}
             id={name}
-            value={value} // Valor controlado
-            onChange={handleInputChange} // Función para manejar el cambio
+            value={value}
+            onChange={handleInputChange}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault(); // Deshabilitar el "Enter" en este campo
@@ -306,8 +303,8 @@ const InputComponent = ({
           className="rounded-md border border-gray-200 bg-gray-50 w-full focus-visible:outline-arle-blue h-9 px-3"
           name={name}
           id={name}
-          value={value} // Valor controlado
-          onChange={onChange} // Función para manejar el cambio
+          value={value}
+          onChange={onChange}
         >
           {options?.map((country) => (
             <option key={country} value={country}>

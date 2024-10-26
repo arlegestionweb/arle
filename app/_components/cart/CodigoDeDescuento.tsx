@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useCartStore } from "./store";
 import { zodApiResponseSchema } from "@/app/checkout/discount-code/zod";
 import { FaCheck } from "react-icons/fa6";
-import { cn } from "@/app/_lib/utils";
 import { IoMdClose } from "react-icons/io";
 
 const CodigoDeDescuento = () => {
@@ -11,8 +10,6 @@ const CodigoDeDescuento = () => {
   const [enteredDiscount, setEnteredDiscount] = useState(false);
   const [inputValue, setInputValue] = useState<string | number | readonly string[] | undefined>("")
   const { applyDiscountCode, removeDiscountCode } = useCartStore((state) => state);
-
-  // const [discountCodes, setDiscountCodes] = useState<TDiscountCode[] | undefined>(undefined);
 
   const handleDiscountCodeChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -82,7 +79,7 @@ const CodigoDeDescuento = () => {
 
       <div className="flex">
         <input
-          className="font-sans font-normal text-sm w-40 focus-visible:outline-arle-blue h-9 px-3 bg-white rounded border border-stone-300"
+          className="font-sans font-normal text-sm w-40 focus-visible:outline-arle-blue h-9 px-3 border-gray-200 bg-gray-50 rounded-tl-md rounded-bl-md border-l border-t border-b"
           name={"discountCode"}
           id={"discountCode"}
           placeholder={""}
@@ -90,11 +87,11 @@ const CodigoDeDescuento = () => {
           onKeyDown={handleKeyDown}
           value={inputValue}
           />
-        { !enteredDiscount && <div className="px-4 h-9 font-sans font-light text-sm cursor-pointer bg-zinc-200 rounded-tr rounded-br border-r border-t border-b border-stone-300 justify-center items-center gap-1 inline-flex"
+        { !enteredDiscount && <div className="px-4 h-9 font-sans font-light text-sm cursor-pointer bg-slate-200 rounded-tr-md rounded-br-md border-r border-t border-b border-gray-200 justify-center items-center gap-1 inline-flex"
         onClick={()=> {setEnteredDiscount(true); verifyDiscountCode()}}>
           Aplicar
         </div>}
-        { enteredDiscount && <div className="w-[46px] h-9 bg-zinc-200 rounded-tr rounded-br border-r border-t border-b border-stone-300 justify-center items-center gap-1 inline-flex">
+        { enteredDiscount && <div className="w-[46px] h-9 bg-slate-200 rounded-tr-md rounded-br-md border-r border-t border-b border-gray-200 justify-center items-center gap-1 inline-flex">
           {isDiscountVerified === "loading" ? (
             <p>...</p>
           ) : isDiscountVerified === "verified" ? ( 
@@ -118,11 +115,10 @@ const CodigoDeDescuento = () => {
           )
         }
         { isOpen &&
-        <span className="font-inter font-light text-[11px] text-gray-500">
+        <span className="font-inter font-light text-[12px] text-gray-500">
           *Al aplicar un código de descuento, se eliminará cualquier otro descuento que tenga el producto.
         </span>
         }
-    <div className="self-stretch h-px bg-stone-300" />
     </section>
   );
 };
