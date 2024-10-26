@@ -49,6 +49,19 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
   const [errorPaths, setErrorPaths] = useState<string[]>([]);
 
   useEffect(() => {
+    if (isCartOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Limpiar el efecto al desmontar el modal para restaurar el scroll
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isCartOpen]);
+
+  useEffect(() => {
     if (formState && formState.errors) {
       const paths = formState.errors.map((error) => error.path);
       setErrorPaths(paths);
@@ -123,7 +136,7 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
       : false;
 
   return (
-    <section className="bg-white z-[150] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings">
+    <section className="bg-white z-[150] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings overflow-hidden">
       <form
         action={formAction}
         className="max-w-screen-xl flex justify-center w-full gap-6 relative"
