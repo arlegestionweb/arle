@@ -41,7 +41,7 @@ export const zodOrderSchema = z.object({
   status: z.string().min(1, "El estado es requerido"),
   customer: z.object({
     name: z.string().min(1, "tu nombre"),
-    email: z.string().min(1, "tu correo electrónico"),
+    email: z.string().email().min(1, "tu correo electrónico"),
     id: z.object({
       type: z.string().min(1, "El tipo de documento"),
       number: z.string().min(1, "tu número de documento"),

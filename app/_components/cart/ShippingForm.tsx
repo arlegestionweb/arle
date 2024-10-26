@@ -79,7 +79,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({errorPaths}) => {
         name="email"
         placeholder="email@ejemplo.com.co"
         title="Correo electrónico *"
-        type="email"
+        type="text"
         value={formData.email}
         onChange={handleChange}
         autocomplete="email"
@@ -177,7 +177,7 @@ type TInputComponent =
     },
     {
       name: 'email',
-      text: 'Ingresa tu email'
+      text: 'Ingresa un correo electrónico válido'
     },
     {
       name: 'city',
