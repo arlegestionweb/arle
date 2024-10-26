@@ -130,7 +130,7 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
       >
         {isMobile && cartWindow === 0 ? null : (
           <section className="flex flex-col  w-full h-full overflow-x-hidden scrollbar-hide lg:pr-4 xl:pr-12">
-            <header className="flex flex-col sticky top-0 bg-white  pt-8 md:pt-12 pb-3">
+            <header className="flex flex-col sticky top-0 bg-white z-50 pt-8 md:pt-12 pb-3">
               <div className="md:hidden w-[130px] pb-3">
                 <ArleBasicLogo />
               </div>
@@ -320,6 +320,7 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
                       completar tu pago de forma segura.
                     </p>
                   </div>
+                  {showDiscountCode && <CodigoDeDescuento />}
                   <p className="text-zinc-600 text-xl font-bold font-tajawal leading-none pt-4 md:hidden">
                     Resumen:
                   </p>
@@ -421,7 +422,6 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
                       </span>
                     </label>
                   </section>
-                  {showDiscountCode && <CodigoDeDescuento />}
                   <section className="w-full flex flex-col pt-3 h-36 items-center justify-start gap-2">
                     <button
                       className="dark-button max-w-screen-md w-full flex gap-2 text-lg justify-center items-center py-4"
