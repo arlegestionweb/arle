@@ -123,7 +123,7 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
       : false;
 
   return (
-    <section className="bg-white z-[60] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings">
+    <section className="bg-white z-[150] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings">
       <form
         action={formAction}
         className="max-w-screen-xl flex justify-center w-full gap-6 relative"
