@@ -145,7 +145,7 @@ export const generateAddiPaymentURL = async (data: TOrderSchemaWithKeys) => {
 		
 
   } catch (error) {
-    console.log({error});
+    console.error({error});
   }
 
 

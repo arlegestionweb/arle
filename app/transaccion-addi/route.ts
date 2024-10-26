@@ -102,10 +102,8 @@ export const POST = async (req: Request) => {
 
 
   if (error || adminError) {
-    console.log("email no enviado.");
+    console.error("email no enviado.");
   }
-
-  console.log("is it updating or not");
 
   revalidatePath("/listing", "page")
   revalidatePath("/[type]/[id]/page", "page")
