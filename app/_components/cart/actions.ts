@@ -75,7 +75,6 @@ export const createInvoice = async function (_: unknown, formData: FormData) {
         _key: nanoid(),
       })
     ),
-    addiAmounts: addiValidAmounts,
   };
 
   

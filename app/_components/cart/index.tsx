@@ -11,7 +11,7 @@ import { useCartStore } from "./store";
 import ShippingForm from "./ShippingForm";
 import CodigoDeDescuento from "./CodigoDeDescuento";
 import { GoChevronLeft } from "react-icons/go";
-import { createInvoice } from "./actions";
+import { createInvoice } from "./actions"
 import { useFormState } from "react-dom";
 import MenuModal from "../MenuModal";
 import WompiPayButton from "./WompiPayButton";
@@ -34,6 +34,7 @@ import { getOrSetExternalIdPixel } from "@/app/_lib/utils";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { LuExternalLink } from "react-icons/lu";
 import Link from "next/link";
+import { createInvoiceAction } from "./createInvoiceAction";
 
 type TAddiAmounts = {
   minAmount: number;
@@ -44,7 +45,7 @@ type TAddiAmounts = {
   checkoutConfig: object;
   isActiveAlly: boolean;
   isActivePayNow: boolean;
-}
+};
 
 const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
   const pathname = usePathname();
@@ -59,143 +60,90 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
     getCartTotalWithoutDiscountsOrTax,
     isAddedToCartModalOpen,
     getCartTax,
-    getShippingCost,
   } = useCartStore((state) => state);
 
-  const [isWompipaymentOpen, setIsWompipaymentOpen] = useState(false);
-
   const [cartWindow, setCartWindow] = useState(0);
-
   const [paymentLoading, setPaymentLoading] = useState(false);
 
-  const [formState, formAction] = useFormState(createInvoice, null);
+  const [formState, formAction] = useFormState(createInvoiceAction, {
+    success: false,
+    errors: null,
+    redirectionUrl: '',
+  });
 
-  const [addiAmounts, setAddiAmounts] = useState<TAddiAmounts>()
-  const [addiPaymentUrl, setAddiPaymentUrl] = useState<string | null>(null);
-  const [triggerAddiPayment, setTriggerAddiPayment] = useState(false);
-  const [addiPaymentData, setAddiPaymentData] =
-    useState<TOrderSchemaWithKeys | null>(null);
+  const [addiAmounts, setAddiAmounts] = useState<TAddiAmounts>();
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [selectedPayment, setSelectedPayment] = useState<string>("");
+  const [selectedPayment, setSelectedPayment] = useState<string>("wompi");
   const cartTotal = getCartTotal();
 
-  useEffect(() => {
-    if(window !== undefined){
-      setAddiAmounts(JSON.parse(localStorage.getItem("addiAmounts") || ""))
-    }
-  }, [toggleCart, cartTotal])
+  const [errorPaths, setErrorPaths] = useState<string[]>([]);
 
   useEffect(() => {
-    // Función que chequea el tamaño de la pantalla
+    if (formState && formState.errors) {
+      const paths = formState.errors.map((error) => error.path);
+      setErrorPaths(paths);
+      setPaymentLoading(false);
+    }
+    if(formState.redirectionUrl && formState.success === true && paymentLoading){
+      setPaymentLoading(false);
+      redirect(formState.redirectionUrl)
+    }
+  }, [formState]);
+
+  useEffect(() => {
+    if (window !== undefined) {
+      setAddiAmounts(JSON.parse(localStorage.getItem("addiAmounts") || 'null'));
+    }
+  }, [toggleCart, cartTotal]);
+
+  useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.matchMedia("(max-width: 767px)").matches);
     };
-
-    // Ejecutar la función inicialmente
     checkIfMobile();
-
-    // Añadir un event listener al evento resize
     window.addEventListener("resize", checkIfMobile);
-
-    // Limpiar el event listener cuando el componente se desmonta
     return () => {
       window.removeEventListener("resize", checkIfMobile);
     };
-  }, [])
-
-    useEffect(() => {
-      initializeCartState();
-    }, [initializeCartState]);
+  }, []);
 
   useEffect(() => {
-    const handleGenerateAddiPaymentUrl = async () => {
-      if (!triggerAddiPayment || !addiPaymentData) return;
-
-      try {
-        const url = await generateAddiPaymentURL(addiPaymentData);
-        if (!url || typeof url !== "string") {
-          throw new Error("No se pudo generar la URL de pago");
-        }
-
-        setAddiPaymentUrl(url);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setTriggerAddiPayment(false);
-      }
-    };
-
-    handleGenerateAddiPaymentUrl();
-  }, [triggerAddiPayment, addiPaymentData]);
+    initializeCartState();
+  }, [initializeCartState]);
 
 
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
       if (!isMobile) {
         event.preventDefault();
-        toggleCart(); 
-        window.history.pushState(null, "", window.location.pathname); 
+        toggleCart();
+        window.history.pushState(null, "", window.location.pathname);
       } else {
         if (isCartOpen && cartWindow === 1) {
-          event.preventDefault(); 
-          setCartWindow(0); 
+          event.preventDefault();
+          setCartWindow(0);
           window.history.pushState(null, "", window.location.pathname);
         } else if (isCartOpen && cartWindow === 0) {
           event.preventDefault();
-          toggleCart(); 
-          window.history.pushState(null, "", window.location.pathname); 
+          toggleCart();
+          window.history.pushState(null, "", window.location.pathname);
         }
       }
     };
-  
     if (isCartOpen || cartWindow === 1) {
       window.history.pushState(null, "", window.location.pathname);
     }
-  
     window.addEventListener("popstate", handlePopState);
-
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
   }, [isCartOpen, cartWindow, toggleCart, isMobile]);
 
-  const initiateAddiPayment = (data: TOrderSchemaWithKeys) => {
-    setAddiPaymentData(data);
-    setTriggerAddiPayment(true);
-  };
 
   const handlePaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedPayment(event.target.id);
+    setSelectedPayment(event.target.value);
   };
 
-
-  useEffect(() => {
-    if (!addiPaymentUrl) return;
-
-    redirect(addiPaymentUrl);
-  }, [addiPaymentUrl]);
-
-  useEffect(() => {
-    if (formState && formState.status === 200 && !isWompipaymentOpen) {
-      setPaymentLoading(false);
-      setIsWompipaymentOpen(true);
-    }
-  }, [formState]);
-
-  useEffect(() => {
-    if (formState && formState.status !== 200) setPaymentLoading(false);
-  }, [formState]);
-
-
-  const wompiRef = useRef(null);
-
-  useHideBodyOverflow(isCartOpen);
-
-  const closeWompi = () => {
-    setIsWompipaymentOpen(false);
-  };
-
-  useClickOutside(wompiRef, closeWompi);
 
   if (pathname.includes("/admin")) return null;
 
@@ -203,70 +151,61 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
 
   if (!isCartOpen) return null;
 
-  const payment_reference = id;
 
-  // const error = formState?.error && JSON.parse(formState.error)[0].message
-
-  const urlSegments = window.location.href.split("/");
-
-  const baseUrl = `${urlSegments[0]}//${urlSegments[2]}`;
-
-  const addiDisabled = addiAmounts && cartTotal > addiAmounts.maxAmount || addiAmounts && cartTotal < addiAmounts.minAmount ? true : false
-
-  console.log({addiAmounts});
-  console.log({addiDisabled});
-
-  const pixelInfo = {
-    name: formState?.data?.customer.name as string,
-    email: formState?.data?.customer.email as string,
-    phone: formState?.data?.customer.phone as string,
-    amount: getCartTotal(),
-  };
+  const addiDisabled =
+    (addiAmounts && cartTotal > addiAmounts.maxAmount) ||
+    (addiAmounts && cartTotal < addiAmounts.minAmount)
+      ? true
+      : false;
 
   return (
     <section className="bg-white z-[60] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings">
-      <form className="max-w-screen-xl flex justify-center w-full gap-6">
-      {isMobile && cartWindow === 0 ? null : (
-        <section className="flex flex-col  w-full h-full overflow-x-hidden scrollbar-hide pt-8 md:pt-12 lg:pr-4 xl:pr-12">
-          <div className="md:hidden w-[85px] pb-3">
+      <form
+        action={formAction}
+        className="max-w-screen-xl flex justify-center w-full gap-6 relative"
+      >
+        {isMobile && cartWindow === 0 ? null : (
+          <section className="flex flex-col  w-full h-full overflow-x-hidden scrollbar-hide lg:pr-4 xl:pr-12">
+            <header className="flex flex-col sticky top-0 bg-white  pt-8 md:pt-12 pb-3">
+              <div className="md:hidden w-[130px] pb-3">
                 <ArleBasicLogo />
               </div>
-            <button
-              className="flex items-center -ml-1 group"
-              onClick={() => isMobile ? setCartWindow(0) : toggleCart()}
-            >
-              <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />
-              <span className="text-gray-700 text-base font-normal font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-500">
-                Volver
-              </span>
-            </button>
-            <h2 className="hidden md:block grow shrink basis-0 text-zinc-800 text-[26px] font-jomolhari pt-2">
-              Tu Carrito de compras
-            </h2>
-            <ShippingForm />
+              <button
+                className="flex items-center -ml-1 group"
+                onClick={() => (isMobile ? setCartWindow(0) : toggleCart())}
+              >
+                <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />
+                <span className="text-gray-700 text-base font-normal font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-500">
+                  Volver
+                </span>
+              </button>
+              <h2 className="hidden md:block grow shrink basis-0 text-zinc-800 text-[26px] font-jomolhari pt-2">
+                Tu Carrito de compras
+              </h2>
+            </header>
+            <ShippingForm errorPaths={errorPaths} />
             <section>
-              <div className="space-y-4">
-                <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
+              <div className="pt-4">
+                <h3 className="text-zinc-600 text-xl font-bold font-tajawal leading-normal">
                   Selecciona tu medio de pago:
                 </h3>
 
-                <div className="flex flex-col gap-4">
-                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                    <div className="flex items-start">
-                      <div className="flex h-5 items-center">
+                <div className="flex flex-col gap-3">
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4">
+                    <div className="flex items-start gap-2">
+                      <label className="flex items-center cursor-pointer relative">
                         <input
-                          id="credit-card"
-                          aria-describedby="credit-card-text"
+                          name="paymentMethod"
                           type="radio"
-                          name="payment-method"
                           checked={selectedPayment === "wompi"}
                           onChange={handlePaymentChange}
                           value="wompi"
-                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                          className="peer h-4 w-4 cursor-pointer appearance-none rounded-full border border-slate-300 checked:border-arle-blue"
                         />
-                      </div>
+                        <span className="absolute bg-arle-blue w-2.5 h-2.5 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                      </label>
 
-                      <div className="ms-4 text-sm">
+                      <div className="text-sm">
                         <label className="font-medium leading-none text-gray-900 dark:text-white">
                           {" "}
                           Wompi{" "}
@@ -278,55 +217,84 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                           Paga con tarjeta crédito, débito, PSE o transferencia
                           Bancolombia.
                         </p>
-                        <div className="flex h-10 gap-0 mt-3">
-                          <FaCcMastercard className="w-14 h-full" />
-                          <FaCcVisa className="w-14 h-full" />
-                          <FaCcAmex className="w-14 h-full" />
-                          <FaCcDinersClub className="w-14 h-full" />
-                          <img
-                            className="h-10 w-10"
-                            src="/logo-pse.webp"
-                            alt="logo pse"
-                          />
+                        <div className="flex h-10 gap-1 mt-3 ">
+                          <div className="h-10 w-[55px] rounded-sm border border-gray-200 bg-white flex items-center justify-center">
+                            <img
+                              className="w-[36px] object-contain"
+                              src="/Mastercard-logo.svg"
+                              alt="logo Mastercard"
+                            />
+                          </div>
+                          <div className="h-10 w-[55px] rounded-sm border border-gray-200 bg-white flex items-center justify-center">
+                            <img
+                              className="w-12 object-contain"
+                              src="/Visa_Logo.webp"
+                              alt="logo Visa"
+                            />
+                          </div>
+                          <div className="h-10 w-[55px] rounded-sm border border-gray-200 bg-white flex items-center justify-center">
+                            <img
+                              className="w-7 object-contain"
+                              src="/amex.webp"
+                              alt="logo Amex"
+                            />
+                          </div>
+                          <div className="h-10 w-[55px] rounded-sm border border-gray-200 bg-white flex items-center justify-center">
+                            <img
+                              className="w-10 object-contain"
+                              src="/Bancolombia.webp"
+                              alt="logo Bancolombia"
+                            />
+                          </div>
+                          <div className="h-10 w-[55px] rounded-sm border border-gray-200 bg-white flex items-center justify-center">
+                            <img
+                              className="w-8 object-contain"
+                              src="/logo-pse.webp"
+                              alt="logo pse"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                    <div className="flex items-start">
-                      <div className="flex h-5 items-center">
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 ">
+                    <div className="flex items-start gap-2">
+                      <label className={`${!addiDisabled && 'cursor-pointer'} relative flex  items-center`}>
                         <input
+                          name="paymentMethod"
                           disabled={addiDisabled}
                           type="radio"
-                          name="payment-method"
                           checked={selectedPayment === "addi"}
                           onChange={handlePaymentChange}
                           value="addi"
-                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                          className={`${!addiDisabled && 'cursor-pointer'} peer h-4 w-4 appearance-none rounded-full border border-slate-300 checked:border-arle-blue`}
                         />
-                      </div>
+                        <span className="absolute bg-arle-blue w-2.5 h-2.5 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                      </label>
 
-                      <div className="ms-4 text-sm">
+                      <div className="text-sm">
                         <label className="font-medium leading-none text-gray-900 dark:text-white">
                           Addi
                         </label>
-                        <p
-                          className="mt-1 text-xs md:text-sm font-normal text-gray-500 dark:text-gray-400"
-                        >
+                        <p className="mt-1 text-xs md:text-sm font-normal text-gray-500 dark:text-gray-400">
                           Paga a cuotas con Addi
                         </p>
-                        <div className="flex h-10 gap-2 mt-3">
-                          <img
-                            className="h-10"
-                            src="/addiLogo.webp"
-                            alt="logo pse"
-                          />
-                          <img
-                            className="h-10 w-10"
-                            src="/logo-pse.webp"
-                            alt="logo pse"
-                          />
+                        <div className="flex h-10 gap-1 mt-3">
+                          <div className="h-10 w-[55px] rounded-sm border border-gray-200 bg-white flex items-center justify-center">
+                            <img
+                              className="w-11 object-contain"
+                              src="/addiLogo.webp"
+                              alt="logo pse"
+                            />
+                          </div>
+                          <div className="h-10 w-[55px] rounded-sm border border-gray-200 bg-white flex items-center justify-center">
+                            <img
+                              className="w-8 object-contain"
+                              src="/logo-pse.webp"
+                              alt="logo pse"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -339,277 +307,345 @@ const Cart = ({ showDiscountCode = false }: { showDiscountCode: boolean }) => {
                           )}{" "}
                         y $
                         {addiAmounts?.maxAmount &&
-                          numberToColombianPriceString(
-                            addiAmounts?.maxAmount
-                          )}
+                          numberToColombianPriceString(addiAmounts?.maxAmount)}
                       </span>
                     )}
                   </div>
-                  <div className="flex justify-center">
-                    <RiSecurePaymentLine className="w-10 h-10" />
-                    <MdOutlineSendToMobile className="w-10 h-10" />
+                  <div className="flex flex-col justify-center rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 gap-4">
+                    <svg
+                      className="h-24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="-252.3 356.1 163 80.9"
+                    >
+                      <path
+                        fill="none"
+                        stroke="#707070"
+                        stroke-miterlimit="10"
+                        stroke-width="2"
+                        d="M-108.9 404.1v30c0 1.1-.9 2-2 2H-231c-1.1 0-2-.9-2-2v-75c0-1.1.9-2 2-2h120.1c1.1 0 2 .9 2 2v37m-124.1-29h124.1"
+                      ></path>
+                      <circle
+                        cx="-227.8"
+                        cy="361.9"
+                        r="1.8"
+                        fill="#707070"
+                      ></circle>
+                      <circle
+                        cx="-222.2"
+                        cy="361.9"
+                        r="1.8"
+                        fill="#707070"
+                      ></circle>
+                      <circle
+                        cx="-216.6"
+                        cy="361.9"
+                        r="1.8"
+                        fill="#707070"
+                      ></circle>
+                      <path
+                        fill="none"
+                        stroke="#707070"
+                        stroke-miterlimit="10"
+                        stroke-width="2"
+                        d="M-128.7 400.1H-92m-3.6-4.1 4 4.1-4 4.1"
+                      ></path>
+                    </svg>
+                    <p className="text-zinc-600 text-sm font-light font-inter leading-tight">
+                      Después de hacer click en pagar serás redirigido a la
+                      plataforma de pago de {selectedPayment.toUpperCase()} para
+                      completar tu pago de forma segura.
+                    </p>
                   </div>
-                  <p className="text-zinc-600 text-sm font-light font-inter leading-tight">
-                    Después de hacer click en pagar serás redirigido a la
-                    pantalla de pago que selecciones para realizar tu pago 100%
-                    Seguro.
+                  <p className="text-zinc-600 text-xl font-bold font-tajawal leading-none pt-4 md:hidden">
+                    Resumen:
                   </p>
-                <p className="text-zinc-800 -mb-4 text-xl font-medium font-tajawal leading-normal pt-2 md:hidden">
-                  Resumen:
-                </p>
                   <section className="md:hidden flex flex-col items-end text-base gap-0.5">
-              <div className="flex w-full justify-between ">
-                <input
-                  type="text"
-                  value={JSON.stringify(items)}
-                  name="items"
-                  hidden
-                  readOnly
-                />
-                <input
-                  readOnly
-                  hidden
-                  name="reference"
-                  value={payment_reference}
-                  type="text"
-                />
-                <input
-                  readOnly
-                  hidden
-                  name="subtotal"
-                  value={getCartTotalWithoutDiscountsOrTax()}
-                  type="number"
-                />
-                <h5 className="text-neutral-600 text-base font-medium font-tajawal leading-snug">
-                  Subtotal: ({items.length} producto{items.length !== 1 && 's'})
-                </h5>
-                <span>
-                  $
-                  {numberToColombianPriceString(
-                    getCartTotalWithoutDiscountsOrTax()
-                  )}
-                </span>
-              </div>
-              <label className="flex w-full justify-between text-base">
-                <input
-                  hidden
-                  name="discount"
-                  value={getProductDiscountAmount()}
-                  type="number"
-                  readOnly
-                />
-                <h5 className="text-neutral-600 text-base font-medium font-tajawal leading-snug">
-                  Descuento
-                </h5>
-                <span>
-                  $
-                  {numberToColombianPriceString(getProductDiscountAmount()) ||
-                    0}
-                </span>
-              </label>
-              <label className="flex w-full justify-between">
-                <input
-                  type="number"
-                  hidden
-                  name="tax"
-                  value={getCartTax()}
-                  readOnly
-                />
-                <h5 className="text-neutral-600 text-base font-medium font-tajawal leading-snug">
-                  IVA
-                </h5>
-                <span>${numberToColombianPriceString(getCartTax()) || 0}</span>
-              </label>
-              <label className="flex w-full justify-between">
-                <input
-                  type="number"
-                  hidden
-                  name="shipping"
-                  readOnly
-                  value={0}
-                />
-                <h5 className="text-neutral-600 text-base font-medium font-tajawal leading-snug">
-                  Envío
-                </h5>
-                <span>Gratis</span>
-              </label>
-              <div className="self-stretch h-px bg-stone-300" />
+                    <div className="flex w-full justify-between ">
+                      <input
+                        type="text"
+                        value={JSON.stringify(items)}
+                        name="items"
+                        hidden
+                        readOnly
+                      />
+                      <input
+                        readOnly
+                        hidden
+                        name="reference"
+                        value={id}
+                        type="text"
+                      />
+                      <input
+                        readOnly
+                        hidden
+                        name="subtotal"
+                        value={getCartTotalWithoutDiscountsOrTax()}
+                        type="number"
+                      />
+                      <h5 className="text-neutral-600 text-base font-medium font-tajawal leading-snug">
+                        Subtotal: ({items.length} producto
+                        {items.length !== 1 && "s"})
+                      </h5>
+                      <span>
+                        $
+                        {numberToColombianPriceString(
+                          getCartTotalWithoutDiscountsOrTax()
+                        )}
+                      </span>
+                    </div>
+                    <label className="flex w-full justify-between text-base">
+                      <input
+                        hidden
+                        name="discount"
+                        value={getProductDiscountAmount()}
+                        type="number"
+                        readOnly
+                      />
+                      <h5 className="text-neutral-600 text-base font-medium font-tajawal leading-snug">
+                        Descuento
+                      </h5>
+                      <span>
+                        $
+                        {numberToColombianPriceString(
+                          getProductDiscountAmount()
+                        ) || 0}
+                      </span>
+                    </label>
+                    <label className="flex w-full justify-between">
+                      <input
+                        type="number"
+                        hidden
+                        name="tax"
+                        value={getCartTax()}
+                        readOnly
+                      />
+                      <h5 className="text-neutral-600 text-base font-medium font-tajawal leading-snug">
+                        IVA
+                      </h5>
+                      <span>
+                        ${numberToColombianPriceString(getCartTax()) || 0}
+                      </span>
+                    </label>
+                    <label className="flex w-full justify-between">
+                      <input
+                        type="number"
+                        hidden
+                        name="shipping"
+                        readOnly
+                        value={0}
+                      />
+                      <h5 className="text-neutral-600 text-base font-medium font-tajawal leading-snug">
+                        Envío
+                      </h5>
+                      <span>Gratis</span>
+                    </label>
+                    <div className="self-stretch h-px bg-stone-300" />
 
-              <label className="flex w-full justify-between">
-                <input
-                  readOnly
-                  hidden
-                  type="number"
-                  name="total"
-                  value={getCartTotal()}
-                />
-                <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
-                  Total
-                </h5>
-                <span>${numberToColombianPriceString(getCartTotal())}</span>
-              </label>
-            </section>
-                  <section className="w-full flex pt-3 pb-16 items-center justify-end">
+                    <label className="flex w-full justify-between">
+                      <input
+                        readOnly
+                        hidden
+                        type="number"
+                        name="total"
+                        value={getCartTotal()}
+                      />
+                      <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
+                        Total
+                      </h5>
+                      <span>
+                        ${numberToColombianPriceString(getCartTotal())}
+                      </span>
+                    </label>
+                  </section>
+                  <section className="w-full flex flex-col pt-3 h-36 items-center justify-start gap-2">
                     <button
                       className="dark-button max-w-screen-md w-full flex gap-2 text-lg justify-center items-center py-4"
-                      onClick={() => setCartWindow(1)}
+                      type="submit"
+                      onClick={()=> setPaymentLoading(true)}
                     >
-                      <MdOutlinePayments className="text-lg" /> Pagar Ahora{" "}
+                      {paymentLoading ? (
+                        <div className="flex gap-5 items-center">
+                        <SmallWhiteSpinner/>
+                        Procesando tus datos
+                        </div>
+                      ) : (
+                        <>
+                        <MdOutlinePayments className="text-lg" /> Paga Ahora
                       <LuExternalLink className="text-lg" />
+                        </>
+                      )}
                     </button>
+                    {/* {formState && formState.errors && !formState.success && (
+                      <p className="w-full text-red-500 text-sm pb-6 font-light">
+                        Para continuar, por favor ingresa{" "}
+                        {formState.errors
+                          .map((error, index, array) =>
+                            index === array.length - 1 && array.length > 1
+                              ? `y ${error.message.toLowerCase()}`
+                              : error.message.toLowerCase()
+                          )
+                          .join(", ")}
+                        .
+                      </p>
+                    )} */}
                   </section>
                 </div>
               </div>
             </section>
-        </section>
-      )}
-      {isMobile && cartWindow === 1 ? null : (
-        <section className=" flex flex-col max-w-screen-lg w-full h-full overflow-x-hidden">
-          <header className="flex flex-col pt-8 md:pt-12">
-              <div className="w-[85px] md:w-[130px] pb-3">
+          </section>
+        )}
+        {isMobile && cartWindow === 1 ? null : (
+          <section className=" flex flex-col max-w-screen-lg w-full h-full overflow-x-hidden">
+            <header className="flex flex-col pt-8 md:pt-12">
+              <div className="w-[130px] md:w-[130px] pb-3">
                 <ArleBasicLogo />
               </div>
-            <button
-              className="md:hidden flex items-center -ml-1 group"
-              onClick={toggleCart}
-            >
-              <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />
-              <span className="text-gray-700 text-base font-normal font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-500">
-                Volver
-              </span>
-            </button>
-            <h2 className="md:hidden grow shrink basis-0 text-zinc-800 text-[26px] font-jomolhari pt-2">
-              Tu Carrito de compras
-            </h2>
-          </header>
-          <section className="flex flex-col h-full overflow-y-scroll w-full no-scrollbar relative">
-            {items.length === 0 ? (
-              <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
-                No hay productos en el carrito
-              </h3>
-            ) : (
-              <>
-                <h3 className="sticky top-0 z-20 w-full bg-white text-zinc-800 text-xl font-normal font-tajawal leading-normal">
-                  Resumen de la compra:
-                </h3>
-                <ul className="flex flex-col pt-6 gap-4">
-                  {items.map((item) => {
-                    return (
-                      <>
-                        <ProductItem key={item.variantId} item={item} />
-                        <div className="self-stretch h-px bg-stone-300 opacity-10" />
-                      </>
-                    );
-                  })}
-                </ul>
-              </>
-            )}
-          </section>
-          <footer className="z-20 w-full bg-white pt-3 shadow-[0px_-3px_10px_6px_rgba(0,0,0,0.04)]">
-            <section className="flex flex-col items-end gap-1 md:pb-10">
-              <div className="flex w-full justify-between">
-                <input
-                  type="text"
-                  value={JSON.stringify(items)}
-                  name="items"
-                  hidden
-                  readOnly
-                />
-                <input
-                  readOnly
-                  hidden
-                  name="reference"
-                  value={payment_reference}
-                  type="text"
-                />
-                <input
-                  readOnly
-                  hidden
-                  name="subtotal"
-                  value={getCartTotalWithoutDiscountsOrTax()}
-                  type="number"
-                />
-                <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
-                  Subtotal
-                </h5>
-                <span>
-                  $
-                  {numberToColombianPriceString(
-                    getCartTotalWithoutDiscountsOrTax()
-                  )}
-                </span>
-              </div>
-              <label className="flex w-full justify-between">
-                <input
-                  hidden
-                  name="discount"
-                  value={getProductDiscountAmount()}
-                  type="number"
-                  readOnly
-                />
-                <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
-                  Descuento
-                </h5>
-                <span>
-                  $
-                  {numberToColombianPriceString(getProductDiscountAmount()) ||
-                    0}
-                </span>
-              </label>
-              <label className="flex w-full justify-between">
-                <input
-                  type="number"
-                  hidden
-                  name="tax"
-                  value={getCartTax()}
-                  readOnly
-                />
-                <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
-                  IVA
-                </h5>
-                <span>${numberToColombianPriceString(getCartTax()) || 0}</span>
-              </label>
-              <label className="flex w-full justify-between">
-                <input
-                  type="number"
-                  hidden
-                  name="shipping"
-                  readOnly
-                  value={0}
-                />
-                <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
-                  Envío
-                </h5>
-                <span>Gratis</span>
-              </label>
-              <div className="self-stretch h-px bg-stone-300" />
-
-              <label className="flex w-full justify-between">
-                <input
-                  readOnly
-                  hidden
-                  type="number"
-                  name="total"
-                  value={getCartTotal()}
-                />
-                <h5 className="text-neutral-600 text-lg md:text-xl font-medium font-tajawal leading-snug">
-                  Total
-                </h5>
-                <span className="md:text-lg">${numberToColombianPriceString(getCartTotal())}</span>
-              </label>
-            </section>
-            <section className="w-full flex py-5 items-center justify-end">
               <button
-                className="md:hidden dark-button flex gap-2 justify-center items-center h-12"
-                onClick={() => setCartWindow(1)}
+                className="md:hidden flex items-center -ml-1 group"
+                onClick={toggleCart}
               >
-                <MdOutlinePayments className="text-base" /> Pagar Pedido{" "}
-                <FaArrowRight className="text-base" />
+                <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />
+                <span className="text-gray-700 text-base font-normal font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-500">
+                  Volver
+                </span>
               </button>
+              <h2 className="md:hidden grow shrink basis-0 text-zinc-800 text-[26px] font-jomolhari pt-2">
+                Tu Carrito de compras
+              </h2>
+            </header>
+            <section className="flex flex-col h-full overflow-y-scroll w-full no-scrollbar relative">
+              {items.length === 0 ? (
+                <h3 className="text-zinc-800 text-xl font-bold font-tajawal leading-normal">
+                  No hay productos en el carrito
+                </h3>
+              ) : (
+                <>
+                  <h3 className="sticky top-0 z-20 w-full bg-white text-zinc-800 text-xl font-normal font-tajawal leading-normal">
+                    Resumen de la compra:
+                  </h3>
+                  <ul className="flex flex-col pt-6 gap-4">
+                    {items.map((item) => {
+                      return (
+                        <div className="flex flex-col" key={item.variantId}>
+                          <ProductItem item={item} />
+                          <div className="self-stretch h-px bg-stone-300 opacity-30" />
+                        </div>
+                      );
+                    })}
+                  </ul>
+                </>
+              )}
             </section>
-          </footer>
-        </section>
-      )}
+            <footer className="z-20 w-full bg-white pt-3 shadow-[0px_-3px_10px_6px_rgba(0,0,0,0.025)]">
+              <section className="flex flex-col items-end gap-1 md:pb-10">
+                <div className="flex w-full justify-between">
+                  <input
+                    type="text"
+                    value={JSON.stringify(items)}
+                    name="items"
+                    hidden
+                    readOnly
+                  />
+                  <input
+                    readOnly
+                    hidden
+                    name="reference"
+                    value={id}
+                    type="text"
+                  />
+                  <input
+                    readOnly
+                    hidden
+                    name="subtotal"
+                    value={getCartTotalWithoutDiscountsOrTax()}
+                    type="number"
+                  />
+                  <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
+                    Subtotal
+                  </h5>
+                  <span>
+                    $
+                    {numberToColombianPriceString(
+                      getCartTotalWithoutDiscountsOrTax()
+                    )}
+                  </span>
+                </div>
+                <label className="flex w-full justify-between">
+                  <input
+                    hidden
+                    name="discount"
+                    value={getProductDiscountAmount()}
+                    type="number"
+                    readOnly
+                  />
+                  <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
+                    Descuento
+                  </h5>
+                  <span>
+                    $
+                    {numberToColombianPriceString(getProductDiscountAmount()) ||
+                      0}
+                  </span>
+                </label>
+                <label className="flex w-full justify-between">
+                  <input
+                    type="number"
+                    hidden
+                    name="tax"
+                    value={getCartTax()}
+                    readOnly
+                  />
+                  <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
+                    IVA
+                  </h5>
+                  <span>
+                    ${numberToColombianPriceString(getCartTax()) || 0}
+                  </span>
+                </label>
+                <label className="flex w-full justify-between">
+                  <input
+                    type="number"
+                    hidden
+                    name="shipping"
+                    readOnly
+                    value={0}
+                  />
+                  <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
+                    Envío
+                  </h5>
+                  <span>Gratis</span>
+                </label>
+                <div className="self-stretch h-px bg-stone-300" />
+
+                <label className="flex w-full justify-between">
+                  <input
+                    readOnly
+                    hidden
+                    type="number"
+                    name="total"
+                    value={getCartTotal()}
+                  />
+                  <h5 className="text-neutral-600 text-lg md:text-xl font-medium font-tajawal leading-snug">
+                    Total
+                  </h5>
+                  <span className="md:text-lg">
+                    ${numberToColombianPriceString(getCartTotal())}
+                  </span>
+                </label>
+              </section>
+              <section className="w-full flex py-5 items-center justify-end">
+                <button
+                  className="md:hidden dark-button flex gap-2 justify-center items-center h-12"
+                  onClick={() => setCartWindow(1)}
+                  disabled={items.length === 0}
+                >
+                  <MdOutlinePayments className="text-base" /> Pagar Pedido{" "}
+                  <FaArrowRight className="text-base" />
+                </button>
+              </section>
+            </footer>
+          </section>
+        )}
       </form>
     </section>
   );

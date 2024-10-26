@@ -7,11 +7,11 @@ import { zodProduct } from "../pages/listingQueries";
 import { productQuery } from "../pages/productPage";
 
 const zodAddressSchema = z.object({
-  country: z.string().min(1, "El país es requerido"),
-  address: z.string().min(1, "La dirección es requerida"),
-  department: z.string().min(1, "El departamento es requerido"),
+  country: z.string().min(1, "tu país de residencia"),
+  address: z.string().min(1, "tu dirección de residencia"),
+  department: z.string().min(1, "tu departamento de residencia"),
   postalCode: z.string().optional().nullable(),
-  city: z.string().min(1, "La ciudad es requerida"),
+  city: z.string().min(1, "tu ciudad de residencia"),
 });
 
 export const checkAddiResponseBodySchema = z.object({
@@ -40,13 +40,13 @@ export const zodOrderSchema = z.object({
   orderDate: z.string().refine((value) => DateTime.fromISO(value).isValid),
   status: z.string().min(1, "El estado es requerido"),
   customer: z.object({
-    name: z.string().min(1, "El nombre es requerido"),
-    email: z.string().min(1, "El correo es requerido"),
+    name: z.string().min(1, "tu nombre"),
+    email: z.string().min(1, "tu correo electrónico"),
     id: z.object({
-      type: z.string().min(1, "El tipo de documento es requerido"),
-      number: z.string().min(1, "El número de documento es requerido"),
+      type: z.string().min(1, "El tipo de documento"),
+      number: z.string().min(1, "tu número de documento"),
     }),
-    phone: z.string().min(1, "El teléfono es requerido"),
+    phone: z.string().min(1, "tu número de teléfono"),
     addressObject: zodAddressSchema.optional().nullable(),
   }),
   amounts: z.object({
@@ -58,7 +58,13 @@ export const zodOrderSchema = z.object({
   }),
   shipping: z.object({
     price: z.number(),
-    addressObject: zodAddressSchema,
+    addressObject: z.object({
+      country: z.string().optional().nullable(),
+      address: z.string().optional().nullable(),
+      department: z.string().optional().nullable(),
+      postalCode: z.string().optional().nullable(),
+      city: z.string().optional().nullable(),
+    }),
     status: z.string(),
     trackingNumber: z.string().optional().nullable(),
     trackingLink: z.string().optional().nullable(),
@@ -75,7 +81,6 @@ export const zodOrderSchemaWithKeys = zodOrderSchema.merge(
         })
       )
     ),
-    addiAmounts: checkAddiResponseBodySchema.optional().nullable(),
   })
 );
 
