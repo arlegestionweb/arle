@@ -139,7 +139,7 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
     <section className="bg-white z-[150] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings overflow-hidden">
       <form
         action={formAction}
-        className="max-w-screen-xl flex justify-center w-full gap-6 relative"
+        className="z-[160] max-w-screen-xl flex justify-center w-full gap-6 relative"
       >
         {isMobile && cartWindow === 0 ? null : (
           <section className="flex flex-col  w-full h-full overflow-x-hidden scrollbar-hide lg:pr-4 xl:pr-12">
@@ -600,7 +600,7 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
               </section>
               <section className="w-full flex py-5 items-center justify-end">
                 <button
-                  className="md:hidden dark-button flex gap-2 justify-center items-center h-12"
+                  className="md:hidden dark-button max-w-screen-md flex gap-2 justify-center items-center h-12"
                   onClick={() => setCartWindow(1)}
                   disabled={items.length === 0}
                 >

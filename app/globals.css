@@ -79,10 +79,10 @@ table, th, td, tr {
     -o-font-smoothing: antialiased;
   }
   .no-scrollbar::-webkit-scrollbar{
-    width: 5px;
-    height: 5px;
+    width: 0px;
   }
   .no-scrollbar::-webkit-scrollbar-thumb{
+    width: 5px;
     background-color: rgba(0, 0, 0, 0.048);
     border-radius: 6px;
   }
@@ -93,7 +93,7 @@ table, th, td, tr {
     display: none;
   }
   .small-scrollbar::-webkit-scrollbar{
-    width: 7px;
+    width: 5px;
     height: 10px;
   }
   .small-scrollbar::-webkit-scrollbar-thumb{
