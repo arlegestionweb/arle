@@ -489,7 +489,7 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
               )}
             </section>
             <footer className="z-20 w-full bg-white pt-3 shadow-[0px_-3px_10px_6px_rgba(0,0,0,0.025)]">
-              <section className="flex flex-col items-end gap-1 md:pb-10">
+              <section className="flex flex-col items-end gap-1 md:pb-10 z-[100]">
                 <div className="flex w-full justify-between">
                   <input
                     type="text"
