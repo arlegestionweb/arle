@@ -96,25 +96,30 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
 
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
+      event.preventDefault(); // Evita la acción predeterminada de retroceder
+  
       if (!isMobile) {
-        event.preventDefault();
-        toggleCart();
-        window.history.pushState(null, "", window.location.pathname);
+        // Para escritorio
+        if (isCartOpen) {
+          toggleCart(); // Cierra el carrito si está abierto
+          window.history.pushState(null, "", window.location.pathname);
+        }
       } else {
-        if (isCartOpen && cartWindow === 1) {
-          event.preventDefault();
-          setCartWindow(0);
-          window.history.pushState(null, "", window.location.pathname);
-        } else if (isCartOpen && cartWindow === 0) {
-          event.preventDefault();
-          toggleCart();
-          window.history.pushState(null, "", window.location.pathname);
+        // Para móviles
+        if (isCartOpen) {
+          if (cartWindow === 1) {
+            setCartWindow(0); // Cambia a la vista de carrito sin contenido adicional
+          } else {
+            toggleCart(); // Cierra el carrito si está abierto
+          }
+          window.history.pushState(null, "", window.location.pathname); 
         }
       }
     };
-    if (isCartOpen || cartWindow === 1) {
-      window.history.pushState(null, "", window.location.pathname);
+    if (isCartOpen && window.history.state === null) {
+      window.history.pushState({ cartOpen: true }, "", window.location.pathname);
     }
+  
     window.addEventListener("popstate", handlePopState);
     return () => {
       window.removeEventListener("popstate", handlePopState);
@@ -191,7 +196,7 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
                           id="credit-card-text"
                           className="mt-1 text-xs md:text-sm font-normal text-gray-500 dark:text-gray-400"
                         >
-                          Paga con tarjeta crédito, débito, PSE o transferencia
+                          Paga con tarjeta crédito, débito, PSE, Nequi o transferencia
                           Bancolombia.
                         </p>
                         <div className="flex h-10 gap-1 mt-3 ">
