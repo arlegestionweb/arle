@@ -29,7 +29,7 @@ const SearchInput = ({ className, onSearch, mobile, mobileOpen }: SearchInputPro
 
   return (
     <div className={cn(`flex items-center justify-between h-[36px] w-2/5 rounded border transition-all ${mobile && mobileOpen ? '' : mobile && 'border-color-bg-surface-0-default bg-color-bg-surface-0-default rounded-[0]'}`, className)}>
-      <form onSubmit={onSubmit} className={`flex w-full h-full items-center pl-3 ${mobile && !mobileOpen && 'pl-0'}`}>
+      <form onSubmit={onSubmit} className={`${mobile && !mobileOpen ? 'pl-0' : 'pl-3'} flex w-full h-full items-center`}>
         <input
           // onKeyDown={handleKeyDown}
           className={`w-full focus-visible:outline-none placeholder:text-gray-400 font-inter placeholder:font-light text-[14px] text-gray-700 ${mobile && !mobileOpen && 'hidden'}`}
@@ -38,8 +38,8 @@ const SearchInput = ({ className, onSearch, mobile, mobileOpen }: SearchInputPro
           type="text"
           defaultValue={value || ""}
         />
-      <button type="submit" className={`${mobile && mobileOpen ? '' : mobile && 'border-none pr-2'} border-l pl-2 pr-3 h-full`}>
-        <FiSearch className="w-[18px] h-[18px] "/> 
+      <button type="submit" className={`${mobile && mobileOpen ? '' : mobile && 'border-none'} border-l pl-2 pr-2 h-full`}>
+        <FiSearch className="w-[18px] h-[18px] stroke-gray-600"/> 
       </button>
       </form>
     </div>

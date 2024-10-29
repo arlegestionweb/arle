@@ -20,7 +20,6 @@ const Page = async ({params}: { params: { sede: string }}) => {
 			<header className="flex py-8 w-full max-w-screen-xl">
 			<Link href="/nuestras-sedes"
             className="flex items-center -ml-1 mb-3 group"
-            
           >
             <GoChevronLeft className="text-lg text-gray-700 group-hover:text-gray-500" />
             <span className="text-gray-700 text-base font-normal font-inter leading-[21px] underline-offset-2 group-hover:underline group-hover:text-gray-500">
