@@ -7,12 +7,9 @@ import { FiFilter } from "react-icons/fi";
 import { LuSettings2 } from "react-icons/lu";
 
 import FilterMenu from "./FilterMenu";
-import { createUrl, makeNewMultipleParams, makeNewParams } from "@/app/_lib/utils";
+import { createUrl, makeNewMultipleParams } from "@/app/_lib/utils";
 import BreadCrumbs, { TBreadCrumb } from "./BreadCrumbs";
 import Dropdown, { TDropdownOption } from "@/app/_components/Dropdown";
-import { useRouter } from 'next/navigation'
-
-
 
 type TColor = {
   nombre: string;
@@ -57,7 +54,6 @@ type FiltersProps = {
   gafaFilters: TGafaFilters;
 }
 
-
 const Filters = ({
   areFiltersActive,
   marcas,
@@ -71,8 +67,6 @@ const Filters = ({
   const [isSortingOpen, setIsSortingOpen] = useState(false);
   const searchParams = useSearchParams();
   const allParams: { [key: string]: any } = {};
-
-  const { push } = useRouter()
 
   searchParams.forEach((value, param) => {
     if (!allParams[param]) {
@@ -88,7 +82,6 @@ const Filters = ({
   const toggleSorting = () => {
     setIsSortingOpen(!isSortingOpen)
   }
-
 
   const breadCrumbs: TBreadCrumb[] = []
 
@@ -119,19 +112,17 @@ const Filters = ({
     { label: "Menor precio", value: "price_menor_mayor", href: createUrl("/listing", makeNewMultipleParams({ sort: "price_menor_mayor", currentPage: "1" }, searchParams)) },
   ];
 
+  // const prodsPerPageOptions = [
+  //   12,
+  //   24,
+  //   36
+  // ]
 
-  const prodsPerPageOptions = [
-    12,
-    24,
-    36
-  ]
-
-  const handleProdsPerPageChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    push(
-      createUrl("/listing", makeNewParams("prodsPerPage", event.currentTarget.value, searchParams))
-    );
-  };
-
+  // const handleProdsPerPageChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   push(
+  //     createUrl("/listing", makeNewParams("prodsPerPage", event.currentTarget.value, searchParams))
+  //   );
+  // };
 
   return (
     <>
@@ -181,7 +172,6 @@ const Filters = ({
 };
 
 export default Filters;
-
 
 export type TSortingOption = TDropdownOption & {
   value: "recientes" | "precio_mayor_menor" | "price_menor_mayor" | "aleatorio";
