@@ -17,7 +17,7 @@ export const createUrl = (
 export const makeNewParams = (
   filterName: string,
   filterValue: string | undefined,
-  oldSearchParams = {}
+  oldSearchParams: {}
 ) => {
   const newParams = new URLSearchParams(oldSearchParams.toString());
 
@@ -32,7 +32,7 @@ export const makeNewParams = (
 
 export const makeNewMultipleParams = (
   newFilters: { [key: string]: string | undefined },
-  oldSearchParams: URLSearchParams
+  oldSearchParams: URLSearchParams | ReadonlyURLSearchParams
 ): URLSearchParams => {
   const newParams = new URLSearchParams(oldSearchParams.toString());
 
