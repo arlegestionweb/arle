@@ -5,7 +5,7 @@ const Main = ({ children, extraClasses }: {
   extraClasses?: string;
 }) => {
   return (
-    <main className={cn(`relative z-10 lg:mb-[100vh] pt-[50px] md:pt-0`, extraClasses)}>
+    <main className={cn(`relative z-10 lg:mb-[100vh] pt-[87px] md:pt-0`, extraClasses)}>
       {children}
     </main>
   );

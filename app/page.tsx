@@ -17,7 +17,7 @@ const Home = async function () {
   ];
   
   return (
-    <main className="relative z-10 lg:mb-[100vh] pt-[50px] md:pt-0 bg-white">
+    <main className="relative z-10 lg:mb-[100vh] pt-[87px] md:pt-0 bg-white">
       <HeroBanner content={pageContent.hero} />
       {exploreSections.map((section, index) => (
         <ExploreSection key={index + section.titulo} section={section} />

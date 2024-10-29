@@ -22,7 +22,7 @@ const Page = async () => {
   const uniqueCitiesArray = Array.from(uniqueCities);
 
   return (
-    <Main extraClasses="bg-white md:mt-[53px] min-h-screen flex flex-col">
+    <Main extraClasses="bg-white pt-[50px] md:mt-[53px] min-h-screen flex flex-col">
       <AboutSubMenu />
       <section className="flex w-full">
         <section className="relative pb-8 flex flex-col w-full h-fit overflow-hidden items-center">

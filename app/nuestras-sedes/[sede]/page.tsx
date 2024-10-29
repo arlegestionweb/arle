@@ -15,7 +15,7 @@ const Page = async ({params}: { params: { sede: string }}) => {
 	if(!sede) return null;
 
 	return(
-		<Main extraClasses="bg-white flex flex-col items-center min-h-screen md:mt-[53px]">
+		<Main extraClasses="bg-white flex flex-col items-center min-h-screen pt-[50px] md:mt-[53px]">
 			<section className="default-paddings w-full flex">
 			<header className="flex py-8 w-full max-w-screen-xl">
 			<Link href="/nuestras-sedes"

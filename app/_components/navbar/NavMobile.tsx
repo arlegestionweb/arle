@@ -1,6 +1,6 @@
 "use client";
 import Burger from "./Burger";
-import { useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import RedDot from "../RedDot";
 import Link from "next/link";
@@ -8,6 +8,9 @@ import { LuShoppingCart } from "react-icons/lu";
 import { useCartStore } from "../cart/store";
 import Menu from "./menu";
 import ArleBasicLogo from "../ArleBasicLogo";
+import SubMenuDesktop from "./desktop/SubMenuDesktop";
+import SearchInput from "./SearchInput";
+import { FaBullseye } from "react-icons/fa6";
 
 type MobileNavBarProps = {
   className?: string;
@@ -17,29 +20,53 @@ type MobileNavBarProps = {
 const MobileNavBar = ({ className, marca }: MobileNavBarProps) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const pathname = usePathname();
+  const [isSearching, setIsSearching] = useState(false);
+  const searchRef = useRef<HTMLDivElement | null>(null);
 
   if (pathname.includes("admin")) return;
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSearching(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <nav
-      className={`${className} fixed z-30 h-[50px] w-full px-4 xs:px-8 bg-color-bg-surface-1-default text-black flex justify-between items-center border-b border-zinc-200`}
+      className={`${className} fixed z-30 w-full  bg-color-bg-surface-1-default text-black flex flex-col  border-b border-zinc-200`}
     >
-      <Link href="/">
-        <div className="w-[85px]">
-          <ArleBasicLogo />
-        </div>
-      </Link>
-      <div className="flex relative items-center gap-5 w-fit">
-        <Kart />
-        <Burger
-          isNavOpen={isNavOpen}
-          barColor="bg-[#5D5A88]"
-          openNav={() => setIsNavOpen(true)}
-          closeNav={() => setIsNavOpen(false)}
-        />
+      <section className="flex justify-between items-center px-4 xs:px-8 h-[50px] gap-4">
+        <Link href="/">
+          <div className="w-[85px]">
+            <ArleBasicLogo />
+          </div>
+        </Link>
+        <div className="flex relative items-center gap-4 w-full justify-end">
+          <div className={`max-w-xs ${isSearching && 'w-full'}`} ref={searchRef} onClick={()=> setIsSearching(true)}>
+            <SearchInput className="w-full" mobile mobileOpen={isSearching} />
+          </div>
+          <div className={`items-center gap-4 ${isSearching ? 'hidden' : 'flex'}`}>
+          <Kart />
+          <Burger
+            isNavOpen={isNavOpen}
+            barColor="bg-[#5D5A88]"
+            openNav={() => setIsNavOpen(true)}
+            closeNav={() => setIsNavOpen(false)}
+            />
+          </div>
 
-        <Menu marca={marca} isMenuOpen={isNavOpen} setIsMenu={setIsNavOpen} />
-      </div>
+          <Menu marca={marca} isMenuOpen={isNavOpen} setIsMenu={setIsNavOpen} />
+        </div>
+      </section>
+      <section className="relative z-[11] flex w-full m-0 p-0">
+          <SubMenuDesktop marca={marca} />
+      </section>
     </nav>
   );
 };
