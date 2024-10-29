@@ -23,8 +23,7 @@ const MobileNavBar = ({ className, marca }: MobileNavBarProps) => {
   const [isSearching, setIsSearching] = useState(false);
   const searchRef = useRef<HTMLDivElement | null>(null);
 
-  if (pathname.includes("admin")) return;
-
+  
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -35,8 +34,10 @@ const MobileNavBar = ({ className, marca }: MobileNavBarProps) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
-
+  }, [isSearching]);
+  
+  if (pathname.includes("admin")) return null;
+  
   return (
     <nav
       className={`${className} fixed z-30 w-full  bg-color-bg-surface-1-default text-black flex flex-col  border-b border-zinc-200`}
