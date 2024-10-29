@@ -9,6 +9,7 @@ export type TDropdownOption = {
 const useOutsideHover = <T extends HTMLElement>(
   ref: RefObject<T>,
   callback: () => void,
+  isOpen: boolean,
   setViewAll: Dispatch<SetStateAction<boolean>>,
 ) => {
   useEffect(() => {
@@ -20,17 +21,28 @@ const useOutsideHover = <T extends HTMLElement>(
       }
     };
 
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (isOpen && ref.current && !ref.current.contains(event.target as Node)) {
+        callback();
+        setViewAll(false);
+      }
+    };
+
     const element = ref.current;
     if (element) {
       element.addEventListener('mouseleave', handleMouseLeave);
     }
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside); // For mobile support
 
     return () => {
       if (element) {
         element.removeEventListener('mouseleave', handleMouseLeave);
       }
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, [ref, callback]);
+  }, [ref, callback, setViewAll]);
 };
 
 const SimpleDropdown = ({ options, isOpen, onClose, ignoreRef }: {
@@ -48,7 +60,7 @@ const SimpleDropdown = ({ options, isOpen, onClose, ignoreRef }: {
     else options && setNewOptions(options)
   }, [viewAll, options])
 
-  useOutsideHover(dropdownRef, onClose, setViewAll);
+  useOutsideHover(dropdownRef, onClose, isOpen, setViewAll);
 
   if (!isOpen) return null;
 
