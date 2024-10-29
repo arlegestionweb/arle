@@ -31,7 +31,7 @@ const SearchInput = ({ className, onSearch, mobile, mobileOpen }: SearchInputPro
       <form onSubmit={onSubmit} className={`${mobile && !mobileOpen ? 'pl-0' : 'pl-3'} flex w-full h-full items-center`}>
         <input
           // onKeyDown={handleKeyDown}
-          className={`w-full focus-visible:outline-none placeholder:text-gray-400 font-inter placeholder:font-light text-[14px] text-gray-700 ${mobile && !mobileOpen && 'hidden'}`}
+          className={`w-full focus-visible:outline-none placeholder:text-gray-400 font-inter placeholder:font-light text-[16px] text-gray-700 ${mobile && !mobileOpen && 'hidden'}`}
           placeholder="Busca productos, marcas y más..."
           name="search"
           type="text"
