@@ -42,21 +42,21 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
 
   if (pathname.includes("listing") || pathname === "/" ) 
   return (
-    <section className="bg-gray-100 hidden md:flex mt-[53px] md:h-[36px] px-8 items-center justify-center">
-      <section className="py-0 gap-2 -ml-5 w-full h-full flex items-center max-w-screen-xl">
+    <section className="bg-gray-100 flex md:mt-[53px] h-[36px] w-full px-4 xs:px-8 items-center justify-center">
+      <section className="py-0 md:gap-2 -ml-5 w-full h-full flex items-center max-w-screen-xl">
         <Link
           href={`/listing`}
           className={`px-2 py-0.5 flex justify-center items-center 
           ${pathname.includes("listing") && !selectedMarca && !selectedProducto ? "border border-black pointer-events-none" : ""}`}>
-            <p className="text-gray-700 font-inter text-sm font-medium hover:text-gray-500">Todos</p>
+            <p className="text-gray-700 font-inter text-[13.5px] md:text-sm font-medium hover:text-gray-500">Todos</p>
           </Link>
         {subMenu.map((item, index) => (
           <Link
           href={`/listing?type=${item.param}`}
           key={item.title + index}
-          className={`px-3 py-0.5 flex justify-center items-center 
+          className={`px-2 py-0.5 flex justify-center items-center 
           ${selectedProducto?.includes(item.param) ? "border border-black pointer-events-none" : ""}`}>
-            <p className="text-gray-700 font-inter text-sm font-medium hover:text-gray-500">{item.title}</p>
+            <p className="text-gray-700 font-inter text-[13.5px] md:text-sm font-medium hover:text-gray-500">{item.title}</p>
           </Link>
         ))}
         {marca && (
@@ -64,11 +64,11 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
           href={`/listing?marcas=${marca}`}
           className={`px-2 py-0.5 flex justify-center items-center 
           ${selectedMarca?.includes(marca) ? "border border-black pointer-events-none" : ""}`}>
-            <p className="text-gray-700 font-inter text-sm font-medium hover:text-gray-500">{marca}</p>
+            <p className="text-gray-700 font-inter text-[13.5px] md:text-sm font-medium hover:text-gray-500">{marca}</p>
           </Link>
         )}
         <section className="flex w-fit relative" >
-          <Button className={`text-gray-700 font-inter text-sm flex items-center gap-0.5 border-none bg-transparent font-medium p-0 px-4 ${!brandsFilter && "hover:text-gray-500" }`} type="button" onClick={()=> setBrandsFilter(true)}>
+          <Button className={`text-gray-700 font-inter text-[13.5px] md:text-sm flex items-center gap-0.5 border-none bg-transparent font-medium p-0 px-2 ${!brandsFilter && "hover:text-gray-500" }`} type="button" onClick={()=> setBrandsFilter(true)}>
               Marcas
               <IoIosArrowDown className="h-4 w-4" width={14} height={14} />
           </Button>

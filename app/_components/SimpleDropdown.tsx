@@ -53,7 +53,7 @@ const SimpleDropdown = ({ options, isOpen, onClose, ignoreRef }: {
   if (!isOpen) return null;
 
   return (
-    <ul ref={dropdownRef} className="absolute top-5 translate-y-1 left-0 min-w-full w-fit text-left flex flex-col z-50 bg-white border border-black max-h-[60svh] overflow-y-scroll px-1 py-2 gap-1 small-scrollbar font-tajawal font-normal text-base ">
+    <ul ref={dropdownRef} className="absolute top-5 translate-y-1 right-0 min-w-full w-fit text-left flex flex-col z-50 bg-white border border-black max-h-[60svh] overflow-y-scroll px-1 py-2 gap-1 small-scrollbar font-tajawal font-normal text-base ">
       {newOptions && newOptions.map((option, index) => 
         (
           <li key={index + option.titulo } onClick={onClose} className="px-2 group w-fit min-w-full">

@@ -17,7 +17,7 @@ const Page = async () => {
   }
 
   return (
-    <Main extraClasses="md:mt-[53px] ">
+    <Main extraClasses="pt-[50px] md:mt-[53px] ">
       <AboutSubMenu />
       {pageContent?.whyWeDoWhatWeDo?.on &&
         <section className="flex min-h-20 h- flex-col md:flex-row items-center bg-white">

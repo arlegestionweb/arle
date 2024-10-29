@@ -56,7 +56,7 @@ const Page = async ({searchParams}: {
     );
 
   return (
-    <Main extraClasses="min-h-screen bg-white md:mt-[53px]">
+    <Main extraClasses="min-h-screen bg-white pt-[50px] md:mt-[53px]">
       <AboutSubMenu />
       <img
         className="w-full h-[200px] md:h-[300px] 2xl:h-[350px] object-cover"
