@@ -2,7 +2,7 @@ import Link from "next/link";
 import Button from "@/app/_components/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/app/_lib/utils";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import AllProductFilters from "./AllProductFilters";
 import RelojFilters from "./RelojFilters";
 import type { TGafaFilters, TPerfumeFilters, TRelojFilters } from ".";
@@ -82,10 +82,23 @@ const FilterMenu = ({
     toggleFilter();
   });
 
+  useEffect(() => {
+    if (isFilterOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Limpiar el efecto al desmontar el modal para restaurar el scroll
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isFilterOpen]);
+
   return (
     <div
       className={`${isFilterOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        } absolute z-[300] top-0 left-0 bottom-0 transition-all duration-500 w-screen h-[100svh] md:h-[calc(100svh-86px)] -mb-[200px] bg-black bg-opacity-50 backdrop-blur-sm`}
+        } absolute z-[300] top-[37px] md:top-0 left-0 bottom-0 transition-all duration-500 w-screen h-[calc(100svh-37px)] md:h-[calc(100svh-86px)] -mb-[200px] bg-black bg-opacity-50 backdrop-blur-sm`}
     >
       <aside
         className={`${isFilterOpen ? "left-0" : "-left-[400px]"

@@ -23,8 +23,7 @@ const SearchInput = ({ className, onSearch, mobile, mobileOpen }: SearchInputPro
     const form = e.target as HTMLFormElement;
     const search = form.search as HTMLInputElement;
     onSearch && onSearch();
-    console.log(search.value)
-    redirect(`/listing?search=${search.value.replace(" ","+")}`);
+    redirect(`/listing?search=${search.value.replace(' ','+')}`);
   };
 
   return (
