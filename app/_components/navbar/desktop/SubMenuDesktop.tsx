@@ -42,7 +42,7 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
 
   if (pathname.includes("listing") || pathname === "/" ) 
   return (
-    <section className="bg-gray-100 flex md:mt-[53px] h-[36px] w-full px-4 md:px-8 items-center justify-center">
+    <section className="bg-gray-100 flex md:mt-[53px] h-[36px] w-full px-4 xs:px-8 items-center justify-center">
       <section className="py-0 md:gap-2 -ml-5 w-full h-full flex items-center max-w-screen-xl">
         <Link
           href={`/listing`}

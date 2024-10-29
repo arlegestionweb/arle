@@ -49,8 +49,10 @@ const MobileNavBar = ({ className, marca }: MobileNavBarProps) => {
           </div>
         </Link>
         <div className="flex relative items-center gap-4 w-full justify-end">
-          <div className={`max-w-xs ${isSearching && 'w-full'}`} ref={searchRef} onClick={()=> setIsSearching(true)}>
-            <SearchInput className="w-full" mobile mobileOpen={isSearching} />
+          <div className={`max-w-md ${isSearching ? 'w-full' : 'cursor-pointer'}`} ref={searchRef} onClick={()=> setIsSearching(true)}>
+            <Suspense>
+              <SearchInput className={`w-full ${!isSearching && 'pointer-events-none'}`} mobile mobileOpen={isSearching} />
+            </Suspense>
           </div>
           <div className={`items-center gap-4 ${isSearching ? 'hidden' : 'flex'}`}>
           <Kart />
@@ -66,7 +68,9 @@ const MobileNavBar = ({ className, marca }: MobileNavBarProps) => {
         </div>
       </section>
       <section className="relative z-[11] flex w-full m-0 p-0">
+        <Suspense>
           <SubMenuDesktop marca={marca} />
+        </Suspense>
       </section>
     </nav>
   );
