@@ -35,7 +35,7 @@ const tajawal = Tajawal({
 const inter = Inter({
   weight: ["200", "300", "400", "500", "700"],
   subsets: ["latin"],
-  variable: "--font-kanit",
+  variable: "--font-inter",
 });
 
 const kanit = Kanit({
