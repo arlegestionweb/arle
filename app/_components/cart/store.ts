@@ -186,7 +186,8 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       localStorage.removeItem("arle-cart");
       const newCartId = nanoid();
       localStorage.setItem("arle-cartId", newCartId );
-
+      localStorage.setItem("","")
+      localStorage.setItem("arle-cartOpen", JSON.stringify(false))
       return { items: [], id: newCartId };
     }),
  
