@@ -12,7 +12,8 @@ export const generateWompiPaymentURL = async (data: TOrderSchemaWithKeys) => {
   const encondedText = new TextEncoder().encode(concatenatedIntegrity);
   const hashBuffer = await crypto.subtle.digest("SHA-256", encondedText);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join(""); 
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+   
   const customerData = {
     email: data.customer.email,
     fullName: data.customer.name,
@@ -20,6 +21,7 @@ export const generateWompiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     legalIdType: data.customer.id.type,
     legalId: data.customer.id.number,
   }
+
   const shippingAddress = {
     addressLine1: data.shipping.addressObject.address as string,
     city: data.shipping.addressObject.city as string,
