@@ -7,7 +7,7 @@ export const generateWompiPaymentURL = async (data: TOrderSchemaWithKeys) => {
   const publicKey = process.env.NEXT_PUBLIC_WOMPI as string;
   const baseWompiUrl = "https://checkout.wompi.co/p/";
   const currency = "COP";
-  const redirectUrl=`${process.env.NEXT_PUBLIC_SITE_URL}/success/${reference}`
+  const redirectUrl=`${process.env.NEXT_PUBLIC_SITE_URL}/wompi-redirection/${reference}`
   const concatenatedIntegrity = `${reference}${amountInCents}${currency}${process.env.NEXT_PUBLIC_WOMPI_INTEGRITY}`
   const encondedText = new TextEncoder().encode(concatenatedIntegrity);
   const hashBuffer = await crypto.subtle.digest("SHA-256", encondedText);

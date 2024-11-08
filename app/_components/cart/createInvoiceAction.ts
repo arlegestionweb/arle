@@ -117,9 +117,9 @@ export const createInvoiceAction = async (formState: TFormState, formData: FormD
     phone: parsedFormDataWithProductReference.data.customer.phone,
     amount: parsedFormDataWithProductReference.data.amounts.total,
   }
-
+  const fbclid = localStorage.getItem("fbclid") || null;
   const externalId = getOrSetExternalIdPixel();
-  initiatePixelCheckoutView(pixelInfo, externalId);
+  initiatePixelCheckoutView(pixelInfo, externalId, fbclid);
 
   let paymentUrl = '';
 

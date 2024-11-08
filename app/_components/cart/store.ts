@@ -48,11 +48,14 @@ type TCartActions = {
   removeItem: (item: TCartItem) => void;
   removeAllOfOneItem: (item: TCartItem) => void;
   clearCart: () => void;
+  resetCartId: () => void;
   getCartSubtotal: () => number;
   getCartTotalBeforeShipping: () => number;
   getCartTotal: () => number;
   getProductDiscountAmount: () => number;
   toggleCart: () => void;
+  openCart: () => void;
+  closeCart: () => void;
   initializeCartState: () => void;
   applyDiscountCode: (code: string, discount: number) => void;
   removeDiscountCode: () => void;
@@ -191,6 +194,15 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       return { items: [], id: newCartId };
     }),
  
+  resetCartId: () => 
+    set(() => {
+      localStorage.removeItem("arle-cart");
+      const newCartId = nanoid();
+      localStorage.setItem("arle-cartId", newCartId );
+      localStorage.setItem("","")
+      localStorage.setItem("arle-cartOpen", JSON.stringify(false))
+      return { id: newCartId };
+    }),
 
   removeItem: (item: TCartItem) =>
     set((state: TCartState) => {
@@ -250,6 +262,28 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       localStorage.setItem("arle-cartOpen", JSON.stringify(newCartOpenState));
     }
   },
+  openCart: async () => {
+    const currentCartOpen = get().isCartOpen;
+    if(!currentCartOpen) {
+      set({ isCartOpen: true })
+      if (typeof window !== "undefined") {
+        localStorage.setItem("arle-cartOpen", JSON.stringify(true));
+      }
+    };
+  },
+
+  closeCart: async () => {
+    const currentCartOpen = get().isCartOpen;
+    if(currentCartOpen) {
+    set({ isCartOpen: false });
+
+    // Guardar el nuevo estado en localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("arle-cartOpen", JSON.stringify(false));
+    }
+    }
+  },
+
   initializeCartState: () => {
     if (typeof window !== "undefined") {
       const storedCartOpen = localStorage.getItem("arle-cartOpen");

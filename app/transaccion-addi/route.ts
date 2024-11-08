@@ -114,8 +114,9 @@ export const POST = async (req: Request) => {
     phone: sanityOrder.customer.phone as string,
     amount: request.approvedAmount
   }
+  const fbclid = localStorage.getItem("fbclid") || null;
   const externalId = getOrSetExternalIdPixel();
-  initiatePixelAddiPurchaseView(pixelInfo, externalId);
+  initiatePixelAddiPurchaseView(pixelInfo, externalId, fbclid);
 
   // Return the request body
   return new Response(JSON.stringify(request), {

@@ -26,7 +26,7 @@ const Page = async ({
 
   return (
     <Main extraClasses="bg-white md:mt-[53px] w-full min-h-screen flex flex-col items-center justify-center px-10 pb-10">
-      <RemoveCartItems cartId={sanityOrder._id} />
+      <RemoveCartItems cartId={sanityOrder._id} success/>
       {/* {paramError && (
         <>
           <h1>Hubo un error enviando tu factura </h1>

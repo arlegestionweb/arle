@@ -30,11 +30,15 @@ export type TPricing = {
 
 const Product = ({
   params,
+  searchParams,
   product,
   discount,
   recommendedProducts
 }: {
   params: TParams;
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
   product: TProduct;
   discount?: TTimedDiscount;
   recommendedProducts?: TProduct[];
@@ -58,12 +62,19 @@ const Product = ({
   useEffect(() => {
     const externalId = getOrSetExternalIdPixel();
     const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+    const searchfbclid = searchParams.fbclid as string || null;
+    if(searchfbclid) {
+      const timeInMillis = Date.now();
+      const setFbclid = `fb.1.${timeInMillis}.${searchfbclid}`
+      localStorage.setItem("fbclid",setFbclid)
+    };
+    const fbclid = localStorage.getItem("fbclid") || null;
     const clientData = {
       name: savedData.name as string,
       email: savedData.email as string,
       phone: savedData.phone as string
     }
-    pagePixelView(clientData, externalId);
+    pagePixelView(clientData, externalId, fbclid);
     const fetchRecentlyViewedProductsFromLocalStorage = async () =>{
       return await getProductsFromLocalStorage();
     };

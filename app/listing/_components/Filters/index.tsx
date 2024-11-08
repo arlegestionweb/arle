@@ -97,7 +97,7 @@ const Filters = ({
           href += `${encodeURIComponent(paramKey)}=${encodeURIComponent(paramValue)}&`;
         });
       });
-      if (key === "sort" || key === "maxPrice" || key === "minPrice" || value === "todas" || key === "currentPage" || key === "prodsPerPage") return
+      if (key === "sort" || key === "maxPrice" || key === "minPrice" || value === "todas" || key === "currentPage" || key === "prodsPerPage" || key === "fbclid") return
       breadCrumbs.push({
         param: key,
         label: `${value === "reloj" ? "relojes" : value === "premium" ? "élite" : value === "lujo" ? "excelencia" : value === "gafa" ? "gafas" : value === "perfume" ? "perfumes" : key === "marcas" ? value : value}`,

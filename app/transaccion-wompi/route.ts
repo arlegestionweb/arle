@@ -158,9 +158,9 @@ export const POST = async (req: Request, res: Response) => {
       }
     }
   }
-
+  const fbclid = localStorage.getItem("fbclid") || null;
   const externalId = getOrSetExternalIdPixel();
-  initiatePixelPurchaseView(request.data, externalId);
+  initiatePixelPurchaseView(request.data, externalId, fbclid);
 
   const { data, error } = await sendClientInvoiceEmail(newSanityOrder);
   const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(

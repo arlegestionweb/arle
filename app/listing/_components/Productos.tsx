@@ -10,19 +10,26 @@ import { useEffect } from 'react';
 import { pagePixelView } from '@/app/_lib/pixelActions';
 
 const Productos = ({ productos }: { productos: TProduct[] }) => {
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     const externalId = getOrSetExternalIdPixel();
     const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+    const searchfbclid = searchParams.get("fbclid") || null;
+    if(searchfbclid) {
+      const timeInMillis = Date.now();
+      const setFbclid = `fb.1.${timeInMillis}.${searchfbclid}`
+      localStorage.setItem("fbclid",setFbclid)
+    };
+    const fbclid = localStorage.getItem("fbclid") || null;
     const clientData = {
       name: savedData.name as string,
       email: savedData.email as string,
       phone: savedData.phone as string
     }
-    pagePixelView(clientData, externalId);
+    pagePixelView(clientData, externalId, fbclid);
   }, [])
 
-  const searchParams = useSearchParams()
   const currentPage = Number(searchParams.get('currentPage')) || 1;
 
   const prodsPerPage = Number(searchParams.get("prodsPerPage")) || 24;

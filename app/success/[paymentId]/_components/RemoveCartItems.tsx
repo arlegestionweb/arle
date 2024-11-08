@@ -3,17 +3,24 @@
 import { useCartStore } from "@/app/_components/cart/store";
 import { useEffect } from "react";
 
-const RemoveCartItems = ({ cartId }: {
-  cartId: string;
+const RemoveCartItems = ({ cartId, success }: {
+  cartId?: string;
+  success?: boolean;
 }) => {
 
-  const { id, clearCart } = useCartStore();
+  const { id, clearCart, closeCart, resetCartId } = useCartStore();
+
 
   useEffect(() => {
-    if (id === cartId) {
-      clearCart();
+    closeCart();
+    if(!success){
+      resetCartId();
+    } else {
+      if (id === cartId) {
+        clearCart();
+      }
     }
-  }, [id, cartId])
+  }, [])
 
   return null
 }

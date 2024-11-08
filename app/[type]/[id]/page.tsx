@@ -19,15 +19,18 @@ export type TParams = {
 
 type TPageProps = {
   params: TParams;
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 };
 
-const ProductPage = async ({ params }: TPageProps) => {
+const ProductPage = async ({ params, searchParams }: TPageProps) => {
   unstable_noStore();
   const { product, discount } = await getProductById(params.id, params.type);
   const recommendedProducts = await getRecommendedProducts();
   return (
     <Main extraClasses="pt-[50px] md:pt-[53px] lg:mb-[100vh] min-h-screen bg-background flex flex-col justify-center items-center">
-      <Product params={params} product={product} discount={discount} recommendedProducts={recommendedProducts?.productos || []} />
+      <Product params={params} searchParams={searchParams} product={product} discount={discount} recommendedProducts={recommendedProducts?.productos || []} />
     </Main>
   );
 };

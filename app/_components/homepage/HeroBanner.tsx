@@ -10,21 +10,31 @@ import GradientVideo from "../GradientVideo";
 type BannerProps = {
   content: THeroSection;
   className?: string;
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 };
 
-const Banner = ({ content, className }: BannerProps) => {
+const Banner = ({ content, className, searchParams}: BannerProps) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const bannerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const externalId = getOrSetExternalIdPixel();
     const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+    const searchfbclid = searchParams.fbclid as string || null;
+    if(searchfbclid) {
+      const timeInMillis = Date.now();
+      const setFbclid = `fb.1.${timeInMillis}.${searchfbclid}`
+      localStorage.setItem("fbclid",setFbclid)
+    };
+    const fbclid = localStorage.getItem("fbclid") || null;
     const clientData = {
       name: savedData.name as string,
       email: savedData.email as string,
-      phone: savedData.phone as string
+      phone: savedData.phone as string,
     }
-    pagePixelView(clientData, externalId);
+    pagePixelView(clientData, externalId, fbclid);
   }, []);
 
   const handleScroll = (event: any) => {
