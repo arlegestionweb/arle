@@ -42,7 +42,7 @@ export const POST = async (req: Request) => {
   const newSanityOrder = {
     ...sanityOrder,
     status: "PAID",
-    wompiReference: request.applicationId ,
+    addiReference: request.applicationId ,
   };
   
   const updateSanityOrder = await sanityWriteClient
