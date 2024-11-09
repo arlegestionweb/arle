@@ -8,7 +8,7 @@ import { TOrderSchemaWithKeys, zodOrderSchemaWithKeys } from "@/sanity/queries/o
 import { sanityWriteClient } from "@/sanity/sanityClient";
 import { generateAddiPaymentURL } from "./addiAuthAction";
 import { generateWompiPaymentURL } from "./wompiAction";
-import { getOrSetExternalIdPixel } from "@/app/_lib/utils";
+import { getExternalIdandFbcPixel, getOrSetExternalIdPixel } from "@/app/_lib/utils";
 import { initiatePixelCheckoutView } from "@/app/_lib/pixelActions";
 
 export const createInvoiceAction = async (formState: TFormState, formData: FormData) => {
@@ -60,6 +60,7 @@ export const createInvoiceAction = async (formState: TFormState, formData: FormD
         _key: nanoid(),
       })
     ),
+    externalIdandFbc: JSON.parse(formData.get("externalIdandFbc") as string),
   };
 
 
@@ -116,10 +117,11 @@ export const createInvoiceAction = async (formState: TFormState, formData: FormD
     email: parsedFormDataWithProductReference.data.customer.email,
     phone: parsedFormDataWithProductReference.data.customer.phone,
     amount: parsedFormDataWithProductReference.data.amounts.total,
+    externalId: parsedFormDataWithProductReference.data.externalIdandFbc.externalId,
+    fbclid: parsedFormDataWithProductReference.data.externalIdandFbc.fbclid,
   }
-  const fbclid = localStorage.getItem("fbclid") || null;
-  const externalId = getOrSetExternalIdPixel();
-  initiatePixelCheckoutView(pixelInfo, externalId, fbclid);
+
+    initiatePixelCheckoutView(pixelInfo);
 
   let paymentUrl = '';
 

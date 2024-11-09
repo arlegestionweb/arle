@@ -81,7 +81,11 @@ export const zodOrderSchemaWithKeys = zodOrderSchema.merge(
         })
       )
     ),
-  })
+    externalIdandFbc: z.object({
+      externalId: z.string(),
+      fbclid: z.string().nullable(),
+    }),
+  }),
 );
 
 export type TOrderSchemaWithKeys = z.infer<typeof zodOrderSchemaWithKeys> 

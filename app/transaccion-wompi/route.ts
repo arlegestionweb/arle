@@ -10,7 +10,7 @@ import {
   sendClientInvoiceEmail,
   sendClientVoidedInvoiceEmail,
 } from "../_components/actions/send-email";
-import { initiatePixelPurchaseView } from "../_lib/pixelActions";
+import { initiateWompiPurchaseView } from "../_lib/pixelActions";
 import { getOrSetExternalIdPixel } from "../_lib/utils";
 
 export type TWompiRequest = {
@@ -158,9 +158,10 @@ export const POST = async (req: Request, res: Response) => {
       }
     }
   }
-  const fbclid = localStorage.getItem("fbclid") || null;
-  const externalId = getOrSetExternalIdPixel();
-  initiatePixelPurchaseView(request.data, externalId, fbclid);
+  const externalId = sanityOrder.externalIdandFbc.externalId as string;
+  const fbclid = sanityOrder.externalIdandFbc.fbclid as string | null;
+  
+  initiateWompiPurchaseView(request.data, externalId, fbclid);
 
   const { data, error } = await sendClientInvoiceEmail(newSanityOrder);
   const { data: adminData, error: adminError } = await sendAdminInvoiceEmail(

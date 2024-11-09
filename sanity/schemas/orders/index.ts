@@ -71,12 +71,14 @@ export const ordersSchema = defineType({
       title: "Fecha de la orden",
       type: "datetime",
       group: "general",
+      readOnly: true,
     }),
     defineField({
       name: "status",
       title: "Estado",
       type: "string",
       group: "general",
+      readOnly: true,
     }),
     defineField({
       name: "customer",
@@ -89,11 +91,13 @@ export const ordersSchema = defineType({
           name: "name",
           title: "Nombre",
           type: "string",
+          readOnly: true,
         }),
         defineField({
           name: "email",
           title: "Correo",
           type: "string",
+          readOnly: true,
         }),
         defineField({
           name: "id",
@@ -104,11 +108,13 @@ export const ordersSchema = defineType({
               name: "type",
               title: "Tipo",
               type: "string",
+              readOnly: true,
             }),
             defineField({
               name: "number",
               title: "Número",
               type: "string",
+              readOnly: true,
             }),
           ],
         }),
@@ -116,6 +122,7 @@ export const ordersSchema = defineType({
           name: "phone",
           title: "Teléfono",
           type: "string",
+          readOnly: true,
         }),
         addressSchema,
       ],
@@ -131,26 +138,31 @@ export const ordersSchema = defineType({
           name: "subtotal",
           title: "Subtotal",
           type: "number",
+          readOnly: true,
         }),
         defineField({
           name: "discount",
           title: "Descuento",
           type: "number",
+          readOnly: true,
         }),
         defineField({
           name: "taxes",
           title: "IVA",
           type: "number",
+          readOnly: true,
         }),
         defineField({
           name: "shipping",
           title: "envío",
           type: "number",
+          readOnly: true,
         }),
         defineField({
           name: "total",
           title: "Total",
           type: "number",
+          readOnly: true,
         }),
       ],
     }),
@@ -299,7 +311,34 @@ export const ordersSchema = defineType({
       title: "Referencia Wompi",
       type: "string",
       group: "general",
+      readOnly: true,
     }),
+    defineField({
+      name: "addiReference",
+      title: "Referencia Addi",
+      type: "string",
+      group: "general",
+      readOnly: true,
+    }),
+    defineField({
+      name: "externalIdandFbc",
+      type: "object",
+      title: "Fb Ads",
+      readOnly: true,
+      fields: [
+        defineField({
+          name: "externalId",
+          title: "ID externo",
+          type: "string",
+          hidden: true,
+        }),
+        defineField({
+          name: "fbclid",
+          title: "ID de click de Facebook",
+          type: "string",
+        }),
+      ]
+    })
   ],
   preview: {
     select: {

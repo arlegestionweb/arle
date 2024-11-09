@@ -77,7 +77,8 @@ export const pagePixelView = async (clientData: TClientData, externalId: string,
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 
-  
+  console.log({fbc});
+
   const userData: TUserData = {
     client_user_agent: userAgent,
     fbc: fbc,
@@ -284,14 +285,24 @@ export const addedToCartPixelView = async ({
   }
 };
 
-export const initiatePixelCheckoutView = async (data: TPurchaseData, externalId: string, fbclid: string | null) => {
+type TPurchaseData = {
+  name: string,
+  email: string,
+  phone: string,
+  amount: number
+  externalId: string,
+  fbclid: string | null,
+}
+
+export const initiatePixelCheckoutView = async (data: TPurchaseData) => {
 
   const userAgent = headers().get('user-agent');
   const ip = getIp();
   const cookieStore = cookies();
-  const fbc = cookieStore.get('_fbc')?.value || fbclid;
+  const fbc = cookieStore.get('_fbc')?.value || data.fbclid;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
+
 
   const email = await hashString(data.email);
   const phone = await hashString(data.phone);
@@ -305,7 +316,7 @@ export const initiatePixelCheckoutView = async (data: TPurchaseData, externalId:
     fbc: fbc,
     fbp: fbp,
     fb_login_id: fbLoginId,
-    external_id: externalId,
+    external_id: data.externalId,
   };
 
   // Solo agregamos la IP si es válida
@@ -344,18 +355,13 @@ export const initiatePixelCheckoutView = async (data: TPurchaseData, externalId:
   }
 };
 
-type TPurchaseData = {
-  name: string,
-  email: string,
-  phone: string,
-  amount: number
-}
-export const initiatePixelAddiPurchaseView = async (data: TPurchaseData, externalId: string, fbclid: string | null) => {
+
+export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
 
   const userAgent = headers().get('user-agent');
   const ip = getIp();
   const cookieStore = cookies();
-  const fbc = cookieStore.get('_fbc')?.value || fbclid;
+  const fbc = cookieStore.get('_fbc')?.value || data.fbclid;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 
@@ -371,7 +377,7 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData, externa
     fbc: fbc,
     fbp: fbp,
     fb_login_id: fbLoginId,
-    external_id: externalId,
+    external_id: data.externalId,
   };
 
   // Solo agregamos la IP si es válida
@@ -410,7 +416,7 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData, externa
   }
 };
 
-export const initiatePixelPurchaseView = async (
+export const initiateWompiPurchaseView = async (
   data: TWompiRequest["data"],
   externalId: string,
   fbclid: string | null,
@@ -426,6 +432,8 @@ export const initiatePixelPurchaseView = async (
   const phone = await hashString(data.transaction.customer_data.phone_number);
   const name = await hashString(data.transaction.customer_data.full_name);
 
+  console.log(externalId, fbclid);
+  
   const userData: TUserData = {
     em: [`${email}`],
     ph: [`${phone}`],

@@ -186,3 +186,18 @@ export const getOrSetExternalIdPixel = () => {
 
   return externalId;
 }
+
+export const getExternalIdandFbcPixel = () => {
+  const externalIdKey = 'external_id';
+  const fbclidKey = "fbclid";
+  
+  let externalId = getExternalIdFromLocalStorage(externalIdKey);
+  let fbclid = getExternalIdFromLocalStorage(fbclidKey);
+
+  if (!externalId) {
+    externalId = generateExternalId();
+    setExternalIdInLocalStorage(externalIdKey, externalId); // Guardar en localStorage
+  }
+
+  return {externalId, fbclid};
+}

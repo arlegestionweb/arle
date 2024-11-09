@@ -16,6 +16,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import { LuExternalLink } from "react-icons/lu";
 import { createInvoiceAction } from "./createInvoiceAction";
 import { TAddiAmounts } from "./types";
+import { getExternalIdandFbcPixel } from "@/app/_lib/utils";
 
 const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
   const pathname = usePathname();
@@ -139,6 +140,8 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
     (addiAmounts && cartTotal < addiAmounts.minAmount)
       ? true
       : false;
+
+  const pixelinfo = getExternalIdandFbcPixel();
 
   return (
     <section className="bg-white z-[150] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings overflow-hidden">
@@ -431,6 +434,13 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
                         type="number"
                         name="total"
                         value={getCartTotal()}
+                      />
+                      <input 
+                        type="text" 
+                        readOnly
+                        hidden
+                        name="externalIdandFbc"
+                        value={JSON.stringify(pixelinfo)}
                       />
                       <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                         Total

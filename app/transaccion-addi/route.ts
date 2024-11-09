@@ -112,11 +112,13 @@ export const POST = async (req: Request) => {
     name: sanityOrder.customer.name as string,
     email: sanityOrder.customer.email as string,
     phone: sanityOrder.customer.phone as string,
-    amount: request.approvedAmount
+    amount: request.approvedAmount,
+    externalId: sanityOrder.externalIdandFbc.externalId as string,
+    fbclid: sanityOrder.externalIdandFbc.fbclid as string | null
   }
-  const fbclid = localStorage.getItem("fbclid") || null;
-  const externalId = getOrSetExternalIdPixel();
-  initiatePixelAddiPurchaseView(pixelInfo, externalId, fbclid);
+
+
+  initiatePixelAddiPurchaseView(pixelInfo);
 
   // Return the request body
   return new Response(JSON.stringify(request), {
