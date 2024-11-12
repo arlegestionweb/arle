@@ -291,7 +291,7 @@ type TPurchaseData = {
   phone: string,
   amount: number
   externalId: string,
-  fbclid: string | null,
+  fbclid: string | null | undefined,
 }
 
 export const initiatePixelCheckoutView = async (data: TPurchaseData) => {
@@ -299,7 +299,7 @@ export const initiatePixelCheckoutView = async (data: TPurchaseData) => {
   const userAgent = headers().get('user-agent');
   const ip = getIp();
   const cookieStore = cookies();
-  const fbc = cookieStore.get('_fbc')?.value || data.fbclid;
+  const fbc = cookieStore.get('_fbc')?.value || data.fbclid as string | null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 
@@ -361,7 +361,7 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
   const userAgent = headers().get('user-agent');
   const ip = getIp();
   const cookieStore = cookies();
-  const fbc = cookieStore.get('_fbc')?.value || data.fbclid;
+  const fbc = cookieStore.get('_fbc')?.value || data.fbclid as string | null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 
@@ -419,12 +419,12 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
 export const initiateWompiPurchaseView = async (
   data: TWompiRequest["data"],
   externalId: string,
-  fbclid: string | null,
+  fbclid: string | null | undefined,
 ) => {
   const userAgent = headers().get('user-agent');
   const ip = getIp();
   const cookieStore = cookies();
-  const fbc = cookieStore.get('_fbc')?.value || fbclid;
+  const fbc = cookieStore.get('_fbc')?.value || fbclid as string | null;
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 

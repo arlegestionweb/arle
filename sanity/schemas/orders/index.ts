@@ -322,23 +322,26 @@ export const ordersSchema = defineType({
     }),
     defineField({
       name: "externalIdandFbc",
-      type: "object",
       title: "Fb Ads",
-      readOnly: true,
+      type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "externalId",
           title: "ID externo",
           type: "string",
           hidden: true,
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "fbclid",
           title: "ID de click de Facebook",
           type: "string",
+          readOnly: true,
         }),
-      ]
-    })
+      ],
+      validation: (Rule) => Rule.required(),
+    }),
   ],
   preview: {
     select: {

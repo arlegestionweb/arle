@@ -70,6 +70,10 @@ export const zodOrderSchema = z.object({
     trackingLink: z.string().optional().nullable(),
   }),
   items: z.array(zodCartItem),
+  externalIdandFbc: z.object({
+    externalId: z.string(),
+    fbclid: z.string().optional().nullable(),
+  }),
 });
 
 export const zodOrderSchemaWithKeys = zodOrderSchema.merge(
@@ -81,10 +85,6 @@ export const zodOrderSchemaWithKeys = zodOrderSchema.merge(
         })
       )
     ),
-    externalIdandFbc: z.object({
-      externalId: z.string(),
-      fbclid: z.string().nullable(),
-    }),
   }),
 );
 
@@ -144,7 +144,8 @@ export const getOrderById = async (id: string) => {
             ${productQuery.gafasPremium}
           ,
         }  
-      }
+      },
+      externalIdandFbc,
     }`,
     { id }
   );

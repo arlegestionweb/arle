@@ -75,6 +75,7 @@ export const createInvoice = async function (_: unknown, formData: FormData) {
         _key: nanoid(),
       })
     ),
+    externalIdandFbc: JSON.parse(formData.get("externalIdandFbc") as string),
   };
 
   
