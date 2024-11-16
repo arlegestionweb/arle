@@ -50,13 +50,17 @@ const AddToCart = ({
     }
     const externalId = getOrSetExternalIdPixel();
     const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
-    const fbclid = localStorage.getItem("fbclid") || null;
     const clientData = {
       name: savedData.name as string,
       email: savedData.email as string,
       phone: savedData.phone as string
     }
-    addedToCartPixelView(productObject, clientData, externalId, fbclid);
+    if(window != undefined){
+      const fbclid = localStorage.getItem("fbclid") || null;
+      addedToCartPixelView(productObject, clientData, externalId, fbclid);
+    } else {
+      addedToCartPixelView(productObject, clientData, externalId, null);
+    }
   };
 
   return (

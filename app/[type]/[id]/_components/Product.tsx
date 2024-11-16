@@ -68,13 +68,17 @@ const Product = ({
       const setFbclid = `fb.1.${timeInMillis}.${searchfbclid}`
       localStorage.setItem("fbclid",setFbclid)
     };
-    const fbclid = localStorage.getItem("fbclid") || null;
     const clientData = {
       name: savedData.name as string,
       email: savedData.email as string,
       phone: savedData.phone as string
     }
-    pagePixelView(clientData, externalId, fbclid);
+    if(window != undefined){
+      const fbclid = localStorage.getItem("fbclid") || null;
+      pagePixelView(clientData, externalId, fbclid);
+    } else {
+      pagePixelView(clientData, externalId, null);
+    }
     const fetchRecentlyViewedProductsFromLocalStorage = async () =>{
       return await getProductsFromLocalStorage();
     };

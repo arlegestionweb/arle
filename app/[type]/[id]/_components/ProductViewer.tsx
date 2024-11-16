@@ -19,13 +19,17 @@ const ProductViewer = ({productObject}: ObjectType) => {
       const setFbclid = `fb.1.${timeInMillis}.${searchfbclid}`
       localStorage.setItem("fbclid",setFbclid)
     };
-    const fbclid = localStorage.getItem("fbclid") || null;
     const clientData = {
       name: savedData.name as string,
       email: savedData.email as string,
       phone: savedData.phone as string
     }
-		productPixelView(productObject, clientData, externalId, fbclid);
+    if(window != undefined){
+      const fbclid = localStorage.getItem("fbclid") || null;
+      productPixelView(productObject, clientData, externalId, fbclid);
+    } else {
+      productPixelView(productObject, clientData, externalId, null);
+    }
 	}, [])
 
   return (<></>)
