@@ -156,7 +156,7 @@ const CardLayout = ({
       email: savedData.email as string,
       phone: savedData.phone as string
     }
-    if(window != undefined){
+    if(typeof window !== "undefined"){
       const fbclid = localStorage.getItem("fbclid") || null;
       addedToCartPixelView(productObject, clientData, externalId, fbclid);
     } else {
