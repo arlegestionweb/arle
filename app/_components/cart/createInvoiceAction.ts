@@ -120,7 +120,7 @@ export const createInvoiceAction = async (formState: TFormState, formData: FormD
     fbclid: parsedFormDataWithProductReference.data.externalIdandFbc.fbclid,
   }
 
-    initiatePixelCheckoutView(pixelInfo);
+    // initiatePixelCheckoutView(pixelInfo);
 
   let paymentUrl = '';
 
