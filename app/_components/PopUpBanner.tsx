@@ -17,19 +17,21 @@ const PopUpBanner = function ({ popup }: PopupProps) {
 	
   useEffect(() => {
     const checkAndSetBanner = () => {
-      const lastOpened = localStorage.getItem('bannerLastOpened');
-      const now = new Date().getTime();
-      const twoHours = 20 * 60 * 1000; // 20 minutos en milisegundos
-
-      // Convierte lastOpened a número si existe
-      const lastOpenedTime = lastOpened ? Number(lastOpened) : 0;
-
-      if (!lastOpened || now - lastOpenedTime > twoHours) {
-        // Si nunca se ha abierto o han pasado más de 2 horas, abre el banner
-        setTimeout(() => {
-          setIsOpen(true);
-          localStorage.setItem('bannerLastOpened', now.toString()); // Guarda el timestamp actual como string
-        }, 500);
+      if( typeof window !== 'undefined'){
+        const lastOpened = localStorage.getItem('bannerLastOpened');
+        const now = new Date().getTime();
+        const twoHours = 20 * 60 * 1000; // 20 minutos en milisegundos
+        
+        // Convierte lastOpened a número si existe
+        const lastOpenedTime = lastOpened ? Number(lastOpened) : 0;
+        
+        if (!lastOpened || now - lastOpenedTime > twoHours) {
+          // Si nunca se ha abierto o han pasado más de 2 horas, abre el banner
+          setTimeout(() => {
+            setIsOpen(true);
+            localStorage.setItem('bannerLastOpened', now.toString()); // Guarda el timestamp actual como string
+          }, 500);
+        }
       }
     };
 

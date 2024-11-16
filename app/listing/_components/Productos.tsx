@@ -14,12 +14,14 @@ const Productos = ({ productos }: { productos: TProduct[] }) => {
 
   useEffect(() => {
     const externalId = getOrSetExternalIdPixel();
-    const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+    const savedData = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("shippingData") || "{}") : null;
     const searchfbclid = searchParams.get("fbclid") || null;
     if(searchfbclid) {
       const timeInMillis = Date.now();
       const setFbclid = `fb.1.${timeInMillis}.${searchfbclid}`
-      localStorage.setItem("fbclid",setFbclid)
+      if(typeof window !== 'undefined'){
+        localStorage.setItem("fbclid",setFbclid)
+      }
     };
     const clientData = {
       name: savedData.name as string,

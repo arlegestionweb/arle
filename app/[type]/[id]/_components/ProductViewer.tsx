@@ -12,7 +12,7 @@ const ProductViewer = ({productObject}: ObjectType) => {
 
 	useEffect( () => {
 		const externalId = getOrSetExternalIdPixel()
-		const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+		const savedData = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("shippingData") || "{}") : null;
     const searchfbclid = searchParams.get("fbclid") || null;
     if(searchfbclid) {
       const timeInMillis = Date.now();

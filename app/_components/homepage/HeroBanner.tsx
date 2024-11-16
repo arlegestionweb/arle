@@ -21,9 +21,9 @@ const Banner = ({ content, className, searchParams}: BannerProps) => {
 
   useEffect(() => {
     const externalId = getOrSetExternalIdPixel();
-    const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+    const savedData = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("shippingData") || "{}") : null;
     const searchfbclid = searchParams.fbclid as string || null;
-    if(searchfbclid) {
+    if(searchfbclid && typeof window !== 'undefined') {
       const timeInMillis = Date.now();
       const setFbclid = `fb.1.${timeInMillis}.${searchfbclid}`
       localStorage.setItem("fbclid",setFbclid)

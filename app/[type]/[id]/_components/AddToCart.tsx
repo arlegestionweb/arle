@@ -49,7 +49,7 @@ const AddToCart = ({
       productValue: `${selectedVariant.precio}`
     }
     const externalId = getOrSetExternalIdPixel();
-    const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+    const savedData = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("shippingData") || "{}") : null;
     const clientData = {
       name: savedData.name as string,
       email: savedData.email as string,

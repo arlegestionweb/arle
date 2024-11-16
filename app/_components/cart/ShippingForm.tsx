@@ -20,9 +20,11 @@ const ShippingForm: React.FC<ShippingFormProps> = ({errorPaths}) => {
   });
   
   useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
-    if(savedData){
-      setFormData((prevData) => ({ ...prevData, ...savedData }));
+    if(typeof window !== 'undefined'){
+      const savedData = JSON.parse(localStorage.getItem("shippingData") || "{}");
+      if(savedData){
+        setFormData((prevData) => ({ ...prevData, ...savedData }));
+      }
     }
   }, []);
   
@@ -30,7 +32,9 @@ const ShippingForm: React.FC<ShippingFormProps> = ({errorPaths}) => {
     const { name, value } = e.target;
     setFormData((prevData) => {
       const updatedData = { ...prevData, [name]: value };
-      localStorage.setItem("shippingData", JSON.stringify(updatedData));
+      if( typeof window !== 'undefined'){
+        localStorage.setItem("shippingData", JSON.stringify(updatedData));
+      }
       return updatedData;
     });
   };
