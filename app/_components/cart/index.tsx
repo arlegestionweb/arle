@@ -141,11 +141,7 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
       ? true
       : false;
 
-  // const pixelinfo = getExternalIdandFbcPixel();
-  const pixelinfo = {
-    externalId: '1234',
-    fbclid: '12234235'
-  }
+  const pixelinfo = getExternalIdandFbcPixel();
 
   return (
     <section className="bg-white z-[150] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings overflow-hidden">
