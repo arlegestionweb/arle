@@ -142,6 +142,10 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
       : false;
 
   // const pixelinfo = getExternalIdandFbcPixel();
+  const pixelinfo = {
+    externalId: '1234',
+    fbclid: '12234235'
+  }
 
   return (
     <section className="bg-white z-[150] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings overflow-hidden">
@@ -435,13 +439,13 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
                         name="total"
                         value={getCartTotal()}
                       />
-                      {/* <input 
+                      <input 
                         type="text" 
                         readOnly
                         hidden
                         name="externalIdandFbc"
                         value={JSON.stringify(pixelinfo)}
-                      /> */}
+                      />
                       <h5 className="text-neutral-600 text-lg font-medium font-tajawal leading-snug">
                         Total
                       </h5>

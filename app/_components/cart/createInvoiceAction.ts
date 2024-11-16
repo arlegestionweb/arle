@@ -8,7 +8,6 @@ import { TOrderSchemaWithKeys, zodOrderSchemaWithKeys } from "@/sanity/queries/o
 import { sanityWriteClient } from "@/sanity/sanityClient";
 import { generateAddiPaymentURL } from "./addiAuthAction";
 import { generateWompiPaymentURL } from "./wompiAction";
-import { getExternalIdandFbcPixel, getOrSetExternalIdPixel } from "@/app/_lib/utils";
 import { initiatePixelCheckoutView } from "@/app/_lib/pixelActions";
 
 export const createInvoiceAction = async (formState: TFormState, formData: FormData) => {
