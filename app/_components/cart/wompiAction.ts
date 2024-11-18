@@ -26,7 +26,6 @@ export const generateWompiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     addressLine1: data.shipping.addressObject.address as string,
     city: data.shipping.addressObject.city as string,
     region: data.shipping.addressObject.department as string,
-    postalCode: data.shipping.addressObject.postalCode as string,
   }
 
   const params = new URLSearchParams({
@@ -46,7 +45,6 @@ export const generateWompiPaymentURL = async (data: TOrderSchemaWithKeys) => {
     "shipping-address:country": "CO",
     "shipping-address:city": shippingAddress.city,
     "shipping-address:region": shippingAddress.region,
-    "shipping-address:postal-code": shippingAddress.postalCode,
     "shipping-address:name": customerData.fullName,
     "shipping-address:phone-number": customerData.phoneNumber,
   });
