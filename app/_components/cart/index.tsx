@@ -144,7 +144,7 @@ const Cart = ({ showDiscountCode }: { showDiscountCode: boolean }) => {
   const pixelinfo = getExternalIdandFbcPixel();
 
   return (
-    <section className="bg-white z-[150] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings overflow-hidden">
+    <section className="bg-white z-[150] w-screen fixed top-0 bottom-0 left-0 flex justify-center no-scrollbar default-paddings overflow-hidden max-h-[100svh]">
       <form
         action={formAction}
         className="z-[160] max-w-screen-xl flex justify-center w-full gap-6 relative"
