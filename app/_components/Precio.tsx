@@ -19,6 +19,7 @@ const Precio = ({
     payingPrice: "lg"
   }
 }: TPrecioProps) => {
+  
   return (
     <>
 

@@ -17,6 +17,7 @@ import { GoChevronLeft } from "react-icons/go";
 import { isGafa, isReloj } from "@/sanity/queries/pages/listingQueries";
 import CollapsibleProductSection from "@/app/[type]/[id]/_components/CollapsibleSection";
 import ProductSlide from "../ProductSlide";
+import BlackFridayProductDiscount from "../BlackFridayProductDiscount";
 
 type HeroProductProps = {
   product: TPerfumeLujo | TRelojLujo | TGafaLujo;
@@ -40,6 +41,10 @@ const HeroProduct = ({
   setCantidad,
   pricing,
 }: HeroProductProps) => {
+
+  const discountPercent = pricing.precioConDescuento ? Math.round((1 - (pricing.precioConDescuento / pricing.precioSinDescuento)) * 100) : null
+
+
   return (
     <section className="lg:grid lg:grid-cols-12 gap-8 row-auto w-full lg:max-w-screen-xl lg:py-8">
       {/* Product view */}
@@ -85,7 +90,9 @@ const HeroProduct = ({
               />
             )
           )}
-
+          {discountPercent && (
+            <BlackFridayProductDiscount discountPercent={discountPercent} />
+          )}
           <h1 className="text-gray-800 text-4xl font-jomolhari capitalize leading-none w-full">
             {product.marca}
           </h1>
