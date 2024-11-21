@@ -40,21 +40,25 @@ const ProductoCard = ({
     producto.variantes[0]
   );
   const pricing: TPricing = {
-    precioConDescuento: selectedVariant.precioConDescuento
-      ? colombianPriceStringToNumber(selectedVariant.precioConDescuento)
-      : undefined,
+    precioConDescuento: selectedVariant.precioConDescuento ? colombianPriceStringToNumber(selectedVariant.precioConDescuento) : undefined,
     precioSinDescuento: colombianPriceStringToNumber(selectedVariant.precio),
-    timedDiscountPrice: discount
-      ? parseFloat(
-        (
-          (1 - +discount.porcentaje / 100) *
-          colombianPriceStringToNumber(selectedVariant.precio)
-        ).toFixed(0)
-      )
-      : undefined,
+    timedDiscountPrice: discount ? parseFloat(((1 - +discount.porcentaje / 100) * colombianPriceStringToNumber(selectedVariant.precio)).toFixed(0)) : undefined,
     finalPrice: 0,
-    discountTypeUsed: "none",
-  };
+    discountTypeUsed: "none"
+  }
+
+  if (pricing.timedDiscountPrice) {
+    pricing.finalPrice = pricing.timedDiscountPrice;
+    pricing.discountTypeUsed = "timedDiscount";
+  } else if (pricing.precioConDescuento) {
+    pricing.finalPrice = pricing.precioConDescuento;
+    pricing.discountTypeUsed = "discountedPrice";
+  } else {
+    pricing.finalPrice = pricing.precioSinDescuento;
+    pricing.discountTypeUsed = "none";
+  }
+  
+  console.log({pricing});
 
   if (pricing.timedDiscountPrice) {
     pricing.finalPrice = pricing.timedDiscountPrice;
@@ -176,10 +180,19 @@ const CardLayout = ({
       ? (product as TReloj).variantes[0].imagenes[0].alt!
       : (product as TGafa).variantes[0].imagenes[0].alt!;
 
+  const discountPercent = pricing.precioConDescuento ? Math.round((1 - (pricing.precioConDescuento / pricing.precioSinDescuento)) * 100) : null
+
+  console.log({discountPercent})
 
   return (
     <>
-      <section className="h-full w-full overflow-hidden">
+      <section className="h-full w-full overflow-hidden relative">
+        { discountPercent && (
+          <article className="absolute top-0 left-1/2 -translate-x-1/2 z-20 bg-black text-white px-3 pt-2 flex flex-col items-center font-tajawal">
+            <h5 className="font-bold text-xs xs:text-sm text-center text-gray-200 whitespace-nowrap">¡BLACK DAYS!</h5>
+            <span className="whitespace-nowrap font-bold xs:text-lg sm:text-xl">{discountPercent}% OFF</span>
+          </article>
+        )}
         {(isPerfume(product) && product.variantes[0].imagenes.length > 1) ||
           (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
           (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
@@ -211,7 +224,7 @@ const CardLayout = ({
         )}
       </section >
 
-      <section className=" flex-1 justify-end font-tajawal flex flex-col gap-1">
+      <section className=" flex-1 justify-end font-tajawal flex flex-col gap-1 relative">
         <Link href={product.slug} className="flex flex-col gap-0.5">
           <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize group-hover:underline underline-offset-2">
             {product.marca}

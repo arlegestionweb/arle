@@ -13,6 +13,7 @@ import Precio from "../Precio";
 import { TPricing } from "@/app/[type]/[id]/_components/Product";
 import { GoChevronLeft } from "react-icons/go";
 import { isPerfume } from "@/sanity/queries/pages/listingQueries";
+import BlackFridayProductDiscount from "../BlackFridayProductDiscount";
 
 type PremiumLayoutProps = {
   product: TGafaPremium | TRelojPremium | TPerfumePremium;
@@ -30,6 +31,9 @@ const PremiumLayout = ({
   const [modelo] = isPerfumePremium(product)
     ? [product.titulo]
     : [product.modelo];
+
+    const discountPercent = pricing.precioConDescuento ? Math.round((1 - (pricing.precioConDescuento / pricing.precioSinDescuento)) * 100) : null
+
   return (
     <section className="default-paddings w-full flex justify-center lg:py-8">
       <section className="w-full max-w-screen-xl flex flex-col lg:flex-row-reverse lg:items-center gap-8 ">
@@ -49,6 +53,7 @@ const PremiumLayout = ({
                 Volver
               </span>
             </button>
+
             {selectedVariant.unidadesDisponibles === 0 ? (
               <Labels
                 label={"Agotado"}
@@ -68,7 +73,9 @@ const PremiumLayout = ({
                 />
               )
             )}
-
+            {discountPercent && (
+              <BlackFridayProductDiscount discountPercent={discountPercent} />
+            )}
             <h1 className="text-zinc-800 text-3xl lg:text-4xl font-bold font-play capitalize">
               {product.marca}
             </h1>
