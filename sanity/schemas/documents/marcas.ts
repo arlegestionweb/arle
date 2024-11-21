@@ -17,6 +17,7 @@ export const marcasSchema = defineType({
       title: "Logotipo",
       type: "object",
       // validation: (Rule) => Rule.required(),
+      // @ts-ignore
       fields: [
         defineField({
           name: "imagen",
@@ -30,11 +31,17 @@ export const marcasSchema = defineType({
       title: "Descripción",
       type: "text",
     }),
+    defineField({
+      name: "sugerida",
+      title: "Marca Sugerida",
+      type: "boolean",
+    }),
     bannersSchema,
     defineField({
       name: "colecciones",
       title: "Colecciones",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "coleccion",

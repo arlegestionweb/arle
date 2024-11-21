@@ -8,21 +8,30 @@ export const homeSchema = defineType({
   name: "homepage",
   title: "Home",
   type: "document",
+  // @ts-ignore
   icon: HomeIcon,
   fields: [
     defineField({
       name: "hero",
       title: "Sección Principal",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",
           title: "Titulo",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "subtitulo",
           title: "Subtítulo",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "buttonText",
+          title: "Texto del Botón",
           type: "string",
         }),
         defineField({
@@ -35,6 +44,7 @@ export const homeSchema = defineType({
               title: "Banner",
               type: "object",
               icon: PiFlagBannerFill,
+              // @ts-ignore
               fields: [
                 defineField({
                   name: "imagenOVideo",
@@ -48,13 +58,7 @@ export const homeSchema = defineType({
                   type: "imagenObject",
                   hidden: ({ parent }) => !parent?.imagenOVideo,
                 }),
-                defineField({
-                  name: "video",
-                  title: "Video",
-                  type: "object",
-                  hidden: ({ parent }) => parent?.imagenOVideo,
-                  fields: [videoSchema],
-                }),
+                videoSchema,
               ],
               preview: {
                 select: {
@@ -80,21 +84,25 @@ export const homeSchema = defineType({
       name: "perfumes",
       title: "Perfumes",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",
           title: "Título",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "descripcion",
           title: "Subtítulo",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
+          validation: (Rule) => Rule.required(),
         }),
       ],
     }),
@@ -102,21 +110,25 @@ export const homeSchema = defineType({
       name: "relojes",
       title: "Relojes",
       type: "object",
+      // @ts-ignore   
       fields: [
         defineField({
           name: "titulo",
           title: "Título",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "descripcion",
           title: "Subtítulo",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
+          validation: (Rule) => Rule.required(),
         }),
       ],
     }),
@@ -124,21 +136,25 @@ export const homeSchema = defineType({
       name: "gafas",
       title: "Gafas",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",
           title: "Título",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "descripcion",
           title: "Subtítulo",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
+          validation: (Rule) => Rule.required(),
         }),
       ],
     }),
@@ -146,6 +162,7 @@ export const homeSchema = defineType({
       name: "coleccionesDestacadas",
       title: "Colecciones Destacadas",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "coleccion",
@@ -160,16 +177,19 @@ export const homeSchema = defineType({
       name: "sobre",
       title: "Sobre Arlé",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",
           title: "Título",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "descripcion",
           title: "Descripción",
           type: "text",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "imagenes",
@@ -177,7 +197,8 @@ export const homeSchema = defineType({
           type: "array",
           of: [
             imageArrayMemberSchema
-          ]
+          ],
+          validation: (Rule) => Rule.required(),
         }),
       ]
     }),
@@ -185,11 +206,13 @@ export const homeSchema = defineType({
       name: "asesoria",
       title: "Asesorías",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",
           title: "Título",
           type: "string",
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "beneficios",
@@ -200,8 +223,10 @@ export const homeSchema = defineType({
               name: "beneficio",
               title: "Beneficio",
               type: "string",
+              validation: (Rule) => Rule.required(),
             })
-          ]
+          ],
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "usarImagen",
@@ -227,13 +252,7 @@ export const homeSchema = defineType({
               type: "imagenObject",
               hidden: ({ parent }) => !parent?.imagenOVideo,
             }),
-            defineField({
-              name: "video",
-              title: "Video",
-              type: "object",
-              hidden: ({ parent }) => parent?.imagenOVideo,
-              fields: [videoSchema],
-            }),
+            videoSchema,
           ],
         }),
       ]

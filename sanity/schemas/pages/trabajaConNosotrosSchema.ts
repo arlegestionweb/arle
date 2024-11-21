@@ -11,26 +11,31 @@ export const trabajaConNosotrosSchema = defineType({
       name: "titulo",
       title: "Título",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "descripcion",
       title: "Descripción",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
    defineField({
     name: "imagen",
     title: "Imagen de fondo",
     type: "imagenObject",
+    validation: (Rule) => Rule.required(),
    }),
    defineField({
     name: "email",
     title: "Email",
     type: "string",
+    validation: (Rule) => Rule.required(),
    }),
    defineField({
     name: "jobs",
     title: "Empleos",
     type: "array",
+    // @ts-ignore
     of: [
       defineArrayMember({
         name: "job",
@@ -41,22 +46,28 @@ export const trabajaConNosotrosSchema = defineType({
             name: "titulo",
             title: "Título",
             type: "string",
+            validation: (Rule) => Rule.required(),
           }),
           defineField({
             name: "sede",
             title: "Sede",
             type: "reference",
+            // @ts-ignore
             to: [{ type: "sede" }],
+            validation: (Rule) => Rule.required(),
           }),
           defineField({
             name: "experience",
             title: "Experiencia requerida",
             type: "string",
+            validation: (Rule) => Rule.required(),
           }),
           defineField({
             name: "skills",
             title: "Habilidades",
             type: "array",
+            validation: (Rule) => Rule.required(),
+            // @ts-ignore
             of: [
               defineArrayMember({
                 name: "skill",
@@ -68,20 +79,28 @@ export const trabajaConNosotrosSchema = defineType({
           defineField({
             name: "modality",
             title: "Modalidad",
-            type: "string",
+            type: "text",
+            validation: (Rule) => Rule.required(),
           }),
+          defineField({
+            name: "areaLaboral",
+            title: "Área laboral",
+            type: "string",
+            validation: (Rule) => Rule.required(),
+          }),
+          
           defineField({
             name: "salary",
             title: "salario",
             type: "string",
-            components: {
-              input: ColombianPrice,
-            }
+            validation: (Rule) => Rule.required(),
           }),
           defineField({
             name: "aboutJob",
             title: "Acerca del trabajo",
             type: "array",
+            validation: (Rule) => Rule.required(),
+            // @ts-ignore
             of: [{type: "block"}]
           })
         ],

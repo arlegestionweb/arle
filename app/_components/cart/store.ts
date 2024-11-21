@@ -1,27 +1,40 @@
+import { customAlphabet } from 'nanoid';
+import { BooleanSchemaType } from 'sanity';
+import { z } from "zod";
 import { create } from "zustand";
-
+import { checkAddiAmounts } from './addiAuthAction';
 
 const TAX = 0.19;
 
-export type TCartItem = {
-  productId: string;
-  variantId: string;
-  price: number;
-  quantity: number;
-  productType:
-    | "perfumePremium"
-    | "perfumeLujo"
-    | "relojesPremium"
-    | "relojesLujo"
-    | "gafasPremium"
-    | "gafasLujo";
-    discountType: "none" | "timedDiscount" | "discountedPrice";
-    originalPrice: number;
-};
+export const zodCartItem = z.object({
+  productId: z.string(),
+  productName: z.string(),
+  productCode: z.string().or(z.number()),
+  variantId: z.string().or(z.number()),
+  price: z.number(),
+  quantity: z.number(),
+  productType: z.union([
+    z.literal("perfumePremium"),
+    z.literal("perfumeLujo"),
+    z.literal("relojesPremium"),
+    z.literal("relojesLujo"),
+    z.literal("gafasPremium"),
+    z.literal("gafasLujo"),
+  ]),
+  discountType: z.union([
+    z.literal("none"),
+    z.literal("timedDiscount"),
+    z.literal("discountedPrice"),
+  ]),
+  originalPrice: z.number(),
+});
+
+export type TCartItem = z.infer<typeof zodCartItem>;
 
 type TCartState = {
-  isCartOpen: boolean;
+  id: string;
   items: TCartItem[];
+  isCartOpen: boolean;
   discountCode: {
     code: string;
     discount: number;
@@ -35,20 +48,55 @@ type TCartActions = {
   removeItem: (item: TCartItem) => void;
   removeAllOfOneItem: (item: TCartItem) => void;
   clearCart: () => void;
+  resetCartId: () => void;
   getCartSubtotal: () => number;
+  getCartTotalBeforeShipping: () => number;
   getCartTotal: () => number;
-  getDiscountAmount: () => number;
+  getProductDiscountAmount: () => number;
   toggleCart: () => void;
+  openCart: () => void;
+  closeCart: () => void;
+  initializeCartState: () => void;
   applyDiscountCode: (code: string, discount: number) => void;
+  removeDiscountCode: () => void;
   toggleAddedToCartModal: () => void;
   setItemAddedToCart: (item?: TCartItem) => void;
   getCartTotalWithoutDiscountsOrTax: () => number;
   getCartTax: () => number;
+  getShippingCost: () => number;
 };
 
 type TCartStore = TCartState & TCartActions;
 
+const getCartIdFromLocalStorage = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem("arle-cartId");
+  }
+};
+
+// Function to set the cart ID in localStorage
+const setCartIdInLocalStorage = (id: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem("arle-cartId", id);
+  }
+};
+
+const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const nanoid = customAlphabet(alphabet, 21);
+
+const id = nanoid();
+
+// Get the existing cart ID from localStorage, or generate a new one if it doesn't exist
+let cartId = getCartIdFromLocalStorage();
+if (!cartId) {
+  cartId = id;
+  setCartIdInLocalStorage(cartId);
+}
+
+
+
 export const useCartStore = create<TCartStore>((set, get) => ({
+  id: cartId!,
   isAddedToCartModalOpen: false,
   toggleAddedToCartModal: () =>
     set((state) => ({ isAddedToCartModalOpen: !state.isAddedToCartModalOpen })),
@@ -62,70 +110,99 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
       return { ...state, discountCode: { code, discount } };
     }),
-  getDiscountAmount: () => {
+  removeDiscountCode: () => set((state: TCartState)=>{
+    return { ... state, discountCode: null};
+  }),
+  getProductDiscountAmount: () => {
     const items: TCartItem[] = get().items;
     // let total = 0;
+    const discountCode = get().discountCode;
 
     let totalDiscount = 0;
 
-    for (const item of items) {
-      const discountAmountPerItem = item.originalPrice - item.price;
-      const totalDiscountForItem = discountAmountPerItem * item.quantity;
-      totalDiscount += totalDiscountForItem;
+    if(discountCode){
+    const total = get().getCartTotalBeforeShipping();
+      totalDiscount = total * discountCode.discount / 100;
+      return Math.round(totalDiscount)
     }
-  
-    return totalDiscount;    // const discountCode = get().discountCode;
+    else{
+      for (const item of items) {
+        const discountAmountPerItem = item.originalPrice - item.price;
+        const totalDiscountForItem = discountAmountPerItem * item.quantity;
+        totalDiscount += totalDiscountForItem;
+      }
+      return Math.round(totalDiscount);    
+    }
+    
 
     // if (discountCode) {
-    //   const discountAmount = total * (discountCode.discount / 100);
+    //   const discountAmount = total * (discountCode?.discount || 100 / 100);
     //   return Math.round(discountAmount);
     // }
 
     // return 0;
   },
   items:
-    typeof window !== "undefined" && localStorage.getItem("cart")
-      ? JSON.parse(localStorage.getItem("cart")!)
+    typeof window !== "undefined" && localStorage.getItem("arle-cart")
+      ? JSON.parse(localStorage.getItem("arle-cart")!)
       : [],
 
-  addItem: (item: TCartItem) =>
-    set((state: TCartState) => {
+  addItem: async (item: TCartItem) => {
+    const addiValidAmounts = await checkAddiAmounts(get().getCartTotal())
+    if (typeof window !== "undefined") {
+      localStorage.setItem('addiAmounts', JSON.stringify(addiValidAmounts));
+    }
+    set( (state: TCartState) => {
       if (item.quantity <= 0) {
         return state;
       }
-
+      
       const existingItemIndex = state.items.findIndex(
         (i) => i.productId === item.productId && i.variantId === item.variantId
       );
-
+      
       let newItems: TCartItem[];
-
+      
       if (existingItemIndex >= 0) {
         // Item already exists in the cart, update the quantity
         newItems = state.items.map((i, index) =>
           index !== existingItemIndex
-            ? i
-            : { ...i, quantity: i.quantity + item.quantity }
-        );
-      } else {
-        // Item is not in the cart, add it
-        newItems = [...state.items, item];
-      }
-
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
+        ? i
+        : { ...i, quantity: i.quantity + 1 }
+      );
+    } else {
+      // Item is not in the cart, add it
+      newItems = [...state.items, item];
+    }
+    
+    if (typeof window !== "undefined") {
+        localStorage.setItem("arle-cart", JSON.stringify(newItems));
       }
 
       const inCart = get().isCartOpen;
 
       return { items: newItems, isAddedToCartModalOpen: inCart ? false : true, itemAddedToCart: item };
-    }),
+    })
+  },
   clearCart: () =>
     set(() => {
-      localStorage.removeItem("cart");
-      return { items: [] };
+      localStorage.removeItem("arle-cart");
+      const newCartId = nanoid();
+      localStorage.setItem("arle-cartId", newCartId );
+      localStorage.setItem("","")
+      localStorage.setItem("arle-cartOpen", JSON.stringify(false))
+      return { items: [], id: newCartId };
     }),
  
+  resetCartId: () => 
+    set(() => {
+      localStorage.removeItem("arle-cart");
+      const newCartId = nanoid();
+      localStorage.setItem("arle-cartId", newCartId );
+      localStorage.setItem("","")
+      localStorage.setItem("arle-cartOpen", JSON.stringify(false))
+      return { id: newCartId };
+    }),
 
   removeItem: (item: TCartItem) =>
     set((state: TCartState) => {
@@ -152,7 +229,7 @@ export const useCartStore = create<TCartStore>((set, get) => ({
       }
 
       if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
+        localStorage.setItem("arle-cart", JSON.stringify(newItems));
       }
 
       return { items: newItems };
@@ -165,13 +242,56 @@ export const useCartStore = create<TCartStore>((set, get) => ({
 
 
       if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(newItems));
+        localStorage.setItem("arle-cart", JSON.stringify(newItems));
       }
 
       return { items: newItems };
     }),
+
   isCartOpen: false,
-  toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen })),
+
+  toggleCart: async () => {
+    const currentCartOpen = get().isCartOpen;
+    const newCartOpenState = !currentCartOpen;
+
+    // Actualizar el estado global del carrito
+    set({ isCartOpen: newCartOpenState });
+
+    // Guardar el nuevo estado en localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("arle-cartOpen", JSON.stringify(newCartOpenState));
+    }
+  },
+  openCart: async () => {
+    const currentCartOpen = get().isCartOpen;
+    if(!currentCartOpen) {
+      set({ isCartOpen: true })
+      if (typeof window !== "undefined") {
+        localStorage.setItem("arle-cartOpen", JSON.stringify(true));
+      }
+    };
+  },
+
+  closeCart: async () => {
+    const currentCartOpen = get().isCartOpen;
+    if(currentCartOpen) {
+    set({ isCartOpen: false });
+
+    // Guardar el nuevo estado en localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("arle-cartOpen", JSON.stringify(false));
+    }
+    }
+  },
+
+  initializeCartState: () => {
+    if (typeof window !== "undefined") {
+      const storedCartOpen = localStorage.getItem("arle-cartOpen");
+      if (storedCartOpen !== null) {
+        set({ isCartOpen: JSON.parse(storedCartOpen) });
+      }
+    }
+  },
   getCartTax: () => {
     const items: TCartItem[] = get().items;
     let total = 0;
@@ -202,16 +322,44 @@ export const useCartStore = create<TCartStore>((set, get) => ({
     return total;
   },
   
-  getCartTotal: () => {
+  getCartTotalBeforeShipping: () => {
     const items: TCartItem[] = get().items;
     let total = 0;
+    const discountCode = get().discountCode;
 
-    items.forEach((item) => (total += item.price * item.quantity));
-
-
-    return total;
+    if(discountCode){
+      items.forEach((item) => (total += item.originalPrice * item.quantity));
+      return total
+    } else {
+      items.forEach((item) => (total += item.price * item.quantity));
+      return total;
+    }
   },
   
-  
+  getShippingCost: () => {
+    const items: TCartItem[] = get().items;
+    // const total = get().getCartTotalBeforeShipping();
+
+    if(items.length === 0){
+      return 0;
+    }
+    // if (total >= 250000) {
+    //   return 0;
+    // }
+    return 0;
+  },
+  getCartTotal: () => {
+    const total = get().getCartTotalBeforeShipping();
+    const discount = get().discountCode;
+    // const tax = get().getCartTax();
+    const shipping = get().getShippingCost();
+
+    if(discount) {
+      return Math.round(total * (1 - discount.discount /100)) + shipping
+    }
+    else {
+      return Math.round(total + shipping);
+    }
+  }
   
 }));

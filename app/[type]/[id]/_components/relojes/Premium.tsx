@@ -9,6 +9,7 @@ import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
 import { VariantSelector } from "@/app/listing/_components/ProductCard";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
+import ProductViewer from "../ProductViewer";
 
 type TRelojPremiumProps = {
   product: TRelojPremium;
@@ -18,7 +19,6 @@ type TRelojPremiumProps = {
   setCantidad: (cantidad: number) => void;
   pricing: TPricing;
 };
-
 const RelojPremium = ({
   product,
   selectedVariant,
@@ -27,22 +27,34 @@ const RelojPremium = ({
   setCantidad,
   pricing,
 }: TRelojPremiumProps) => {
+
+  const productObject = {
+    productName: `${product.marca} ${product.modelo}`,
+    productType: `${product._type}`,
+    productValue: `${selectedVariant.precio}`
+  }
+
   return (
     <>
+      <ProductViewer productObject={productObject} />
       <PremiumLayout
         product={product}
         selectedVariant={selectedVariant}
-        pricing={pricing}>
-        <section className="mt-2">
+        pricing={pricing}
+      >
+        <section className="w-full justify-start pt-4 pb-2 flex gap-5 font-tajawal">
+          {product.variantes.length > 1 && (
+            <VariantSelector
+              product={product}
+              selectedVariant={selectedVariant}
+              setSelectedVariant={setSelectedVariant}
+            />
+          )}
           <Cantidad
             cantidad={cantidad}
             anadirACantidad={() => setCantidad(cantidad + 1)}
             restarACantidad={() => setCantidad(cantidad - 1)}
-          />
-          <VariantSelector
-            product={product}
-            selectedVariant={selectedVariant}
-            setSelectedVariant={setSelectedVariant}
+            max={selectedVariant.unidadesDisponibles}
           />
         </section>
         <AddToCart
@@ -54,10 +66,8 @@ const RelojPremium = ({
         />
 
         {product.descripcion ? (
-          <CollapsibleProductSection
-            classNames="mt-2"
-            title="Descripción">
-            <p>{product.descripcion}</p>
+          <CollapsibleProductSection title="Descripción" collapsed={false}>
+            <p className="content-text">{product.descripcion}</p>
           </CollapsibleProductSection>
         ) : (
           <></>
@@ -65,13 +75,22 @@ const RelojPremium = ({
 
         <EspecificacionesReloj product={product} />
 
+        {product.garantia.descripcion ? (
+          <CollapsibleProductSection title="Descripción de Garantía">
+            <p className="content-text">{product.garantia.descripcion}</p>
+          </CollapsibleProductSection>
+        ) : (
+          <></>
+        )}
+
         <NuestrasComprasIncluyen garantia={product.garantia} />
+
         <AddToCart
           pricing={pricing}
           product={product}
           quantity={cantidad}
           selectedVariant={selectedVariant}
-          className="lg:hidden"
+          className="lg:hidden mt-6"
         />
       </PremiumLayout>
     </>
@@ -86,31 +105,59 @@ type TEspecificacionesProps = {
 
 const EspecificacionesReloj = ({ product }: TEspecificacionesProps) => {
   return (
-    <CollapsibleProductSection
-      classNames="mt-2"
-      title="Especificaciones"
-      titleActive>
-      <div className="grid grid-cols-2 gap-2">
-        <SeccionEspecificaciones
-          title="Modelo"
-          paragraph={product.modelo}
-        />
-        <SeccionEspecificaciones
-          title="Género"
-          paragraph={product.genero}
-        />
+    <CollapsibleProductSection title="Especificaciones">
+      <div className="w-full grid grid-cols-2 gap-2">
+        <SeccionEspecificaciones title="Modelo" paragraph={product.modelo} />
+        <SeccionEspecificaciones title="Género" paragraph={product.genero} />
         <SeccionEspecificaciones
           title="Material"
           paragraph={product.detallesReloj.material}
         />
-        <SeccionEspecificaciones
-          title="Marca"
-          paragraph={product.marca}
-        />
+        <SeccionEspecificaciones title="Marca" paragraph={product.marca} />
         <SeccionEspecificaciones
           title="Resistencia al Agua"
           paragraph={product.detallesReloj.resistenciaAlAgua}
         />
+        <SeccionEspecificaciones
+          title="Tipo de Reloj"
+          paragraph={product.detallesReloj.tipoDeReloj}
+        />
+        <SeccionEspecificaciones
+          title="Estilo de Reloj"
+          paragraph={product.detallesReloj.estiloDeReloj}
+        />
+        <SeccionEspecificaciones
+          title="Tipo de Cierre"
+          paragraph={product.detallesReloj.tipoDeCierre}
+        />
+        <SeccionEspecificaciones
+          title="Tipo de Movimiento"
+          paragraph={product.detallesReloj.tipoDeMovimiento}
+        />
+        <SeccionEspecificaciones
+          title="Material del Pulso"
+          paragraph={product.detallesReloj.material}
+        />
+        <SeccionEspecificaciones
+          title="Material del Cristal"
+          paragraph={product.detallesReloj.caja.cristal}
+        />
+        <SeccionEspecificaciones
+          title="Material de la Caja"
+          paragraph={product.detallesReloj.caja.material}
+        />
+        <SeccionEspecificaciones
+          title="Diámetro de la Caja"
+          paragraph={product.detallesReloj.caja.diametro.toString() + "mm"}
+        />
+        {product.detallesReloj.funciones && (
+          <SeccionEspecificaciones
+            title="Funciones"
+            paragraph={product.detallesReloj.funciones
+              .map((funcion) => funcion.titulo)
+              .join(", ")}
+          />
+        )}
       </div>
     </CollapsibleProductSection>
   );

@@ -3,37 +3,36 @@ import HeroBanner from "./_components/homepage/HeroBanner";
 import ExploreSection from "./_components/homepage/ExploreSection";
 import Colecciones from "./_components/Colecciones";
 import AboutArle from "./_components/homepage/AboutArle";
-import { unstable_noStore as noStore } from 'next/cache';
 import Asesoria from "./_components/homepage/Asesoria";
 
-
-const Home = async function () {
-  noStore();
+const Home = async function ({
+  searchParams,
+}: {
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
+}) {
   const pageContent = await getHomepageContent();
 
-  if(!pageContent) return null;
+  if (!pageContent) return null;
 
   const exploreSections = [
     pageContent.perfumes,
-    pageContent.relojes,
     pageContent.gafas,
+    pageContent.relojes,
   ];
-
+  
   return (
-    <main className="relative z-10 lg:mb-[100vh]">
-      <HeroBanner content={pageContent.hero} />
+    <main className="relative z-10 lg:mb-[100vh] pt-[87px] md:pt-0 bg-white">
+      <HeroBanner content={pageContent.hero} searchParams={searchParams} />
       {exploreSections.map((section, index) => (
-        <ExploreSection
-          key={index}
-          section={section}
-        />
+        <ExploreSection key={index + section.titulo} section={section} />
       ))}
-      <section className="bg-color-bg-surface-0-default">
-        <Colecciones colecciones={pageContent.colecciones}/>
-      </section>
+      {pageContent.colecciones && pageContent.colecciones.length > 0 && (
+        <Colecciones colecciones={pageContent.colecciones} />
+      )}
       <AboutArle sobre={pageContent.sobre} />
-
-      <Asesoria content={pageContent.asesoria}/>
+      <Asesoria content={pageContent.asesoria} />
     </main>
   );
 };

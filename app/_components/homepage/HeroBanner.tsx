@@ -1,18 +1,45 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GradientImage from "../GradientImage";
-import { cn } from "@/app/_lib/utils";
+import { cn, getOrSetExternalIdPixel } from "@/app/_lib/utils";
 import Link from "next/link";
 import { THeroSection } from "@/sanity/queries/pages/homepageQuery";
+import { pagePixelView } from "@/app/_lib/pixelActions";
+import GradientVideo from "../GradientVideo";
 
 type BannerProps = {
-    content: THeroSection,
+  content: THeroSection;
   className?: string;
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 };
 
-const Banner = ({ content, className }: BannerProps) => {
+const Banner = ({ content, className, searchParams}: BannerProps) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const bannerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const externalId = getOrSetExternalIdPixel();
+    const savedData = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("shippingData") || "{}") : null;
+    const searchfbclid = searchParams.fbclid as string || null;
+    if(searchfbclid && typeof window !== 'undefined') {
+      const timeInMillis = Date.now();
+      const setFbclid = `fb.1.${timeInMillis}.${searchfbclid}`
+      localStorage.setItem("fbclid",setFbclid)
+    };
+    const clientData = {
+      name: savedData.name as string,
+      email: savedData.email as string,
+      phone: savedData.phone as string,
+    }
+    if(typeof window !== "undefined"){
+      const fbclid = localStorage.getItem("fbclid") || null;
+      pagePixelView(clientData, externalId, fbclid);
+    } else {
+      pagePixelView(clientData, externalId, null);
+    }
+  }, []);
 
   const handleScroll = (event: any) => {
     const element = event.target as HTMLElement;
@@ -32,42 +59,65 @@ const Banner = ({ content, className }: BannerProps) => {
       setScrollPosition(index);
     }
   };
-  // console.log({ banners });
+
+  const width = 2000;
+  const height = null;
 
   return (
     <section
       className={cn(
-        "max-w-screen h-[70vh] pt-[60px] md:pt-0 overflow-hidden relative group",
+        "max-w-screen h-[60svh] md:h-[65svh] lg:h-[75svh] overflow-hidden relative group",
         className
-      )}>
+      )}
+    >
       <section
         className="banner-scrollbar flex w-full h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
         onScroll={handleScroll}
-        ref={bannerRef}>
+        ref={bannerRef}
+      >
         {content.banners.map((banner, index) => (
-          <React.Fragment key={index + banner.imagen.alt}>
-            {banner.imagen && (
-              <GradientImage
-                src={banner.imagen.url}
-                alt={banner.imagen.alt}
-                layout="fill"
-                imageClassName="fit object-cover object-top"
-                containerclassName={`snap-center snap-always ${
-                  index === 1 && "snap-mandatory"
-                } min-w-full px-2 pt-2 pb-9 flex-col justify-end items-center gap-2.5 inline-flex`}>
-              </GradientImage>
-            )}
-          </React.Fragment>
+            <React.Fragment key={index + (banner?.imagen?.url || "") }>
+            {banner.imagen && banner.imagenOVideo ? (
+                <GradientImage
+                  src={banner.imagen.url}
+                  alt={banner.imagen.alt || ""}
+                  layout="fill"
+                  width={2000}
+                  height={1000}
+                  quality={100}
+                  imageClassName="object-center"
+                  containerclassName={`snap-center snap-always ${
+                    index === 1 && "snap-mandatory"
+                  } min-w-full px-2 pt-2 flex-col justify-end items-center gap-2.5 inline-flex`}
+                  ></GradientImage>
+                ) : (
+                  <GradientVideo
+                  url={banner.videoObject?.video?.url || ""}
+                  imagenUrl={banner.videoObject?.imagenDeCarga?.url || ""}
+                  imagenAlt={banner.videoObject?.imagenDeCarga?.alt || ""}
+                  containerclassName={`snap-center snap-always ${
+                    index === 1 && "snap-mandatory"
+                  } min-w-full px-2 pt-2 flex-col justify-end items-center gap-2.5 inline-flex`}
+                  />
+                )}
+                </React.Fragment>
         ))}
-                <section className="absolute bottom-20 w-full z-10 self-stretch flex-col justify-center items-center gap-2.5 flex">
-                  <h2 className="self-stretch text-center text-white text-[32px] font-semibold font-lora uppercase leading-[38.40px]">
-                    {content.titulo}
-                  </h2>
-                  <p className="text-center text-white text-2xl font-light font-lora leading-[28.80px]">
-                    {content.subtitulo}
-                  </p>
-                  <Link className="text-zinc-800 text-lg font-medium leading-[27px] px-20 py-[8.50px] bg-color-bg-surface-1-default" href="/listing" >Explora todos los productos</Link>
-                </section>
+        <section className="absolute bottom-20 w-full z-10 flex justify-center default-paddings pointer-events-none">
+          <section className="w-full flex flex-col justify-center items-start gap-4 max-w-screen-xl">
+            <h1 className=" text-white lux-title text-2xl xs:text-3xl sm:text-4xl lg:text-[40px] max-w-sm sm:max-w-lg">
+              {content.titulo}
+            </h1>
+            <h2 className=" text-white normal-subtitle">{content.subtitulo}</h2>
+            {content.buttonText && (
+              <Link
+                className="light-button pointer-events-auto"
+                href="/listing"
+              >
+                {content.buttonText}
+              </Link>
+            )}
+          </section>
+        </section>
       </section>
 
       <div className="flex absolute z-20 bottom-9 m-auto left-0 right-0 justify-center py-2">
@@ -75,7 +125,9 @@ const Banner = ({ content, className }: BannerProps) => {
           <div
             key={index}
             className={`w-2.5 h-2.5 rounded-full mx-1.5 cursor-pointer ${
-              index === scrollPosition ? "bg-color-bg-surface-1-default" : "bg-[#8f8e94]"
+              index === scrollPosition
+                ? "bg-color-bg-surface-1-default"
+                : "bg-[#8f8e94]"
             }`}
             onClick={() => changeScrollPosition(index)}
           />

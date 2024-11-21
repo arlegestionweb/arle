@@ -18,7 +18,7 @@ import { gafasPremiumSchema } from "../schemas/products/gafas/premium";
 import { concentracionSchema, familiasOlfativasSchema, ingredientesSchema, notasOlfativasSchema } from "../schemas/products/perfumes";
 import { perfumeLujoSchema } from "../schemas/products/perfumes/lujo";
 import { perfumePremiumSchema } from "../schemas/products/perfumes/premium";
-import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema } from "../schemas/products/relojes";
+import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema, tipoDeCierreSchema } from "../schemas/products/relojes";
 import { relojesLujoSchema } from "../schemas/products/relojes/lujo";
 import { relojesPremiumSchema } from "../schemas/products/relojes/premium";
 import { siteSettings } from "../schemas/siteSettings";
@@ -45,6 +45,7 @@ export const hiddenDocTypes = (listItem: any) => {
     funcionDelRelojSchema.name,
     tipoDeRelojSchema.name,
     estiloDeRelojSchema.name,
+    tipoDeCierreSchema.name,
     cristalSchema.name,
     colorSchema.name,
     familiasOlfativasSchema.name,

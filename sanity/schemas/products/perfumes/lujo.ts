@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { imageArrayForProducts } from "../../objects/image";
+import { imageArrayForProducts, newImagesArrayForProducts } from "../../objects/image";
 import {
   bannersDeProductoSchema,
   coleccionesDeMarcaSchema,
@@ -10,11 +10,18 @@ import {
 } from "../../objects/products/generales";
 import { variantesDePerfumesSchema } from "../../objects/products/perfumes";
 import { notasOlfativasProdSchema } from ".";
+import { GiDelicatePerfume } from "react-icons/gi";
+import ImageUrl from "@/sanity/components/ImageUrl";
+
+export type TParentWithSubirImagen = {
+  subirImagen?: boolean;
+}
 
 export const perfumeLujoSchema = defineType({
   name: "perfumeLujo",
   title: "Perfumes de Lujo",
   type: "document",
+  icon: GiDelicatePerfume,
   groups: [
     {
       name: "general",
@@ -34,6 +41,7 @@ export const perfumeLujoSchema = defineType({
       name: "marca",
       title: "Marca",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "marca" }],
       group: "general",
       validation: (Rule) => Rule.required(),
@@ -45,7 +53,7 @@ export const perfumeLujoSchema = defineType({
       group: "general",
       validation: (Rule) => Rule.required(),
     }),
-    imageArrayForProducts,
+    // newImagesArrayForProducts,
     mostrarCreditoSchema,
     generoSchema,
     defineField({
@@ -53,6 +61,7 @@ export const perfumeLujoSchema = defineType({
       title: "Concentración",
       type: "reference",
       group: "detalles",
+      // @ts-ignore
       to: [{ type: "concentracion" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -69,6 +78,7 @@ export const perfumeLujoSchema = defineType({
       title: "Descripción",
       type: "object",
       group: "detalles",
+      // @ts-ignore
       fields: [
         defineField({
           name: "texto",
@@ -77,10 +87,43 @@ export const perfumeLujoSchema = defineType({
           validation: (Rule) => Rule.required(),
         }),
         defineField({
+          name: "subirImagen",
+          title: "Usar imagen externa?",
+          type: "boolean",
+          initialValue: false,
+        }),
+        defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
-          validation: (Rule) => Rule.required(),
+          hidden: ({ parent }) =>
+            parent && (parent as TParentWithSubirImagen).subirImagen !== false,
+        }),
+        defineField({
+          name: "imagenExterna",
+          description: "Usar imagen de un URL externo",
+          title: "Imagen Externa",
+          type: "object",
+          fields: [
+            defineField({
+              name: "url",
+              title: "URL",
+              type: "url",
+              components: {
+                input: ImageUrl,
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "alt",
+              title: "Texto alternativo",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          hidden: ({ parent }) =>
+            parent && (parent as TParentWithSubirImagen).subirImagen === false,
+          
         }),
       ],
     }),
@@ -92,10 +135,9 @@ export const perfumeLujoSchema = defineType({
       title: "Ingredientes",
       group: "detalles",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
-          name: "ingrediente",
-          title: "Ingrediente",
           type: "reference",
           to: [{ type: "ingrediente" }],
         }),
@@ -106,6 +148,8 @@ export const perfumeLujoSchema = defineType({
       title: "País de Origen",
       type: "reference",
       group: "detalles",
+      validation: (Rule) => Rule.required(),
+      // @ts-ignore
       to: [{ type: "paisDeOrigen" }],
     }),
     variantesDePerfumesSchema,
@@ -115,15 +159,15 @@ export const perfumeLujoSchema = defineType({
   preview: {
     select: {
       title: "titulo",
-      media: "imagenes",
+      media: "variantes",
     },
     prepare(selection) {
       const { title, media } = selection;
-      if (!title || !media) return { title: "Sin título" };
+      if (!title ) return { title: "Sin título" };
       if (!media) return { title };
       return {
         title,
-        media: media[0],
+        media: media[0].imagenes[0],
       };
     },
   },

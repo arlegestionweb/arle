@@ -19,6 +19,7 @@ export const preguntasFrecuentesSchema = defineType({
       name: "preguntas",
       title: "Preguntas",
       type: "array",
+      // @ts-ignore
       of: [
         {
           type: "object",

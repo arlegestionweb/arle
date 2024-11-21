@@ -4,7 +4,7 @@ import { relojLujoSchema, relojPremiumSchema } from "../zodSchemas/reloj";
 import { gafasLujoSchema, gafasPremiumSchema } from "../zodSchemas/gafas";
 import { perfumeLujoSchema, perfumePremiumSchema } from "../zodSchemas/perfume";
 import { zodTimedDiscountsSchema } from "../zodSchemas/general";
-import { recommendedProductsSchema, zodProduct } from "../listingQueries";
+import { groq } from "next-sanity";
 
 type TProductType =
   | "relojesLujo"
@@ -17,12 +17,18 @@ type TProductType =
 const contenidoQuery = `
   "contenido": contenido {
     resena,
+    subirImagen,
     "imagen": imagen {
       alt,
-      "url": asset->url,
-  }
+      "url": asset->url
+    },
+    "imagenExterna": imagenExterna {
+      alt,
+      url
+    }
 }`;
-const inspiracionQuery = `inspiracion { 
+const inspiracionQuery = `inspiracion {
+  ...,
   usarInspiracion, 
   ${contenidoQuery}
 }`;
@@ -53,18 +59,17 @@ const bannersQuery = `
 
 const variantesDeGafaQueryString = `
   variantes [] {
-    mostrarUnidadesDispobibles,
+    mostrarUnidadesDisponibles,
     "colorDeLaMontura": colorDeLaMontura -> {
       nombre,
       "color": color.hex
     },
-    etiqueta,
+    tag,
     "colorDeLaVarilla": colorDeLaVarilla -> {
       nombre,
       "color": color.hex
     },
     codigoDeReferencia,
-    registroInvima,
     precio,
     precioConDescuento,
     unidadesDisponibles,
@@ -87,13 +92,13 @@ const garantiaQuery = `
 
 export const productQuery: Record<TProductType, string> = {
   relojesLujo: `{
-    "date": _createdAt,
+    "date": _updatedAt,
     genero,
     mostrarCredito,
     "marca": marca->titulo,
     _type,
     _id,
-    "detalles": detalles {
+    "detalles": detallesGafaLujo {
       usarDetalles,
       "contenido": contenido {
         texto,
@@ -106,6 +111,7 @@ export const productQuery: Record<TProductType, string> = {
     "especificaciones": especificaciones {
       "tipoDeReloj": tipoDeReloj -> titulo,
       "estiloDeReloj": estiloDeReloj -> titulo,
+      "tipoDeCierre": tipoDeCierre -> titulo,
       resistenciaAlAgua,
       "funciones": funciones [] -> {
         titulo,
@@ -122,12 +128,12 @@ export const productQuery: Record<TProductType, string> = {
       },
       "imagenes": imagenes[]{
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
       unidadesDisponibles,
+      mostrarUnidadesDisponibles,
       codigoDeReferencia,
-      registroInvima,
-      etiqueta,
+      tag,
       "colorCaja": colorCaja -> {
         nombre,
         "color": color.hex
@@ -158,21 +164,22 @@ export const productQuery: Record<TProductType, string> = {
   }
 `,
   relojesPremium: `{
-    "date": _createdAt,
+    "date": _updatedAt,
     "variantes": variantes[]{
       precio,
+      precioConDescuento,
       "colorTablero": colorTablero -> { 
         nombre, 
         "color": color.hex
       },
       "imagenes": imagenes[]{
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
       codigoDeReferencia,
-      registroInvima,
-      etiqueta,
+      tag,
       unidadesDisponibles,
+      mostrarUnidadesDisponibles,
       "colorCaja": colorCaja -> { 
         nombre, 
         "color": color.hex
@@ -184,6 +191,7 @@ export const productQuery: Record<TProductType, string> = {
     },
     _id,
     modelo,
+    descripcion,
     "slug": slug.current,
     ${garantiaQuery},
     _type,
@@ -191,6 +199,11 @@ export const productQuery: Record<TProductType, string> = {
     "detallesReloj": detallesReloj {
       "tipoDeReloj": tipoDeReloj -> titulo,
       "estiloDeReloj": estiloDeReloj -> titulo,
+      "tipoDeCierre": tipoDeCierre -> titulo,
+      "funciones": funciones [] -> {
+        titulo,
+        descripcion
+      },
       resistenciaAlAgua,
       "material": material -> nombre,
       "tipoDeMovimiento": tipoDeMovimiento -> titulo,
@@ -201,20 +214,27 @@ export const productQuery: Record<TProductType, string> = {
       },
     },
     "genero": detallesReloj.genero,
-    coleccionDeMarca
+    coleccionDeMarca,
+    mostrarCredito
   }`,
   perfumeLujo: `{
-    "date": _createdAt,
+    ...,
+    "date": _updatedAt,
     titulo,
     "inspiracion": ${inspiracionQuery},    
     "variantes": variantes[] {
       codigoDeReferencia,
       unidadesDisponibles,
       registroInvima,
+      tag,
       precioConDescuento,
-      mostrarUnidadesDispobibles,
+      mostrarUnidadesDisponibles,
       tamano,
-      precio
+      precio,
+      "imagenes": imagenes[] {
+        alt, 
+        "url": coalesce(url, asset->url),
+      },
     },
     genero,
     _type,
@@ -222,10 +242,6 @@ export const productQuery: Record<TProductType, string> = {
     _id,
     parteDeUnSet,
     "concentracion": concentracion -> nombre,
-    "imagenes": imagenes[]{
-        alt,
-        "url": asset->url,
-      },    
     "notasOlfativas": notasOlfativas {
       "notasDeBase": notasDeBase [] -> nombre,
       "notasDeSalida": notasDeSalida [] -> nombre,
@@ -237,10 +253,14 @@ export const productQuery: Record<TProductType, string> = {
     "marca": marca -> titulo,
     "descripcion": descripcion {
       texto,
+      subirImagen,
       "imagen": imagen {
-        ...,
         alt,
-        "url": asset->url,
+        "url": asset->url
+      },
+      "imagenExterna": imagenExterna {
+        alt,
+        url
       }
     },
     "paisDeOrigen": paisDeOrigen -> nombre,
@@ -248,7 +268,7 @@ export const productQuery: Record<TProductType, string> = {
    coleccionDeMarca
   }`,
   perfumePremium: `{ 
-    "date": _createdAt,
+    "date": _updatedAt,
     "slug": slug.current,
     "detalles": detalles {
       "concentracion": concentracion -> nombre,
@@ -266,25 +286,27 @@ export const productQuery: Record<TProductType, string> = {
     titulo,
     _type,
     mostrarCredito,
-    "imagenes": imagenes[]{
-      alt,
-      "url": asset->url,
-    },
     "marca": marca->titulo,
     "variantes": variantes[]{
+      precioConDescuento,
       tamano,
-      etiqueta,
+      tag,
       precio,
       codigoDeReferencia,
       registroInvima,
       unidadesDisponibles,
+      mostrarUnidadesDisponibles,
+      "imagenes": imagenes[]{
+        alt,
+        "url": coalesce(url, asset->url),
+      },
     },
     parteDeUnSet,
     descripcion,
     coleccionDeMarca
   }`,
   gafasLujo: `{
-    "date": _createdAt,
+    "date": _updatedAt,
     _id,
     _type,
     "marca": marca->titulo,
@@ -294,7 +316,7 @@ export const productQuery: Record<TProductType, string> = {
     mostrarCredito,
     ${garantiaQuery},
     "inspiracion": ${inspiracionQuery},    
-    "detalles": detalles {
+    "detallesGafaLujo": detallesGafaLujo {
       usarDetalles,
       "contenido": contenido {
         texto,
@@ -304,17 +326,15 @@ export const productQuery: Record<TProductType, string> = {
         }
       }
     },
-    "monturaDetalles":  {
+    "monturaDetalles": monturaDetalles {
       usarDetalles,
-     "detalles": detalles {
         "contenido": contenido {
           texto,
           "imagen": imagen {
             alt,
             "url": asset->url,
           }
-        }
-      },
+        },
     },
     ${bannersQuery},
     "especificaciones": especificaciones {
@@ -327,16 +347,11 @@ export const productQuery: Record<TProductType, string> = {
         "materialMontura": materialMontura -> titulo,
         "materialVarilla": materialVarilla -> titulo,
       },
-      "lente": lente {
-        "material": material -> titulo,
-        "tipo": tipo -> titulo,
-      },
     },
-    "inspiracion": ${inspiracionQuery},    
-    "variantes": ${variantesDeGafaQueryString},
-    modelo,
-    "variantes": variantes [] {
-      "colorDeLaMontura": colorDeLaMontura -> {
+    coleccionDeMarca,
+    "slug": slug.current,
+    "variantes": variantes[] {
+      "colorDelLente": colorDelLente -> {
         nombre,
         "color": color.hex
       },
@@ -344,27 +359,44 @@ export const productQuery: Record<TProductType, string> = {
         nombre,
         "color": color.hex
       },
-      "colorDelLente": colorDelLente -> {
+      "colorDeLaMontura": colorDeLaMontura -> {
         nombre,
         "color": color.hex
       },
-      precio,
-      precioConDescuento,
-      etiqueta,
-      codigoDeReferencia,
-      registroInvima,
-      mostrarUnidadesDispobibles,
-      unidadesDisponibles,
-      "imagenes": imagenes[]{
+      "imagenes": imagenes[] {
         alt,
-        "url": asset->url,
-      }, 
+        "url": coalesce(url, asset->url),
+      },
+      "lente": lente {
+        "material": material -> titulo,
+        "tipo": tipo -> titulo,
+      },
+      talla,
+      codigoDeReferencia,
+      unidadesDisponibles,
+      precioConDescuento,
+      precio,
+      tag,
+      mostrarUnidadesDisponibles
     },
-    coleccionDeMarca,
-    "slug": slug.current,
+    modelo,
+    "slug": slug.current, 
+    genero,
+    descripcion,
+    "detalles": detalles {
+      "tipoDeGafa": tipoDeGafa -> titulo,
+      "estiloDeGafa": estiloDeGafa -> titulo,
+      "montura": montura {
+        "formaDeLaMontura": formaDeLaMontura -> titulo,
+        "materialMontura": materialMontura -> titulo,
+        "materialVarilla": materialVarilla -> titulo,
+      }
+    },
   }`,
+
   gafasPremium: `{
-    "date": _createdAt,
+    mostrarCredito,
+    "date": _updatedAt,
     _type,
     "marca": marca->titulo,
     _id,
@@ -383,14 +415,19 @@ export const productQuery: Record<TProductType, string> = {
       },
       "imagenes": imagenes[] {
         alt,
-        "url": asset->url,
+        "url": coalesce(url, asset->url),
       },
+      "lente": lente {
+        "material": material -> titulo,
+        "tipo": tipo -> titulo,
+      },
+      talla,
       codigoDeReferencia,
-      registroInvima,
       unidadesDisponibles,
       precio,
-      etiqueta,
-      mostrarUnidadesDispobibles
+      precioConDescuento,
+      tag,
+      mostrarUnidadesDisponibles
     },
     modelo,
     "slug": slug.current, 
@@ -399,10 +436,6 @@ export const productQuery: Record<TProductType, string> = {
     "detalles": detalles {
       "tipoDeGafa": tipoDeGafa -> titulo,
       "estiloDeGafa": estiloDeGafa -> titulo,
-      "lente": lente {
-        "tipo": tipo -> titulo,
-        "material": material -> titulo,
-      },
       "montura": montura {
         "formaDeLaMontura": formaDeLaMontura -> titulo,
         "materialMontura": materialMontura -> titulo,
@@ -436,6 +469,7 @@ export const getProductById = async (id: string, productType: TProductType) => {
   const fetchResult =
     await sanityClient.fetch(`*[_type == "${productType}" && _id == "${id}"][0]
   ${query}`);
+
   const productSchema = schemas[productType];
 
   const params = { productId: id };
@@ -470,6 +504,63 @@ export const getProductById = async (id: string, productType: TProductType) => {
   };
 };
 
+const zodPorudctWithVariants = z.object({
+  _id: z.string(),
+  variantes: z.array(
+    z.object({
+      unidadesDisponibles: z.number(),
+      codigoDeReferencia: z.string(),
+    })
+  ),
+});
 
+const zodProductsWithVariants = z.array(zodPorudctWithVariants);
 
+export const getProductsByIds = async (
+  products: { _id: string }[]
+) => {
 
+  const result = await Promise.all(
+    products.map(async (product) => {
+      const productWithVariants = await sanityClient.fetch(
+        groq`*[_id == $product._id][0]{_id, "variantes": variantes[]{unidadesDisponibles, codigoDeReferencia}}`,
+        {product}
+      );
+      return productWithVariants;
+    })
+  );
+
+  const parsedResult = zodProductsWithVariants.safeParse(result);
+
+  if (!parsedResult.success) {
+    console.error(parsedResult.error.message);
+    return [];
+  }
+
+  return parsedResult.data;
+};
+
+// Function to get products by type
+export const getProductsByType = async (productType: TProductType) => {
+  const result = await sanityClient.fetch(
+    groq`*[_type == $productType ]{
+    _id, 
+    "marca": marca->titulo
+    }`,
+    {productType}
+  );
+
+  const parsedResult = zodProductsWithMarcas.safeParse(result);
+
+  if (!parsedResult.success) {
+    console.error(parsedResult.error.message);
+    return [];
+  }
+
+  return parsedResult.data;
+};
+
+const zodProductsWithMarcas = z.array(z.object({
+  _id: z.string(),
+  marca: z.string(),
+}));

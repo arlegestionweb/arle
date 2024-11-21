@@ -19,7 +19,7 @@ type TRecentlyViewedProductsStore = TRecentlyViewedProductsState &
   create<TRecentlyViewedProductsStore>((set, get) => {
     const getProductsFromLocalStorage = () => {
       if (typeof window !== 'undefined') {
-        const products = localStorage.getItem("recentlyViewedProducts");
+        const products = localStorage.getItem("arle-recentlyViewedProducts");
         if (products) {
           set(() => ({ recentlyViewedProducts: JSON.parse(products) }));
         }
@@ -39,7 +39,7 @@ type TRecentlyViewedProductsStore = TRecentlyViewedProductsState &
           newProducts.unshift(product);
           const productsToStore = newProducts.slice(0, 6); // Keep only the first 6 products
           localStorage.setItem(
-            "recentlyViewedProducts",
+            "arle-recentlyViewedProducts",
             JSON.stringify(productsToStore)
           );
           return { recentlyViewedProducts: productsToStore };
@@ -50,14 +50,14 @@ type TRecentlyViewedProductsStore = TRecentlyViewedProductsState &
             (p) => p._id !== product._id
           );
           localStorage.setItem(
-            "recentlyViewedProducts",
+            "arle-recentlyViewedProducts",
             JSON.stringify(newProducts)
           );
           return { recentlyViewedProducts: newProducts };
         }),
       clearProducts: () =>
         set(() => {
-          localStorage.removeItem("recentlyViewedProducts");
+          localStorage.removeItem("arle-recentlyViewedProducts");
           return { recentlyViewedProducts: [] };
         }),
       getProductsFromLocalStorage,

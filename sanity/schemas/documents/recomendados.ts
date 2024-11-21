@@ -9,6 +9,7 @@ export const recomendadosSchema = defineType({
       name: "productos",
       title: "Productos",
       type: "array",
+      // @ts-ignore
       of: [
         {
           type: "reference",

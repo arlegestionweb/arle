@@ -27,6 +27,7 @@ export const gafasPremiumSchema = defineType({
       title: "Marca",
       type: "reference",
       group: "general",
+      // @ts-ignore
       to: [{ type: "marca" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -46,7 +47,6 @@ export const gafasPremiumSchema = defineType({
     generoSchema,
     mostrarCreditoSchema,
     garantiaSchema,
-
     detallesDeGafaSchema,
     variantesDeGafaPremiumSchema,
     coleccionesDeMarcaSchema,

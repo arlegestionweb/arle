@@ -5,6 +5,7 @@ export const footerSchema = defineType({
     name: "footer",
     title: "Footer",
     type: "document",
+    // @ts-ignore
     icon: ArrowDownIcon,
     fields: [
         defineField({

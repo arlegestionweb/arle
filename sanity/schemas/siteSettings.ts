@@ -5,6 +5,7 @@ export const siteSettings = defineType({
   name: "configuracion",
   title: "Configuración",
   type: "document",
+  // @ts-ignore
   icon: CogIcon,
     groups: [
     {
@@ -37,13 +38,15 @@ export const siteSettings = defineType({
       title: "Marca Promocionada",
       group: "general",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "marca" }],
     }),
     defineField({
-      name: "linksSociales",
+      name: "socialLinks",
       title: "Links Sociales",
       group: "general",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "link",
@@ -51,14 +54,19 @@ export const siteSettings = defineType({
           type: "object",
           fields: [
             defineField({
-              name: "titulo",
-              title: "Título",
+              name: "redSocial",
+              title: "Red Social",
               type: "string",
+              options: {
+                list: ["facebook", "X", "WhatsApp", "Instagram", "linkedIn", "YouTube", "TikTok", "Otra" ],
+              },
+              validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: "url",
-              title: "URL",
+              title: "Link",
               type: "url",
+              validation: (Rule) => Rule.required(),
             }),
           ],
         }),
@@ -69,16 +77,18 @@ export const siteSettings = defineType({
       title: "Legal",
       group: "legal",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "terminosCondiciones",
           title: "Términos y condiciones",
           type: "array",
           of: [{type: "block"}],
+          validation: (Rule) => Rule.required(),
         }),
         defineField({
           name: "politicasPrivacidad",
-          title: "Políticas y Privacidad",
+          title: "Políticas de Privacidad",
           type: "array",
           of: [{type: "block"}],
         }),
@@ -96,7 +106,7 @@ export const siteSettings = defineType({
         }),
         defineField({
           name: "politicasCookies",
-          title: "Políticas Cookies",
+          title: "Políticas de Cookies",
           type: "array",
           of: [{type: "block"}],
         }),
@@ -108,6 +118,47 @@ export const siteSettings = defineType({
       type: "boolean",
       initialValue: false,
       group: "general",
-    })
+    }),
+    defineField({
+      name: "popup",
+      title: "Pop Up Banner",
+      type: "object",
+      group: "general",
+      // @ts-ignore
+      fields: [
+        defineField({
+          name: "usarPopup",
+          title: "¿Usar Pop Up?",
+          type: "boolean",
+        }),
+        defineField({
+          name: "opciones",
+          title: "Opciones",
+          type: "object",
+          hidden: ({ parent }) => !parent?.usarPopup,
+          fields: [
+            defineField({
+              name: "boton",
+              title: "Título del botón CTA",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "link",
+              title: "Link del botón",
+              type: "url",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "imagen",
+              title: "Imagen",
+              type: "imagenObject",
+              validation: (Rule) => Rule.required(),
+            })
+          ]
+        }),
+      ]
+    }),
+
   ],
 });

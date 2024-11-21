@@ -16,12 +16,22 @@ const zodCajaSchema = z.object({
   cristal: z.string(),
 });
 
-export type TCaja = z.infer<typeof zodCajaSchema>
+export type TCaja = z.infer<typeof zodCajaSchema>;
 
 const detallesRelojSchema = z.object({
   tipoDeReloj: z.string(),
   estiloDeReloj: z.string(),
+  tipoDeCierre: z.string(),
   resistenciaAlAgua: z.string(),
+  funciones: z
+    .array(
+      z.object({
+        titulo: z.string(),
+        descripcion: z.string().optional().nullable(),
+      })
+    )
+    .optional()
+    .nullable(),
   material: z.string(),
   tipoDeMovimiento: z.string(),
   caja: zodCajaSchema,
@@ -33,9 +43,9 @@ export const relojVariantSchema = z.object({
   colorTablero: zodColorSchema,
   imagenes: z.array(imageSchema),
   unidadesDisponibles: z.number(),
-  codigoDeReferencia: z.string(),
-  registroInvima: z.string(),
-  etiqueta: z.string().nullable().optional(),
+  mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
+  codigoDeReferencia: z.string().or(z.number()),
+  tag: z.string().nullable().optional(),
   colorCaja: zodColorSchema,
   colorPulso: zodColorSchema,
 });
@@ -59,28 +69,38 @@ export const relojLujoSchema = z.object({
   especificaciones: z.object({
     tipoDeReloj: z.string(),
     estiloDeReloj: z.string(),
+    tipoDeCierre: z.string(),
     resistenciaAlAgua: z.string(),
-    funciones: z.array(
-      z.object({
-        titulo: z.string(),
-        descripcion: z.string().optional().nullable(),
-      })
-    ).optional().nullable(),
+    funciones: z
+      .array(
+        z.object({
+          titulo: z.string(),
+          descripcion: z.string().optional().nullable(),
+        })
+      )
+      .optional()
+      .nullable(),
     material: z.string(),
   }),
   variantes: z.array(relojVariantSchema),
   inspiracion: inspiracionSchema,
   modelo: z.string(),
   garantia: garantiaSchema,
-  movimiento: z.object({
-    usarMovimiento: z.boolean().optional().nullable(),
-    tipoDeMovimiento: z.string(),
-    contenido: z.object({
-      descripcion: z.string().optional().nullable(),
-      imagen: imageSchema.optional().nullable(),
-    }).optional().nullable(),
-  }).optional(),
+  movimiento: z
+    .object({
+      usarMovimiento: z.boolean().optional().nullable(),
+      tipoDeMovimiento: z.string(),
+      contenido: z
+        .object({
+          descripcion: z.string().optional().nullable(),
+          imagen: imageSchema.optional().nullable(),
+        })
+        .optional()
+        .nullable(),
+    })
+    .optional(),
   banners: z.array(bannerSchema).optional().nullable(),
+  descripcion: z.string().optional().nullable(),
   coleccionDeMarca: coleccionDeMarcaSchema,
   slug: z.string(),
   caja: zodCajaSchema,
@@ -92,11 +112,12 @@ export const relojPremiumSchema = z.object({
   _id: z.string(),
   marca: z.string(),
   modelo: z.string(),
-  descripcion: z.string().nullable().optional(),
+  descripcion: z.string(),
   variantes: z.array(relojVariantSchema),
   garantia: garantiaSchema,
   detallesReloj: detallesRelojSchema,
   genero: generoSchema,
   slug: z.string(),
   coleccionDeMarca: coleccionDeMarcaSchema,
+  mostrarCredito: z.boolean().optional().nullable(),
 });

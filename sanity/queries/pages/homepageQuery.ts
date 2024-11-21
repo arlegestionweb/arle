@@ -15,10 +15,16 @@ export type THomeSection = z.infer<typeof zodHomeSectionSchema>;
 const zodHeroSchema = z.object({
   titulo: z.string(),
   subtitulo: z.string(),
+  buttonText: z.string().optional().nullable(),
   banners: z.array(
     z.object({
-      imagen: imageSchema,
-    })
+      imagenOVideo: z.boolean(),
+      imagen: imageSchema.optional().nullable(),
+      videoObject: z.object({
+        video: videoSchema.optional().nullable(),
+        imagenDeCarga: imageSchema.optional().nullable(),
+      }).optional().nullable()
+    }),
   ),
 });
 
@@ -31,7 +37,10 @@ const zodAsesoriaSchema = z.object({
   imagenAsesoria: z.object({
     imagenOVideo: z.boolean(),
     imagen: imageSchema.optional().nullable(),
-    video: videoSchema.optional().nullable(),
+    videoObject: z.object({
+      video: videoSchema.optional().nullable(),
+      imagenDeCarga: imageSchema.optional().nullable(),
+    }).optional().nullable()
   }),
 });
 export type TAsesoriaSection = z.infer<typeof zodAsesoriaSchema>;
@@ -41,7 +50,7 @@ const zodHomepageSchema = z.object({
   perfumes: zodHomeSectionSchema,
   relojes: zodHomeSectionSchema,
   gafas: zodHomeSectionSchema,
-  colecciones: z.array(zodHomeSectionSchema),
+  colecciones: z.array(zodHomeSectionSchema).optional().nullable(),
   sobre: z.object({
     titulo: z.string(),
     descripcion: z.string(),
@@ -56,10 +65,21 @@ const homepageQueryString = `*[_type == "homepage"][0]{
   "hero": hero{
     titulo,
     subtitulo,
+    buttonText,
     "banners": banners1[] {
+      imagenOVideo,
       "imagen": imagen{
         alt,
         "url": asset->url
+      },
+      "videoObject": videoObject{
+        "video": video {
+          "url": asset->url,
+        },
+        "imagenDeCarga": imagenDeCarga{
+        alt,
+        "url": asset->url
+        },
       },
     },
   },
@@ -101,8 +121,14 @@ const homepageQueryString = `*[_type == "homepage"][0]{
         alt,
         "url": asset->url,
       },
-      "video": video.video {
-        "url": asset->url,
+      "videoObject": videoObject{
+        "video": video {
+          "url": asset->url,
+        },
+        "imagenDeCarga": imagenDeCarga{
+        alt,
+        "url": asset->url
+        },
       },
     }
   },

@@ -7,7 +7,7 @@ import {
 import { marcasSchema } from "./documents/marcas";
 import { estiloDeGafaSchema, formaDeLaMonturaSchema, materialDeLaVarillaSchema, materialDelLenteSchema, materialDelMarcoSchema, tipoDeGafaSchema, tipoDeLenteSchema } from "./products/gafas";
 import { concentracionSchema, familiasOlfativasSchema, ingredientesSchema, notasOlfativasSchema } from "./products/perfumes";
-import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema } from "./products/relojes";
+import { cristalSchema, estiloDeRelojSchema, funcionDelRelojSchema, materialesDeCajaSchema, materialesDelPulsoSchema, tipoDeMovimientoSchema, tipoDeRelojSchema, tipoDeCierreSchema } from "./products/relojes";
 import { recomendadosSchema } from "./documents/recomendados";
 import { ventaSchema } from "./documents/venta";
 import { homeSchema } from "./pages/homeSchema";
@@ -22,10 +22,11 @@ import { relojesLujoSchema } from "./products/relojes/lujo";
 import { relojesPremiumSchema } from "./products/relojes/premium";
 import { siteSettings } from "./siteSettings";
 import { codigoDeDescuentosSchema } from "./documents/codigosDeDescuento";
-import { imageObjectSchema, videoObjectSchema } from "./objects/image";
+import { imageObjectSchema, imageUrlObjectSchema, videoObjectSchema } from "./objects/image";
 import { contentSchema } from "./objects/contentSchema";
 import { citySchema, nuestrasSedesSchema, sedeSchema } from "./pages/nuestrasSedesSchema";
 import { trabajaConNosotrosSchema } from "./pages/trabajaConNosotrosSchema";
+import { ordersSchema } from "./orders";
 
 export const schemaTypes = [
   siteSettings,
@@ -55,6 +56,7 @@ export const schemaTypes = [
   funcionDelRelojSchema,
   tipoDeRelojSchema,
   estiloDeRelojSchema,
+  tipoDeCierreSchema,
   cristalSchema,
   colorSchema,
   familiasOlfativasSchema,
@@ -75,11 +77,13 @@ export const schemaTypes = [
   codigoDeDescuentosSchema,
   sedeSchema,
   citySchema,
+  ordersSchema,
 
 
   // objects
   imageObjectSchema,
   videoObjectSchema,
   contentSchema,
+  imageUrlObjectSchema
 
 ];

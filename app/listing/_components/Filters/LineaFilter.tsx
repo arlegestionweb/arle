@@ -11,6 +11,7 @@ const LineaFilter = () => {
       active={
         !!searchParams.get("linea") && searchParams.get("linea") !== "todos"
       }
+      initialOpen
     >
       <InputBox
         name="linea"
@@ -25,19 +26,19 @@ const LineaFilter = () => {
       />
       <InputBox
         name="linea"
-        title="Excelencia"
-        description="La cima del Lujo, tu poder en cada detalle"
-        type="radio"
-        defaultChecked={searchParams.get("linea")?.includes("premium")}
-        value={"premium"}
-      />
-      <InputBox
-        name="linea"
-        title="Elite"
-        description="Calidad que inspira Liderazgo"
+        title="Lujo"
+        description="La cima del Lujo, tu poder en cada detalle."
         type="radio"
         defaultChecked={searchParams.get("linea")?.includes("lujo")}
         value={"lujo"}
+      />
+      <InputBox
+        name="linea"
+        title="Premium"
+        description="Calidad que inspira Liderazgo."
+        type="radio"
+        defaultChecked={searchParams.get("linea")?.includes("premium")}
+        value={"premium"}
       />
     </FilterSection>
   );

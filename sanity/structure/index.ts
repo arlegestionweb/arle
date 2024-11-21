@@ -8,6 +8,7 @@ import { hiddenDocTypes } from "./hiddenDocTypes";
 export default (S: StructureBuilder) => {
   const siteSettingsListItem = S.listItem()
     .title(siteSettings.title || "")
+    // @ts-ignore
     .icon(siteSettings.icon)
     .child(
       S.editor()
@@ -29,8 +30,8 @@ export default (S: StructureBuilder) => {
       productos(S),
       S.divider(),
       siteSettingsListItem,
-      S.divider(),
-      adminVentas,
+      // S.divider(),
+      // adminVentas,
       S.divider(),
       ...S.documentTypeListItems().filter(hiddenDocTypes),
     ]);

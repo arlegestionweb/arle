@@ -17,6 +17,8 @@ import TimedDiscount from "./TimedDiscount";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
 import { useRecentlyViewedProductsStore } from "./recentlyViewedProductsStore";
 import { ProductCardSlide } from "./ProductCardSlide";
+import { pagePixelView } from "@/app/_lib/pixelActions";
+import { getOrSetExternalIdPixel } from "@/app/_lib/utils";
 
 export type TPricing = {
   precioConDescuento?: number;
@@ -28,11 +30,15 @@ export type TPricing = {
 
 const Product = ({
   params,
+  searchParams,
   product,
   discount,
   recommendedProducts
 }: {
   params: TParams;
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
   product: TProduct;
   discount?: TTimedDiscount;
   recommendedProducts?: TProduct[];
@@ -54,6 +60,25 @@ const Product = ({
   const { addProduct, recentlyViewedProducts, getProductsFromLocalStorage } = useRecentlyViewedProductsStore();
 
   useEffect(() => {
+    const externalId = getOrSetExternalIdPixel();
+    const savedData = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("shippingData") || "{}") : null;
+    const searchfbclid = searchParams.fbclid as string || null;
+    if(searchfbclid && typeof window !== 'undefined') {
+      const timeInMillis = Date.now();
+      const setFbclid = `fb.1.${timeInMillis}.${searchfbclid}`
+      localStorage.setItem("fbclid",setFbclid)
+    };
+    const clientData = {
+      name: savedData.name as string,
+      email: savedData.email as string,
+      phone: savedData.phone as string
+    }
+    if(typeof window !== "undefined"){
+      const fbclid = localStorage.getItem("fbclid") || null;
+      pagePixelView(clientData, externalId, fbclid);
+    } else {
+      pagePixelView(clientData, externalId, null);
+    }
     const fetchRecentlyViewedProductsFromLocalStorage = async () =>{
       return await getProductsFromLocalStorage();
     };
@@ -153,7 +178,9 @@ const Product = ({
         />
       )}
       <section className="flex flex-col gap-6">
-        <ProductCardSlide nameSection="Productos Sugeridos" products={recommendedProducts || []} />
+        {recommendedProducts && recommendedProducts?.length > 0 && (
+          <ProductCardSlide nameSection="Productos Sugeridos" products={recommendedProducts} />
+        )}
         <ProductCardSlide nameSection="Vistos recientemente" products={recentlyViewedProducts} />
       </section>
     </>

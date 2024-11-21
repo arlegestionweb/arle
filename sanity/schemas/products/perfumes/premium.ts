@@ -21,6 +21,7 @@ export const perfumePremiumSchema = defineType({
       name: "marca",
       title: "Marca",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "marca" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -30,11 +31,11 @@ export const perfumePremiumSchema = defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
-    imageArrayForProducts,
     defineField({
       name: "descripcion",
       title: "Descripción",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
     variantesDePerfumesSchema,
     defineField({
@@ -51,15 +52,15 @@ export const perfumePremiumSchema = defineType({
   preview: {
     select: {
       title: "titulo",
-      media: "imagenes",
+      media: "variantes",
     },
     prepare(selection) {
       const { title, media } = selection;
-      if (!title || !media) return { title: "Sin título" };
+      if (!title) return { title: "Sin título" };
       if (!media) return {title}
       return {
         title,
-        media: media[0],
+        media: media[0].imagenes[0],
       };
     },
   },

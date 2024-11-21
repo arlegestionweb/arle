@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { bannerSchema, coleccionDeMarcaSchema, contenidoSchema, imageSchema } from "./general";
+import {
+  bannerSchema,
+  coleccionDeMarcaSchema,
+  contenidoSchema,
+  imageSchema,
+} from "./general";
 
 export const inspiracionSchema = z.object({
   usarInspiracion: z.boolean().optional().nullable(),
@@ -13,21 +18,37 @@ const notasSchema = z.object({
   notasDeCorazon: z.array(z.string()).optional().nullable(),
 });
 
-
 const descripcionSchema = z.object({
   texto: z.string(),
-  imagen: imageSchema,
+  imagen: z
+    .object({
+      url: z.string().optional().nullable(),
+      alt: z.string().optional().nullable(),
+    })
+    .optional()
+    .nullable(),
+  subirImagen: z.boolean().optional().nullable(),
+  imagenExterna: z
+    .object({
+      url: z.string(),
+      alt: z.string(),
+    })
+    .optional()
+    .nullable(),
 });
 
 const perfumeVariantSchema = z.object({
   tamano: z.number(),
   precio: z.string(),
   precioConDescuento: z.string().optional().nullable(),
-  codigoDeReferencia: z.string(),
-  registroInvima: z.string(),
-  mostrarUnidadesDispobibles: z.boolean().optional().nullable(),
+  codigoDeReferencia: z.string().or(z.number()),
+  registroInvima: z.string().or(z.number()).optional().nullable(),
+  mostrarUnidadesDisponibles: z.boolean().optional().nullable(),
   unidadesDisponibles: z.number(),
-  etiqueta: z.string().optional().nullable(),
+  tag: z.string().optional().nullable(),
+  imagenes: z.array(
+    imageSchema
+  ),
 });
 
 export type TPerfumeVariant = z.infer<typeof perfumeVariantSchema>;
@@ -45,19 +66,13 @@ export const perfumePremiumSchema = z.object({
   titulo: z.string(),
   _type: z.literal("perfumePremium"),
   mostrarCredito: z.boolean().optional().nullable(),
-  imagenes: z.array(
-    z.object({
-      alt: z.string(),
-      url: z.string(),
-    })
-  ),
+  
   marca: z.string(),
   variantes: z.array(perfumeVariantSchema),
   parteDeUnSet: z.boolean().optional().nullable(),
   descripcion: z.string(),
   coleccionDeMarca: coleccionDeMarcaSchema,
 });
-
 
 export const perfumeLujoSchema = z.object({
   date: z.string(),
@@ -70,7 +85,6 @@ export const perfumeLujoSchema = z.object({
   _id: z.string(),
   parteDeUnSet: z.boolean().optional().nullable(),
   concentracion: z.string(),
-  imagenes: z.array(imageSchema),
   notasOlfativas: notasSchema,
   ingredientes: z.array(z.string()).optional().nullable(),
   mostrarCredito: z.boolean().optional().nullable(),

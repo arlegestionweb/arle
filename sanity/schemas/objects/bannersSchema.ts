@@ -2,6 +2,10 @@ import { defineArrayMember, defineField } from "sanity";
 import { videoSchema } from "./video";
 import { PiFlagBannerFill } from "react-icons/pi";
 
+type TParentWithImageOrVideo = {
+  imagenOVideo?: boolean;
+}
+
 export default defineField({
   name: "banners",
   title: "Banners",
@@ -12,6 +16,7 @@ export default defineField({
       title: "Banner",
       type: "object",
       icon: PiFlagBannerFill,
+      // @ts-ignore
       fields: [
         defineField({
           name: "titulo",
@@ -23,25 +28,47 @@ export default defineField({
           title: "Descripción",
           type: "text",
         }),
-        defineField({
-          name: "imagenOVideo",
-          title: "Imagen o Video",
-          type: "boolean",
-          initialValue: true,
-        }),
+        // defineField({
+        //   name: "imagenOVideo",
+        //   title: "Imagen o Video",
+        //   type: "boolean",
+        //   initialValue: true,
+        // }),
         defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
-          hidden: ({ parent }) => !parent?.imagenOVideo,
+          validation: (Rule) => Rule.required(),
+
+          // hidden: ({ parent }) => !parent?.imagenOVideo,
+          // validation: (Rule) =>
+          //   Rule.custom((field, context) => {
+          //     if (
+          //       (context.parent as TParentWithImageOrVideo).imagenOVideo &&
+          //       !field
+          //     ) {
+          //       return "La imagen es requerida cuando 'Imagen' está seleccionado";
+          //     }
+          //     return true;
+          //   }),
         }),
-        defineField({
-          name: "video",
-          title: "Video",
-          type: "object",
-          hidden: ({ parent }) => parent?.imagenOVideo,
-          fields: [videoSchema],
-        }),
+        // defineField({
+        //   name: "video",
+        //   title: "Video",
+        //   type: "object",
+        //   hidden: ({ parent }) => parent?.imagenOVideo,
+        //   validation: (Rule) =>
+        //     Rule.custom((field, context) => {
+        //       if (
+        //         !(context.parent as TParentWithImageOrVideo).imagenOVideo &&
+        //         !field
+        //       ) {
+        //         return "El video es requerido cuando 'Video' está seleccionado";
+        //       }
+        //       return true;
+        //     }),
+        //   fields: [videoSchema],
+        // }),
       ],
       preview: {
         select: {

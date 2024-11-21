@@ -13,6 +13,7 @@ const sedeQuery = `
   schedule,
   local,
   "imagenes": imagenes [] {
+    alt,
     "url": asset -> url
   },
   "video": video {
@@ -29,10 +30,12 @@ const sedesQuery = `*[_type == "nuestrasSedes"] [0] {
 
 const nuestrasSedesQuery = `*[_type == "nuestrasSedes"] [0] {
   titulo,
+  subtitulo,
   ${sedeQuery},
 }`;
 
 const imagenSchema = z.object({
+  alt: z.string(),
   url: z.string(),
 });
 
@@ -62,8 +65,11 @@ const sedeByTitleSchema = z.object({
 
 const nuestrasSedesSchema = z.object({
   titulo: z.string(),
+  subtitulo: z.string(),
   sedes: z.array(sedeSchema),
 });
+
+export type TNuestrasSedesSchema = z.infer<typeof nuestrasSedesSchema>;
 
 export const getNuestrasSedesContent = async () => {
   try {
@@ -74,7 +80,6 @@ export const getNuestrasSedesContent = async () => {
     if (!validatedData.success) {
       throw new Error(validatedData.error.message);
     }
-
     return validatedData.data;
     
   } catch (error) {

@@ -14,6 +14,7 @@ import { trabajaConNosotrosSchema } from "../schemas/pages/trabajaConNosotrosSch
 export default (S: StructureBuilder) => {
   const homePageListItem = S.listItem()
     .title(homeSchema.title || "")
+    // @ts-ignore
     .icon(homeSchema.icon)
     .child(
       S.editor()

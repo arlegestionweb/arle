@@ -3,6 +3,8 @@ import { SlugParent, defineArrayMember, defineField } from "sanity";
 import { PiFlagBannerFill } from "react-icons/pi";
 import { videoSchema } from "../video";
 import ColeccionDeMarcaInput from "@/sanity/components/SelectColeccionDeMarca";
+import { TParentWithSubirImagen } from "../../products/perfumes/lujo";
+import ImageUrl from "@/sanity/components/ImageUrl";
 
 export const generoSchema = defineField({
   name: "genero",
@@ -20,8 +22,8 @@ export const coleccionesDeMarcaSchema = defineField({
   type: "string",
   components: {
     input: ColeccionDeMarcaInput,
-  }
-})
+  },
+});
 
 export const bannersDeProductoSchema = defineField({
   name: "bannersDeProducto",
@@ -33,6 +35,7 @@ export const bannersDeProductoSchema = defineField({
       title: "Banner",
       type: "object",
       icon: PiFlagBannerFill,
+      // @ts-ignore
       fields: [
         defineField({
           name: "imagenOVideo",
@@ -72,7 +75,7 @@ export const bannersDeProductoSchema = defineField({
 });
 
 export const detallesLujoSchema = defineField({
-  name: "detalles",
+  name: "detallesGafaLujo",
   title: "Detalles",
   type: "object",
   group: "detalles",
@@ -87,6 +90,7 @@ export const detallesLujoSchema = defineField({
       name: "contenido",
       title: "Contenido",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "texto",
@@ -121,6 +125,7 @@ export const monturaDetallesSchema = defineField({
       name: "contenido",
       title: "Contenido",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "texto",
@@ -151,6 +156,7 @@ export const resenaSchema = defineField({
       name: "inspiracion",
       title: "Inspiraicón, historia u otros",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           type: "block",
@@ -161,11 +167,11 @@ export const resenaSchema = defineField({
 });
 
 export const etiquetaSchema = defineField({
-  name: "etiqueta",
+  name: "tag",
   title: "Etiqueta",
   type: "string",
   options: {
-    list: ["nuevo", "mas vendido", "ultimas unidades", "agotado", "super descuento"],
+    list: ["Nuevo", "Mas Vendido", "Super Descuento"],
   },
 });
 
@@ -184,17 +190,76 @@ export const inspiracionSchema = defineField({
       name: "contenido",
       title: "Contenido",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "resena",
           title: "Reseña",
           type: "text",
-          validation: (Rule) => Rule.required(),
+          // validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "subirImagen",
+          title: "Usar imagen externa?",
+          type: "boolean",
+          initialValue: false,
         }),
         defineField({
           name: "imagen",
           title: "Imagen",
           type: "imagenObject",
+          hidden: ({ parent }) =>
+            parent && (parent as TParentWithSubirImagen).subirImagen !== false,
+          validation: (Rule) =>
+            Rule.custom((field, context) => {
+              if (!(context.parent as {usarInspiracion: boolean})?.usarInspiracion) {
+                return true;
+              }
+              if (
+                !(context.parent as TParentWithSubirImagen).subirImagen &&
+                !field
+              ) {
+                return "La imagen es requerida cuando 'Subir imagen aca' está seleccionado";
+              }
+              return true;
+            }),        }),
+        defineField({
+          name: "imagenExterna",
+          description: "Usar imagen de un URL externo",
+          title: "Imagen Externa",
+          type: "object",
+          fields: [
+            defineField({
+              name: "url",
+              title: "URL",
+              type: "url",
+              components: {
+                input: ImageUrl,
+              },
+              // validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "alt",
+              title: "Texto alternativo",
+              type: "string",
+              // validation: (Rule) => Rule.required(),
+            }),
+          ],
+          hidden: ({ parent }) =>
+            parent && (parent as TParentWithSubirImagen).subirImagen === false,
+          validation: (Rule) =>
+            Rule.custom((field, context) => {
+              if (!(context.parent as {usarInspiracion: boolean})?.usarInspiracion) {
+                return true;
+              }
+              if (
+                (context.parent as TParentWithSubirImagen).subirImagen &&
+                !field
+              ) {
+                return "La URL es requerida cuando 'Subir imagen exter' no está seleccionado";
+              }
+              return true;
+            }),
         }),
       ],
       hidden: ({ parent }) => !parent?.usarInspiracion,
@@ -301,6 +366,6 @@ export const slugSchema = defineField({
         return slug.replace(/\s+/g, "-").slice(0, 200).replace("drafts.", "");
       }
       return "acaba de llenar los datos para llenar este campo automaticamente";
-    }
+    },
   },
 });

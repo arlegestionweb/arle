@@ -8,6 +8,7 @@ import HeroProduct from "@/app/_components/lujo/HeroProduct";
 import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { TPricing } from "../Product";
+import ProductViewer from "../ProductViewer";
 
 type TPerfumeLujoProps = {
   product: TPerfumeLujo;
@@ -24,69 +25,101 @@ const PerfumeLujo = ({
   setSelectedVariant,
   cantidad,
   setCantidad,
-  pricing
+  pricing,
 }: TPerfumeLujoProps) => {
+
+
+  const productObject = {
+    productName: `${product.marca} ${product.titulo}`,
+    productType: `${product._type}`,
+    productValue: `${selectedVariant.precio}`
+  }
+
+
   return (
     <>
+      <ProductViewer productObject={productObject} />
       <HeroProduct
         product={product}
-        images={product.imagenes}
+        images={selectedVariant.imagenes}
         selectedVariant={selectedVariant}
         setSelectedVariant={setSelectedVariant}
         cantidad={cantidad}
         setCantidad={setCantidad}
         pricing={pricing}
       />
-
-      <div className="bg-slate-900 w-screen flex justify-center">
-        <InfoSection
-          titulo="Descripción"
-          descripcion={product.descripcion.texto}
-          alt={product.descripcion.imagen.alt}
-          url={product.descripcion.imagen.url}
-          className="lg:max-w-mx pb-5"
-        />
-      </div>
+      <InfoSection
+        titulo="Descripción"
+        descripcion={product.descripcion.texto}
+        alt={product.descripcion.imagen?.alt || product.descripcion.imagenExterna?.alt}
+        url={product.descripcion.imagen?.url || product.descripcion.imagenExterna?.url}
+        className=""
+      />
 
       {product.inspiracion?.usarInspiracion && (
-        <div className="bg-color-bg-surface-1-default w-screen flex justify-center">
-          <InfoSection
-            titulo="Inspiración"
-            descripcion={product.inspiracion.contenido!.resena || ""}
-            alt={product.inspiracion.contenido!.imagen?.alt || ""}
-            url={product.inspiracion.contenido!.imagen?.url || ""}
-            labelType="light"
-            className="text-slate-900 lg:max-w-mx flex-row-reverse pb-5"
-          />
-        </div>
-      )}
-
-      <section className="bg-slate-900 w-screen flex justify-center">
         <InfoSection
           titulo="Inspiración"
-          DesciptionComp={
-            <DetallesProducto
-              detalles={{
-                notasOlfativas: {
-                  notasDeBase: product.notasOlfativas.notasDeBase || "",
-                  notasDeSalida: product.notasOlfativas.notasDeSalida || "",
-                  familiaOlfativa: product.notasOlfativas.familiaOlfativa || "",
-                  notasDeCorazon: product.notasOlfativas.notasDeCorazon || "",
-                },
-                ingredientes: product.ingredientes || [],
-              }}
-            />
+          descripcion={product.inspiracion.contenido!.resena || ""}
+          alt={
+            !product.inspiracion.contenido?.subirImagen
+              ? ("imagen" in product.inspiracion.contenido! && product.inspiracion.contenido!.imagen?.alt)
+                ? product.inspiracion.contenido!.imagen.alt
+                : undefined
+              : (product.inspiracion.contenido!.imagenExterna.alt)
+                ? product.inspiracion.contenido!.imagenExterna.alt
+                : undefined
           }
-          ImageComp={
+          url={
+            !product.inspiracion.contenido?.subirImagen
+              ? ("imagen" in product.inspiracion.contenido! && product.inspiracion.contenido!.imagen?.url)
+                ? product.inspiracion.contenido!.imagen.url
+                : undefined
+              : (product.inspiracion.contenido!.imagenExterna.url)
+                ? product.inspiracion.contenido!.imagenExterna.url
+                : undefined
+          }
+          labelType="light"
+          className="lg:flex-row-reverse"
+        />
+      )}
+      <InfoSection
+        titulo="Inspiración"
+        labelType={product.inspiracion?.usarInspiracion ? "dark" : "light"}
+        DescriptionComp={
+          <DetallesProducto
+            theme={product.inspiracion?.usarInspiracion ? "dark" : "light"}
+            detalles={{
+              notasOlfativas: {
+                familiaOlfativa: product.notasOlfativas.familiaOlfativa || "",
+                notasDeSalida: product.notasOlfativas.notasDeSalida?.toString().replaceAll(",",", ") || "",
+                notasDeCorazon: product.notasOlfativas.notasDeCorazon?.toString().replaceAll(",",", ") || "",
+                notasDeBase: product.notasOlfativas.notasDeBase?.toString().replaceAll(",",", ") || "",
+              },
+              ingredientes: {
+                ingredientes: product.ingredientes?.join(", ") || "",
+              },
+              especificaciones: {
+                género: product.genero.charAt(0).toUpperCase() + product.genero.slice(1) || "",
+                tamaño: selectedVariant.tamano.toString() + "ml" || "",
+                concentración: product.concentracion || "",
+                paísDeOrigen: product.paisDeOrigen || "",
+                ...(selectedVariant.registroInvima ? {
+                  registroInvima: selectedVariant.registroInvima,
+                } : {})
+              }
+            }}
+          />
+        }
+        ImageComp={
+          product.banners ?
             <ProductSlide
               imageVideoProducts={product.banners || []}
-              className="max-h-[377px] w-full"
+              className="w-full h-[60vw] md:max-h-[350px]"
               isLink={false}
-            />
-          }
-          className="w-full  lg:max-w-mx"
-        />
-      </section>
+            /> :
+            null
+        }
+      />
 
       <section className="px-4 py-6 lg:hidden">
         <NuestrasComprasIncluyen />

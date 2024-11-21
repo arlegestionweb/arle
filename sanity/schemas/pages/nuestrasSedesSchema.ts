@@ -10,11 +10,19 @@ export const nuestrasSedesSchema = defineType({
       name: "titulo",
       title: "Título",
       type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "subtitulo",
+      title: "Subtítulo",
+      type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "sedes",
       title: "Sedes",
       type: "array",
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "sede",
@@ -57,6 +65,7 @@ export const sedeSchema = defineType({
       name: "ciudad",
       title: "Ciudad",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "ciudad" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -89,11 +98,26 @@ export const sedeSchema = defineType({
       title: "Imágenes",
       type: "array",
       validation: (Rule) => Rule.required(),
+      // @ts-ignore
       of: [
         defineArrayMember({
           name: "image",
           title: "Imagen",
           type: "image",
+          options: {
+            collapsible: false,
+          },
+        
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Texto Alternativo",
+              description: "Para buscadores de internet (SEO)",
+              type: "string",
+              hidden: ({ parent }) => !parent,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
         }),
       ],
     }),

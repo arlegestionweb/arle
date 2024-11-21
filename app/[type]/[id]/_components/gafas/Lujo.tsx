@@ -8,6 +8,7 @@ import NuestrasComprasIncluyen from "../NuestrasComprasIncluyen";
 import AddToCart from "../AddToCart";
 import { TPricing } from "../Product";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
+import ProductViewer from "../ProductViewer";
 
 type TGafaLujoProps = {
   product: TGafaLujo;
@@ -26,8 +27,17 @@ const GafaLujo = ({
   setCantidad,
   pricing,
 }: TGafaLujoProps) => {
+  // Testing redeployment
+
+  const productObject = {
+    productName: `${product.marca} ${product.modelo}`,
+    productType: `${product._type}`,
+    productValue: `${selectedVariant.precio}`
+  }
+
   return (
     <>
+      <ProductViewer productObject={productObject} />
       <HeroProduct
         product={product}
         images={selectedVariant.imagenes}
@@ -39,91 +49,169 @@ const GafaLujo = ({
       />
 
       {product.inspiracion.usarInspiracion && (
-        <section className="bg-slate-900 w-screen flex justify-center">
-          <InfoSection
-            titulo="Inspiración"
-            descripcion={product.inspiracion.contenido?.resena || ""}
-            alt={product.inspiracion.contenido?.imagen?.alt}
-            url={product.inspiracion.contenido?.imagen?.url}
-            className="w-full lg:w-mx"
-          />
-        </section>
-      )}
-
-      {product.detalles?.usarDetalles && (
-        <section className="bg-color-bg-surface-1-defaul w-screen flex justify-center">
-          <InfoSection
-            titulo="Detalles"
-            descripcion={product.detalles?.contenido?.texto || ""}
-            alt={product.detalles?.contenido?.imagen?.alt || ""}
-            url={product.detalles?.contenido?.imagen?.url || ""}
-            labelType={"light"}
-            className="w-full lg:w-mx flex-row-reverse"
-          />
-        </section>
-      )}
-
-      {product.monturaDetalles.usarDetalles && (
-        <section className=" bg-slate-900 w-screen flex justify-center">
-          <InfoSection
-            titulo="Detalles de Montura"
-            descripcion={product.monturaDetalles.contenido?.texto || ""}
-            alt={product.monturaDetalles.contenido?.imagen?.alt}
-            url={product.monturaDetalles.contenido?.imagen?.url}
-            className="w-full lg:w-mx"
-          />
-        </section>
-      )}
-
-      <section className="bg-color-bg-surface-1-defaul w-screen flex justify-center">
         <InfoSection
-          labelType={"light"}
           titulo="Inspiración"
-          DesciptionComp={
-            <DetallesProducto
-              theme="light"
-              detalles={{
-                especificaciones: {
-                  tipoDeGafa: product.especificaciones.tipoDeGafa,
-                  estiloDeGafa: product.especificaciones.estiloDeGafa,
-                  materialDeLente: product.especificaciones.lente.material,
-                  tipoDeLente: product.especificaciones.lente.tipo,
-                  queIncluye: product.especificaciones.queIncluye,
-                  formaDeLaMontura:
-                    product.especificaciones.montura.formaDeLaMontura,
-                  materialMontura:
-                    product.especificaciones.montura.materialMontura,
-                  materialVarilla:
-                    product.especificaciones.montura.materialVarilla,
-                  paisDeOrigen: product.especificaciones.paisDeOrigen,
-                },
-                garantia: {
-                  meses: product.garantia.meses + "",
-                  descripción: product.garantia.descripcion || "",
-                },
-              }}
-            />
+          descripcion={product.inspiracion.contenido?.resena || ""}
+          alt={
+            !product.inspiracion.contenido?.subirImagen
+              ? ("imagen" in product.inspiracion.contenido! && product.inspiracion.contenido!.imagen?.alt)
+                ? product.inspiracion.contenido!.imagen.alt
+                : undefined
+              : (product.inspiracion.contenido!.imagenExterna.alt)
+                ? product.inspiracion.contenido!.imagenExterna.alt
+                : undefined
           }
-          ImageComp={
-            <ProductSlide
-              imagesProduct={
-                (product.banners &&
-                  product.banners.map(
-                    element =>
-                      ({
-                        url: element.imagen?.url,
-                        alt: element.imagen?.alt,
-                      } as ProductImage)
-                  )) ||
-                []
-              }
-              className="max-h-[377px] w-full"
-              isLink={false}
-            />
+          url={
+            !product.inspiracion.contenido?.subirImagen
+              ? ("imagen" in product.inspiracion.contenido! && product.inspiracion.contenido!.imagen?.url)
+                ? product.inspiracion.contenido!.imagen.url
+                : undefined
+              : (product.inspiracion.contenido!.imagenExterna.url)
+                ? product.inspiracion.contenido!.imagenExterna.url
+                : undefined
           }
-          className="w-full lg:max-w-mx flex-row-reverse"
+          className=""
         />
-      </section>
+      )}
+      
+      {
+      product.detallesGafaLujo?.usarDetalles && (
+        <InfoSection
+          titulo="Detalles"
+          descripcion={product.detallesGafaLujo?.contenido?.texto || ""}
+          alt={product.detallesGafaLujo?.contenido?.imagen?.alt || ""}
+          url={product.detallesGafaLujo?.contenido?.imagen?.url || ""}
+          labelType={product.inspiracion.usarInspiracion ? "light" : "dark"}
+          className={product.inspiracion.usarInspiracion ? "lg:flex-row-reverse" : ""}
+        />
+      )}
+
+      {product.monturaDetalles?.usarDetalles && (
+        <InfoSection
+          titulo="Detalles de Montura"
+          descripcion={product.monturaDetalles.contenido?.texto || ""}
+          alt={product.monturaDetalles.contenido?.imagen?.alt || ""}
+          url={product.monturaDetalles.contenido?.imagen?.url}
+          labelType={
+            product.inspiracion.usarInspiracion &&
+              !product.detallesGafaLujo?.usarDetalles
+              ? "light"
+              : !product.inspiracion.usarInspiracion &&
+                product.detallesGafaLujo?.usarDetalles
+                ? "light"
+                : "dark"
+          }
+          className={product.inspiracion.usarInspiracion &&
+            !product.detallesGafaLujo?.usarDetalles
+            ? "lg:flex-row-reverse"
+            : !product.inspiracion.usarInspiracion &&
+              product.detallesGafaLujo?.usarDetalles
+              ? "lg:flex-row-reverse"
+              : ""}
+        />
+      )}
+
+      <InfoSection
+        labelType={
+          !product.inspiracion.usarInspiracion &&
+            !product.detallesGafaLujo?.usarDetalles &&
+            !product.monturaDetalles?.usarDetalles
+            ? "dark"
+            : product.inspiracion.usarInspiracion &&
+              product.detallesGafaLujo?.usarDetalles &&
+              !product.monturaDetalles?.usarDetalles
+              ? "dark"
+              : product.inspiracion.usarInspiracion &&
+                !product.detallesGafaLujo?.usarDetalles &&
+                product.monturaDetalles?.usarDetalles
+                ? "dark"
+                : !product.inspiracion.usarInspiracion &&
+                  product.detallesGafaLujo?.usarDetalles &&
+                  product.monturaDetalles?.usarDetalles
+                  ? "dark"
+                  : "light"
+        }
+        titulo="Inspiración"
+        DescriptionComp={
+          <DetallesProducto
+            theme={
+              !product.inspiracion.usarInspiracion &&
+                !product.detallesGafaLujo?.usarDetalles &&
+                !product.monturaDetalles?.usarDetalles
+                ? "dark"
+                : product.inspiracion.usarInspiracion &&
+                  product.detallesGafaLujo?.usarDetalles &&
+                  !product.monturaDetalles?.usarDetalles
+                  ? "dark"
+                  : product.inspiracion.usarInspiracion &&
+                    !product.detallesGafaLujo?.usarDetalles &&
+                    product.monturaDetalles?.usarDetalles
+                    ? "dark"
+                    : !product.inspiracion.usarInspiracion &&
+                      product.detallesGafaLujo?.usarDetalles &&
+                      product.monturaDetalles?.usarDetalles
+                      ? "dark"
+                      : "light"
+            }
+            detalles={{
+              especificaciones: {
+                tipoDeGafa: product.especificaciones.tipoDeGafa,
+                estiloDeGafa: product.especificaciones.estiloDeGafa,
+                materialDeLente: selectedVariant.lente.material,
+                tipoDeLente: selectedVariant.lente.tipo,
+                talla: selectedVariant.talla || "",
+                queIncluye: product.especificaciones.queIncluye || "",
+                formaDeLaMontura:
+                  product.especificaciones.montura.formaDeLaMontura,
+                materialMontura:
+                  product.especificaciones.montura.materialMontura,
+                materialVarilla:
+                  product.especificaciones.montura.materialVarilla,
+                paisDeOrigen: product.especificaciones.paisDeOrigen,
+              },
+              garantia: {
+                meses: product.garantia.meses + "",
+                descripción: product.garantia.descripcion || "",
+              },
+            }}
+          />
+        }
+        ImageComp={
+          product.banners ? (
+            <ProductSlide
+              // imagesProduct={(product.banners &&
+              //   product.banners.map(
+              //     (element) => ({
+              //       url: element.imagen?.url,
+              //       alt: element.imagen?.alt,
+              //     } as ProductImage)
+              //   )) ||
+              //   []}
+              imageVideoProducts={product.banners}
+              className="w-full h-[60vw] max-h-[350px]"
+              isLink={false} />
+          ) : (
+            null
+          )
+        }
+        className={!product.inspiracion.usarInspiracion &&
+          !product.detallesGafaLujo?.usarDetalles &&
+          !product.monturaDetalles?.usarDetalles
+          ? ""
+          : product.inspiracion.usarInspiracion &&
+            product.detallesGafaLujo?.usarDetalles &&
+            !product.monturaDetalles?.usarDetalles
+            ? ""
+            : product.inspiracion.usarInspiracion &&
+              !product.detallesGafaLujo?.usarDetalles &&
+              product.monturaDetalles?.usarDetalles
+              ? ""
+              : !product.inspiracion.usarInspiracion &&
+                product.detallesGafaLujo?.usarDetalles &&
+                product.monturaDetalles?.usarDetalles
+                ? ""
+                : "lg:flex-row-reverse"}
+      />
       <section className="px-4 py-6 lg:hidden">
         <NuestrasComprasIncluyen />
       </section>
@@ -135,7 +223,6 @@ const GafaLujo = ({
         selectedVariant={selectedVariant}
         pricing={pricing}
       />
-
     </>
   );
 };

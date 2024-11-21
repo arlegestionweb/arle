@@ -23,6 +23,7 @@ export const ventaSchema = defineType({
       name: "cliente",
       title: "Cliente",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "nombre",
@@ -62,6 +63,7 @@ export const ventaSchema = defineType({
       name: "productos",
       title: "Productos",
       type: "array",
+      // @ts-ignore
       of: [
         {
           type: "reference",
@@ -81,6 +83,7 @@ export const ventaSchema = defineType({
       name: "pago",
       title: "Pago",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "metodo",

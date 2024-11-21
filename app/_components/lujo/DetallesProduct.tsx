@@ -1,14 +1,15 @@
 "use client";
 import { cn, convertirCamelCaseATitulo } from "@/app/_lib/utils";
-import React, { useState } from "react";
+import { Fragment, useState } from "react";
 
 type DetallesProductoProps = {
   detalles?: {
     [key: string]:
+      | number
       | string
       | string[]
       | {
-          [key: string]: string | string[];
+          [key: string]: number | string | string[];
         };
   };
   theme?: "dark" | "light";
@@ -31,14 +32,14 @@ const DetallesProducto = ({
   };
   return (
     <section className="w-full h-full">
-      <nav className="no-scrollbar lg:pt-4 flex md:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full">
+      <nav className="no-scrollbar flex justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full">
         {detalles &&
           Object.keys(detalles).map((detalle, index) => (
             <h4
               key={detalle + index + Math.random()}
               onClick={() => handleSectionChange(detalle)}
               className={cn(
-                `px-4 py-2 border-b-2  whitespace-nowrap cursor-pointer`,
+                `px-4 py-1 border-b-2  whitespace-nowrap cursor-pointer`,
                 theme == "dark" ? "border-zinc-700" : "border-zinc-200",
                 activeSection === detalle &&
                   `${theme == "dark" ? "border-white" : "border-slate-800"}`
@@ -57,7 +58,6 @@ const DetallesProducto = ({
           Object.keys(detalles).map((detalle, index) => {
             let arrDetalles: JSX.Element[] = [];
 
-            // console.log(detalles[detalle]);
             if (typeof detalles[detalle] === "string") {
               arrDetalles.push(
                 <p className=" w-full text-lg font-normal font-tajawal leading-snug">
@@ -80,16 +80,16 @@ const DetallesProducto = ({
                 <>
                   {Object.keys(detalles[detalle]).map(object => (
                     <section key={index + object + Math.random()}>
-                      <div className="pb-5">
+                      <div className="pb-3">
                         <h4 className="w-full text-lg font-bold font-tajawal leading-snug">
-                          {convertirCamelCaseATitulo(object)}
+                          {object === "queIncluye" ? "¿Qué incluye?" :convertirCamelCaseATitulo(object)}
                         </h4>
-                        <p className="w-full text-lg font-normal font-tajawal leading-snug">
+                        <p className="w-full text-lg font-normal font-tajawal leading-snug text-justify">
                           {Array.isArray((detalles[detalle] as any)[object])
                             ? (
                                 detalles[detalle] as { [key: string]: string[] }
-                              )[object].map(obj => <span key={obj}>{obj}</span>)
-                            : (detalles[detalle] as any)[object]}
+                              )[object].map(obj => <span key={obj}>{obj}{", "}</span>)
+                            : object === "descripción" || object ===  "ingredientes" ? `${(detalles[detalle] as any)[object]}` : `${(detalles[detalle] as any)[object]}.`}
                         </p>
                       </div>
                     </section>
@@ -99,13 +99,13 @@ const DetallesProducto = ({
             }
 
             return (
-              <React.Fragment key={index + "-" + Math.random()}>
+              <Fragment key={index + "-" + Math.random()}>
                 {arrDetalles.map(elementDetalle => (
-                  <React.Fragment key={index + "-" + Math.random()}>
+                  <Fragment key={index + "-" + Math.random()}>
                     {detalle == activeSection && elementDetalle}
-                  </React.Fragment>
+                  </Fragment>
                 ))}
-              </React.Fragment>
+              </Fragment>
             );
           })}
       </section>

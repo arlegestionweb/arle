@@ -15,22 +15,22 @@ export const codigoDeDescuentosSchema = defineType({
       title: "Porcentaje",
       type: "number",
     }),
-    defineField({
-      name: "duracion",
-      title: "Duración",
-      type: "object",
-      fields: [
-        defineField({
-          name: "inicio",
-          title: "Inicio",
-          type: "datetime",
-        }),
-        defineField({
-          name: "fin",
-          title: "Fin",
-          type: "datetime",
-        }),
-      ],
-    })
+    // defineField({
+    //   name: "duracion",
+    //   title: "Duración",
+    //   type: "object",
+    //   fields: [
+    //     defineField({
+    //       name: "inicio",
+    //       title: "Inicio",
+    //       type: "datetime",
+    //     }),
+    //     defineField({
+    //       name: "fin",
+    //       title: "Fin",
+    //       type: "datetime",
+    //     }),
+    //   ],
+    // })
   ],
 });

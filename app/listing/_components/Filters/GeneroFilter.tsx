@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const GeneroFilter = () => {
   const searchParams = useSearchParams();
-  const options = ["unisex", "mujer", "hombre"];
+  const options = [ "mujer", "hombre", "unisex"];
   const [checkedState, setCheckedState] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {

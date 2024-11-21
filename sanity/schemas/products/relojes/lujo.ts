@@ -30,6 +30,7 @@ export const relojesLujoSchema = defineType({
       name: "marca",
       title: "Marca",
       type: "reference",
+      // @ts-ignore
       to: [{ type: "marca" }],
       validation: (Rule) => Rule.required(),
     }),

@@ -1,11 +1,11 @@
 import {
   TProduct,
+  getBannersByBrands,
   getListingInitialLoadContent,
   zodCollectionsWithoutProducts,
 } from "@/sanity/queries/pages/listingQueries";
 import Productos from "./_components/Productos";
 import Colecciones from "../_components/Colecciones";
-// import Banner from "../_components/homepage/Banner";
 import Filters, { TSortingOption } from "./_components/Filters/index";
 import { getAllColeccionesDeMarca, getAllMarcas } from "../_lib/utils";
 import { TRelojVariant } from "@/sanity/queries/pages/zodSchemas/reloj";
@@ -13,30 +13,87 @@ import { TPerfumeVariant } from "@/sanity/queries/pages/zodSchemas/perfume";
 import { TVarianteGafa } from "@/sanity/queries/pages/zodSchemas/gafas";
 import Banner from "../_components/homepage/Banner";
 import { colombianPriceStringToNumber } from "@/utils/helpers";
-import { unstable_noStore as noStore } from 'next/cache';
 import Main from "../_components/Main";
 import { Metadata } from "next";
-import { zodHomeSectionSchema } from "@/sanity/queries/pages/homepageQuery";
+import { unstable_noStore as noStore } from "next/cache";
 
-// export const revalidate = 10; // revalidate at most every hour
+const sortingFunctions: Record<
+  TSortingOption["value"],
+  (a: TProduct, b: TProduct) => number
+> = {
+  recientes: (a, b) => {
+    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
+    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
 
+    if (aIsOutOfStock && !bIsOutOfStock) return 1;
+    if (!aIsOutOfStock && bIsOutOfStock) return -1;
 
-const sortingFunctions: Record<TSortingOption['value'], (a: TProduct, b: TProduct) => number> = {
-  recientes: (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  },
   precio_mayor_menor: (a, b) => {
-    const highestPriceA = Math.max(...a.variantes.map(variant => colombianPriceStringToNumber(variant.precio)));
-    const highestPriceB = Math.max(...b.variantes.map(variant => colombianPriceStringToNumber(variant.precio)));
+    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
+    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
+
+    if (aIsOutOfStock && !bIsOutOfStock) return 1;
+    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+
+    const highestPriceA = Math.max(
+      ...a.variantes.map(variant => {
+        const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+        const precio = colombianPriceStringToNumber(variant.precio);
+        return precioConDescuento > 0 ? precioConDescuento : precio;
+      })
+    );
+    const highestPriceB = Math.max(
+      ...b.variantes.map(variant => {
+          const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+          const precio = colombianPriceStringToNumber(variant.precio);
+          return precioConDescuento > 0 ? precioConDescuento : precio;
+        })
+    );
+
     return highestPriceB - highestPriceA;
   },
   price_menor_mayor: (a, b) => {
-    const lowestPriceA = Math.min(...a.variantes.map(variant => colombianPriceStringToNumber(variant.precio)));
-    const lowestPriceB = Math.min(...b.variantes.map(variant => colombianPriceStringToNumber(variant.precio)));
+    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
+    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
+
+    if (aIsOutOfStock && !bIsOutOfStock) return 1;
+    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+
+    const lowestPriceA = Math.min(
+      ...a.variantes.map(variant => {
+        const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+        const precio = colombianPriceStringToNumber(variant.precio);
+        return precioConDescuento > 0 ? precioConDescuento : precio;
+      })
+    );
+    const lowestPriceB = Math.min(
+      ...b.variantes.map(variant => {
+        const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+        const precio = colombianPriceStringToNumber(variant.precio);
+        return precioConDescuento > 0 ? precioConDescuento : precio;
+      })
+    );
+
     return lowestPriceA - lowestPriceB;
-  }
+  },
+  aleatorio: (a, b) => {
+    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
+    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
+
+    if (aIsOutOfStock && !bIsOutOfStock) return 1;
+    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+
+    if (a._id < b._id) return -1;
+    if (a._id > b._id) return 1;
+    return 0; // Si los _id son iguales
+  },
 };
+
 export const metadata: Metadata = {
-  title: 'Arlé | Productos',
-}
+  title: "ARLÉ | Productos",
+};
 
 const Listing = async ({
   searchParams,
@@ -45,8 +102,10 @@ const Listing = async ({
     [key: string]: string | string[] | undefined;
   };
 }) => {
-  noStore();
+  noStore()
+
   const pageContent = await getListingInitialLoadContent();
+
 
   // GENERAL PARAMS
 
@@ -55,19 +114,19 @@ const Listing = async ({
   if (!(sortSeleccionado in sortingFunctions)) {
     throw new Error(`Invalid sort option: ${sortSeleccionado}`);
   }
-  
+
   const lineaSeleccionada = searchParams.linea as string;
   const coleccionSeleccionada = searchParams.coleccion as string;
   const tipoDeProductoSeleccionado = searchParams.type as string;
   const campoDeBusquedaSeleccionado = searchParams.search as string;
   const generoSeleccionado = searchParams.genero as string;
-  
+
   const marcasSeleccionadas = searchParams.marcas
     ? Array.isArray(searchParams.marcas)
       ? searchParams.marcas
       : (searchParams.marcas as string)
           .split("&")
-          .map((marca) => marca.trim())
+          .map((marca) => marca.trim().replace(" AND "," & "))
           .filter((marca) => marca !== "")
     : [];
 
@@ -208,15 +267,6 @@ const Listing = async ({
           .filter((color) => color !== "")
     : [];
 
-  // console.log({
-  //   tiposDeGafasSeleccionadas,
-  //   estilosDeGafasSeleccionadas,
-  //   materialesDeLasMonturasSeleccionadas,
-  //   coloresDeLasMonturasSeleccionados,
-  //   coloresDeLosLentesSeleccionados,
-  //   formasDeLasMonturasSeleccionadas
-  // });
-
   // PERFUME PARAMS
   const tamanosDePerfumeSeleccionados = searchParams.tamanosDePerfume
     ? Array.isArray(searchParams.tamanosDePerfume)
@@ -255,12 +305,12 @@ const Listing = async ({
           .filter((set) => set !== "")
     : [];
 
-  const colecciones = pageContent?.colecciones.filter(
-    coleccion => !!coleccion.productos
+  const colecciones = pageContent?.colecciones?.filter(
+    (coleccion) => !!coleccion.productos
   );
 
   const coleccionContent = colecciones?.find(
-    coleccion => coleccion.titulo === coleccionSeleccionada
+    (coleccion) => coleccion.titulo === coleccionSeleccionada
   );
 
   if (!pageContent?.relojes && !pageContent?.perfumes && !pageContent?.gafas) {
@@ -323,7 +373,8 @@ const Listing = async ({
       ((producto: TProduct) =>
         generoSeleccionado === "todos"
           ? true
-          : producto.genero.toLowerCase().includes(generoSeleccionado)),
+          : producto.genero.toLowerCase().includes(generoSeleccionado) ||
+            producto.genero.toLowerCase() === "unisex"),
     marcasSeleccionadas.length > 0 &&
       ((producto: TProduct) =>
         marcasSeleccionadas.includes("todas")
@@ -335,18 +386,22 @@ const Listing = async ({
 
     selectedMinPrice &&
       ((producto: TProduct) =>
-        producto.variantes.some(
-          (variant) =>
-            Number(variant.precio.split(".").join("")) >=
-            Number(selectedMinPrice)
-        )),
+        producto.variantes.some((variant) => {
+            const precio = colombianPriceStringToNumber(variant.precio);
+            const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+            const precioFinal = precioConDescuento > 0 ? precioConDescuento : precio;
+            const selectedMinPrecio = Number(selectedMinPrice);
+            return precioFinal >= selectedMinPrecio;
+        })),
 
     selectedMaxPrice &&
       ((producto: TProduct) =>
         producto.variantes.some((variant) => {
-          const precio = Number(variant.precio.split(".").join(""));
+          const precio = colombianPriceStringToNumber(variant.precio);
+          const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+          const precioFinal = precioConDescuento > 0 ? precioConDescuento : precio;
           const selectedMaxPrecio = Number(selectedMaxPrice);
-          return precio <= selectedMaxPrecio;
+          return precioFinal <= selectedMaxPrecio;
         })),
 
     selectedColeccionesDeMarca.length > 0 &&
@@ -594,13 +649,12 @@ const Listing = async ({
             )),
   ].filter(Boolean);
 
-  const filteredProducts = productos?.filter(producto =>
-    filters.every(filter => typeof filter === "function" && filter(producto))
+  const filteredProducts = productos?.filter((producto) =>
+    filters.every((filter) => typeof filter === "function" && filter(producto))
   );
-  // console.log({ filteredProducts });
   const newFilteredProducts = filteredProducts;
 
-  const marcas = getAllMarcas(filteredProducts);
+  const marcas = await getAllMarcas(filteredProducts);
 
   const relojes = newFilteredProducts.filter(
     (p) => p._type === "relojesLujo" || p._type === "relojesPremium"
@@ -818,42 +872,55 @@ const Listing = async ({
     ) as string[],
   };
 
-  // console.log({ relojes, relojFilters });
-
   const coleccionesDeMarca = getAllColeccionesDeMarca(filteredProducts);
 
-  const sortedProducts = [...filteredProducts]?.sort(sortingFunctions[sortSeleccionado as TSortingOption['value']]);
+  const sortedProducts = [...filteredProducts]?.sort(
+    sortingFunctions[sortSeleccionado as TSortingOption["value"]]
+  );
 
-  const parsedCollections = zodCollectionsWithoutProducts.safeParse(colecciones);
+  const parsedCollections =
+    zodCollectionsWithoutProducts.safeParse(colecciones);
+
+  //Banners por marcas
+
+  const bannersByBrand = await getBannersByBrands(marcasSeleccionadas);
+  const filteredBanners = bannersByBrand?.filter(brand => brand.banners)
 
   return (
-    <Main extraClasses=" lg:mb-[100vh] bg-color-bg-surface-0-default min-h-screen pt-[60px]">
-      <Banner
-        banners={pageContent.listingContent.banners}
-        className="h-[32vh] pt-0"
-      />
-
-      {!coleccionSeleccionada ? (
+    <Main extraClasses=" lg:mb-[100vh] bg-white min-h-screen">
+      {marcasSeleccionadas?.length > 0 && filteredBanners?.length == 0
+        ? <></>
+        : pageContent.listingContent && (
+              <Banner
+                bannersByBrand={filteredBanners}
+                banners={pageContent.listingContent}
+                className="h-full max-w-[1600px] w-full"
+              />
+          )}
+      {!coleccionSeleccionada && colecciones && colecciones.length > 0 ? (
         <Colecciones
-          colecciones={parsedCollections.success ? parsedCollections.data : []}
+          colecciones={parsedCollections.success ? parsedCollections.data.sort((a, b): number => {
+            const dateA: number = new Date(a.date).getTime();
+            const dateB: number = new Date(b.date).getTime();
+            return dateB - dateA;
+          }) : []}
         />
-      ) : (
-        <h2 className="text-3xl font-bold capitalize">
-          Coleccion {coleccionSeleccionada}
+      ) : parsedCollections.success && parsedCollections.data.length > 0 ? (
+        <h2 className="text-2xl md:text-3xl w-full pt-3 font-jomolhari font-normal text-center capitalize">
+          Colección {coleccionSeleccionada}
         </h2>
-      )}
-      <section className="bg-color-bg-surface-1-default flex flex-col items-center">
-        <section className="max-w-mx w-full py-4 px-4 md:px-9 flex">
-        <Filters
-          areFiltersActive={areFiltersActive}
-          marcas={marcas}
-          coleccionesDeMarca={coleccionesDeMarca}
-          relojFilters={relojFilters}
-          perfumeFilters={perfumeFilters}
-          gafaFilters={gafasFilters}
+      ) : null}
+      <section className="bg-white flex flex-col items-center">
+        <section className="max-w-screen-xl w-full py-2 px-4 md:px-8 flex">
+          <Filters
+            areFiltersActive={areFiltersActive}
+            marcas={marcas}
+            coleccionesDeMarca={coleccionesDeMarca}
+            relojFilters={relojFilters}
+            perfumeFilters={perfumeFilters}
+            gafaFilters={gafasFilters}
           />
         </section>
-
         <section className="max-w-screen-xl w-full pb-6 px-4 md:px-9">
           {filteredProducts && filteredProducts.length > 0 ? (
             <Productos productos={sortedProducts} />

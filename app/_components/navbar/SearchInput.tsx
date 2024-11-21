@@ -8,45 +8,39 @@ import { cn, createUrl, makeNewParams } from "@/app/_lib/utils";
 type SearchInputProps = {
   className?: string;
   onSearch?: () => void;
+  mobile?: boolean;
+  mobileOpen?: boolean;
 }
 
-const SearchInput = ({ className, onSearch }: SearchInputProps) => {
+const SearchInput = ({ className, onSearch, mobile, mobileOpen }: SearchInputProps) => {
 
   const searchParams = useSearchParams();
   const value = searchParams.get("search");
   const { push: redirect } = useRouter();
 
-  const handleKeyDown = (event: React.ChangeEvent<HTMLInputElement>) => {
-    redirect(
-      createUrl("/listing", makeNewParams("search", event.currentTarget.value, searchParams))
-    );
-  };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const search = form.search as HTMLInputElement;
     onSearch && onSearch();
-    redirect(
-      createUrl("/listing", makeNewParams("search", search.value, searchParams)),
-      { scroll: false }
-    );
+    redirect(`/listing?search=${search.value.replace(' ','+')}`);
   };
+
   return (
-    <div className={cn("flex items-center justify-between h-9 w-2/5 rounded border pl-3 py-[6px]", className)}>
-      <form onSubmit={onSubmit} className="flex w-full h-full items-center">
+    <div className={cn(`flex items-center justify-between h-[36px] w-2/5 rounded border transition-all ${mobile && mobileOpen ? '' : mobile && 'border-color-bg-surface-0-default bg-color-bg-surface-0-default rounded-[0]'}`, className)}>
+      <form onSubmit={onSubmit} className={`${mobile && !mobileOpen ? 'pl-0' : 'pl-3'} flex w-full h-full items-center`}>
         <input
           // onKeyDown={handleKeyDown}
-          className="w-full focus-visible:outline-none placeholder:text-[#a19ca3] "
+          className={`w-full focus-visible:outline-none placeholder:text-gray-400 font-inter placeholder:font-light text-[16px] text-gray-700 ${mobile && !mobileOpen && 'hidden'}`}
           placeholder="Busca productos, marcas y más..."
           name="search"
           type="text"
           defaultValue={value || ""}
-          onChange={handleKeyDown}
         />
+      <button type="submit" className={`${mobile && mobileOpen ? '' : mobile && 'border-none'} border-l pl-2 pr-2 h-full`}>
+        <FiSearch className="w-[18px] h-[18px] stroke-gray-600"/> 
+      </button>
       </form>
-      <Link href={`/listing?search=${value}`} className="border-l pl-2 pr-3 h-full">
-        <FiSearch className="w-[18px] h-[18px] mt-[2px]"/> 
-      </Link>
     </div>
   );
 };

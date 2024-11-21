@@ -1,4 +1,4 @@
-import { defineType, defineField } from "sanity";
+import { defineType, defineField, Rule } from "sanity";
 
 export const descuentosSchema = defineType({
   name: "descuentos",
@@ -30,9 +30,10 @@ export const descuentosSchema = defineType({
       type: "array",
       validation: (Rule) =>
         Rule.required().min(1).error("At least one product is required"),
+      // @ts-ignore
       of: [
         {
-          validation: (Rule) =>
+          validation: (Rule: Rule) =>
             Rule.custom((productos: Array<{ _ref: string }> | undefined) => {
               if (!Array.isArray(productos)) {
                 return true; // Pass validation if productos is not an array
@@ -62,6 +63,7 @@ export const descuentosSchema = defineType({
       name: "duracion",
       title: "Duración",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "inicio",

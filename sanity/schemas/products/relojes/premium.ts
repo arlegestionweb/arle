@@ -18,6 +18,7 @@ export const relojesPremiumSchema = defineType({
       title: "Marca",
       type: "reference",
       group: "general",
+      // @ts-ignore
       to: [{ type: "marca" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -33,6 +34,7 @@ export const relojesPremiumSchema = defineType({
       group: "general",
       title: "Descripción",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
     variantesDeRelojesSchema,
     garantiaSchema,

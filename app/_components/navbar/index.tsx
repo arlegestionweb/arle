@@ -3,14 +3,14 @@ import { usePathname } from "next/navigation";
 import DesktopNavBar from "./desktop";
 import MobileNavBar from "./NavMobile";
 
-const Navbar = () => {
+const Navbar = ({marca}: {marca?: string | null}) => {
   const pathname = usePathname()
 
-  if (pathname.includes("admin")) return;
+  if (pathname.includes("admin") || pathname.includes("mass-uploads")) return;
   return (
     <>
-      <MobileNavBar className="fixed w-full md:hidden" />
-      <DesktopNavBar className="hidden w-full md:block" />
+      <MobileNavBar marca={marca} className="fixed w-full md:hidden" />
+      <DesktopNavBar marca={marca} className="hidden w-full md:block" />
     </>
   );
 };

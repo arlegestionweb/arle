@@ -1,14 +1,16 @@
 "use client";
 import { cn } from "@/app/_lib/utils";
-import Image from "next/image";
 import React, { useState } from "react";
 import CarouselProduct from "./CarouselProduct";
+import ImageModal from "../ImageModal";
+import { TImages } from "@/sanity/queries/pages/trabajaConNosotrosQueries";
+import ImageWrapper from "@/app/listing/_components/ImageWrapper";
 
 type GalleryProductProps = {
-  imagesProduct: {
+  imagesProduct: ({
     url: string;
     alt?: string | null | undefined;
-  }[];
+  })[]
   className?: string;
   orientation?: "vertical" | "horizontal";
 };
@@ -19,54 +21,71 @@ const GalleryProduct = ({
   orientation = "horizontal",
 }: GalleryProductProps) => {
   const [index, setIndex] = useState(0);
+  const [isImageOpen, setImageOpen] = useState(false);
 
-  const thumbnailElement = imagesProduct
-    .filter((img, idx) => {
-      if (idx < 6) {
-        return img;
-      }
-    })
-    .map((img, idx) => {
-      if (imagesProduct.length > 1) {
-        return (
-          <section
-            key={`${img.url}-${idx}`}
-            className="relative min-w-[80px] w-20 h-20 mr-3">
-            <Image
-              src={img.url}
-              alt={img.alt || "perfume"}
-              fill
-              onClick={() => setIndex(idx)}
-              className="object-cover fit object-center min-h-20"
-            />
-          </section>
-        );
-      }
-    });
+  const thumbnailElement = imagesProduct.map((img, idx) => {
+    if (imagesProduct.length > 1) {
+      return (
+        <section
+          key={`${img.url}-${idx}`}
+          className="relative min-w-[80px] w-20 h-20 mr-3"
+        >
+          <ImageWrapper
+            src={img.url}
+            alt={img.alt || "perfume"}
+            width={80}
+            height={80}
+            onClick={() => setIndex(idx)}
+            className="object-contain h-full w-full cursor-pointer"
+          />
+        </section>
+      );
+    }
+  });
 
+  const image = imagesProduct[index];
   return (
     <section
       className={cn(
-        "flex flex-col items-center",
-        orientation == "vertical" && "lg:flex-row-reverse items-start gap-2",
+        "flex flex-col items-center lg:mt-8",
+        orientation == "vertical" &&
+        "md:flex-row-reverse gap-2 md:px-20 md:mb-4 justify-center md:items-start md:pt-4",
         className
-      )}>
-      <div className={"relative w-full h-[377px] lg:h-[569px]"}>
-        <Image
+      )}
+    >
+      <ImageModal
+        closeImage={() => setImageOpen(false)}
+        images={imagesProduct as TImages}
+        index={index}
+        isImageOpen={isImageOpen}
+      />
+      <div
+        onClick={() => setImageOpen(true)}
+        className={cn(
+          "relative w-full aspect-square h-[370px] md:h-[377px] lg:h-[569px] cursor-zoom-in",
+          orientation == "vertical" && "md:w-1/2 lg:w-full"
+        )}
+      >
+        <ImageWrapper
           alt={imagesProduct[index].alt || ""}
-          src={imagesProduct[index].url}
-          fill
-          className="object-cover object-center"
+          src={image.url}
+          width={800}
+          height={800}
+          quality={90}
+          imageClassname="object-contain object-center h-full w-full"
         />
       </div>
-      <div className="no-scrollbar flex lg:justify-center justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">
+      <div className=" no-scrollbar flex max-w-[430px] justify-start overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full p-2 md:hidden">
         {thumbnailElement}
       </div>
       {imagesProduct.length != 1 && (
         <CarouselProduct
           setProduct={setIndex}
           imagesProduct={imagesProduct}
-          className={cn("hidden my-2 md:justify-center justify-start md:flex h-20", orientation == "vertical" && "lg:h-full lg:gap-2")}
+          className={cn(
+            "hidden my-2 md:justify-center justify-start md:flex h-20",
+            orientation == "vertical" && "md:h-full lg:h-auto md:gap-2"
+          )}
           isHorizontal={orientation != "vertical"}
         />
       )}

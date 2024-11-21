@@ -1,7 +1,11 @@
 import sanityClient from "@/sanity/sanityClient";
 import { z } from "zod";
 
-const allDiscountCodesQuery = `*[_type == "codigoDeDescuento" && duracion.inicio <= now() && duracion.fin >= now()]{
+// const allDiscountCodesQuery = `*[_type == "codigoDeDescuento" && duracion.inicio <= now() && duracion.fin >= now()]{
+//   codigo,
+//   porcentaje
+// }`;
+const allDiscountCodesQuery = `*[_type == "codigoDeDescuento"]{
   codigo,
   porcentaje
 }`;
@@ -18,8 +22,6 @@ const zodDiscountCodeSchema = z.array(zodDiscountObjectSchema)
 export const getAllDiscountCodes = async () => {
   try {
     const result = await sanityClient.fetch(allDiscountCodesQuery);
-
-    // console.log(result);
 
     const parsedResult = zodDiscountCodeSchema.safeParse(result);
 

@@ -1,43 +1,105 @@
 import Button from "@/app/_components/Button";
-import { FastShoppingCartIcon, ShoppingCartIcon } from "./Icons";
-import { cn } from "@/app/_lib/utils";
+import { cn, getOrSetExternalIdPixel } from "@/app/_lib/utils";
 import { TProduct } from "@/sanity/queries/pages/listingQueries";
 import { TVariant } from "@/sanity/queries/pages/zodSchemas/general";
 import { useCartStore } from "@/app/_components/cart/store";
 import { TPricing } from "./Product";
+import { LuShoppingCart } from "react-icons/lu";
+import { MdOutlinePayments } from "react-icons/md";
+import { addedToCartPixelView } from "@/app/_lib/pixelActions";
+import Script from "next/script";
 
 type PropsAddToCart = {
-  className?:string;
+  className?: string;
   product: TProduct;
   selectedVariant: TVariant;
   quantity: number;
   pricing: TPricing;
-}
+};
 
-const AddToCart = ({className, pricing, product, quantity, selectedVariant}:PropsAddToCart) => {
-  
-  const {addItem} = useCartStore();
+const AddToCart = ({
+  className,
+  pricing,
+  product,
+  quantity,
+  selectedVariant,
+}: PropsAddToCart) => {
+  const { addItem, toggleCart, toggleAddedToCartModal } = useCartStore();
 
-  const price = pricing.finalPrice;
 
-  const addToCart = (producto: TProduct, selectedVariant: TVariant, quantity: number = 1) => {
+  const addToCart = async (
+    producto: TProduct,
+    selectedVariant: TVariant,
+    quantity: number = 1
+  ) => {
     addItem({
       productId: producto._id,
-      variantId: selectedVariant.registroInvima,
-      price: price,
+      productName: `${product.marca} ${product._type === "gafasLujo" || product._type === "gafasPremium" || product._type === "relojesLujo" || product._type === "relojesPremium" ? product.modelo : product.titulo}`,
+      productCode: selectedVariant.codigoDeReferencia,
+      variantId: selectedVariant.codigoDeReferencia,
+      price: pricing.finalPrice,
       quantity,
       productType: producto._type,
       discountType: pricing.discountTypeUsed,
       originalPrice: pricing.precioSinDescuento,
     });
+    const productObject = {
+      productName : `${product.marca} ${product._id}`,
+      productType: `${product._type}`,
+      productValue: `${selectedVariant.precio}`
+    }
+    const externalId = getOrSetExternalIdPixel();
+    const savedData = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("shippingData") || "{}") : null;
+    const clientData = {
+      name: savedData.name as string,
+      email: savedData.email as string,
+      phone: savedData.phone as string
+    }
+    if(typeof window !== "undefined"){
+      const fbclid = localStorage.getItem("fbclid") || null;
+      addedToCartPixelView(productObject, clientData, externalId, fbclid);
+    } else {
+      addedToCartPixelView(productObject, clientData, externalId, null);
+    }
   };
+
   return (
-    <div className={cn("w-80 flex flex-col gap-2.5 sticky bottom-5 mx-auto items-center bg-color-bg-surface-1-default shadow py-2 px-2 my-2", className)}>
-      <Button onClick={() => addToCart(product, selectedVariant, quantity)} className="flex justify-center items-center w-full gap-2 px-3 py-2">
-        <ShoppingCartIcon /> Añadir al carrito
+    <div
+      className={cn(
+        "w-[90vw] max-w-lg lg:max-w-none flex flex-col gap-2.5 sticky bottom-5 items-center bg-white shadow py-2 px-2 z-50",
+        className
+      )}
+      >
+      {/* Addi Widget */}
+      {product.mostrarCredito && (
+        <>
+        <Script src="https://s3.amazonaws.com/widgets.addi.com/bundle.min.js" id="addi-widget" strategy="afterInteractive"></Script>
+      <div className="h-fit" dangerouslySetInnerHTML={{
+        __html: `
+        <addi-widget price="${pricing.finalPrice}" ally-slug="${process.env.ADDI_ALLY_SLUG}"></addi-widget>
+        `
+      }}></div>
+      </>
+    )}
+      <Button
+        disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false}
+        onClick={() => addToCart(product, selectedVariant, quantity)}
+        className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float "
+        >
+        <LuShoppingCart className="text-base" />
+        Añadir al Carrito
       </Button>
-      <Button labelType={"dark"} className="flex justify-center items-center w-full gap-2 px-3 py-2">
-        <FastShoppingCartIcon /> Compra rápida
+      <Button
+        disabled={selectedVariant.unidadesDisponibles <= 0 ? true : false}
+        labelType={"dark"}
+        onClick={() => {
+          addToCart(product, selectedVariant, quantity);
+          toggleCart();
+          toggleAddedToCartModal();
+        }}
+        className="w-full lg:max-w-sm flex justify-center items-center gap-2 button-float"
+      >
+        <MdOutlinePayments className="text-base" /> Compra Rápida
       </Button>
     </div>
   );

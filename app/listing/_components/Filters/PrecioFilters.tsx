@@ -9,12 +9,13 @@ const PrecioFilters = () => {
     <FilterSection
       title="Precio"
       active={!!searchParams.get("minPrice") || !!searchParams.get("maxPrice")}
+      initialOpen
     >
       <div className="flex gap-2 justify-between pt-2">
         <InputBox
           type="number"
           name="minPrice"
-          className="w-full px-3 py-1.5 font-inter text-black bg-white rounded border border-stone-300"
+          className="w-full px-3 py-1.5 font-inter text-sm text-black bg-white rounded border border-stone-300"
           placeholder="Mínimo"
           min={0}
           defaultValue={
@@ -26,7 +27,7 @@ const PrecioFilters = () => {
         <InputBox
           type="number"
           name="maxPrice"
-          className="w-full px-3 py-1.5 font-inter text-black bg-white rounded border border-stone-300"
+          className="w-full px-3 py-1.5 font-inter text-sm text-black bg-white rounded border border-stone-300"
           placeholder="Máximo"
           min={0}
           defaultValue={

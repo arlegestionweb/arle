@@ -32,6 +32,7 @@ export const gafasLujoSchema = defineType({
       title: "Marca",
       type: "reference",
       group: "general",
+      // @ts-ignore
       to: [{ type: "marca" }],
       validation: (Rule) => Rule.required(),
     }),
@@ -60,6 +61,7 @@ export const gafasLujoSchema = defineType({
       title: "Especificaciones",
       group: "detalles",
       type: "object",
+      // @ts-ignore
       fields: [
         defineField({
           name: "paisDeOrigen",
@@ -87,7 +89,6 @@ export const gafasLujoSchema = defineType({
           validation: (Rule) => Rule.required(),
         }),
         monturaSchema,
-        lenteSchema,
       ],
     }),
     variantesDeGafaLujoSchema,
