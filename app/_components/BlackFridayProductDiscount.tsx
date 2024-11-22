@@ -8,7 +8,7 @@ const BlackFridayProductDiscount = ({discountPercent}: {discountPercent: number}
 
   useEffect(() => {
     // Fecha fija: 22 de noviembre a la medianoche
-    const discountEndTime = new Date('2024-11-22T00:00:00').getTime();
+    const discountEndTime = new Date('2024-11-30T00:00:00').getTime();
 
     const intervalId = setInterval(() => {
       const now = new Date().getTime();
