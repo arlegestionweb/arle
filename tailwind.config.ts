@@ -34,6 +34,7 @@ const config: Config = {
   			beige: '#EDE7DE',
   			'arle-blue': '#101432',
   			'arle-beige': '#CBBBA0',
+				'arle-orange' : '#DD8712',
   			foreground: 'hsl(var(--foreground))',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
