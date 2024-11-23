@@ -7,7 +7,7 @@ const BlackFridayProductDiscount = ({discountPercent}: {discountPercent: number}
   const [timeRemaining, setTimeRemaining] = useState('');
 
   useEffect(() => {
-    // Fecha fija: 22 de noviembre a la medianoche
+    // Fecha fija: 30 de noviembre a la medianoche
     const discountEndTime = new Date('2024-11-30T00:00:00').getTime();
 
     const intervalId = setInterval(() => {
@@ -18,11 +18,12 @@ const BlackFridayProductDiscount = ({discountPercent}: {discountPercent: number}
         clearInterval(intervalId);
         setTimeRemaining('Discount has ended');
       } else {
-        const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24))
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        setTimeRemaining(`${hours}h ${minutes}m ${seconds}s`);
+        setTimeRemaining(`${days}días ${hours}h ${minutes}m ${seconds}s`);
       }
     }, 1000);
 
