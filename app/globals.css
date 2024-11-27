@@ -68,8 +68,6 @@ table, th, td, tr {
   }
 }
 
-
-
 @layer base {
   body {
     @apply bg-background;
@@ -154,6 +152,50 @@ table, th, td, tr {
   .dark-button{
     @apply py-1.5 text-gray-200 text-base font-inter font-medium bg-black w-full max-w-sm text-center hover:underline underline-offset-2  hover:bg-gray-900 disabled:hover:bg-black disabled:hover:no-underline disabled:opacity-70;
   }
+  .progress-circle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+  }
+  
+  .progress-circle::before,
+  .progress-circle::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    clip-path: inset(0 0 0 50%);
+    background-color: blue;
+  }
+  
+  .progress-circle::before {
+    animation: fill-left 5s linear infinite;
+  }
+  
+  .progress-circle::after {
+    transform: rotate(0deg);
+    animation: fill-right 5s linear infinite;
+  }
+}
+
+@keyframes fill-left {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes fill-right {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -174,3 +216,4 @@ input[type="number"] {
     @apply bg-background text-foreground;
   }
 }
+
