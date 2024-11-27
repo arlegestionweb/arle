@@ -33,7 +33,7 @@ const tajawal = Tajawal({
 });
 
 const inter = Inter({
-  weight: ["200", "300", "400", "500", "700"],
+  weight: ["200", "300", "400", "500", "700", "900"],
   subsets: ["latin"],
   variable: "--font-inter",
 });

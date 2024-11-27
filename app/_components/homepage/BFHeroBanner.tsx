@@ -94,17 +94,17 @@ const BFHeroBanner = ({ content, className, searchParams}: BannerProps) => {
   return (
     <section
       className={cn(
-        "h-[60svh] md:h-[65svh] lg:h-[75svh] overflow-hidden relative group flex-col-reverse lg:flex-row",
+        "h-[80svh] md:h-[65svh] lg:h-[75svh] overflow-hidden relative group flex flex-col-reverse lg:flex-row",
         className
       )}
     >
       <section
-        className="w-full lg:w-1/2 h-full  pl-5 sm:pl-8 flex justify-end"
+        className="w-full lg:w-1/2 lg:h-full py-20 pl-5 sm:pl-8 flex justify-end"
       >
         <div className="justify-center flex flex-col gap-6 max-w-screen-sm pr-4">
-          <h1 className="text-7xl font-jomolhari font-extrabold text-arle-blue">BLACK DAYS</h1>
+          <h1 className="text-7xl font-inter font-extrabold text-arle-blue">BLACK DAYS</h1>
           {/* <p>{timeRemaining}</p> */}
-          <p className="font-tajawal text-xl">Prepárate para las mejores ofertas del año. Encuentra productos de Lujo con garantía y descuentos increíbles.</p>
+          <p className="font-tajawal text-xl">Las mejores ofertas del año. Encuentra productos de Lujo garantizados con descuentos INCREÍBLES.</p>
           <div className="flex gap-8">
             <article className="flex flex-col w-24 items-center gap-2">
               <span className="h-24 w-24 border-4 border-arle-orange rounded-full flex items-center justify-center p-6">
@@ -135,11 +135,11 @@ const BFHeroBanner = ({ content, className, searchParams}: BannerProps) => {
       </section>
 
       <section
-        className="banner-scrollbar flex w-1/2 h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
+        className="banner-scrollbar flex w-full lg:w-1/2 h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory bg-blue-300"
         onScroll={handleScroll}
         ref={bannerRef}
       >
-        <div className="flex absolute z-20 bottom-9 m-auto left-0 right-0 justify-center py-2">
+        <div className="flex absolute z-20 bottom-9 m-auto left-0 lg:left-1/2 right-0 justify-center py-2">
         {content.banners.map((banner, index) => (
           <div
             key={index}
@@ -151,7 +151,7 @@ const BFHeroBanner = ({ content, className, searchParams}: BannerProps) => {
             onClick={() => changeScrollPosition(index)}
           />
         ))}
-      </div>
+        </div>
         {content.banners.map((banner, index) => (
             <React.Fragment key={index + (banner?.imagen?.url || "") }>
             {banner.imagen && banner.imagenOVideo ? (
