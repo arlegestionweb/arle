@@ -23,6 +23,7 @@ const ImageWrapper = ({ src, alt, height, width, quality, imageClassname, ...res
                 <source
                   sizes={`(max-width: 608px) ${width ? `${width}px` : `85vw`}, 608px`}
                   srcSet={`
+                    ${src}?fit=max&q=${quality || 80}&w=${width || 1920}&fm=webp 1280w,
                     ${src}?fit=max&q=${quality || 80}&w=1280&fm=webp 1280w,
                     ${src}?fit=max&q=${quality || 80}&w=640&fm=webp 640w,
                     ${src}?fit=max&q=${quality || 80}&w=320&fm=webp 320w,
@@ -31,7 +32,7 @@ const ImageWrapper = ({ src, alt, height, width, quality, imageClassname, ...res
                 />
       <img
         {...rest}
-        src={`${src}?fit=max&q=${quality || 80}&w=1280&fm=webp 1280w`}
+        src={`${src}?fit=max&q=${quality || 80}&w=${width || 1280}&fm=webp 1280w`}
         alt={alt || ""}
         height={height}
         width={width}

@@ -70,8 +70,8 @@ const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
                         src={banner.imagen.url}
                         alt={banner.imagen.alt || ""}
                         layout="fill"
-                        height={300}
-                        width={3000}
+                        height={400}
+                        width={3500}
                         quality={100}
                         gradientOff
                         imageClassName="object-cover object-center w-full h-full"
@@ -106,8 +106,8 @@ const Banner = ({ banners, bannersByBrand, className }: BannerProps) => {
                           src={banner.imagen.url}
                           alt={banner.imagen.alt || ""}
                           layout="fill"
-                          height={300}
-                          width={2000}
+                          height={400}
+                          width={35000}
                           quality={100}
                           gradientOff
                           imageClassName="object-cover object-top w-full h-full"
