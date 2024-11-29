@@ -211,8 +211,8 @@ const CardLayout = ({
               alt={
                 imgAlt
               }
-              width={250}
-              height={250}
+              width={500}
+              height={500}
               className="object-contain h-full w-full"
               />
           </section>
