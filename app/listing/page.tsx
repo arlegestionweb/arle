@@ -16,6 +16,7 @@ import { colombianPriceStringToNumber } from "@/utils/helpers";
 import Main from "../_components/Main";
 import { Metadata } from "next";
 import { unstable_noStore as noStore } from "next/cache";
+import BFCounterBanner from "../_components/BFCounterBanner";
 
 const sortingFunctions: Record<
   TSortingOption["value"],
@@ -891,11 +892,14 @@ const Listing = async ({
       {marcasSeleccionadas?.length > 0 && filteredBanners?.length == 0
         ? <></>
         : pageContent.listingContent && (
+            <>
               <Banner
                 bannersByBrand={filteredBanners}
                 banners={pageContent.listingContent}
                 className="h-full max-w-[1600px] w-full"
-              />
+                />
+              <BFCounterBanner />
+            </>
           )}
       {!coleccionSeleccionada && colecciones && colecciones.length > 0 ? (
         <Colecciones
