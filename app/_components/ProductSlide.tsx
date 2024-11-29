@@ -96,8 +96,8 @@ const ProductSlide = ({
                   <ImageWrapper
                     alt={image.alt || "product"}
                     src={image.url}
-                    width={250}
-                    height={250}
+                    width={500}
+                    height={500}
                     className={`absolute object-contain h-full w-full object-center`}
                   />
                 </Link>
@@ -109,8 +109,8 @@ const ProductSlide = ({
                   <ImageWrapper
                     alt={image.alt || "product"}
                     src={image.url}
-                    width={250}
-                    height={250}
+                    width={500}
+                    height={500}
                     className={`absolute object-contain h-full w-full object-center`}
                   />
                 </div>
@@ -131,8 +131,8 @@ const ProductSlide = ({
                   <ImageWrapper
                     alt={product.imagen?.alt || "product"}
                     src={product.imagen?.url || ""}
-                    width={250}
-                    height={250}
+                    width={500}
+                    height={500}
                     className={`object-contain w-full h-full object-center`}
                   />
               ) : (
