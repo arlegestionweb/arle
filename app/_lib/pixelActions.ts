@@ -77,8 +77,6 @@ export const pagePixelView = async (clientData: TClientData, externalId: string,
   const fbp = cookieStore.get('_fbp')?.value || null;
   const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
 
-  console.log({fbc});
-
   const userData: TUserData = {
     client_user_agent: userAgent,
     fbc: fbc,

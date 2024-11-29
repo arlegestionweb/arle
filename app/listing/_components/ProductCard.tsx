@@ -57,8 +57,6 @@ const ProductoCard = ({
     pricing.finalPrice = pricing.precioSinDescuento;
     pricing.discountTypeUsed = "none";
   }
-  
-  console.log({pricing});
 
   if (pricing.timedDiscountPrice) {
     pricing.finalPrice = pricing.timedDiscountPrice;
@@ -181,8 +179,6 @@ const CardLayout = ({
       : (product as TGafa).variantes[0].imagenes[0].alt!;
 
   const discountPercent = pricing.precioConDescuento ? Math.round((1 - (pricing.precioConDescuento / pricing.precioSinDescuento)) * 100) : null
-
-  console.log({discountPercent})
 
   return (
     <>
