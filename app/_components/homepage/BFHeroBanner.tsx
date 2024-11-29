@@ -110,10 +110,10 @@ const BFHeroBanner = ({ content, className, searchParams}: BannerProps) => {
         className="w-full lg:w-1/2 lg:h-full py-10 lg:py-20 pl-5 sm:pl-8 flex justify-end"
       >
         <div className="justify-center flex flex-col gap-6 lg:max-w-screen-sm pr-4">
-          <h1 className="text-5xl md:text-7xl font-inter font-extrabold text-arle-blue">BLACK DAYS</h1>
+          <h1 className="text-5xl md:text-7xl font-tajawal font-extrabold text-arle-blue">BLACK FRIDAY</h1>
           {/* <p>{timeRemaining}</p> */}
           <p className="font-tajawal text-base md:text-xl">Las mejores ofertas del año. Encuentra productos de Lujo garantizados con descuentos INCREÍBLES.</p>
-          <div className="flex gap-2 md:gap-8">
+          <div className="flex gap-1 xs:gap-2 md:gap-8 w-full justify-center md:justify-start">
             <article className="flex flex-col w-20 md:w-24 items-center gap-2">
               <span className="h-20 w-20 md:h-24 md:w-24 border-4 border-slate-300 bg-arle-blue rounded-full flex items-center justify-center p-4 md:p-6">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="Time-Clock-Fire--Streamline-Ultimate"><desc>Time Clock Fire Streamline Icon: https://streamlinehq.com</desc><g id="Time-Clock-Fire--Streamline-Ultimate.svg"><path d="M22.53 10.1a8 8 0 0 0 -2.43 -5.64 1 1 0 0 0 -1 -0.19 1 1 0 0 0 -0.63 0.84A1.35 1.35 0 0 1 17 6.31a4.39 4.39 0 0 1 -0.87 -4.82 1 1 0 0 0 -0.9 -1.49c-4.31 0 -7.55 2.41 -8.5 6.21a1.53 1.53 0 0 1 -1 -1.15 1 1 0 0 0 -1.63 -0.62A7.41 7.41 0 0 0 1.53 11a6.35 6.35 0 0 0 3.15 4.7 0.25 0.25 0 0 0 0.22 0 0.24 0.24 0 0 0 0.15 -0.16 7.71 7.71 0 0 1 0.54 -1.36 0.25 0.25 0 0 0 -0.08 -0.33 4.33 4.33 0 0 1 -2 -3.12A5.43 5.43 0 0 1 4.46 7a3.68 3.68 0 0 0 3.17 1.3 1 1 0 0 0 0.89 -0.86 6 6 0 0 1 5.29 -5.33 6.35 6.35 0 0 0 2.26 6 1 1 0 0 0 0.5 0.17 3.56 3.56 0 0 0 3.1 -1.21 5.87 5.87 0 0 1 0.86 3 3.92 3.92 0 0 1 -1.46 3.17 0.25 0.25 0 0 0 -0.05 0.33 7.75 7.75 0 0 1 0.66 1.32 0.26 0.26 0 0 0 0.17 0.15 0.26 0.26 0 0 0 0.21 0 5.91 5.91 0 0 0 2.47 -4.94Z" fill="#fff" stroke-width="1"></path><path d="M18.73 17.75A6.25 6.25 0 1 0 12.48 24a6.26 6.26 0 0 0 6.25 -6.25Zm-2.45 0a0.75 0.75 0 0 1 -0.75 0.75h-3a0.76 0.76 0 0 1 -0.75 -0.75v-3.5a0.75 0.75 0 0 1 1.5 0v2.5a0.25 0.25 0 0 0 0.25 0.25h2a0.75 0.75 0 0 1 0.75 0.75Z" fill="#fff" stroke-width="1"></path></g></svg>

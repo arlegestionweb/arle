@@ -27,25 +27,25 @@ const crimson = Crimson_Text({
 });
 
 const tajawal = Tajawal({
-  weight: ["200", "300", "400", "500", "700"],
+  weight: ["200", "300", "400", "500", "700", "800"],
   subsets: ["latin"],
   variable: "--font-tajawal",
 });
 
 const inter = Inter({
-  weight: ["200", "300", "400", "500", "700", "900"],
+  weight: ["200", "300", "400", "500", "700", "800"],
   subsets: ["latin"],
   variable: "--font-inter",
 });
 
 const kanit = Kanit({
-  weight: ["200", "300", "400"],
+  weight: ["200", "300", "400", "800"],
   subsets: ["latin"],
   variable: "--font-kanit",
 });
 
 const raleway = Raleway({
-  weight: ["300", "400"],
+  weight: ["300", "400", "800"],
   subsets: ["latin"],
   variable: "--font-raleway",
 });
