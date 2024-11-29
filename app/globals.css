@@ -68,8 +68,6 @@ table, th, td, tr {
   }
 }
 
-
-
 @layer base {
   body {
     @apply bg-background;
@@ -174,3 +172,4 @@ input[type="number"] {
     @apply bg-background text-foreground;
   }
 }
+
