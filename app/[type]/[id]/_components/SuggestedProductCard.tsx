@@ -85,8 +85,8 @@ const CardLayout = ({
                 <source
                   sizes={`(max-width: 608px) 400px, 200px`}
                   srcSet={`
-                    ${selectedVariant.imagenes[0].url}?fit=max&q=75&w=640&fm=webp 640w,
-                    ${selectedVariant.imagenes[0].url}?fit=max&q=75&w=320&fm=webp 320w,
+                    ${selectedVariant.imagenes[0].url}?fit=max&q=75&w=640&fm=webp,
+                    ${selectedVariant.imagenes[0].url}?fit=max&q=75&w=320&fm=webp,
                   `}
                   type="image/webp"
                 />

@@ -37,15 +37,15 @@ function GradientImage({
         <source
           sizes={`(max-width: 608px) ${width ? `${width}px` : `85vw`}, 608px`}
           srcSet={`
-            ${src}?fit=max&q=${quality || 80}&w=1920&fm=webp 1920w,
-            ${src}?fit=max&q=${quality || 80}&w=1280&fm=webp 1280w,
-            ${src}?fit=max&q=${quality || 80}&w=640&fm=webp 640w,
-            ${src}?fit=max&q=${quality || 80}&w=320&fm=webp 320w,
+            ${src}?fit=max&q=${quality || 80}&w=1920&fm=webp,
+            ${src}?fit=max&q=${quality || 80}&w=1280&fm=webp,
+            ${src}?fit=max&q=${quality || 80}&w=640&fm=webp,
+            ${src}?fit=max&q=${quality || 80}&w=320&fm=webp,
           `}
           type="image/webp"
         />
         <img
-          src={`${src}?fit=max&q=${quality || 80}&w=1920&fm=webp 1920w`}
+          src={`${src}?fit=max&q=${quality || 80}&w=1920&fm=webp`}
           alt={alt || ""}
           width={width || 800}
           height={height || 400}
@@ -55,7 +55,7 @@ function GradientImage({
         />
       </picture>
       ):(
-        <Image src={`${src}?fit=max&q=${quality || 85}&w=1920&fm=webp 1920w`}
+        <Image src={`${src}?fit=max&q=${quality || 85}&w=1920&fm=webp`}
             alt={alt || ""}
             width={width || 800}
             height={height || 400}

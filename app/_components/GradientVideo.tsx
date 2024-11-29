@@ -49,7 +49,7 @@ function GradientVideo({
         >
           <source src={url} />
           {imagenUrl && (
-          <img src={`${imagenUrl}?fit=max&q=85&w=1920&fm=webp 1920w`} alt={imagenAlt} />
+          <img src={`${imagenUrl}?fit=max&q=85&w=1920&fm=webp`} alt={imagenAlt} />
           )}
       </video>
       {/* <div
