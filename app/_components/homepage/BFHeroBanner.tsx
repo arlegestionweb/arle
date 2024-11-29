@@ -112,7 +112,7 @@ const BFHeroBanner = ({ content, className, searchParams}: BannerProps) => {
         <div className="justify-center flex flex-col gap-6 lg:max-w-screen-sm pr-4">
           <h1 className="text-5xl md:text-7xl font-tajawal font-extrabold text-arle-blue">BLACK FRIDAY</h1>
           {/* <p>{timeRemaining}</p> */}
-          <p className="font-tajawal text-base md:text-xl">Las mejores ofertas del año. Encuentra productos de Lujo garantizados con descuentos INCREÍBLES.</p>
+          <p className="font-tajawal text-base md:text-xl">ÚLTIMAS HORAS DE BLACK FRIDAY. Aprovecha para llevar tus productos de lujo favoritos al mejor precio. ¡No pierdas la oportunidad!</p>
           <div className="flex gap-1 xs:gap-2 md:gap-8 w-full justify-center md:justify-start">
             <article className="flex flex-col w-20 md:w-24 items-center gap-2">
               <span className="h-20 w-20 md:h-24 md:w-24 border-4 border-slate-300 bg-arle-blue rounded-full flex items-center justify-center p-4 md:p-6">
@@ -143,7 +143,7 @@ const BFHeroBanner = ({ content, className, searchParams}: BannerProps) => {
       </section>
 
       <section
-        className="banner-scrollbar flex w-full lg:w-1/2 h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory bg-blue-300"
+        className="banner-scrollbar flex w-full lg:w-1/2 h-full overflow-x-scroll scroll-smooth snap-x snap-mandatory"
         onScroll={handleScroll}
         ref={bannerRef}
       >
