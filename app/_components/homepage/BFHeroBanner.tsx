@@ -73,32 +73,6 @@ const BFHeroBanner = ({ content, className, searchParams}: BannerProps) => {
   }, [scrollPosition, content.banners.length]);
 
 
-  // const [timeRemaining, setTimeRemaining] = useState('');
-
-  // useEffect(() => {
-  //   // Fecha fija: 30 de noviembre a la medianoche
-  //   const discountEndTime = new Date('2024-11-30T00:00:00').getTime();
-
-  //   const intervalId = setInterval(() => {
-  //     const now = new Date().getTime();
-  //     const timeLeft = discountEndTime - now;
-
-  //     if (timeLeft < 0) {
-  //       clearInterval(intervalId);
-  //       setTimeRemaining('Discount has ended');
-  //     } else {
-  //       const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24))
-  //       const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  //       const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-  //       const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-  //       setTimeRemaining(`${days}días ${hours}h ${minutes}m ${seconds}s`);
-  //     }
-  //   }, 1000);
-
-  //   return () => clearInterval(intervalId);
-  // }, []);
-
   return (
     <section
       className={cn(

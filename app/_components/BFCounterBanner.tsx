@@ -6,7 +6,7 @@ const BFCounterBanner = () => {
 
   const [timeRemaining, setTimeRemaining] = useState('');
 
-  const discountEndTime = new Date('2024-11-30T00:00:00').getTime();
+  const discountEndTime = new Date('2024-11-30T05:00:00').getTime();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -29,7 +29,7 @@ const BFCounterBanner = () => {
   }, []);
 
   return (
-    <section className='w-full py-2 bg-black text-white flex justify-center font-inter text-sm'>
+    <section className='w-full py-2 bg-black text-white flex justify-center font-inter text-sm font-light'>
       <p>{timeRemaining}</p>
     </section>
   )
