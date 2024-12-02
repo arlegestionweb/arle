@@ -18,26 +18,28 @@ import { Metadata } from "next";
 import { unstable_noStore as noStore } from "next/cache";
 import BFCounterBanner from "../_components/BFCounterBanner";
 
-const sortingFunctions: Record<
-  TSortingOption["value"],
-  (a: TProduct, b: TProduct) => number
-> = {
-  recientes: (a, b) => {
-    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
-    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
+const sortingFunctions = {
+  recientes: (a: TProduct, b: TProduct) => {
+    const aFirstVariantOutOfStock = a.variantes[0]?.unidadesDisponibles === 0;
+    const bFirstVariantOutOfStock = b.variantes[0]?.unidadesDisponibles === 0;
 
-    if (aIsOutOfStock && !bIsOutOfStock) return 1;
-    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+    // Enviar Tproducts con variantes[0] agotada al final
+    if (aFirstVariantOutOfStock && !bFirstVariantOutOfStock) return 1;
+    if (!aFirstVariantOutOfStock && bFirstVariantOutOfStock) return -1;
 
+    // Ordenar por fecha
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   },
-  precio_mayor_menor: (a, b) => {
-    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
-    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
 
-    if (aIsOutOfStock && !bIsOutOfStock) return 1;
-    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+  precio_mayor_menor: (a: TProduct, b: TProduct) => {
+    const aFirstVariantOutOfStock = a.variantes[0]?.unidadesDisponibles === 0;
+    const bFirstVariantOutOfStock = b.variantes[0]?.unidadesDisponibles === 0;
 
+    // Enviar Tproducts con variantes[0] agotada al final
+    if (aFirstVariantOutOfStock && !bFirstVariantOutOfStock) return 1;
+    if (!aFirstVariantOutOfStock && bFirstVariantOutOfStock) return -1;
+
+    // Ordenar por precio mayor a menor
     const highestPriceA = Math.max(
       ...a.variantes.map(variant => {
         const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
@@ -47,21 +49,24 @@ const sortingFunctions: Record<
     );
     const highestPriceB = Math.max(
       ...b.variantes.map(variant => {
-          const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
-          const precio = colombianPriceStringToNumber(variant.precio);
-          return precioConDescuento > 0 ? precioConDescuento : precio;
-        })
+        const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
+        const precio = colombianPriceStringToNumber(variant.precio);
+        return precioConDescuento > 0 ? precioConDescuento : precio;
+      })
     );
 
     return highestPriceB - highestPriceA;
   },
-  price_menor_mayor: (a, b) => {
-    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
-    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
 
-    if (aIsOutOfStock && !bIsOutOfStock) return 1;
-    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+  price_menor_mayor: (a: TProduct, b: TProduct) => {
+    const aFirstVariantOutOfStock = a.variantes[0]?.unidadesDisponibles === 0;
+    const bFirstVariantOutOfStock = b.variantes[0]?.unidadesDisponibles === 0;
 
+    // Enviar Tproducts con variantes[0] agotada al final
+    if (aFirstVariantOutOfStock && !bFirstVariantOutOfStock) return 1;
+    if (!aFirstVariantOutOfStock && bFirstVariantOutOfStock) return -1;
+
+    // Ordenar por precio menor a mayor
     const lowestPriceA = Math.min(
       ...a.variantes.map(variant => {
         const precioConDescuento = colombianPriceStringToNumber(variant.precioConDescuento || "0");
@@ -79,13 +84,16 @@ const sortingFunctions: Record<
 
     return lowestPriceA - lowestPriceB;
   },
-  aleatorio: (a, b) => {
-    const aIsOutOfStock = a.variantes.some(variant => variant.unidadesDisponibles === 0);
-    const bIsOutOfStock = b.variantes.some(variant => variant.unidadesDisponibles === 0);
 
-    if (aIsOutOfStock && !bIsOutOfStock) return 1;
-    if (!aIsOutOfStock && bIsOutOfStock) return -1;
+  aleatorio: (a: TProduct, b: TProduct) => {
+    const aFirstVariantOutOfStock = a.variantes[0]?.unidadesDisponibles === 0;
+    const bFirstVariantOutOfStock = b.variantes[0]?.unidadesDisponibles === 0;
 
+    // Enviar productos con variantes[0] agotada al final
+    if (aFirstVariantOutOfStock && !bFirstVariantOutOfStock) return 1;
+    if (!aFirstVariantOutOfStock && bFirstVariantOutOfStock) return -1;
+
+    // Ordenar de forma aleatoria (manteniendo consistencia con `_id`)
     if (a._id < b._id) return -1;
     if (a._id > b._id) return 1;
     return 0; // Si los _id son iguales
@@ -651,7 +659,9 @@ const Listing = async ({
   ].filter(Boolean);
 
   const filteredProducts = productos?.filter((producto) =>
-    filters.every((filter) => typeof filter === "function" && filter(producto))
+    filters.every((filter) => typeof filter === "function" && filter(producto)) &&
+    // Excluir productos con todas las variantes agotadas
+    !producto.variantes.every((variant) => variant.unidadesDisponibles === 0)
   );
   const newFilteredProducts = filteredProducts;
 
