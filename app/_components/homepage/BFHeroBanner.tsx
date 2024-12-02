@@ -84,9 +84,9 @@ const BFHeroBanner = ({ content, className, searchParams}: BannerProps) => {
         className="w-full lg:w-1/2 lg:h-full py-5 lg:py-20 pl-5 sm:pl-8 flex justify-end"
       >
         <div className="justify-center flex flex-col gap-3 md:gap-6 lg:max-w-screen-sm pr-4">
-          <h1 className="text-5xl md:text-7xl font-tajawal font-extrabold text-arle-blue">BLACK FRIDAY</h1>
+          <h1 className="text-5xl md:text-7xl font-tajawal font-extrabold text-arle-blue">CYBER MONDAY</h1>
           {/* <p>{timeRemaining}</p> */}
-          <p className="font-tajawal text-base md:text-xl">ÚLTIMAS HORAS DE BLACK FRIDAY. Aprovecha para llevar tus productos de lujo favoritos al mejor precio. ¡No pierdas la oportunidad!</p>
+          <p className="font-tajawal text-base md:text-xl">NO TE PIERDAS LA ÚLTIMA OPORTUNIDAD DE COMPRAR CON DESCUENTOS EN CYBER MONDAY. Aprovecha para llevar tus productos de lujo favoritos al mejor precio. ¡No dejes pasar el momento!</p>
           <div className="flex gap-2 xs:gap-2 md:gap-8 w-full justify-center md:justify-start">
             <article className="flex flex-col w-20 md:w-24 items-center gap-2">
               <span className="h-20 w-20 md:h-24 md:w-24 border-4 border-slate-300 bg-arle-blue rounded-full flex items-center justify-center p-4 md:p-6">

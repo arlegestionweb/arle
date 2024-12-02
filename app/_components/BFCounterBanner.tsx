@@ -6,7 +6,7 @@ const BFCounterBanner = () => {
 
   const [timeRemaining, setTimeRemaining] = useState('');
 
-  const discountEndTime = new Date('2024-11-30T05:00:00').getTime();
+  const discountEndTime = new Date('2024-12-03T05:00:00').getTime();
 
   useEffect(() => {
     const intervalId = setInterval(() => {

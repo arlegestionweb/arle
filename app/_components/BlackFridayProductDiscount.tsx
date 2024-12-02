@@ -31,10 +31,10 @@ const BlackFridayProductDiscount = ({discountPercent}: {discountPercent: number}
 
   return (
     <article className="bg-black text-white px-3 py-2 flex flex-col items-center font-tajawal">
-      <h5 className="font-bold text-sm xs:text-base text-center text-gray-200 whitespace-nowrap">¡BLACK DAYS!</h5>
+      <h5 className="font-bold text-sm xs:text-base text-center text-gray-200 whitespace-nowrap">¡CYBER MONDAY!</h5>
       <span className="whitespace-nowrap font-bold text-lg xs:text-xl sm:text-2xl">{discountPercent}% OFF</span>
       {/* <p>{timeRemaining}</p> */}
-      <p>TIEMPO LIMITADO.</p>
+      <p>ÚLTIMA OPORTUNIDAD.</p>
     </article>
   )
 }
