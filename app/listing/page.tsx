@@ -908,7 +908,6 @@ const Listing = async ({
                 banners={pageContent.listingContent}
                 className="h-full max-w-[1600px] w-full"
                 />
-              <BFCounterBanner />
             </>
           )}
       {!coleccionSeleccionada && colecciones && colecciones.length > 0 ? (

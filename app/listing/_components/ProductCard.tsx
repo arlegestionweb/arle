@@ -185,7 +185,6 @@ const CardLayout = ({
       <section className="h-full w-full overflow-hidden relative">
         { discountPercent && (
           <article className="absolute top-0 left-1/2 -translate-x-1/2 z-20 bg-black text-white px-3 pt-2 flex flex-col items-center font-tajawal">
-            <h5 className="font-bold text-xs xs:text-sm text-center text-gray-200 whitespace-nowrap">¡CYBER MONDAY!</h5>
             <span className="whitespace-nowrap font-bold xs:text-lg sm:text-xl">{discountPercent}% OFF</span>
           </article>
         )}

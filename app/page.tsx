@@ -4,7 +4,6 @@ import ExploreSection from "./_components/homepage/ExploreSection";
 import Colecciones from "./_components/Colecciones";
 import AboutArle from "./_components/homepage/AboutArle";
 import Asesoria from "./_components/homepage/Asesoria";
-import BFHeroBanner from "./_components/homepage/BFHeroBanner";
 
 const Home = async function ({
   searchParams,
@@ -25,7 +24,7 @@ const Home = async function ({
   
   return (
     <main className="relative z-10 lg:mb-[100vh] pt-[87px] md:pt-0 bg-white">
-      <BFHeroBanner content={pageContent.hero} searchParams={searchParams} />
+      <HeroBanner content={pageContent.hero} searchParams={searchParams} />
       {exploreSections.map((section, index) => (
         <ExploreSection key={index + section.titulo} section={section} />
       ))}

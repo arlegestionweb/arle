@@ -73,9 +73,9 @@ const PremiumLayout = ({
                 />
               )
             )}
-            {discountPercent && (
+            {/* {discountPercent && (
               <BlackFridayProductDiscount discountPercent={discountPercent} />
-            )}
+            )} */}
             <h1 className="text-zinc-800 text-3xl lg:text-4xl font-bold font-play capitalize">
               {product.marca}
             </h1>
