@@ -322,6 +322,10 @@ const Listing = async ({
     (coleccion) => coleccion.titulo === coleccionSeleccionada
   );
 
+  const coleccionPrincipal = colecciones?.find(
+    (coleccion) => coleccion.titulo === 'Especiales Navidad'
+  )
+
   if (!pageContent?.relojes && !pageContent?.perfumes && !pageContent?.gafas) {
     return null;
   }
@@ -889,6 +893,16 @@ const Listing = async ({
     sortingFunctions[sortSeleccionado as TSortingOption["value"]]
   );
 
+  const filteredCollectionProducts = coleccionPrincipal?.productos?.filter((producto) =>
+    filters.every((filter) => typeof filter === "function" && filter(producto)) &&
+    // Excluir productos con todas las variantes agotadas
+    !producto.variantes.every((variant) => variant.unidadesDisponibles === 0)
+  );
+
+  const specialOrderedProducts = filteredCollectionProducts ? [ ...filteredCollectionProducts, ...sortedProducts] : sortedProducts;
+
+  // const sortedProducts = coleccionPrincipal?.productos ? [ ...coleccionPrincipal?.productos , ...filteredProducts] : filteredProducts;
+
   const parsedCollections =
     zodCollectionsWithoutProducts.safeParse(colecciones);
 
@@ -936,7 +950,7 @@ const Listing = async ({
         </section>
         <section className="max-w-screen-xl w-full pb-6 px-4 md:px-9">
           {filteredProducts && filteredProducts.length > 0 ? (
-            <Productos productos={sortedProducts} />
+            <Productos productos={specialOrderedProducts} />
           ) : (
             <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
           )}
