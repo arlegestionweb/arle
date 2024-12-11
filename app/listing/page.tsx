@@ -899,7 +899,9 @@ const Listing = async ({
     !producto.variantes.every((variant) => variant.unidadesDisponibles === 0)
   );
 
-  const specialOrderedProducts = filteredCollectionProducts ? [ ...filteredCollectionProducts, ...sortedProducts] : sortedProducts;
+  //AKI
+  const specialOrderedProducts = coleccionSeleccionada && coleccionContent?.productos
+  ? coleccionContent.productos : filteredCollectionProducts ? [ ...filteredCollectionProducts, ...sortedProducts] : sortedProducts;
 
   function removeLastDuplicateProducts(products: TProduct[]): TProduct[] {
     const seenIds = new Set<string>();
@@ -954,7 +956,7 @@ const Listing = async ({
         />
       ) : parsedCollections.success && parsedCollections.data.length > 0 ? (
         <h2 className="text-2xl md:text-3xl w-full pt-3 font-jomolhari font-normal text-center capitalize">
-          Colección {coleccionSeleccionada}
+          {coleccionSeleccionada}
         </h2>
       ) : null}
       <section className="bg-white flex flex-col items-center">

@@ -27,6 +27,7 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
   const pathname = usePathname();
   const selectedProducto = searchParams.get("type");
   const selectedMarca = searchParams.get("marcas");
+  const selectedCollection = searchParams.get("coleccion")
   const [brandsFilter, setBrandsFilter] = useState(false);
   const [brands, setBrands] = useState<TBrand>([])
 
@@ -47,7 +48,7 @@ const SubMenuDesktop = ({marca}: {marca?: string | null}) => {
         <Link
           href={`/listing`}
           className={`px-2 py-0.5 flex justify-center items-center 
-          ${pathname.includes("listing") && !selectedMarca && !selectedProducto ? "border border-black pointer-events-none" : ""}`}>
+          ${pathname.includes("listing") && !selectedMarca && !selectedProducto && !selectedCollection ? "border border-black pointer-events-none" : ""}`}>
             <p className="text-gray-700 font-inter text-[13.5px] md:text-sm font-medium hover:text-gray-500">Todos</p>
           </Link>
         {subMenu.map((item, index) => (
