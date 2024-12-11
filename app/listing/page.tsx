@@ -901,6 +901,26 @@ const Listing = async ({
 
   const specialOrderedProducts = filteredCollectionProducts ? [ ...filteredCollectionProducts, ...sortedProducts] : sortedProducts;
 
+  function removeLastDuplicateProducts(products: TProduct[]): TProduct[] {
+    const seenIds = new Set<string>();
+    const result: TProduct[] = [];
+  
+    // Recorrer la lista desde el inicio hacia el final
+    for (const product of products) {
+      if (!seenIds.has(product._id)) {
+        seenIds.add(product._id);
+        result.push(product);
+      } else {
+        // Si ya fue visto, ignorar el producto duplicado
+        continue;
+      }
+    }
+  
+    return result;
+  }
+
+  const specialOrderedandFilteredProducts = removeLastDuplicateProducts(specialOrderedProducts);
+
   // const sortedProducts = coleccionPrincipal?.productos ? [ ...coleccionPrincipal?.productos , ...filteredProducts] : filteredProducts;
 
   const parsedCollections =
@@ -950,7 +970,7 @@ const Listing = async ({
         </section>
         <section className="max-w-screen-xl w-full pb-6 px-4 md:px-9">
           {filteredProducts && filteredProducts.length > 0 ? (
-            <Productos productos={specialOrderedProducts} />
+            <Productos productos={specialOrderedandFilteredProducts} />
           ) : (
             <h2 className="text-3xl font-bold capitalize">No Hay Productos</h2>
           )}
