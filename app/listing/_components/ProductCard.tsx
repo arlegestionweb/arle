@@ -328,7 +328,7 @@ export const VariantSelector = <T extends TProduct>({
     return (
       <section className="flex flex-wrap gap-y-1 gap-x-2 items-center">
         <h4 className="leading-none text-gray-600">Color:</h4>
-        <ul className="flex gap-1.5 items-center">
+        <ul className="flex flex-wrap gap-y-1 gap-1.5 max-w-full items-center">
           {product.variantes.map((variante, index) => (
             <li
               key={`${variante.colorDeLaMontura.nombre}-${index}`}
@@ -357,7 +357,7 @@ export const VariantSelector = <T extends TProduct>({
     return (
       <section className="flex flex-wrap gap-y-1 gap-x-2 items-center">
         <h4 className="leading-none text-gray-600">Color:</h4>
-        <ul className="flex gap-2 items-center">
+        <ul className="flex gap-1.5 max-w-full flex-wrap gap-y-1 items-center">
           {product.variantes.map((variante: TRelojVariant, index) => (
             <li
               key={`${variante.colorCaja.nombre}-${index}`}
