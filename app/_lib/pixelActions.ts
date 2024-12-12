@@ -58,7 +58,7 @@ type TUserData = {
   fbc: string | null;
   fbp: string | null;
   fb_login_id: string | null;
-  external_id: string;
+  external_id: string | null;
   client_ip_address?: string; // Hacemos este campo opcional
 }
 
@@ -358,10 +358,7 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
 
   const userAgent = headers().get('user-agent');
   const ip = getIp();
-  const cookieStore = cookies();
-  const fbc = cookieStore.get('_fbc')?.value || data.fbclid as string | null;
-  const fbp = cookieStore.get('_fbp')?.value || null;
-  const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
+  const fbc = data.fbclid as string | null;
 
   const email = await hashString(data.email);
   const phone = await hashString(data.phone);
@@ -373,8 +370,8 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
     fn: [`${name}`],
     client_user_agent: userAgent,
     fbc: fbc,
-    fbp: fbp,
-    fb_login_id: fbLoginId,
+    fbp: null,
+    fb_login_id: null,
     external_id: data.externalId,
   };
 
@@ -416,15 +413,12 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
 
 export const initiateWompiPurchaseView = async (
   data: TWompiRequest["data"],
-  externalId: string,
+  externalId: string | null,
   fbclid: string | null | undefined,
 ) => {
   const userAgent = headers().get('user-agent');
   const ip = getIp();
-  const cookieStore = cookies();
-  const fbc = cookieStore.get('_fbc')?.value || fbclid as string | null;
-  const fbp = cookieStore.get('_fbp')?.value || null;
-  const fbLoginId = cookieStore.get('_fb_login_id')?.value || null;
+  const fbc = fbclid as string | null;
 
   const email = await hashString(data.transaction.customer_email);
   const phone = await hashString(data.transaction.customer_data.phone_number);
@@ -438,8 +432,8 @@ export const initiateWompiPurchaseView = async (
     fn: [`${name}`],
     client_user_agent: userAgent,
     fbc: fbc,
-    fbp: fbp,
-    fb_login_id: fbLoginId,
+    fbp: null,
+    fb_login_id: null,
     external_id: externalId,
   };
 
