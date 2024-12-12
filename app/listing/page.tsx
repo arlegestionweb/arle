@@ -921,7 +921,7 @@ const Listing = async ({
     return result;
   }
 
-  const specialOrderedandFilteredProducts = removeLastDuplicateProducts(specialOrderedProducts);
+  const specialOrderedandFilteredProducts = sortSeleccionado === "recientes" ? removeLastDuplicateProducts(specialOrderedProducts) : sortedProducts;
 
   // const sortedProducts = coleccionPrincipal?.productos ? [ ...coleccionPrincipal?.productos , ...filteredProducts] : filteredProducts;
 
