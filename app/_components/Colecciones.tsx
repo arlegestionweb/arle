@@ -11,7 +11,7 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
       <h2 className="w-full text-gray-800 lux-title text-xl md:text-2xl drop-shadow-none text-center font-extralight ">
         Colecciones
       </h2>
-      <ul className="no-scrollbar flex justify-start gap-4 px-8 max-w-full overflow-x-scroll overflow-y-hidden">
+      <ul className="no-scrollbar flex justify-start gap-4 px-8 pb-0 max-w-full overflow-x-scroll overflow-y-hidden mb-0">
         {colecciones?.map((coleccion) => (
           <li
             key={coleccion.titulo}
@@ -34,7 +34,7 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
                     
                 </div>
               )}
-            <p className="text-center mt-1.5 text-gray-600 text-sm md:text-md font-normal font-tajawal truncate leading-none group-hover:text-gray-500 group-hover:underline underline-offset-2">
+            <p className="text-center mt-1.5 text-gray-600 text-sm md:text-base font-normal font-tajawal truncate !leading-none group-hover:text-gray-500 group-hover:underline underline-offset-2 whitespace-normal tracking-tighter">
               {coleccion.titulo}
             </p>
             </Link>
