@@ -125,7 +125,7 @@ export const pagePixelView = async (clientData: TClientData, externalId: string,
   });
 
   if (!postReq.ok) {
-    console.error("Failed to send event to Pixel API", await postReq.text());
+    console.error(`Failed to send event to Pixel API - Home View ${userData}}`, await postReq.text());
   } else {
     console.log("Home View");
   }
@@ -204,7 +204,7 @@ export const productPixelView = async ({
   });
 
   if (!postReq.ok) {
-    console.error("Failed to send event to Pixel API", await postReq.text());
+    console.error(`Failed to send event to Pixel API - view Content ${userData}}`, await postReq.text());
   } else {
     console.log("New Product View");
   }
@@ -277,7 +277,7 @@ export const addedToCartPixelView = async ({
   });
 
   if (!postReq.ok) {
-    console.error("Failed to send event to Pixel API", await postReq.text());
+    console.error(`Failed to send event to Pixel API - Add to cart ${userData}}`, await postReq.text());
   } else {
     console.log("Added to Cart");
   }
@@ -347,7 +347,7 @@ export const initiatePixelCheckoutView = async (data: TPurchaseData) => {
   });
 
   if (!postReq.ok) {
-    console.error("Failed to send event to Pixel API", await postReq.text());
+    console.error(`Failed to send event to Pixel API - Checkout initiate ${userData}}`, await postReq.text());
   } else {
     console.log("Initiated checkout");
   }
@@ -405,7 +405,7 @@ export const initiatePixelAddiPurchaseView = async (data: TPurchaseData) => {
   });
 
   if (!postReq.ok) {
-    console.error("Failed to send event to Pixel API", await postReq.text());
+    console.error(`Failed to send event to Pixel API - Addi Purchase ${userData}}`, await postReq.text());
   } else {
     console.log("Compra exitosa");
   }
@@ -467,7 +467,7 @@ export const initiateWompiPurchaseView = async (
   });
 
   if (!postReq.ok) {
-    console.error("Failed to send event to Pixel API", await postReq.text());
+    console.error(`Failed to send event to Pixel API - wompi purchase ${userData}}`, await postReq.text());
   } else {
     console.log("Compra exitosa");
   }
