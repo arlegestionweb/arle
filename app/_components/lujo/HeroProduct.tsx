@@ -90,9 +90,9 @@ const HeroProduct = ({
               />
             )
           )}
-          {discountPercent && (
-            <BlackFridayProductDiscount discountPercent={discountPercent} />
-          )}
+
+          <BlackFridayProductDiscount discountPercent={discountPercent} />
+
           <h1 className="text-gray-800 text-4xl font-jomolhari capitalize leading-none w-full">
             {product.marca}
           </h1>

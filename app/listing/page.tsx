@@ -925,10 +925,14 @@ const Listing = async ({
 
   // const sortedProducts = coleccionPrincipal?.productos ? [ ...coleccionPrincipal?.productos , ...filteredProducts] : filteredProducts;
 
-  const parsedCollections =
-    zodCollectionsWithoutProducts.safeParse(colecciones);
+  // const parsedCollections =
+  //   zodCollectionsWithoutProducts.safeParse(colecciones);
 
-  //Banners por marcas
+    const parsedCollections = coleccionSeleccionada
+    ? zodCollectionsWithoutProducts.safeParse(colecciones?.filter(
+        (coleccion) => coleccion.titulo !== coleccionSeleccionada
+      ))
+    : zodCollectionsWithoutProducts.safeParse(colecciones);
 
   const bannersByBrand = await getBannersByBrands(marcasSeleccionadas);
   const filteredBanners = bannersByBrand?.filter(brand => brand.banners)
@@ -946,7 +950,7 @@ const Listing = async ({
                 />
             </>
           )}
-      {!coleccionSeleccionada && colecciones && colecciones.length > 0 ? (
+      { colecciones && colecciones.length > 0 ? (
         <Colecciones
           colecciones={parsedCollections.success ? parsedCollections.data.sort((a, b): number => {
             const dateA: number = new Date(a.date).getTime();

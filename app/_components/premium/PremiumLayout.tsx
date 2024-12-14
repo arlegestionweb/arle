@@ -43,7 +43,7 @@ const PremiumLayout = ({
         />
 
         <section className="py-5 lg:py-0 flex flex-col w-full basis-full relative grow-0 shrink items-center">
-          <header className="flex flex-col gap-2 w-full">
+          <header className="flex flex-col gap-2.5 w-full">
             <button
               className="flex items-center -ml-1 group"
               onClick={() => window.history.back()}
@@ -73,9 +73,8 @@ const PremiumLayout = ({
                 />
               )
             )}
-            {/* {discountPercent && (
               <BlackFridayProductDiscount discountPercent={discountPercent} />
-            )} */}
+
             <h1 className="text-zinc-800 text-3xl lg:text-4xl font-bold font-play capitalize">
               {product.marca}
             </h1>

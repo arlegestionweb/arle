@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const BlackFridayProductDiscount = ({discountPercent}: {discountPercent: number}) => {
+const BlackFridayProductDiscount = ({discountPercent}: {discountPercent: number | null}) => {
 
   const [timeRemaining, setTimeRemaining] = useState('');
 
@@ -31,8 +31,13 @@ const BlackFridayProductDiscount = ({discountPercent}: {discountPercent: number}
 
   return (
     <article className="bg-black text-white px-3 py-2 flex flex-col items-center font-tajawal">
-      <h5 className="font-bold text-sm xs:text-base text-center text-gray-200 whitespace-nowrap">¡Descuento Navideño!</h5>
-      <span className="whitespace-nowrap font-bold text-lg xs:text-xl sm:text-2xl">{discountPercent}% OFF</span>
+      {discountPercent && ( 
+        <>
+        <h5 className="font-bold text-sm xs:text-base text-center text-gray-200 whitespace-nowrap">¡Descuento Navideño!</h5>
+        <span className="whitespace-nowrap font-bold text-lg xs:text-xl sm:text-2xl">{discountPercent}% OFF</span>
+        </>
+      )}
+      <h5 className="font-bold text-sm xs:text-lg text-center text-gray-200 whitespace-nowrap">¡Recibe tus compras en menos de 48 horas!</h5>
       {/* <p>{timeRemaining}</p> */}
       {/* <p>ÚLTIMA OPORTUNIDAD.</p> */}
     </article>
