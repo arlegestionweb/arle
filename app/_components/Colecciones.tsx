@@ -11,24 +11,24 @@ const Colecciones = ({ colecciones, className }: ColeccionesProps) => {
       <h2 className="w-full text-gray-800 lux-title text-xl md:text-2xl drop-shadow-none text-center font-extralight ">
         Colecciones
       </h2>
-      <ul className="no-scrollbar flex justify-start gap-4 px-8 pb-0 max-w-full overflow-x-scroll overflow-y-hidden mb-0">
+      <ul className="no-scrollbar flex justify-start gap-2 sm:gap-4 px-2 sm:px-8 pb-0 max-w-full overflow-x-scroll overflow-y-hidden mb-0">
         {colecciones?.map((coleccion) => (
           <li
             key={coleccion.titulo}
-            className="w-[120px]"
+            className="w-[100px] sm:w-[120px]"
           >
             <Link href={`/listing?coleccion=${coleccion.titulo}`} className="group" >
               {coleccion.imagen && (
-                <div className="relative w-[120px] h-[120px] flex items-center justify-center overflow-hidden ">
+                <div className="relative w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] flex items-center justify-center overflow-hidden ">
                   <ImageWrapper height={120}
                     width={120} className="absolute z-10 w-full h-full" src="ArleCircle.svg" alt="circulo Arle"/>
-                    <div className="w-[110px] h-[110px] overflow-hidden rounded-full absolute bg-white justify-center items-center flex z-0">
+                    <div className="w-[90px] h-[90px] sm:w-[110px] sm:h-[110px] overflow-hidden rounded-full absolute bg-white justify-center items-center flex z-0">
                   <ImageWrapper
                     src={coleccion.imagen.url}
                     alt={coleccion.imagen.alt || ""}
                     height={500}
                     width={500}
-                    imageClassname="object-contain group-hover:w-[200px] group-hover:h-[200px] transition-all duration-500 z-0 w-[110px] h-[110px] rounded-full"
+                    imageClassname="object-contain group-hover:w-[180px] group-hover:h-[180px] transition-all duration-500 z-0 w-[110px] h-[110px] rounded-full"
                     />
                     </div>
                     
