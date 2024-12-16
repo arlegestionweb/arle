@@ -81,7 +81,7 @@ const PremiumLayout = ({
             <h1 className="text-2xl text-gray-600 font-bold font-play -mt-2 mb-2 capitalize">
               {isPerfume(product) && product.parteDeUnSet && "Set - "}{modelo}
             </h1>
-            {isPerfumePremium(product) && (
+            {isPerfumePremium(product) && product.marca !== "Tarjeta de Regalo" && (
               <h2 className="text-xl -mt-3 mb-2 text-gray-600 font-normal font-play">
               {product.detalles.concentracion} - {"tamano" in selectedVariant && selectedVariant.tamano}ml
               </h2>

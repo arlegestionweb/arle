@@ -84,7 +84,8 @@ const PerfumePremium = ({
           <></>
         )}
 
-        <CollapsibleProductSection title="Especificaciones">
+        {product.marca !== "Tarjeta de Regalo" ? (
+          <CollapsibleProductSection title="Especificaciones">
           <div className="w-full grid grid-cols-2 gap-2">
             <SeccionEspecificaciones
               title="Género"
@@ -107,8 +108,9 @@ const PerfumePremium = ({
             )}
           </div>
         </CollapsibleProductSection>
+      ) : (<></>)}
 
-        <CollapsibleProductSection title="Notas Olfativas">
+        {product.marca !== "Tarjeta de Regalo" ? (<CollapsibleProductSection title="Notas Olfativas">
           <div className="w-full grid grid-cols-2 gap-2">
             <SeccionEspecificaciones
               title="Familia Olfativa"
@@ -133,7 +135,7 @@ const PerfumePremium = ({
               />
             )}
           </div>
-        </CollapsibleProductSection>
+        </CollapsibleProductSection>) : (<></>)}
 
         <NuestrasComprasIncluyen />
 

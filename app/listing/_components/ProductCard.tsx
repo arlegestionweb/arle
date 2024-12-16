@@ -226,14 +226,14 @@ const CardLayout = ({
           </h2>
           <h3 className="text-md md:text-lg md:leading-none font-medium text-gray-700 leading-none">
             {isPerfumePremium(product)
-              ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.detalles.concentracion}`
+              ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.marca === "Tarjeta de Regalo" ? "" : product.detalles.concentracion}`
               : isPerfumeLujo(product)
                 ? `${product.parteDeUnSet ? "Set " : ""}${product.titulo} - ${product.concentracion}`
                 : isReloj(product)
                   ? product.modelo
                   : product.modelo}
           </h3>
-          {isPerfume(product) && (
+          {isPerfume(product) && product.marca !== "Tarjeta de Regalo" && (
             <p className="text-sm leading-none capitalize text-gray-600">
               {`${"tamano" in selectedVariant && selectedVariant.tamano}ml | `}
               {product.genero}
@@ -297,7 +297,7 @@ export const VariantSelector = <T extends TProduct>({
     return (
       <section className="flex flex-wrap gap-y-1 gap-x-2 items-center">
         <h4 className="leading-none font-tajawal text-gray-600 cursor-default">
-          Tamaño:
+          {product.marca === "Tarjeta de Regalo" ? "Valor:" : "Tamaño:"}
         </h4>
         <div className="flex gap-2">
           {product.variantes.map((variante: TVariant, index) => {
@@ -313,7 +313,7 @@ export const VariantSelector = <T extends TProduct>({
                     }`}
                   key={`${variante.tamano}-${variante.precio}-${index}`}
                 >
-                  {variante.tamano}ml
+                  {variante.tamano}{product.marca === "Tarjeta de Regalo" ? "" : "ml"}
                 </button>
               );
             }
