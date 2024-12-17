@@ -88,7 +88,7 @@ const ProductoCard = ({
 
   return (
     <>
-      {selectedVariant.unidadesDisponibles <= 0 ? (
+      {/* {selectedVariant.unidadesDisponibles <= 0 ? (
         <Labels
           label={"Agotado"}
           className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
@@ -106,7 +106,7 @@ const ProductoCard = ({
             className="left-1/2 z-[21] transform -translate-x-1/2 -translate-y-1/2"
           />
         )
-      )}
+      )} */}
       <CardLayout
         pricing={pricing}
         product={producto}
@@ -183,11 +183,17 @@ const CardLayout = ({
   return (
     <>
       <section className="h-full w-full overflow-hidden relative">
-        { discountPercent && (
+        {/* { discountPercent && (
           <article className="absolute top-0 left-1/2 -translate-x-1/2 z-20 bg-black text-white px-3 pt-2 flex flex-col items-center font-tajawal">
             <span className="whitespace-nowrap font-bold xs:text-lg sm:text-xl">{discountPercent}% OFF</span>
           </article>
-        )}
+        )} */}
+        <div className="z-10 absolute top-0 left-1/2 -translate-x-1/2 flex w-full justify-center pb-2">
+            <article className="w-fit flex flex-col items-center font-tajawal text-white bg-[#AE3434] rounded-md px-2 pb-1 pt-2">
+              <span className="whitespace-nowrap font-medium text-sm leading-none">Te llega HOY en Cali</span>
+              <span className="leading-none whitespace-nowrap text-xs font-medium">otras ciudades 48h.</span>
+            </article>
+        </div>
         {(isPerfume(product) && product.variantes[0].imagenes.length > 1) ||
           (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
           (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
@@ -220,7 +226,9 @@ const CardLayout = ({
       </section >
 
       <section className=" flex-1 justify-end font-tajawal flex flex-col gap-1 relative">
+          
         <Link href={product.slug} className="flex flex-col gap-0.5">
+          
           <h2 className="leading-none text-lg md:text-xl md:leading-none font-bold  text-gray-800 capitalize group-hover:underline underline-offset-2">
             {product.marca}
           </h2>
