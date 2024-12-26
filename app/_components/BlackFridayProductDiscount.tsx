@@ -33,12 +33,12 @@ const BlackFridayProductDiscount = ({discountPercent}: {discountPercent: number 
     <article className="text-white bg-[#AE3434] rounded-md px-6 pt-2 pb-1 leading-none flex flex-col items-center font-tajawal w-fit">
       {discountPercent && ( 
         <>
-        <h5 className="font-bold text-sm xs:text-base text-center text-gray-200 whitespace-nowrap">¡Descuento Navideño!</h5>
+        {/* <h5 className="font-bold text-sm xs:text-base text-center text-gray-200 whitespace-nowrap">¡Descuento Navideño!</h5> */}
         <span className="whitespace-nowrap font-bold text-lg xs:text-xl sm:text-2xl">{discountPercent}% OFF</span>
         </>
       )}
-      <h5 className="font-bold text-sm xs:text-base text-center text-gray-200 whitespace-nowrap">¡Recibe tus compras en menos de 48 horas!</h5>
-      <h5 className="font-bold text-sm xs:text-lg text-center text-gray-200 whitespace-nowrap">Si estás en Cali te llega HOY.</h5>
+      {/* <h5 className="font-bold text-sm xs:text-base text-center text-gray-200 whitespace-nowrap">¡Recibe tus compras en menos de 48 horas!</h5>
+      <h5 className="font-bold text-sm xs:text-lg text-center text-gray-200 whitespace-nowrap">Si estás en Cali te llega HOY.</h5> */}
       {/* <p>{timeRemaining}</p> */}
       {/* <p>ÚLTIMA OPORTUNIDAD.</p> */}
     </article>

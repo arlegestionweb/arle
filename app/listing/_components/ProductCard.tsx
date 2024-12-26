@@ -188,12 +188,12 @@ const CardLayout = ({
             <span className="whitespace-nowrap font-bold xs:text-lg sm:text-xl">{discountPercent}% OFF</span>
           </article>
         )} */}
-        <div className="z-10 absolute top-0 left-1/2 -translate-x-1/2 flex w-full justify-center pb-2">
+        {/* <div className="z-10 absolute top-0 left-1/2 -translate-x-1/2 flex w-full justify-center pb-2">
             <article className="w-fit flex flex-col items-center font-tajawal text-white bg-[#AE3434] rounded-md px-2 pb-1 pt-2">
               <span className="whitespace-nowrap font-medium text-sm leading-none">Te llega HOY en Cali</span>
               <span className="leading-none whitespace-nowrap text-xs font-medium">otras ciudades 48h.</span>
             </article>
-        </div>
+        </div> */}
         {(isPerfume(product) && product.variantes[0].imagenes.length > 1) ||
           (isReloj(product) && product.variantes[0].imagenes.length > 1) ||
           (isGafa(product) && product.variantes[0].imagenes.length > 1) ? (
