@@ -323,7 +323,7 @@ const Listing = async ({
   );
 
   const coleccionPrincipal = colecciones?.find(
-    (coleccion) => coleccion.titulo === 'Especiales Navidad'
+    (coleccion) => coleccion.titulo === 'Los más vendidos'
   )
 
   if (!pageContent?.relojes && !pageContent?.perfumes && !pageContent?.gafas) {
